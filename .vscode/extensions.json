@@ -1,5 +1,10 @@
 {
   "recommendations": [
+    "ms-python.vscode-pylance",
+    "himanoa.python-autopep8",
+    "shardulm94.trailing-spaces",
+    "github.copilot",
+    "streetsidesoftware.code-spell-checker",
     "ms-python.python"
   ]
 }
