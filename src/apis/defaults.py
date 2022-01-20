@@ -1,8 +1,4 @@
-from fastapi import (
-    Body,
-    Path,
-    Query,
-)
+from fastapi import Body, Path, Query
 
 defaultPath = Path(None, description="")
 defaultBody = Body(None, description="")
