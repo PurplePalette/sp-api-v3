@@ -11,6 +11,8 @@ fastapi = "^0.71.0"
 uvicorn = "^0.17.0"
 gunicorn = "^20.1.0"
 taskipy = "^1.9.0"
+SQLAlchemy = "^1.4.30"
+aiomysql = "^0.0.22"
 
 [tool.poetry.dev-dependencies]
 pysen = {version = "0.9.1", extras = ["lint"]}
@@ -53,6 +55,6 @@ mypy_preset = "strict"
 line_length = 88
 py_version = "py38"
 [[tool.pysen.lint.mypy_targets]]
-  paths = [".", "src/apis"]
+  paths = [".", "src/apis", "src/database"]
 [tool.pysen.lint.source]
   excludes = ["src/models/"]
