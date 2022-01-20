@@ -1,12 +1,12 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
 from typing import Dict
 
+from fastapi.testclient import TestClient
 from src.models.background import Background  # noqa: F401
-from src.models.get_background_list_response import (
+from src.models.get_background_list_response import (  # noqa: F401
     GetBackgroundListResponse,
-)  # noqa: F401
+)
 from src.models.get_background_response import GetBackgroundResponse  # noqa: F401
 
 
@@ -39,7 +39,7 @@ def test_add_background(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_delete_background(client: TestClient) -> None:
@@ -58,7 +58,7 @@ def test_delete_background(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_edit_background(client: TestClient) -> None:
@@ -92,7 +92,7 @@ def test_edit_background(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_background(client: TestClient) -> None:
@@ -111,7 +111,7 @@ def test_get_background(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_background_list(client: TestClient) -> None:
@@ -131,4 +131,4 @@ def test_get_background_list(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500

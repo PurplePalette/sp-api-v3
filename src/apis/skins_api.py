@@ -15,12 +15,17 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-
+from src.apis.defaults import (
+    defaultBody,
+    defaultKeywords,
+    defaultLocalization,
+    defaultPage,
+    defaultPath,
+)
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_skin_list_response import GetSkinListResponse
 from src.models.get_skin_response import GetSkinResponse
 from src.models.skin import Skin
-
 
 router = APIRouter()
 
@@ -37,7 +42,7 @@ router = APIRouter()
     summary="Add skin",
 )
 async def add_skin(
-    skin: Skin = Body(None, description=""),
+    skin: Skin = defaultBody,
 ) -> None:
     """指定されたスキン情報をサーバーに登録します"""
     ...
@@ -52,7 +57,7 @@ async def add_skin(
     summary="Delete skin",
 )
 async def delete_skin(
-    skinName: str = Path(None, description=""),
+    skinName: str = defaultPath,
 ) -> None:
     """指定されたスキンを削除します"""
     ...
@@ -71,8 +76,8 @@ async def delete_skin(
     summary="Edit skin",
 )
 async def edit_skin(
-    skinName: str = Path(None, description=""),
-    skin: Skin = Body(None, description=""),
+    skinName: str = defaultPath,
+    skin: Skin = defaultBody,
 ) -> None:
     """指定したskinを編集します"""
     ...
@@ -88,9 +93,10 @@ async def edit_skin(
     summary="Get skin",
 )
 async def get_skin(
-    skinName: str = Path(None, description=""),
+    skinName: str = defaultPath,
 ) -> GetSkinResponse:
-    """It returns specified skin info It will raise 404 if the skin is not registered in this server"""
+    """It returns specified skin info.
+    It will raise 404 if the skin is not registered in this server"""
     ...
 
 
@@ -103,9 +109,10 @@ async def get_skin(
     summary="Get skin list",
 )
 async def get_skin_list(
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetSkinListResponse:
-    """It returns list of skin infos registered in this server Also it can search using query params"""
+    """It returns list of skin infos registered in this server.
+    Also it can search using query params"""
     ...

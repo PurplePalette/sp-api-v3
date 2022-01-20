@@ -1,11 +1,11 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
 from typing import Dict
 
-from src.models.get_background_list_response import (
+from fastapi.testclient import TestClient
+from src.models.get_background_list_response import (  # noqa: F401
     GetBackgroundListResponse,
-)  # noqa: F401
+)
 from src.models.get_background_response import GetBackgroundResponse  # noqa: F401
 from src.models.get_effect_list_response import GetEffectListResponse  # noqa: F401
 from src.models.get_effect_response import GetEffectResponse  # noqa: F401
@@ -36,7 +36,7 @@ def test_delete_user(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_edit_user(client: TestClient) -> None:
@@ -66,7 +66,7 @@ def test_edit_user(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_user(client: TestClient) -> None:
@@ -83,7 +83,7 @@ def test_get_user(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_user_list(client: TestClient) -> None:
@@ -100,7 +100,7 @@ def test_get_user_list(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_user_server_info(client: TestClient) -> None:
@@ -117,7 +117,7 @@ def test_get_user_server_info(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_users_background(client: TestClient) -> None:
@@ -136,7 +136,7 @@ def test_get_users_background(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_users_backgrounds(client: TestClient) -> None:
@@ -156,7 +156,7 @@ def test_get_users_backgrounds(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_users_effect(client: TestClient) -> None:
@@ -175,7 +175,7 @@ def test_get_users_effect(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_users_effects(client: TestClient) -> None:
@@ -195,7 +195,7 @@ def test_get_users_effects(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_users_engine(client: TestClient) -> None:
@@ -214,7 +214,7 @@ def test_get_users_engine(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_users_engines(client: TestClient) -> None:
@@ -234,7 +234,7 @@ def test_get_users_engines(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_users_level(client: TestClient) -> None:
@@ -253,7 +253,7 @@ def test_get_users_level(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_users_levels(client: TestClient) -> None:
@@ -273,7 +273,7 @@ def test_get_users_levels(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_users_particle(client: TestClient) -> None:
@@ -292,7 +292,7 @@ def test_get_users_particle(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_users_particles(client: TestClient) -> None:
@@ -312,7 +312,7 @@ def test_get_users_particles(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_users_skin(client: TestClient) -> None:
@@ -331,7 +331,7 @@ def test_get_users_skin(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_users_skins(client: TestClient) -> None:
@@ -351,4 +351,4 @@ def test_get_users_skins(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500

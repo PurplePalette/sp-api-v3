@@ -15,12 +15,17 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-
-from src.models.extra_models import TokenModel  # noqa: F401
+from src.apis.defaults import (
+    defaultBody,
+    defaultKeywords,
+    defaultLocalization,
+    defaultPage,
+    defaultPath,
+)
 from src.models.background import Background
+from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_background_list_response import GetBackgroundListResponse
 from src.models.get_background_response import GetBackgroundResponse
-
 
 router = APIRouter()
 
@@ -37,7 +42,7 @@ router = APIRouter()
     summary="Add background",
 )
 async def add_background(
-    background: Background = Body(None, description=""),
+    background: Background = defaultBody,
 ) -> None:
     """指定された背景情報をサーバーに登録します"""
     ...
@@ -52,7 +57,7 @@ async def add_background(
     summary="Delete background",
 )
 async def delete_background(
-    backgroundName: str = Path(None, description=""),
+    backgroundName: str = defaultPath,
 ) -> None:
     """Delete specified background"""
     ...
@@ -71,8 +76,8 @@ async def delete_background(
     summary="Edit background",
 )
 async def edit_background(
-    backgroundName: str = Path(None, description=""),
-    background: Background = Body(None, description=""),
+    backgroundName: str = defaultPath,
+    background: Background = defaultBody,
 ) -> None:
     """指定された背景情報を編集します"""
     ...
@@ -88,9 +93,10 @@ async def edit_background(
     summary="Get background",
 )
 async def get_background(
-    backgroundName: str = Path(None, description=""),
+    backgroundName: str = defaultPath,
 ) -> GetBackgroundResponse:
-    """It returns specified background info It will raise 404 if the background is not registered in this server"""
+    """It returns specified background info.
+    It will raise 404 if the background is not registered in this server"""
     ...
 
 
@@ -103,9 +109,10 @@ async def get_background(
     summary="Get background list",
 )
 async def get_background_list(
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetBackgroundListResponse:
-    """It returns list of background infos registered in this server Also it can search using query params"""
+    """It returns list of background infos registered in this server.
+    Also it can search using query params"""
     ...

@@ -15,12 +15,11 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-
-from src.models.extra_models import TokenModel  # noqa: F401
+from src.apis.defaults import defaultBody, defaultPath
 from src.models.announce import Announce
+from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
-
 
 router = APIRouter()
 
@@ -34,7 +33,7 @@ router = APIRouter()
     summary="Add announce",
 )
 async def add_announce(
-    announce: Announce = Body(None, description=""),
+    announce: Announce = defaultBody,
 ) -> None:
     """譜面のピックアップを追加します"""
     ...
@@ -49,7 +48,7 @@ async def add_announce(
     summary="Delete announce",
 )
 async def delete_announce(
-    announceName: str = Path(None, description=""),
+    announceName: str = defaultPath,
 ) -> None:
     """指定されたアナウンスを削除します"""
     ...
@@ -64,8 +63,8 @@ async def delete_announce(
     summary="Edit announce",
 )
 async def edit_announce(
-    announceName: str = Path(None, description=""),
-    announce: Announce = Body(None, description=""),
+    announceName: str = defaultPath,
+    announce: Announce = defaultBody,
 ) -> None:
     """指定したアナウンスを編集します"""
     ...
@@ -80,7 +79,7 @@ async def edit_announce(
     summary="Get announce",
 )
 async def get_announce(
-    announceName: str = Path(None, description=""),
+    announceName: str = defaultPath,
 ) -> GetLevelResponse:
     """指定されたアナウンスデータを返す"""
     ...
@@ -94,8 +93,7 @@ async def get_announce(
     tags=["announces"],
     summary="Get announce list",
 )
-async def get_announces(
-) -> GetLevelListResponse:
+async def get_announces() -> GetLevelListResponse:
     """アナウンス中のデータ一覧を返す"""
     ...
 
@@ -108,7 +106,6 @@ async def get_announces(
     tags=["announces"],
     summary="Get pickup list",
 )
-async def get_pickup_list(
-) -> GetLevelListResponse:
+async def get_pickup_list() -> GetLevelListResponse:
     """ピックアップ中のデータ一覧を返す"""
     ...

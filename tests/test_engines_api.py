@@ -1,8 +1,8 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
 from typing import Dict
 
+from fastapi.testclient import TestClient
 from src.models.engine import Engine  # noqa: F401
 from src.models.get_engine_list_response import GetEngineListResponse  # noqa: F401
 from src.models.get_engine_response import GetEngineResponse  # noqa: F401
@@ -92,7 +92,7 @@ def test_add_engine(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_delete_engine(client: TestClient) -> None:
@@ -109,7 +109,7 @@ def test_delete_engine(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_edit_engine(client: TestClient) -> None:
@@ -196,7 +196,7 @@ def test_edit_engine(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_engine(client: TestClient) -> None:
@@ -213,7 +213,7 @@ def test_get_engine(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_engine_list(client: TestClient) -> None:
@@ -233,4 +233,4 @@ def test_get_engine_list(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500

@@ -15,7 +15,12 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-
+from src.apis.defaults import (
+    defaultKeywords,
+    defaultLocalization,
+    defaultPage,
+    defaultPath,
+)
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_background_list_response import GetBackgroundListResponse
 from src.models.get_background_response import GetBackgroundResponse
@@ -31,7 +36,6 @@ from src.models.get_skin_list_response import GetSkinListResponse
 from src.models.get_skin_response import GetSkinResponse
 from src.models.server_info import ServerInfo
 
-
 router = APIRouter()
 
 
@@ -45,10 +49,11 @@ router = APIRouter()
     summary="Get testing background",
 )
 async def get_background_test(
-    testId: str = Path(None, description=""),
-    backgroundName: str = Path(None, description=""),
+    testId: str = defaultPath,
+    backgroundName: str = defaultPath,
 ) -> GetBackgroundResponse:
-    """It returns specified background info It will raise 404 if the background is not registered in this server"""
+    """It returns specified background info.
+    It will raise 404 if the background is not registered in this server"""
     ...
 
 
@@ -62,10 +67,11 @@ async def get_background_test(
     summary="Get testing effect",
 )
 async def get_effect_test(
-    testId: str = Path(None, description=""),
-    effectName: str = Path(None, description=""),
+    testId: str = defaultPath,
+    effectName: str = defaultPath,
 ) -> GetEffectResponse:
-    """It returns specified effect info It will raise 404 if the effect is not registered in this server"""
+    """It returns specified effect info.
+    It will raise 404 if the effect is not registered in this server"""
     ...
 
 
@@ -79,10 +85,11 @@ async def get_effect_test(
     summary="Get testing engine",
 )
 async def get_engine_test(
-    testId: str = Path(None, description=""),
-    engineName: str = Path(None, description=""),
+    testId: str = defaultPath,
+    engineName: str = defaultPath,
 ) -> GetEngineResponse:
-    """It returns specified engine info It will raise 404 if the engine is not registered in this server"""
+    """It returns specified engine info.
+    It will raise 404 if the engine is not registered in this server"""
     ...
 
 
@@ -96,10 +103,11 @@ async def get_engine_test(
     summary="Get testing level",
 )
 async def get_level_test(
-    testId: str = Path(None, description=""),
-    levelName: str = Path(None, description=""),
+    testId: str = defaultPath,
+    levelName: str = defaultPath,
 ) -> GetLevelResponse:
-    """It returns specified level info It will raise 404 if the level is not registered in this server"""
+    """It returns specified level info.
+    It will raise 404 if the level is not registered in this server"""
     ...
 
 
@@ -113,10 +121,11 @@ async def get_level_test(
     summary="Get testing particle",
 )
 async def get_particle_test(
-    testId: str = Path(None, description=""),
-    particleName: str = Path(None, description=""),
+    testId: str = defaultPath,
+    particleName: str = defaultPath,
 ) -> GetParticleResponse:
-    """It returns specified particle info It will raise 404 if the particle is not registered in this server"""
+    """It returns specified particle info.
+    It will raise 404 if the particle is not registered in this server"""
     ...
 
 
@@ -130,10 +139,11 @@ async def get_particle_test(
     summary="Get testing skin",
 )
 async def get_skin_test(
-    testId: str = Path(None, description=""),
-    skinName: str = Path(None, description=""),
+    testId: str = defaultPath,
+    skinName: str = defaultPath,
 ) -> GetSkinResponse:
-    """It returns specified skin info It will raise 404 if the skin is not registered in this server"""
+    """It returns specified skin info.
+    It will raise 404 if the skin is not registered in this server"""
     ...
 
 
@@ -146,7 +156,7 @@ async def get_skin_test(
     summary="Get user server info",
 )
 async def get_test_server_info(
-    testId: str = Path(None, description=""),
+    testId: str = defaultPath,
 ) -> ServerInfo:
     """テスト個別の情報一覧を返します"""
     ...
@@ -161,10 +171,10 @@ async def get_test_server_info(
     summary="Get backgrounds for test",
 )
 async def get_tests_backgrounds(
-    testId: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    testId: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetBackgroundListResponse:
     """譜面テスト用エンドポイント/ 背景一覧を返す(一般の背景リストと同じのが返される)"""
     ...
@@ -179,10 +189,10 @@ async def get_tests_backgrounds(
     summary="Get effects for test",
 )
 async def get_tests_effects(
-    testId: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    testId: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetEffectListResponse:
     """譜面テスト用エンドポイント/ エフェクト一覧を返す(一般のエフェクトリストと同じのが返される)"""
     ...
@@ -197,10 +207,10 @@ async def get_tests_effects(
     summary="Get engines for test",
 )
 async def get_tests_engines(
-    testId: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    testId: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetEngineListResponse:
     """譜面テスト用エンドポイント/ エンジン一覧を返す(一般のエンジンリストと同じのが返される)"""
     ...
@@ -215,10 +225,10 @@ async def get_tests_engines(
     summary="Get levels for test",
 )
 async def get_tests_levels(
-    testId: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    testId: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetLevelListResponse:
     """譜面テスト用エンドポイント/ 背景一覧を返す"""
     ...
@@ -233,10 +243,10 @@ async def get_tests_levels(
     summary="Get particles for test",
 )
 async def get_tests_particles(
-    testId: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    testId: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetParticleListResponse:
     """譜面テスト用エンドポイント/ パーティクル一覧を返す(一般の背景リストと同じのが返される)"""
     ...
@@ -251,10 +261,10 @@ async def get_tests_particles(
     summary="Get skins for test",
 )
 async def get_tests_skins(
-    testId: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    testId: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetSkinListResponse:
     """譜面テスト用エンドポイント/ スキン一覧を返す(一般のスキンリストと同じのが返される)"""
     ...

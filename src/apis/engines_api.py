@@ -15,12 +15,17 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-
-from src.models.extra_models import TokenModel  # noqa: F401
+from src.apis.defaults import (
+    defaultBody,
+    defaultKeywords,
+    defaultLocalization,
+    defaultPage,
+    defaultPath,
+)
 from src.models.engine import Engine
+from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_engine_list_response import GetEngineListResponse
 from src.models.get_engine_response import GetEngineResponse
-
 
 router = APIRouter()
 
@@ -37,7 +42,7 @@ router = APIRouter()
     summary="Add engine",
 )
 async def add_engine(
-    engine: Engine = Body(None, description=""),
+    engine: Engine = defaultBody,
 ) -> None:
     """指定されたゲームエンジンをサーバーに登録します"""
     ...
@@ -52,7 +57,7 @@ async def add_engine(
     summary="Delete Engine",
 )
 async def delete_engine(
-    engineName: str = Path(None, description=""),
+    engineName: str = defaultPath,
 ) -> None:
     """delete a engine"""
     ...
@@ -71,8 +76,8 @@ async def delete_engine(
     summary="Edit engine",
 )
 async def edit_engine(
-    engineName: str = Path(None, description=""),
-    engine: Engine = Body(None, description=""),
+    engineName: str = defaultPath,
+    engine: Engine = defaultBody,
 ) -> None:
     """指定されたengineを編集します"""
     ...
@@ -88,9 +93,10 @@ async def edit_engine(
     summary="Get engine",
 )
 async def get_engine(
-    engineName: str = Path(None, description=""),
+    engineName: str = defaultPath,
 ) -> GetEngineResponse:
-    """It returns specified engine info It will raise 404 if the engine is not registered in this server"""
+    """It returns specified engine info.
+    It will raise 404 if the engine is not registered in this server"""
     ...
 
 
@@ -103,9 +109,10 @@ async def get_engine(
     summary="Get engine list",
 )
 async def get_engine_list(
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetEngineListResponse:
-    """It returns list of engine infos registered in this server Also it can search using query params"""
+    """It returns list of engine infos registered in this server.
+    Also it can search using query params"""
     ...

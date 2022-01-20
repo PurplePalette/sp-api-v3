@@ -1,8 +1,8 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
 from typing import Dict
 
+from fastapi.testclient import TestClient
 from src.models.get_level_response import GetLevelResponse  # noqa: F401
 from src.models.pickup import Pickup  # noqa: F401
 
@@ -23,7 +23,7 @@ def test_add_pickup(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_delete_pickup(client: TestClient) -> None:
@@ -42,7 +42,7 @@ def test_delete_pickup(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_account_fresh_levels(client: TestClient) -> None:
@@ -61,7 +61,7 @@ def test_get_account_fresh_levels(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_account_pickup_levels(client: TestClient) -> None:
@@ -80,7 +80,7 @@ def test_get_account_pickup_levels(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_pickup(client: TestClient) -> None:
@@ -97,4 +97,4 @@ def test_get_pickup(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500

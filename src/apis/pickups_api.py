@@ -15,11 +15,10 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-
+from src.apis.defaults import defaultBody, defaultPath
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_response import GetLevelResponse
 from src.models.pickup import Pickup
-
 
 router = APIRouter()
 
@@ -33,7 +32,7 @@ router = APIRouter()
     summary="Add Pickup",
 )
 async def add_pickup(
-    pickup: Pickup = Body(None, description=""),
+    pickup: Pickup = defaultBody,
 ) -> None:
     """譜面のピックアップを追加します"""
     ...
@@ -48,8 +47,8 @@ async def add_pickup(
     summary="Delete pickup",
 )
 async def delete_pickup(
-    pickupName: str = Path(None, description=""),
-    pickup: Pickup = Body(None, description=""),
+    pickupName: str = defaultPath,
+    pickup: Pickup = defaultBody,
 ) -> None:
     """指定したピックアップを削除します"""
     ...
@@ -64,7 +63,7 @@ async def delete_pickup(
     summary="Get pickups",
 )
 async def get_account_fresh_levels(
-    accountKey: str = Path(None, description=""),
+    accountKey: str = defaultPath,
 ) -> GetLevelResponse:
     """新規譜面作者の譜面のみを返すエンドポイント"""
     ...
@@ -79,7 +78,7 @@ async def get_account_fresh_levels(
     summary="Get pickups",
 )
 async def get_account_pickup_levels(
-    accountKey: str = Path(None, description=""),
+    accountKey: str = defaultPath,
 ) -> GetLevelResponse:
     """管理者の指定したおすすめ譜面などを返すエンドポイント"""
     ...
@@ -94,7 +93,7 @@ async def get_account_pickup_levels(
     summary="Get pickup",
 )
 async def get_pickup(
-    pickupName: str = Path(None, description=""),
+    pickupName: str = defaultPath,
 ) -> GetLevelResponse:
     """指定されたIDのピックアップを取得して返す"""
     ...

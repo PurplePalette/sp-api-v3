@@ -15,12 +15,17 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-
+from src.apis.defaults import (
+    defaultBody,
+    defaultKeywords,
+    defaultLocalization,
+    defaultPage,
+    defaultPath,
+)
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
 from src.models.level import Level
-
 
 router = APIRouter()
 
@@ -37,7 +42,7 @@ router = APIRouter()
     summary="Add level",
 )
 async def add_level(
-    level: Level = Body(None, description=""),
+    level: Level = defaultBody,
 ) -> None:
     """指定された譜面情報をサーバーに登録します"""
     ...
@@ -52,7 +57,7 @@ async def add_level(
     summary="Delete a level",
 )
 async def delete_level(
-    levelName: str = Path(None, description=""),
+    levelName: str = defaultPath,
 ) -> None:
     """指定されたレベルを削除します"""
     ...
@@ -71,8 +76,8 @@ async def delete_level(
     summary="Edit level",
 )
 async def edit_level(
-    levelName: str = Path(None, description=""),
-    level: Level = Body(None, description=""),
+    levelName: str = defaultPath,
+    level: Level = defaultBody,
 ) -> None:
     """指定されたlevelを編集します"""
     ...
@@ -88,9 +93,10 @@ async def edit_level(
     summary="Get level",
 )
 async def get_level(
-    levelName: str = Path(None, description=""),
+    levelName: str = defaultPath,
 ) -> GetLevelResponse:
-    """It returns specified level info It will raise 404 if the level is not registered in this server"""
+    """It returns specified level info.
+    It will raise 404 if the level is not registered in this server"""
     ...
 
 
@@ -103,9 +109,10 @@ async def get_level(
     summary="Get level list",
 )
 async def get_level_list(
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetLevelListResponse:
-    """It returns list of level infos registered in this server Also it can search using query params"""
+    """It returns list of level infos registered in this server.
+    Also it can search using query params"""
     ...

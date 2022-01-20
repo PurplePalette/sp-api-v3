@@ -1,8 +1,8 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
 from typing import Dict
 
+from fastapi.testclient import TestClient
 from src.models.get_level_list_response import GetLevelListResponse  # noqa: F401
 from src.models.get_level_response import GetLevelResponse  # noqa: F401
 from src.models.level import Level  # noqa: F401
@@ -178,7 +178,7 @@ def test_add_level(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_delete_level(client: TestClient) -> None:
@@ -195,7 +195,7 @@ def test_delete_level(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_edit_level(client: TestClient) -> None:
@@ -368,7 +368,7 @@ def test_edit_level(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_level(client: TestClient) -> None:
@@ -385,7 +385,7 @@ def test_get_level(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_level_list(client: TestClient) -> None:
@@ -405,4 +405,4 @@ def test_get_level_list(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500

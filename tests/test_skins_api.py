@@ -1,8 +1,8 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
 from typing import Dict
 
+from fastapi.testclient import TestClient
 from src.models.get_skin_list_response import GetSkinListResponse  # noqa: F401
 from src.models.get_skin_response import GetSkinResponse  # noqa: F401
 from src.models.skin import Skin  # noqa: F401
@@ -37,7 +37,7 @@ def test_add_skin(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_delete_skin(client: TestClient) -> None:
@@ -54,7 +54,7 @@ def test_delete_skin(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_edit_skin(client: TestClient) -> None:
@@ -86,7 +86,7 @@ def test_edit_skin(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_skin(client: TestClient) -> None:
@@ -103,7 +103,7 @@ def test_get_skin(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_skin_list(client: TestClient) -> None:
@@ -123,4 +123,4 @@ def test_get_skin_list(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500

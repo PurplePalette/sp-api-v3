@@ -1,8 +1,8 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
-
 from typing import Dict
+
+from fastapi.testclient import TestClient
 from src.models.announce import Announce  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse  # noqa: F401
 from src.models.get_level_response import GetLevelResponse  # noqa: F401
@@ -31,7 +31,7 @@ def test_add_announce(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_delete_announce(client: TestClient) -> None:
@@ -48,7 +48,7 @@ def test_delete_announce(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_edit_announce(client: TestClient) -> None:
@@ -74,7 +74,7 @@ def test_edit_announce(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_announce(client: TestClient) -> None:
@@ -91,7 +91,7 @@ def test_get_announce(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_announces(client: TestClient) -> None:
@@ -108,7 +108,7 @@ def test_get_announces(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_pickup_list(client: TestClient) -> None:
@@ -125,4 +125,4 @@ def test_get_pickup_list(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500

@@ -15,7 +15,12 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-
+from src.apis.defaults import (
+    defaultKeywords,
+    defaultLocalization,
+    defaultPage,
+    defaultPath,
+)
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_background_list_response import GetBackgroundListResponse
 from src.models.get_background_response import GetBackgroundResponse
@@ -31,7 +36,6 @@ from src.models.get_skin_list_response import GetSkinListResponse
 from src.models.get_skin_response import GetSkinResponse
 from src.models.server_info import ServerInfo
 
-
 router = APIRouter()
 
 
@@ -45,10 +49,11 @@ router = APIRouter()
     summary="Rate level",
 )
 async def decrease_rating(
-    accountKey: str = Path(None, description=""),
-    levelName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    levelName: str = defaultPath,
 ) -> GetLevelResponse:
-    """It returns specified level info It will raise 404 if the level is not registered in this server"""
+    """It returns specified level info.
+    It will raise 404 if the level is not registered in this server"""
     ...
 
 
@@ -62,10 +67,11 @@ async def decrease_rating(
     summary="Add level to user favorite",
 )
 async def favorite_level(
-    accountKey: str = Path(None, description=""),
-    levelName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    levelName: str = defaultPath,
 ) -> GetLevelResponse:
-    """It returns specified level info It will raise 404 if the level is not registered in this server"""
+    """It returns specified level info.
+    It will raise 404 if the level is not registered in this server"""
     ...
 
 
@@ -79,8 +85,8 @@ async def favorite_level(
     summary="Get announce",
 )
 async def get_account_announce(
-    accountKey: str = Path(None, description=""),
-    announceName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    announceName: str = defaultPath,
 ) -> GetLevelResponse:
     """指定されたアナウンス情報を表示します"""
     ...
@@ -96,7 +102,7 @@ async def get_account_announce(
     summary="Get announce list",
 )
 async def get_account_announce_list(
-    accountKey: str = Path(None, description=""),
+    accountKey: str = defaultPath,
 ) -> GetLevelResponse:
     """現在のアナウンス一覧を取得します"""
     ...
@@ -112,7 +118,7 @@ async def get_account_announce_list(
     summary="Get mylist",
 )
 async def get_account_mylist(
-    accountKey: str = Path(None, description=""),
+    accountKey: str = defaultPath,
 ) -> GetLevelResponse:
     """対象の鍵を持つユーザーのマイリストを取得します"""
     ...
@@ -128,7 +134,7 @@ async def get_account_mylist(
     summary="Get random",
 )
 async def get_account_random(
-    accountKey: str = Path(None, description=""),
+    accountKey: str = defaultPath,
 ) -> GetLevelResponse:
     """ランダムな譜面を取得します"""
     ...
@@ -144,10 +150,11 @@ async def get_account_random(
     summary="Get accounts background",
 )
 async def get_accounts_background(
-    accountKey: str = Path(None, description=""),
-    backgroundName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    backgroundName: str = defaultPath,
 ) -> GetBackgroundResponse:
-    """It returns specified background info It will raise 404 if the background is not registered in this server"""
+    """It returns specified background info.
+    It will raise 404 if the background is not registered in this server"""
     ...
 
 
@@ -160,10 +167,10 @@ async def get_accounts_background(
     summary="Get backgrounds for test",
 )
 async def get_accounts_backgrounds(
-    accountKey: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    accountKey: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetBackgroundListResponse:
     """ユーザー個別用エンドポイント/ 背景一覧を返す"""
     ...
@@ -179,10 +186,11 @@ async def get_accounts_backgrounds(
     summary="Get accounts effect",
 )
 async def get_accounts_effect(
-    accountKey: str = Path(None, description=""),
-    effectName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    effectName: str = defaultPath,
 ) -> GetEffectResponse:
-    """It returns specified effect info It will raise 404 if the effect is not registered in this server"""
+    """It returns specified effect info.
+    It will raise 404 if the effect is not registered in this server"""
     ...
 
 
@@ -195,10 +203,10 @@ async def get_accounts_effect(
     summary="Get effects for test",
 )
 async def get_accounts_effects(
-    accountKey: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    accountKey: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetEffectListResponse:
     """ユーザー個別用エンドポイント/ エフェクト一覧を返す"""
     ...
@@ -214,10 +222,11 @@ async def get_accounts_effects(
     summary="Get accounts engine",
 )
 async def get_accounts_engine(
-    accountKey: str = Path(None, description=""),
-    engineName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    engineName: str = defaultPath,
 ) -> GetEngineResponse:
-    """It returns specified engine info It will raise 404 if the engine is not registered in this server"""
+    """It returns specified engine info.
+    It will raise 404 if the engine is not registered in this server"""
     ...
 
 
@@ -230,10 +239,10 @@ async def get_accounts_engine(
     summary="Get engines for test",
 )
 async def get_accounts_engines(
-    accountKey: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    accountKey: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetEngineListResponse:
     """ユーザー個別用エンドポイント/ エンジン一覧を返す"""
     ...
@@ -249,10 +258,11 @@ async def get_accounts_engines(
     summary="Get accounts level",
 )
 async def get_accounts_level(
-    accountKey: str = Path(None, description=""),
-    levelName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    levelName: str = defaultPath,
 ) -> GetLevelResponse:
-    """It returns specified level info It will raise 404 if the level is not registered in this server"""
+    """It returns specified level info
+    It will raise 404 if the level is not registered in this server"""
     ...
 
 
@@ -265,10 +275,10 @@ async def get_accounts_level(
     summary="Get levels for test",
 )
 async def get_accounts_levels(
-    accountKey: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    accountKey: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetLevelListResponse:
     """ユーザー個別用エンドポイント/ 譜面一覧を返す"""
     ...
@@ -284,10 +294,11 @@ async def get_accounts_levels(
     summary="Get accounts particle",
 )
 async def get_accounts_particle(
-    accountKey: str = Path(None, description=""),
-    particleName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    particleName: str = defaultPath,
 ) -> GetParticleResponse:
-    """It returns specified particle info It will raise 404 if the particle is not registered in this server"""
+    """It returns specified particle info.
+    It will raise 404 if the particle is not registered in this server"""
     ...
 
 
@@ -300,10 +311,10 @@ async def get_accounts_particle(
     summary="Get particles for test",
 )
 async def get_accounts_particles(
-    accountKey: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    accountKey: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetParticleListResponse:
     """ユーザー個別用エンドポイント/ パーティクル一覧を返す"""
     ...
@@ -318,7 +329,7 @@ async def get_accounts_particles(
     summary="Get user server info",
 )
 async def get_accounts_server_info(
-    accountKey: str = Path(None, description=""),
+    accountKey: str = defaultPath,
 ) -> ServerInfo:
     """ユーザー個別の情報一覧を返します"""
     ...
@@ -334,10 +345,11 @@ async def get_accounts_server_info(
     summary="Get accounts skin",
 )
 async def get_accounts_skin(
-    accountKey: str = Path(None, description=""),
-    skinName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    skinName: str = defaultPath,
 ) -> GetSkinResponse:
-    """It returns specified skin info It will raise 404 if the skin is not registered in this server"""
+    """It returns specified skin info.
+    It will raise 404 if the skin is not registered in this server"""
     ...
 
 
@@ -350,10 +362,10 @@ async def get_accounts_skin(
     summary="Get skins for test",
 )
 async def get_accounts_skins(
-    accountKey: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    accountKey: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetSkinListResponse:
     """ユーザー個別用エンドポイント/ スキン一覧を返す"""
     ...
@@ -369,8 +381,8 @@ async def get_accounts_skins(
     summary="Get flick level",
 )
 async def get_flick_level(
-    accountKey: str = Path(None, description=""),
-    levelName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    levelName: str = defaultPath,
 ) -> GetLevelResponse:
     """譜面のノーツ部分をゴリ押しでフリックのみに差し替えた特殊な譜面を取得する"""
     ...
@@ -386,10 +398,11 @@ async def get_flick_level(
     summary="Rate level",
 )
 async def increase_rating(
-    accountKey: str = Path(None, description=""),
-    levelName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    levelName: str = defaultPath,
 ) -> GetLevelResponse:
-    """It returns specified level info It will raise 404 if the level is not registered in this server"""
+    """It returns specified level info.
+    It will raise 404 if the level is not registered in this server"""
     ...
 
 
@@ -403,10 +416,11 @@ async def increase_rating(
     summary="Rate level",
 )
 async def rate_level(
-    accountKey: str = Path(None, description=""),
-    levelName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    levelName: str = defaultPath,
 ) -> GetLevelResponse:
-    """It returns specified level info It will raise 404 if the level is not registered in this server"""
+    """It returns specified level info.
+    It will raise 404 if the level is not registered in this server"""
     ...
 
 
@@ -420,8 +434,9 @@ async def rate_level(
     summary="Add level to user favorite",
 )
 async def unfavorite_level(
-    accountKey: str = Path(None, description=""),
-    levelName: str = Path(None, description=""),
+    accountKey: str = defaultPath,
+    levelName: str = defaultPath,
 ) -> GetLevelResponse:
-    """It returns specified level info It will raise 404 if the level is not registered in this server"""
+    """It returns specified level info.
+    It will raise 404 if the level is not registered in this server"""
     ...

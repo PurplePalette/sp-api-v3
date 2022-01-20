@@ -15,12 +15,17 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-
-from src.models.extra_models import TokenModel  # noqa: F401
+from src.apis.defaults import (
+    defaultBody,
+    defaultKeywords,
+    defaultLocalization,
+    defaultPage,
+    defaultPath,
+)
 from src.models.effect import Effect
+from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_effect_list_response import GetEffectListResponse
 from src.models.get_effect_response import GetEffectResponse
-
 
 router = APIRouter()
 
@@ -37,7 +42,7 @@ router = APIRouter()
     summary="Add effect",
 )
 async def add_effect(
-    effect: Effect = Body(None, description=""),
+    effect: Effect = defaultBody,
 ) -> None:
     """指定されたeffectをサーバーに登録します"""
     ...
@@ -52,7 +57,7 @@ async def add_effect(
     summary="Delete effect",
 )
 async def delete_effect(
-    effectName: str = Path(None, description=""),
+    effectName: str = defaultPath,
 ) -> None:
     """delete specified effect"""
     ...
@@ -71,8 +76,8 @@ async def delete_effect(
     summary="Edit effect",
 )
 async def edit_effect(
-    effectName: str = Path(None, description=""),
-    effect: Effect = Body(None, description=""),
+    effectName: str = defaultPath,
+    effect: Effect = defaultBody,
 ) -> None:
     """指定されたeffectを編集します"""
     ...
@@ -88,9 +93,10 @@ async def edit_effect(
     summary="Get effect",
 )
 async def get_effect(
-    effectName: str = Path(None, description=""),
+    effectName: str = defaultPath,
 ) -> GetEffectResponse:
-    """It returns specified effect info It will raise 404 if the effect is not registered in this server"""
+    """It returns specified effect info.
+    It will raise 404 if the effect is not registered in this server"""
     ...
 
 
@@ -103,21 +109,10 @@ async def get_effect(
     summary="Get effect list",
 )
 async def get_effect_list(
-    localization: str = Query(
-        None,
-        description="It localizes response items if possible",
-        min_length=1,
-        max_length=50,
-    ),
-    page: int = Query(
-        1, description="It filters items for pagination if possible", ge=0, le=10000
-    ),
-    keywords: str = Query(
-        None,
-        description="It filters items for search from list if possible",
-        min_length=1,
-        max_length=300,
-    ),
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetEffectListResponse:
-    """It returns list of effect infos registered in this server Also it can search using query params"""
+    """It returns list of effect infos registered in this server.
+    Also it can search using query params"""
     ...

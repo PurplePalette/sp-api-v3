@@ -1,11 +1,11 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
 from typing import Dict
 
-from src.models.get_background_list_response import (
+from fastapi.testclient import TestClient
+from src.models.get_background_list_response import (  # noqa: F401
     GetBackgroundListResponse,
-)  # noqa: F401
+)
 from src.models.get_background_response import GetBackgroundResponse  # noqa: F401
 from src.models.get_effect_list_response import GetEffectListResponse  # noqa: F401
 from src.models.get_effect_response import GetEffectResponse  # noqa: F401
@@ -36,7 +36,7 @@ def test_get_background_test(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_effect_test(client: TestClient) -> None:
@@ -55,7 +55,7 @@ def test_get_effect_test(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_engine_test(client: TestClient) -> None:
@@ -72,9 +72,8 @@ def test_get_engine_test(client: TestClient) -> None:
         ),
         headers=headers,
     )
-
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_level_test(client: TestClient) -> None:
@@ -93,7 +92,7 @@ def test_get_level_test(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_particle_test(client: TestClient) -> None:
@@ -112,7 +111,7 @@ def test_get_particle_test(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_skin_test(client: TestClient) -> None:
@@ -131,7 +130,7 @@ def test_get_skin_test(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_test_server_info(client: TestClient) -> None:
@@ -148,7 +147,7 @@ def test_get_test_server_info(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_tests_backgrounds(client: TestClient) -> None:
@@ -168,7 +167,7 @@ def test_get_tests_backgrounds(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_tests_effects(client: TestClient) -> None:
@@ -188,7 +187,7 @@ def test_get_tests_effects(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_tests_engines(client: TestClient) -> None:
@@ -208,7 +207,7 @@ def test_get_tests_engines(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_tests_levels(client: TestClient) -> None:
@@ -228,7 +227,7 @@ def test_get_tests_levels(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_tests_particles(client: TestClient) -> None:
@@ -248,7 +247,7 @@ def test_get_tests_particles(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_tests_skins(client: TestClient) -> None:
@@ -268,4 +267,4 @@ def test_get_tests_skins(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500

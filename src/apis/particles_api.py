@@ -15,12 +15,17 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-
+from src.apis.defaults import (
+    defaultBody,
+    defaultKeywords,
+    defaultLocalization,
+    defaultPage,
+    defaultPath,
+)
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_particle_list_response import GetParticleListResponse
 from src.models.get_particle_response import GetParticleResponse
 from src.models.particle import Particle
-
 
 router = APIRouter()
 
@@ -37,7 +42,7 @@ router = APIRouter()
     summary="Add particle",
 )
 async def add_particle(
-    particle: Particle = Body(None, description=""),
+    particle: Particle = defaultBody,
 ) -> None:
     """指定されたパーティクル情報をサーバーに登録します"""
     ...
@@ -52,7 +57,7 @@ async def add_particle(
     summary="Delete particle",
 )
 async def delete_particle(
-    particleName: str = Path(None, description=""),
+    particleName: str = defaultPath,
 ) -> None:
     """指定されたパーティクルを削除する"""
     ...
@@ -71,8 +76,8 @@ async def delete_particle(
     summary="Edit particle",
 )
 async def edit_particle(
-    particleName: str = Path(None, description=""),
-    particle: Particle = Body(None, description=""),
+    particleName: str = defaultPath,
+    particle: Particle = defaultBody,
 ) -> None:
     """指定したparticleを編集します"""
     ...
@@ -88,9 +93,10 @@ async def edit_particle(
     summary="Get particle",
 )
 async def get_particle(
-    particleName: str = Path(None, description=""),
+    particleName: str = defaultPath,
 ) -> GetParticleResponse:
-    """It returns specified particle info It will raise 404 if the particle is not registered in this server"""
+    """It returns specified particle info.
+    It will raise 404 if the particle is not registered in this server"""
     ...
 
 
@@ -103,9 +109,10 @@ async def get_particle(
     summary="Get particle list",
 )
 async def get_particle_list(
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetParticleListResponse:
-    """It returns list of particle infos registered in this server Also it can search using query params"""
+    """It returns list of particle infos registered in this server.
+    Also it can search using query params"""
     ...

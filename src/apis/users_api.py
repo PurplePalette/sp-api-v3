@@ -15,7 +15,13 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-
+from src.apis.defaults import (
+    defaultBody,
+    defaultKeywords,
+    defaultLocalization,
+    defaultPage,
+    defaultPath,
+)
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_background_list_response import GetBackgroundListResponse
 from src.models.get_background_response import GetBackgroundResponse
@@ -33,7 +39,6 @@ from src.models.get_user_list_response import GetUserListResponse
 from src.models.server_info import ServerInfo
 from src.models.user import User
 
-
 router = APIRouter()
 
 
@@ -46,7 +51,7 @@ router = APIRouter()
     summary="Delete user",
 )
 async def delete_user(
-    userId: str = Path(None, description=""),
+    userId: str = defaultPath,
 ) -> None:
     """指定したユーザーを削除します"""
     ...
@@ -65,8 +70,8 @@ async def delete_user(
     summary="Edit user",
 )
 async def edit_user(
-    userId: str = Path(None, description=""),
-    user: User = Body(None, description=""),
+    userId: str = defaultPath,
+    user: User = defaultBody,
 ) -> None:
     """指定したuser情報を編集します"""
     ...
@@ -82,7 +87,7 @@ async def edit_user(
     summary="Get user",
 )
 async def get_user(
-    userId: str = Path(None, description=""),
+    userId: str = defaultPath,
 ) -> User:
     """指定したユーザー情報を取得します"""
     ...
@@ -96,8 +101,7 @@ async def get_user(
     tags=["users"],
     summary="Get user list",
 )
-async def get_user_list(
-) -> GetUserListResponse:
+async def get_user_list() -> GetUserListResponse:
     """サーバーに登録されたユーザー一覧を返します"""
     ...
 
@@ -111,7 +115,7 @@ async def get_user_list(
     summary="Get user server info",
 )
 async def get_user_server_info(
-    userId: str = Path(None, description=""),
+    userId: str = defaultPath,
 ) -> ServerInfo:
     """ユーザー個別の情報一覧を返します"""
     ...
@@ -127,10 +131,11 @@ async def get_user_server_info(
     summary="Get users background",
 )
 async def get_users_background(
-    userId: str = Path(None, description=""),
-    backgroundName: str = Path(None, description=""),
+    userId: str = defaultPath,
+    backgroundName: str = defaultPath,
 ) -> GetBackgroundResponse:
-    """It returns specified background info It will raise 404 if the background is not registered in this server"""
+    """It returns specified background info.
+    It will raise 404 if the background is not registered in this server"""
     ...
 
 
@@ -143,10 +148,10 @@ async def get_users_background(
     summary="Get backgrounds for test",
 )
 async def get_users_backgrounds(
-    userId: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    userId: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetBackgroundListResponse:
     """ユーザー個別用エンドポイント/ 背景一覧を返す"""
     ...
@@ -162,10 +167,11 @@ async def get_users_backgrounds(
     summary="Get users effect",
 )
 async def get_users_effect(
-    userId: str = Path(None, description=""),
-    effectName: str = Path(None, description=""),
+    userId: str = defaultPath,
+    effectName: str = defaultPath,
 ) -> GetEffectResponse:
-    """It returns specified effect info It will raise 404 if the effect is not registered in this server"""
+    """It returns specified effect info.
+    It will raise 404 if the effect is not registered in this server"""
     ...
 
 
@@ -178,10 +184,10 @@ async def get_users_effect(
     summary="Get effects for test",
 )
 async def get_users_effects(
-    userId: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    userId: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetEffectListResponse:
     """ユーザー個別用エンドポイント/ エフェクト一覧を返す"""
     ...
@@ -197,10 +203,11 @@ async def get_users_effects(
     summary="Get users engine",
 )
 async def get_users_engine(
-    userId: str = Path(None, description=""),
-    engineName: str = Path(None, description=""),
+    userId: str = defaultPath,
+    engineName: str = defaultPath,
 ) -> GetEngineResponse:
-    """It returns specified engine info It will raise 404 if the engine is not registered in this server"""
+    """It returns specified engine info.
+    It will raise 404 if the engine is not registered in this server"""
     ...
 
 
@@ -213,10 +220,10 @@ async def get_users_engine(
     summary="Get engines for test",
 )
 async def get_users_engines(
-    userId: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    userId: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetEngineListResponse:
     """ユーザー個別用エンドポイント/ エンジン一覧を返す"""
     ...
@@ -232,10 +239,11 @@ async def get_users_engines(
     summary="Get users level",
 )
 async def get_users_level(
-    userId: str = Path(None, description=""),
-    levelName: str = Path(None, description=""),
+    userId: str = defaultPath,
+    levelName: str = defaultPath,
 ) -> GetLevelResponse:
-    """It returns specified level info It will raise 404 if the level is not registered in this server"""
+    """It returns specified level info.
+    It will raise 404 if the level is not registered in this server"""
     ...
 
 
@@ -248,10 +256,10 @@ async def get_users_level(
     summary="Get levels for test",
 )
 async def get_users_levels(
-    userId: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    userId: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetLevelListResponse:
     """ユーザー個別用エンドポイント/ 背景一覧を返す"""
     ...
@@ -267,10 +275,11 @@ async def get_users_levels(
     summary="Get users particle",
 )
 async def get_users_particle(
-    userId: str = Path(None, description=""),
-    particleName: str = Path(None, description=""),
+    userId: str = defaultPath,
+    particleName: str = defaultPath,
 ) -> GetParticleResponse:
-    """It returns specified particle info It will raise 404 if the particle is not registered in this server"""
+    """It returns specified particle info.
+    It will raise 404 if the particle is not registered in this server"""
     ...
 
 
@@ -283,10 +292,10 @@ async def get_users_particle(
     summary="Get particles for test",
 )
 async def get_users_particles(
-    userId: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    userId: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetParticleListResponse:
     """ユーザー個別用エンドポイント/ パーティクル一覧を返す"""
     ...
@@ -302,10 +311,11 @@ async def get_users_particles(
     summary="Get users skin",
 )
 async def get_users_skin(
-    userId: str = Path(None, description=""),
-    skinName: str = Path(None, description=""),
+    userId: str = defaultPath,
+    skinName: str = defaultPath,
 ) -> GetSkinResponse:
-    """It returns specified skin info It will raise 404 if the skin is not registered in this server"""
+    """It returns specified skin info.
+    It will raise 404 if the skin is not registered in this server"""
     ...
 
 
@@ -318,10 +328,10 @@ async def get_users_skin(
     summary="Get skins for test",
 )
 async def get_users_skins(
-    userId: str = Path(None, description=""),
-    localization: str = Query(None, description="It localizes response items if possible", min_length=1, max_length=50),
-    page: int = Query(1, description="It filters items for pagination if possible", ge=0, le=10000),
-    keywords: str = Query(None, description="It filters items for search from list if possible", min_length=1, max_length=300),
+    userId: str = defaultPath,
+    localization: str = defaultLocalization,
+    page: int = defaultPage,
+    keywords: str = defaultKeywords,
 ) -> GetSkinListResponse:
     """ユーザー個別用エンドポイント/ スキン一覧を返す"""
     ...

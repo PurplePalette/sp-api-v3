@@ -1,9 +1,8 @@
 # coding: utf-8
 
 from typing import Dict
+
 from fastapi.testclient import TestClient
-
-
 from src.models.effect import Effect  # noqa: F401
 from src.models.get_effect_list_response import GetEffectListResponse  # noqa: F401
 from src.models.get_effect_response import GetEffectResponse  # noqa: F401
@@ -37,7 +36,7 @@ def test_add_effect(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_delete_effect(client: TestClient) -> None:
@@ -54,7 +53,7 @@ def test_delete_effect(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_edit_effect(client: TestClient) -> None:
@@ -85,7 +84,7 @@ def test_edit_effect(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_effect(client: TestClient) -> None:
@@ -102,7 +101,7 @@ def test_get_effect(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_effect_list(client: TestClient) -> None:
@@ -122,4 +121,4 @@ def test_get_effect_list(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500

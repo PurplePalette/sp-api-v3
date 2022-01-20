@@ -1,8 +1,8 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
 from typing import Dict
 
+from fastapi.testclient import TestClient
 from src.models.get_particle_list_response import GetParticleListResponse  # noqa: F401
 from src.models.get_particle_response import GetParticleResponse  # noqa: F401
 from src.models.particle import Particle  # noqa: F401
@@ -37,7 +37,7 @@ def test_add_particle(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_delete_particle(client: TestClient) -> None:
@@ -54,7 +54,7 @@ def test_delete_particle(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_edit_particle(client: TestClient) -> None:
@@ -86,7 +86,7 @@ def test_edit_particle(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_particle(client: TestClient) -> None:
@@ -103,7 +103,7 @@ def test_get_particle(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500
 
 
 def test_get_particle_list(client: TestClient) -> None:
@@ -123,4 +123,4 @@ def test_get_particle_list(client: TestClient) -> None:
     )
 
     # uncomment below to assert the status code of the HTTP response
-    # assert response.status_code == 200
+    assert response.status_code != 500

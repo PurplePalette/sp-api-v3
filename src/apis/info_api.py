@@ -15,10 +15,8 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.server_info import ServerInfo
-
 
 router = APIRouter()
 
@@ -31,7 +29,7 @@ router = APIRouter()
     tags=["info"],
     summary="Get server info",
 )
-async def get_server_info(
-) -> ServerInfo:
-    """It returns small list of all infos registered in this server (It should be trimed if the server has too many items)"""
+async def get_server_info() -> ServerInfo:
+    """It returns small list of all infos registered in this server.
+    (It should be trimed if the server has too many items)"""
     ...
