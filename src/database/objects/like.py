@@ -1,6 +1,6 @@
 from db import Base
 from mixins import TimeMixin
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 
 

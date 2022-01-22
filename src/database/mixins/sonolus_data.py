@@ -17,5 +17,5 @@ class SonolusDataMixin(object):
     public = Column(Boolean(), default=False, server_default="0")
 
     @declared_attr
-    def user_id(cls):
+    def user_id(cls) -> Column:
         return Column(Integer, ForeignKey("users.id"))

@@ -1,9 +1,9 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from alembic import context
+from config import DB_URL
 from db import Base
-from objects import (
+from objects import (  # noqa: F401
     Announce,
     Background,
     Effect,
@@ -16,10 +16,8 @@ from objects import (
     Pickup,
     Skin,
     User,
-)  # noqa: F401
-from config import DB_URL
-
-from alembic import context
+)
+from sqlalchemy import engine_from_config, pool
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

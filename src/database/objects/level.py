@@ -1,6 +1,6 @@
 from db import Base
 from mixins import SonolusDataMixin, TimeMixin
-from sqlalchemy import Column, ForeignKey, String, Integer
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 
