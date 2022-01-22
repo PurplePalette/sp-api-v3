@@ -1,30 +1,17 @@
-FROM python:3.7 AS builder
+FROM python:3.8
 
-WORKDIR /usr/src/app
+ENV PYTHONUNBUFFERED 1
 
-RUN python3 -m venv /venv
-ENV PATH="/venv/bin:$PATH"
+EXPOSE 8000
+WORKDIR /app
 
-RUN pip install --upgrade pip
+RUN apt install ca-certificates
+COPY poetry.lock pyproject.toml ./
+RUN pip install poetry==1.0.* && \
+    CURL_CA_BUNDLE="" && \
+    poetry config virtualenvs.create false && \
+    poetry install --no-dev
 
-COPY . .
-RUN pip install --no-cache-dir .
+COPY . ./
 
-
-FROM python:3.7 AS test_runner
-WORKDIR /tmp
-COPY --from=builder /venv /venv
-COPY --from=builder /usr/src/app/tests tests
-ENV PATH=/venv/bin:$PATH
-
-# install test dependencies
-RUN pip install pytest
-
-# run tests
-RUN pytest tests
-
-
-FROM python:3.7 AS service
-WORKDIR /root/app/site-packages
-COPY --from=test_runner /venv /venv
-ENV PATH=/venv/bin:$PATH
+CMD uvicorn --host=0.0.0.0 src.main:app

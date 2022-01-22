@@ -1,2 +1,5 @@
+.env
 .vscode/settings.json
+db_data/
+api_data/
 *.pyc

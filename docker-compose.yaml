@@ -1,9 +1,50 @@
 version: '3.6'
 services:
   service:
+    container_name: sonolus_fastapi_service
+    hostname: sonolus_fastapi_service
     build:
       context: .
-      target: service
-    ports:
-      - "8080:8080"
     command: uvicorn src.main:app --host 0.0.0.0 --port 8080
+    volumes:
+      - ${VOLUME_API_PATH}:/var/lib/mysql:delegated
+    ports:
+      - ${PORT_API}:8080
+    networks:
+      - local-net
+    depends_on:
+      - database
+  database:
+    container_name: sonolus_fastapi_database
+    hostname: sonolus_fastapi_database
+    image: mariadb
+    restart: always
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    volumes:
+      - ${VOLUME_DB_PATH}:/var/lib/mysql:delegated
+    ports:
+      - ${PORT_DB}:3306
+    networks:
+      - local-net
+    environment:
+      - MYSQL_ROOT_Host='%'
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - TZ='Asia/Tokyo'
+  adminer:
+    image: adminer:latest
+    container_name: sonolus_fastapi_adminer
+    hostname: sonolus_fastapi_adminer
+    restart: always
+    ports:
+      - ${PORT_ADMINER}:8080
+    networks:
+      - local-net
+    depends_on:
+      - database
+
+networks:
+  local-net:
+    driver: bridge
