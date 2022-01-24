@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import Column, String
 from src.database.db import Base
 from src.database.mixins import SonolusDataMixin, TimeMixin
@@ -7,7 +9,7 @@ class Announce(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     __tablename__ = "announces"
     __table_args__ = {"extend_existing": True}
 
-    # TODO: Remove this init and use better mypy config
+    # FIXME: Remove this init and use better mypy config
     def __init__(
         self,
         name: str,
@@ -20,8 +22,8 @@ class Announce(SonolusDataMixin, TimeMixin, Base):  # type: ignore
         description: str,
         description_en: str,
         public: bool,
-        created_time: str,
-        updated_time: str,
+        created_time: datetime,
+        updated_time: datetime,
         coverHash: str,
         bgmHash: str,
         dataHash: str,
