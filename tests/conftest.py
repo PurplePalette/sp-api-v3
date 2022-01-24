@@ -4,12 +4,13 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from src.main import app as application
+from src.security_api import get_current_user, get_current_user_stub
 from starlette.testclient import ASGI2App, ASGI3App
 
 
 @pytest.fixture
 def app() -> FastAPI:
-    application.dependency_overrides = {}
+    application.dependency_overrides[get_current_user] = get_current_user_stub
     return application  # type: ignore
 
 

@@ -14,7 +14,7 @@ taskipy = "^1.9.0"
 SQLAlchemy = "1.4.31"
 aiomysql = "^0.0.22"
 alembic = "^1.7.5"
-firebase-admin = "^5.2.0"
+fastapi-cloudauth = "^0.4.3"
 
 [tool.poetry.dev-dependencies]
 pysen = {version = "0.10.1", extras = ["lint"]}
