@@ -15,13 +15,18 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
+from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.defaults import defaultBody, defaultPath
+from src.cruds.announce import create_announce
+from src.database.db import get_db
 from src.models.announce import Announce
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
 
 router = APIRouter()
+
+defaultDatabase = Depends(get_db)
 
 
 @router.post(
@@ -34,9 +39,10 @@ router = APIRouter()
 )
 async def add_announce(
     announce: Announce = defaultBody,
-) -> None:
-    """譜面のピックアップを追加します"""
-    ...
+    db: AsyncSession = defaultDatabase,
+) -> Announce:
+    """お知らせを追加します"""
+    return await create_announce(db, announce)
 
 
 @router.delete(
