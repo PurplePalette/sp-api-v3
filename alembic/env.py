@@ -1,9 +1,9 @@
 from logging.config import fileConfig
 
 from alembic import context
-from config import DB_URL
-from db import Base
-from objects import (  # noqa: F401
+from src.database.config import DB_URL
+from src.database.db import Base
+from src.database.objects import (  # noqa: F401
     Announce,
     Background,
     Effect,
