@@ -1,7 +1,7 @@
-from db import Base
-from mixins import TimeMixin
 from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
+from src.database.db import Base
+from src.database.mixins import TimeMixin
 
 
 class Favorite(TimeMixin, Base):  # type: ignore
@@ -10,6 +10,6 @@ class Favorite(TimeMixin, Base):  # type: ignore
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("users.id"))
-    user = relationship("User", backref="favorites")
+    user = relationship("User", backref="favorite", uselist=False)
     level_id = Column(Integer, ForeignKey("levels.id"))
-    level = relationship("Level", backref="favorites")
+    level = relationship("Level", backref="favorite", uselist=False)

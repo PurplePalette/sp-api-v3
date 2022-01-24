@@ -1,7 +1,7 @@
-from db import Base
-from mixins import SonolusDataMixin, TimeMixin
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+from src.database.db import Base
+from src.database.mixins import SonolusDataMixin, TimeMixin
 
 
 class Skin(SonolusDataMixin, TimeMixin, Base):  # type: ignore

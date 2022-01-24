@@ -1,7 +1,7 @@
-from db import Base
-from mixins import SonolusDataMixin, TimeMixin
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+from src.database.db import Base
+from src.database.mixins import SonolusDataMixin, TimeMixin
 
 
 class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
@@ -28,5 +28,5 @@ class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     particle = relationship("Particle", back_populates="levels")
     skin = relationship("Skin", back_populates="levels")
     genre = relationship("Genre", back_populates="levels")
-    likes = relationship("Likes", back_populates="level")
-    favorites = relationship("Favorites", back_populates="level")
+    likes = relationship("Like", back_populates="level")
+    favorites = relationship("Favorite", back_populates="level")

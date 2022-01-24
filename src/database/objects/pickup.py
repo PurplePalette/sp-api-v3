@@ -1,7 +1,8 @@
-from db import Base
-from mixins import TimeMixin
 from sqlalchemy import Column, Integer
 from sqlalchemy.orm import relationship
+from src.database.db import Base
+from src.database.mixins import TimeMixin
+from src.database.objects import Level
 
 
 class Pickup(Base, TimeMixin):  # type: ignore
@@ -10,4 +11,4 @@ class Pickup(Base, TimeMixin):  # type: ignore
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     order = Column(Integer)
-    level = relationship("Level", backref="pickup", uselist=False)
+    level: Level = relationship("Level", backref="pickup", uselist=False)

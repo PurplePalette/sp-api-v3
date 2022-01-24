@@ -1,7 +1,7 @@
-from db import Base
-from mixins import SonolusDataMixin, TimeMixin
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+from src.database.db import Base
+from src.database.mixins import SonolusDataMixin, TimeMixin
 
 
 class Engine(SonolusDataMixin, TimeMixin, Base):  # type: ignore
@@ -19,3 +19,4 @@ class Engine(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     effect = relationship("Effect", back_populates="engines")
     particle = relationship("Particle", back_populates="engines")
     skin = relationship("Skin", back_populates="engines")
+    levels = relationship("Level", back_populates="engine")

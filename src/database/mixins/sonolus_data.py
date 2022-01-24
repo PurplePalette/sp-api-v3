@@ -1,9 +1,11 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.orm import declarative_mixin, declared_attr
+from sqlalchemy.orm import declarative_mixin, declared_attr, relationship
 
 
 @declarative_mixin
 class SonolusDataMixin(object):
+    __tablename__ = "dummy"
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(128))
     title = Column(String(128))
@@ -19,3 +21,7 @@ class SonolusDataMixin(object):
     @declared_attr
     def user_id(cls) -> Column:
         return Column(Integer, ForeignKey("users.id"))
+
+    @declared_attr
+    def user(cls) -> Column:
+        return relationship("User", back_populates=f"{cls.__tablename__}")

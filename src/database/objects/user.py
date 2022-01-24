@@ -1,7 +1,7 @@
-from db import Base
-from mixins import TimeMixin
 from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.orm import relationship
+from src.database.db import Base
+from src.database.mixins import TimeMixin
 
 
 class User(Base, TimeMixin):  # type: ignore
@@ -20,4 +20,5 @@ class User(Base, TimeMixin):  # type: ignore
     particles = relationship("Particle", back_populates="user")
     skins = relationship("Skin", back_populates="user")
     likes = relationship("Like", back_populates="user")
-    favorites = relationship("Favorites", back_populates="user")
+    favorites = relationship("Favorite", back_populates="user")
+    announces = relationship("Announce", back_populates="user")

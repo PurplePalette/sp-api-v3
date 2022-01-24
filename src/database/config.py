@@ -13,5 +13,5 @@ PASS = os.environ.get("DB_PASS")
 HOST = os.environ.get("DB_HOST")
 PORT = os.environ.get("PORT_DB")
 DB = os.environ.get("DB_NAME")
-ASYNC_DB_URL = f"mysql+aiomysql://{USER}:{PASS}@{HOST}/{DB}?charset=utf8"
+ASYNC_DB_URL = f"mysql+aiomysql://{USER}:{PASS}@{HOST}:{PORT}/{DB}?charset=utf8"
 DB_URL = f"mysql+pymysql://{USER}:{PASS}@{HOST}:{PORT}/{DB}?charset=utf8"
