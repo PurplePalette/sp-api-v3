@@ -10,6 +10,6 @@ class Favorite(TimeMixin, Base):  # type: ignore
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("users.id"))
-    user = relationship("User", backref="favorite", uselist=False)
+    user = relationship("User", back_populates="favorites", uselist=False)
     level_id = Column(Integer, ForeignKey("levels.id"))
-    level = relationship("Level", backref="favorite", uselist=False)
+    level = relationship("Level", back_populates="favorites", uselist=False)

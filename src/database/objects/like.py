@@ -10,6 +10,6 @@ class Like(Base, TimeMixin):  # type: ignore
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("users.id"))
-    user = relationship("User", backref="like", uselist=False)
+    user = relationship("User", back_populates="likes", uselist=False)
     level_id = Column(Integer, ForeignKey("levels.id"))
-    level = relationship("Level", backref="like", uselist=False)
+    level = relationship("Level", back_populates="likes", uselist=False)

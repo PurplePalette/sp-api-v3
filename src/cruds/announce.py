@@ -6,6 +6,7 @@ from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.sql.expression import true
 from src.database.objects.announce import Announce as AnnounceObject
 from src.database.objects.user import User as UserObject
 from src.models.announce import Announce as AnnounceModel
@@ -16,11 +17,13 @@ async def create_announce(
 ) -> AnnounceObject:
     """お知らせを追加します"""
     resp: Result = await db.execute(
-        select(UserObject).filter(UserObject.display_id == user["user_id"])
+        select(UserObject).filter(
+            UserObject.display_id == user["user_id"], UserObject.is_admin == true()
+        )
     )
     user_db: Optional[UserObject] = resp.scalars().first()
     if user_db is None:
-        raise HTTPException(status_code=404, detail="Specified user was not found")
+        raise HTTPException(status_code=401, detail="Unauthorized")
     announce_date = datetime.now()
     announce = AnnounceObject(
         name=announce_create.announce_name,
@@ -35,9 +38,9 @@ async def create_announce(
         public=True,
         created_time=announce_date,
         updated_time=announce_date,
-        coverHash=announce_create.resources.icon,
-        bgmHash=announce_create.resources.bgm,
-        dataHash=announce_create.resources.level,
+        cover_hash=announce_create.resources.icon,
+        bgm_hash=announce_create.resources.bgm,
+        data_hash=announce_create.resources.level,
         user_id=user_db.id,
     )
     db.add(announce)

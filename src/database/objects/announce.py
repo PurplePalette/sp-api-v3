@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
 from src.database.db import Base
 from src.database.mixins import SonolusDataMixin, TimeMixin
 
@@ -24,9 +25,9 @@ class Announce(SonolusDataMixin, TimeMixin, Base):  # type: ignore
         public: bool,
         created_time: datetime,
         updated_time: datetime,
-        coverHash: str,
-        bgmHash: str,
-        dataHash: str,
+        cover_hash: str,
+        bgm_hash: str,
+        data_hash: str,
         user_id: int,
     ) -> None:
         self.name = name
@@ -41,12 +42,13 @@ class Announce(SonolusDataMixin, TimeMixin, Base):  # type: ignore
         self.public = public
         self.created_time = created_time
         self.updated_time = updated_time
-        self.coverHash = coverHash
-        self.bgmHash = bgmHash
-        self.dataHash = dataHash
+        self.cover_hash = cover_hash
+        self.bgm_hash = bgm_hash
+        self.data_hash = data_hash
         self.user_id = user_id
         super().__init__()
 
-    coverHash = Column(String(128), nullable=True)
-    bgmHash = Column(String(128), nullable=True)
-    dataHash = Column(String(128), nullable=True)
+    cover_hash = Column(String(128), nullable=True)
+    bgm_hash = Column(String(128), nullable=True)
+    data_hash = Column(String(128), nullable=True)
+    user = relationship("User", back_populates="announces", uselist=False)
