@@ -28,11 +28,23 @@ from src.apis.pickups_api import router as PickupsApiRouter
 from src.apis.skins_api import router as SkinsApiRouter
 from src.apis.tests_api import router as TestsApiRouter
 from src.apis.users_api import router as UsersApiRouter
+from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="SweetPotato Server 3 API",
     description="Sonolusの基本APIを大幅に捻じ曲げたサーバー",
     version="1.0",
+)
+
+origins = [
+    "http://localhost:8000",
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(AccountsApiRouter)
