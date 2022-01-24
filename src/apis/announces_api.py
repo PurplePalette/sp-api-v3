@@ -15,6 +15,7 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
+from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.defaults import defaultBody, defaultPath
 from src.cruds.announce import create_announce
@@ -23,10 +24,12 @@ from src.models.announce import Announce
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
+from src.security_api import get_current_user
 
 router = APIRouter()
 
-defaultDatabase = Depends(get_db)
+dependsDatabase = Depends(get_db)
+dependsFirebase = Depends(get_current_user)
 
 
 @router.post(
@@ -39,10 +42,11 @@ defaultDatabase = Depends(get_db)
 )
 async def add_announce(
     announce: Announce = defaultBody,
-    db: AsyncSession = defaultDatabase,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> Announce:
     """お知らせを追加します"""
-    return await create_announce(db, announce)
+    return await create_announce(db, announce, user)
 
 
 @router.delete(

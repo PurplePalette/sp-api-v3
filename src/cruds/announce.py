@@ -1,16 +1,28 @@
 from datetime import datetime
+from typing import Optional
 
+from fastapi import HTTPException
+from fastapi_cloudauth.firebase import FirebaseClaims
+from sqlalchemy import select
+from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.database.objects.announce import Announce as AnnounceObject
+from src.database.objects.user import User as UserObject
 from src.models.announce import Announce as AnnounceModel
 
 
 async def create_announce(
-    db: AsyncSession, announce_create: AnnounceModel
+    db: AsyncSession, announce_create: AnnounceModel, user: FirebaseClaims
 ) -> AnnounceObject:
     """お知らせを追加します"""
+    resp: Result = await db.execute(
+        select(UserObject).filter(UserObject.display_id == user["user_id"])
+    )
+    user_db: Optional[UserObject] = resp.scalars().first()
+    if user_db is None:
+        raise HTTPException(status_code=404, detail="Specified user was not found")
     announce_date = datetime.now()
-    task = AnnounceObject(
+    announce = AnnounceObject(
         name=announce_create.announce_name,
         title=announce_create.title,
         title_en="",
@@ -26,9 +38,9 @@ async def create_announce(
         coverHash=announce_create.resources.icon,
         bgmHash=announce_create.resources.bgm,
         dataHash=announce_create.resources.level,
-        user_id=1,
+        user_id=user_db.id,
     )
-    db.add(task)
+    db.add(announce)
     await db.commit()
-    await db.refresh(task)
-    return task
+    await db.refresh(announce)
+    return announce

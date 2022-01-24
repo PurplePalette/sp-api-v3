@@ -7,6 +7,8 @@ from src.models.announce import Announce  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse  # noqa: F401
 from src.models.get_level_response import GetLevelResponse  # noqa: F401
 
+headers: Dict[str, str] = {"Authorization": "Bearer test"}
+
 
 def test_add_announce(client: TestClient) -> None:
     """Test case for add_announce
@@ -21,17 +23,14 @@ def test_add_announce(client: TestClient) -> None:
         "body": "body",
         "announce_name": "announceName",
     }
-
-    headers: Dict[str, str] = {}
     response = client.request(
         "POST",
         "/announces",
         headers=headers,
         json=announce,
     )
-
     # uncomment below to assert the status code of the HTTP response
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 def test_delete_announce(client: TestClient) -> None:
