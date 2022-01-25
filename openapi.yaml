@@ -3,37 +3,63 @@ info:
   contact:
     name: お窓
     url: https://discord.gg/KEfVkfC6Q9
-  description: |-
-    Sonolusの基本APIを大幅に捻じ曲げるサーバー
-    フロントエンド専用のエンドポイントは一切持たず
-    マイリストなどを含め全てのリクエストはSonolusアプリ内のリクエストと互換(つまり全部GETきっも)
-
-    ユーザー認証は以前同様に FirebaseAuthorizationでなんとかする。
-    (実際にはaccountKeyとかいう概念で認証をスキップできちゃうが...まぁゲームだしええやろ)
-
-    変更点: /levels/{levelName} へのPOST を /levels に変更、一般的ではないエンドポイントだったので
+  description: "Advanced Sonolus API server with adds many features (Python)  \nDevelopment\
+    \ repository is [here](https://github.com/PurplePalette/sonolus-fastapi)\n\n###\
+    \ Sonolus-Version\n- 0.5.10\n\n### Features\n- supports uploading every sonolus\
+    \ contents\n- tests server for chart testing\n- users server for get levels only\
+    \ from specific user\n- accounts server for make personal special features\n-\
+    \ announces section to showing server maintenence infos\n- pickups section to\
+    \ showing admin recommendation levels\n- random, flick-paradise, vote, mylist\
+    \ and more!\n\n### Note\n- This file have many tags, since every generated files\
+    \ were too big and needed to separate.\n- Actually many endpoints can inherit\
+    \ another endpoints. it won't be big project.\n\n### Original comments\n- フロント\
+    エンド専用のエンドポイントは一切持たずマイリストなどを含め全てのリクエストはSonolusアプリ内のリクエストと互換するAPI(つまり全部の処理がGETにな\
+    る、きっも...)\n- ユーザー認証は以前同様に FirebaseAuthorizationでなんとかする。accountsエンドポイントはaccountKeyと\
+    かいう概念使ってゴリ押しする、セキュリティ上よろしくないが...まぁゲームだしええやろ!"
   license:
     name: MIT
     url: https://opensource.org/licenses/mit-license.php
   termsOfService: https://discord.gg/KEfVkfC6Q9
   title: SweetPotato Server 3 API
-  version: "1.0"
+  version: 0.5.10
 servers:
 - description: Local
   url: http://localhost:5000
 tags:
-- name: accounts
+- name: accounts_backgrounds
+- name: accounts_effects
+- name: accounts_engines
+- name: accounts_info
+- name: accounts_levels
+- name: accounts_levels_specials
+- name: accounts_particles
+- name: accounts_skins
 - name: announces
-- name: backgrounds
-- name: effects
-- name: engines
-- name: info
-- name: levels
-- name: particles
+- name: default_backgrounds
+- name: default_effects
+- name: default_engines
+- name: default_info
+- name: default_levels
+- name: default_levels_specials
+- name: default_particles
+- name: default_skins
 - name: pickups
-- name: skins
-- name: tests
+- name: tests_backgrounds
+- name: tests_effects
+- name: tests_engines
+- name: tests_info
+- name: tests_levels
+- name: tests_particles
+- name: tests_skins
+- name: uploads
 - name: users
+- name: users_backgrounds
+- name: users_effects
+- name: users_engines
+- name: users_info
+- name: users_levels
+- name: users_particles
+- name: users_skins
 paths:
   /backgrounds/list:
     get:
@@ -85,7 +111,7 @@ paths:
           description: OK
       summary: Get background list
       tags:
-      - backgrounds
+      - default_backgrounds
   /backgrounds/{backgroundName}:
     delete:
       description: Delete specified background
@@ -101,9 +127,11 @@ paths:
       responses:
         "200":
           description: OK
-      summary: Delete background
+      security:
+      - Authorization: []
+      summary: Delete a background
       tags:
-      - backgrounds
+      - default_backgrounds
     get:
       description: |-
         It returns specified background info
@@ -126,9 +154,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get background
+      summary: Get a background
       tags:
-      - backgrounds
+      - default_backgrounds
     patch:
       description: 指定された背景情報を編集します
       operationId: editBackground
@@ -156,9 +184,11 @@ paths:
           description: Forbidden
         "404":
           description: Not Found
-      summary: Edit background
+      security:
+      - Authorization: []
+      summary: Edit a background
       tags:
-      - backgrounds
+      - default_backgrounds
   /backgrounds:
     post:
       description: 指定された背景情報をサーバーに登録します
@@ -177,9 +207,11 @@ paths:
           description: Unauthorized
         "409":
           description: Conflict
-      summary: Add background
+      security:
+      - Authorization: []
+      summary: Add a background
       tags:
-      - backgrounds
+      - default_backgrounds
   /effects/list:
     get:
       description: |-
@@ -230,7 +262,7 @@ paths:
           description: OK
       summary: Get effect list
       tags:
-      - effects
+      - default_effects
   /effects/{effectName}:
     delete:
       description: delete specified effect
@@ -246,9 +278,11 @@ paths:
       responses:
         "200":
           description: OK
-      summary: Delete effect
+      security:
+      - Authorization: []
+      summary: Delete an effect
       tags:
-      - effects
+      - default_effects
     get:
       description: |-
         It returns specified effect info
@@ -271,9 +305,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get effect
+      summary: Get an effect
       tags:
-      - effects
+      - default_effects
     patch:
       description: 指定されたeffectを編集します
       operationId: editEffect
@@ -301,9 +335,11 @@ paths:
           description: Forbidden
         "404":
           description: Not Found
-      summary: Edit effect
+      security:
+      - Authorization: []
+      summary: Edit an effect
       tags:
-      - effects
+      - default_effects
   /effects:
     post:
       description: 指定されたeffectをサーバーに登録します
@@ -322,9 +358,11 @@ paths:
           description: Unauthorized
         "409":
           description: Conflict
-      summary: Add effect
+      security:
+      - Authorization: []
+      summary: Add an effect
       tags:
-      - effects
+      - default_effects
   /engines/list:
     get:
       description: |-
@@ -375,7 +413,7 @@ paths:
           description: OK
       summary: Get engine list
       tags:
-      - engines
+      - default_engines
   /engines/{engineName}:
     delete:
       description: delete a engine
@@ -391,9 +429,11 @@ paths:
       responses:
         "200":
           description: OK
-      summary: Delete Engine
+      security:
+      - Authorization: []
+      summary: Delete an engine
       tags:
-      - engines
+      - default_engines
     get:
       description: |-
         It returns specified engine info
@@ -416,9 +456,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get engine
+      summary: Get an engine
       tags:
-      - engines
+      - default_engines
     patch:
       description: 指定されたengineを編集します
       operationId: editEngine
@@ -446,9 +486,11 @@ paths:
           description: Forbidden
         "404":
           description: Not Found
-      summary: Edit engine
+      security:
+      - Authorization: []
+      summary: Edit an engine
       tags:
-      - engines
+      - default_engines
   /engines:
     post:
       description: 指定されたゲームエンジンをサーバーに登録します
@@ -467,9 +509,79 @@ paths:
           description: Unauthorized
         "409":
           description: Conflict
-      summary: Add engine
+      security:
+      - Authorization: []
+      summary: Add an engine
       tags:
-      - engines
+      - default_engines
+  /levels/announce:
+    get:
+      description: 現在のアナウンス一覧を取得します
+      operationId: getAnnounceList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLevelResponse'
+          description: OK
+        "404":
+          description: Not Found
+      summary: Get announce infos
+      tags:
+      - default_levels_specials
+  /levels/announce_{announceName}:
+    get:
+      description: 指定されたアナウンス情報を表示します
+      operationId: getAnnounce
+      parameters:
+      - explode: false
+        in: path
+        name: announceName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLevelResponse'
+          description: OK
+        "404":
+          description: Not Found
+      summary: Get an announce info
+      tags:
+      - default_levels_specials
+  /levels/pickups:
+    get:
+      description: 管理者の指定したおすすめ譜面などを返すエンドポイント
+      operationId: getPickups
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLevelResponse'
+          description: OK
+      summary: Get pickup levels
+      tags:
+      - default_levels_specials
+  /levels/debut:
+    get:
+      description: 新規譜面作者の譜面のみを返すエンドポイント
+      operationId: getFreshReleases
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLevelResponse'
+          description: OK
+      summary: Get debut levels
+      tags:
+      - default_levels_specials
   /levels/list:
     get:
       description: |-
@@ -520,7 +632,7 @@ paths:
           description: OK
       summary: Get level list
       tags:
-      - levels
+      - default_levels
   /levels/{levelName}:
     delete:
       description: 指定されたレベルを削除します
@@ -536,9 +648,11 @@ paths:
       responses:
         "200":
           description: OK
+      security:
+      - Authorization: []
       summary: Delete a level
       tags:
-      - levels
+      - default_levels
     get:
       description: |-
         It returns specified level info
@@ -561,9 +675,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get level
+      summary: Get a level
       tags:
-      - levels
+      - default_levels
     patch:
       description: 指定されたlevelを編集します
       operationId: editLevel
@@ -591,9 +705,11 @@ paths:
           description: Forbidden
         "404":
           description: Not Found
-      summary: Edit level
+      security:
+      - Authorization: []
+      summary: Edit a level
       tags:
-      - levels
+      - default_levels
   /levels:
     post:
       description: 指定された譜面情報をサーバーに登録します
@@ -612,9 +728,11 @@ paths:
           description: Unauthorized
         "409":
           description: Conflict
-      summary: Add level
+      security:
+      - Authorization: []
+      summary: Add a level
       tags:
-      - levels
+      - default_levels
   /particles/list:
     get:
       description: |-
@@ -665,7 +783,7 @@ paths:
           description: OK
       summary: Get particle list
       tags:
-      - particles
+      - default_particles
   /particles/{particleName}:
     delete:
       description: 指定されたパーティクルを削除する
@@ -681,9 +799,11 @@ paths:
       responses:
         "200":
           description: OK
-      summary: Delete particle
+      security:
+      - Authorization: []
+      summary: Delete a particle
       tags:
-      - particles
+      - default_particles
     get:
       description: |-
         It returns specified particle info
@@ -706,9 +826,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get particle
+      summary: Get a particle
       tags:
-      - particles
+      - default_particles
     patch:
       description: 指定したparticleを編集します
       operationId: editParticle
@@ -736,9 +856,11 @@ paths:
           description: Forbidden
         "404":
           description: Not Found
-      summary: Edit particle
+      security:
+      - Authorization: []
+      summary: Edit a particle
       tags:
-      - particles
+      - default_particles
   /particles:
     post:
       description: 指定されたパーティクル情報をサーバーに登録します
@@ -757,9 +879,11 @@ paths:
           description: Unauthorized
         "409":
           description: Conflict
-      summary: Add particle
+      security:
+      - Authorization: []
+      summary: Add a particle
       tags:
-      - particles
+      - default_particles
   /skins/list:
     get:
       description: |-
@@ -810,7 +934,7 @@ paths:
           description: OK
       summary: Get skin list
       tags:
-      - skins
+      - default_skins
   /skins/{skinName}:
     delete:
       description: 指定されたスキンを削除します
@@ -826,9 +950,11 @@ paths:
       responses:
         "200":
           description: OK
-      summary: Delete skin
+      security:
+      - Authorization: []
+      summary: Delete a skin
       tags:
-      - skins
+      - default_skins
     get:
       description: |-
         It returns specified skin info
@@ -851,9 +977,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get skin
+      summary: Get a skin
       tags:
-      - skins
+      - default_skins
     patch:
       description: 指定したskinを編集します
       operationId: editSkin
@@ -881,9 +1007,11 @@ paths:
           description: Forbidden
         "404":
           description: Not Found
-      summary: Edit skin
+      security:
+      - Authorization: []
+      summary: Edit a skin
       tags:
-      - skins
+      - default_skins
   /skins:
     post:
       description: 指定されたスキン情報をサーバーに登録します
@@ -902,9 +1030,11 @@ paths:
           description: Unauthorized
         "409":
           description: Conflict
-      summary: Add skin
+      security:
+      - Authorization: []
+      summary: Add a skin
       tags:
-      - skins
+      - default_skins
   /info:
     get:
       description: |-
@@ -918,9 +1048,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServerInfo'
           description: OK
-      summary: Get server info
+      summary: Get default server info
       tags:
-      - info
+      - default_info
   /users/{userId}:
     delete:
       description: 指定したユーザーを削除します
@@ -936,7 +1066,9 @@ paths:
       responses:
         "200":
           description: OK
-      summary: Delete user
+      security:
+      - Authorization: []
+      summary: Delete a user
       tags:
       - users
     get:
@@ -959,7 +1091,7 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get user
+      summary: Get a user
       tags:
       - users
     patch:
@@ -989,7 +1121,32 @@ paths:
           description: Forbidden
         "404":
           description: Not Found
-      summary: Edit user
+      security:
+      - Authorization: []
+      summary: Edit a user
+      tags:
+      - users
+  /users:
+    post:
+      description: Add specified new user to server
+      operationId: addUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "409":
+          description: Conflict
+      security:
+      - Authorization: []
+      summary: Add a user
       tags:
       - users
   /users/list:
@@ -1025,9 +1182,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServerInfo'
           description: OK
-      summary: Get user server info
+      summary: Get test server info
       tags:
-      - tests
+      - tests_info
   /tests/{testId}/backgrounds/list:
     get:
       description: 譜面テスト用エンドポイント/ 背景一覧を返す(一般の背景リストと同じのが返される)
@@ -1081,9 +1238,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetBackgroundListResponse'
           description: OK
-      summary: Get backgrounds for test
+      summary: Get tests background list
       tags:
-      - tests
+      - tests_backgrounds
   /tests/{testId}/backgrounds/{backgroundName}:
     get:
       description: |-
@@ -1114,9 +1271,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get testing background
+      summary: Get tests background
       tags:
-      - tests
+      - tests_backgrounds
   /tests/{testId}/effects/list:
     get:
       description: 譜面テスト用エンドポイント/ エフェクト一覧を返す(一般のエフェクトリストと同じのが返される)
@@ -1170,9 +1327,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetEffectListResponse'
           description: OK
-      summary: Get effects for test
+      summary: Get tests effects list
       tags:
-      - tests
+      - tests_effects
   /tests/{testId}/effects/{effectName}:
     get:
       description: |-
@@ -1203,9 +1360,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get testing effect
+      summary: Get tests effect list
       tags:
-      - tests
+      - tests_effects
   /tests/{testId}/engines/list:
     get:
       description: 譜面テスト用エンドポイント/ エンジン一覧を返す(一般のエンジンリストと同じのが返される)
@@ -1259,9 +1416,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetEngineListResponse'
           description: OK
-      summary: Get engines for test
+      summary: Get tests engine list
       tags:
-      - tests
+      - tests_engines
   /tests/{testId}/engines/{engineName}:
     get:
       description: |-
@@ -1292,9 +1449,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get testing engine
+      summary: Get tests engine
       tags:
-      - tests
+      - tests_engines
   /tests/{testId}/levels/list:
     get:
       description: 譜面テスト用エンドポイント/ 背景一覧を返す
@@ -1348,9 +1505,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetLevelListResponse'
           description: OK
-      summary: Get levels for test
+      summary: Get tests level list
       tags:
-      - tests
+      - tests_levels
   /tests/{testId}/levels/{levelName}:
     get:
       description: |-
@@ -1381,9 +1538,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get testing level
+      summary: Get tests level
       tags:
-      - tests
+      - tests_levels
   /tests/{testId}/particles/list:
     get:
       description: 譜面テスト用エンドポイント/ パーティクル一覧を返す(一般の背景リストと同じのが返される)
@@ -1437,9 +1594,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetParticleListResponse'
           description: OK
-      summary: Get particles for test
+      summary: Get tests particle list
       tags:
-      - tests
+      - tests_particles
   /tests/{testId}/particles/{particleName}:
     get:
       description: |-
@@ -1470,9 +1627,42 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get testing particle
+      summary: Get tests particle
       tags:
-      - tests
+      - tests_particles
+  /tests/{testId}/skins/{skinName}:
+    get:
+      description: |-
+        It returns specified skin info
+        It will raise 404 if the skin is not registered in this server
+      operationId: getSkinTest
+      parameters:
+      - explode: false
+        in: path
+        name: testId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: skinName
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSkinResponse'
+          description: OK
+        "404":
+          description: Not Found
+      summary: Get tests skin
+      tags:
+      - tests_skins
   /tests/{testId}/skins/list:
     get:
       description: 譜面テスト用エンドポイント/ スキン一覧を返す(一般のスキンリストと同じのが返される)
@@ -1526,42 +1716,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetSkinListResponse'
           description: OK
-      summary: Get skins for test
+      summary: Get tests skin list
       tags:
-      - tests
-  /tests/{testId}/skins/{skinName}:
-    get:
-      description: |-
-        It returns specified skin info
-        It will raise 404 if the skin is not registered in this server
-      operationId: getSkinTest
-      parameters:
-      - explode: false
-        in: path
-        name: testId
-        required: true
-        schema:
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: skinName
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetSkinResponse'
-          description: OK
-        "404":
-          description: Not Found
-      summary: Get testing skin
-      tags:
-      - tests
+      - tests_skins
   /users/{userId}/info:
     get:
       description: ユーザー個別の情報一覧を返します
@@ -1583,7 +1740,7 @@ paths:
           description: OK
       summary: Get user server info
       tags:
-      - users
+      - users_info
   /users/{userId}/backgrounds/list:
     get:
       description: ユーザー個別用エンドポイント/ 背景一覧を返す
@@ -1637,9 +1794,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetBackgroundListResponse'
           description: OK
-      summary: Get backgrounds for test
+      summary: Get users background list
       tags:
-      - users
+      - users_backgrounds
   /users/{userId}/backgrounds/{backgroundName}:
     get:
       description: |-
@@ -1672,7 +1829,7 @@ paths:
           description: Not Found
       summary: Get users background
       tags:
-      - users
+      - users_backgrounds
   /users/{userId}/effects/list:
     get:
       description: ユーザー個別用エンドポイント/ エフェクト一覧を返す
@@ -1726,9 +1883,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetEffectListResponse'
           description: OK
-      summary: Get effects for test
+      summary: Get users effect list
       tags:
-      - users
+      - users_effects
   /users/{userId}/effects/{effectName}:
     get:
       description: |-
@@ -1761,7 +1918,7 @@ paths:
           description: Not Found
       summary: Get users effect
       tags:
-      - users
+      - users_effects
   /users/{userId}/engines/list:
     get:
       description: ユーザー個別用エンドポイント/ エンジン一覧を返す
@@ -1815,9 +1972,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetEngineListResponse'
           description: OK
-      summary: Get engines for test
+      summary: Get users engine list
       tags:
-      - users
+      - users_engines
   /users/{userId}/engines/{engineName}:
     get:
       description: |-
@@ -1850,7 +2007,7 @@ paths:
           description: Not Found
       summary: Get users engine
       tags:
-      - users
+      - users_engines
   /users/{userId}/levels/list:
     get:
       description: ユーザー個別用エンドポイント/ 背景一覧を返す
@@ -1904,9 +2061,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetLevelListResponse'
           description: OK
-      summary: Get levels for test
+      summary: Get users level list
       tags:
-      - users
+      - users_levels
   /users/{userId}/levels/{levelName}:
     get:
       description: |-
@@ -1939,7 +2096,7 @@ paths:
           description: Not Found
       summary: Get users level
       tags:
-      - users
+      - users_levels
   /users/{userId}/particles/list:
     get:
       description: ユーザー個別用エンドポイント/ パーティクル一覧を返す
@@ -1993,9 +2150,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetParticleListResponse'
           description: OK
-      summary: Get particles for test
+      summary: Get users particle list
       tags:
-      - users
+      - users_particles
   /users/{userId}/particles/{particleName}:
     get:
       description: |-
@@ -2028,7 +2185,7 @@ paths:
           description: Not Found
       summary: Get users particle
       tags:
-      - users
+      - users_particles
   /users/{userId}/skins/list:
     get:
       description: ユーザー個別用エンドポイント/ スキン一覧を返す
@@ -2082,9 +2239,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetSkinListResponse'
           description: OK
-      summary: Get skins for test
+      summary: Get users skin list
       tags:
-      - users
+      - users_skins
   /users/{userId}/skins/{skinName}:
     get:
       description: |-
@@ -2117,7 +2274,7 @@ paths:
           description: Not Found
       summary: Get users skin
       tags:
-      - users
+      - users_skins
   /accounts/{accountKey}/info:
     get:
       description: ユーザー個別の情報一覧を返します
@@ -2137,9 +2294,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServerInfo'
           description: OK
-      summary: Get user server info
+      summary: Get account server info
       tags:
-      - accounts
+      - accounts_info
   /accounts/{accountKey}/backgrounds/list:
     get:
       description: ユーザー個別用エンドポイント/ 背景一覧を返す
@@ -2193,9 +2350,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetBackgroundListResponse'
           description: OK
-      summary: Get backgrounds for test
+      summary: Get accounts background list
       tags:
-      - accounts
+      - accounts_backgrounds
   /accounts/{accountKey}/backgrounds/{backgroundName}:
     get:
       description: |-
@@ -2228,7 +2385,7 @@ paths:
           description: Not Found
       summary: Get accounts background
       tags:
-      - accounts
+      - accounts_backgrounds
   /accounts/{accountKey}/effects/list:
     get:
       description: ユーザー個別用エンドポイント/ エフェクト一覧を返す
@@ -2282,9 +2439,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetEffectListResponse'
           description: OK
-      summary: Get effects for test
+      summary: Get accounts effect list
       tags:
-      - accounts
+      - accounts_effects
   /accounts/{accountKey}/effects/{effectName}:
     get:
       description: |-
@@ -2317,7 +2474,7 @@ paths:
           description: Not Found
       summary: Get accounts effect
       tags:
-      - accounts
+      - accounts_effects
   /accounts/{accountKey}/engines/list:
     get:
       description: ユーザー個別用エンドポイント/ エンジン一覧を返す
@@ -2371,9 +2528,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetEngineListResponse'
           description: OK
-      summary: Get engines for test
+      summary: Get accounts engine list
       tags:
-      - accounts
+      - accounts_engines
   /accounts/{accountKey}/engines/{engineName}:
     get:
       description: |-
@@ -2406,7 +2563,7 @@ paths:
           description: Not Found
       summary: Get accounts engine
       tags:
-      - accounts
+      - accounts_engines
   /accounts/{accountKey}/levels/list:
     get:
       description: ユーザー個別用エンドポイント/ 譜面一覧を返す
@@ -2460,9 +2617,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetLevelListResponse'
           description: OK
-      summary: Get levels for test
+      summary: Get accounts level list
       tags:
-      - accounts
+      - accounts_levels
   /accounts/{accountKey}/levels/{levelName}:
     get:
       description: |-
@@ -2495,7 +2652,51 @@ paths:
           description: Not Found
       summary: Get accounts level
       tags:
-      - accounts
+      - accounts_levels
+  /accounts/{accountKey}/levels/pickups:
+    get:
+      description: 管理者の指定したおすすめ譜面などを返すエンドポイント
+      operationId: getAccountPickupLevels
+      parameters:
+      - explode: false
+        in: path
+        name: accountKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLevelResponse'
+          description: OK
+      summary: Get pickup levels
+      tags:
+      - accounts_levels_specials
+  /accounts/{accountKey}/levels/debut:
+    get:
+      description: 新規譜面作者の譜面のみを返すエンドポイント
+      operationId: getAccountDebutLevels
+      parameters:
+      - explode: false
+        in: path
+        name: accountKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLevelResponse'
+          description: OK
+      summary: Get debut levels
+      tags:
+      - accounts_levels_specials
   /accounts/{accountKey}/levels/favorite_{levelName}:
     get:
       description: |-
@@ -2526,9 +2727,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Add level to user favorite
+      summary: Favorite level
       tags:
-      - accounts
+      - accounts_levels_specials
   /accounts/{accountKey}/levels/unfavorite_{levelName}:
     get:
       description: |-
@@ -2559,10 +2760,10 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Add level to user favorite
+      summary: Unfavorite level
       tags:
-      - accounts
-  /accounts/{accountKey}/levels/up_{levelName}:
+      - accounts_levels_specials
+  /accounts/{accountKey}/levels/like_{levelName}:
     get:
       description: |-
         It returns specified level info
@@ -2592,9 +2793,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Rate level
+      summary: Like a level
       tags:
-      - accounts
+      - accounts_levels_specials
   /accounts/{accountKey}/levels/flick_{levelName}:
     get:
       description: 譜面のノーツ部分をゴリ押しでフリックのみに差し替えた特殊な譜面を取得する
@@ -2625,7 +2826,7 @@ paths:
           description: Not Found
       summary: Get flick level
       tags:
-      - accounts
+      - accounts_levels_specials
   /accounts/{accountKey}/levels/rating_increase_{levelName}:
     get:
       description: |-
@@ -2656,9 +2857,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Rate level
+      summary: Vote for increase rating on a level
       tags:
-      - accounts
+      - accounts_levels_specials
   /accounts/{accountKey}/levels/rating_decrease_{levelName}:
     get:
       description: |-
@@ -2689,9 +2890,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Rate level
+      summary: Vote for decrease rating on a level
       tags:
-      - accounts
+      - accounts_levels_specials
   /accounts/{accountKey}/levels/mylist:
     get:
       description: 対象の鍵を持つユーザーのマイリストを取得します
@@ -2715,7 +2916,7 @@ paths:
           description: Not Found
       summary: Get mylist
       tags:
-      - accounts
+      - accounts_levels_specials
   /accounts/{accountKey}/levels/random:
     get:
       description: ランダムな譜面を取得します
@@ -2737,9 +2938,9 @@ paths:
           description: OK
         "404":
           description: Not Found
-      summary: Get random
+      summary: Get a random level
       tags:
-      - accounts
+      - accounts_levels_specials
   /accounts/{accountKey}/levels/announce:
     get:
       description: 現在のアナウンス一覧を取得します
@@ -2763,7 +2964,7 @@ paths:
           description: Not Found
       summary: Get announce list
       tags:
-      - accounts
+      - accounts_levels_specials
   /accounts/{accountKey}/levels/announce_{announceName}:
     get:
       description: 指定されたアナウンス情報を表示します
@@ -2794,51 +2995,7 @@ paths:
           description: Not Found
       summary: Get announce
       tags:
-      - accounts
-  /accounts/{accountKey}/levels/pickups:
-    get:
-      description: 管理者の指定したおすすめ譜面などを返すエンドポイント
-      operationId: getAccountPickupLevels
-      parameters:
-      - explode: false
-        in: path
-        name: accountKey
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetLevelResponse'
-          description: OK
-      summary: Get pickups
-      tags:
-      - pickups
-  /accounts/{accountKey}/levels/fresh-release:
-    get:
-      description: 新規譜面作者の譜面のみを返すエンドポイント
-      operationId: getAccountFreshLevels
-      parameters:
-      - explode: false
-        in: path
-        name: accountKey
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetLevelResponse'
-          description: OK
-      summary: Get pickups
-      tags:
-      - pickups
+      - accounts_levels_specials
   /accounts/{accountKey}/particles/list:
     get:
       description: ユーザー個別用エンドポイント/ パーティクル一覧を返す
@@ -2892,9 +3049,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetParticleListResponse'
           description: OK
-      summary: Get particles for test
+      summary: Get accounts particle list
       tags:
-      - accounts
+      - accounts_particles
   /accounts/{accountKey}/particles/{particleName}:
     get:
       description: |-
@@ -2927,7 +3084,7 @@ paths:
           description: Not Found
       summary: Get accounts particle
       tags:
-      - accounts
+      - accounts_particles
   /accounts/{accountKey}/skins/list:
     get:
       description: ユーザー個別用エンドポイント/ スキン一覧を返す
@@ -2981,9 +3138,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetSkinListResponse'
           description: OK
-      summary: Get skins for test
+      summary: Get accounts skin list
       tags:
-      - accounts
+      - accounts_skins
   /accounts/{accountKey}/skins/{skinName}:
     get:
       description: |-
@@ -3016,7 +3173,7 @@ paths:
           description: Not Found
       summary: Get accounts skin
       tags:
-      - accounts
+      - accounts_skins
   /pickups:
     post:
       description: 譜面のピックアップを追加します
@@ -3029,7 +3186,9 @@ paths:
       responses:
         "200":
           description: OK
-      summary: Add Pickup
+      security:
+      - Authorization: []
+      summary: Add pickup
       tags:
       - pickups
   /pickups/{pickupName}:
@@ -3052,6 +3211,8 @@ paths:
       responses:
         "200":
           description: OK
+      security:
+      - Authorization: []
       summary: Delete pickup
       tags:
       - pickups
@@ -3102,17 +3263,255 @@ paths:
       responses:
         "200":
           description: OK
+      security:
+      - Authorization: []
       summary: Add announce
       tags:
       - announces
   /announces/list:
     get:
       description: アナウンス中のデータ一覧を返す
-      operationId: getAnnounces
+      operationId: getDefaultAnnounces
       responses:
         "200":
           content:
             application/json:
+              examples:
+                example-1:
+                  value:
+                    pageCount: 1
+                    items:
+                    - name: string
+                      version: 1
+                      rating: 1
+                      engine:
+                        name: string
+                        version: 1
+                        title: string
+                        subtitle: string
+                        author: string
+                        thumbnail:
+                          type: LevelData
+                          hash: string
+                          url: string
+                        data:
+                          type: LevelData
+                          hash: string
+                          url: string
+                        configuration:
+                          type: LevelData
+                          hash: string
+                          url: string
+                        skin:
+                          name: string
+                          version: 1
+                          title: string
+                          subtitle: string
+                          author: string
+                          thumbnail:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          data:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          texture:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          createdTime: 0
+                          updatedTime: 0
+                          userId: string
+                          description: string
+                        background:
+                          name: string
+                          version: 1
+                          title: string
+                          subtitle: string
+                          author: string
+                          thumbnail:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          data:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          image:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          createdTime: 0
+                          updatedTime: 0
+                          userId: string
+                          description: string
+                        effect:
+                          name: string
+                          version: 1
+                          title: string
+                          subtitle: string
+                          author: string
+                          thumbnail:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          data:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          createdTime: 0
+                          updatedTime: 0
+                          userId: string
+                          description: string
+                        particle:
+                          name: string
+                          version: 1
+                          title: string
+                          subtitle: string
+                          author: string
+                          thumbnail:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          data:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          texture:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          userId: string
+                          createdTime: 0
+                          updatedTime: 0
+                          description: string
+                        createdTime: 0
+                        updatedTime: 0
+                        userId: string
+                        description: string
+                      useSkin:
+                        useDefault: true
+                        item:
+                          name: string
+                          version: 1
+                          title: string
+                          subtitle: string
+                          author: string
+                          thumbnail:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          data:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          texture:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          createdTime: 0
+                          updatedTime: 0
+                          userId: string
+                          description: string
+                      useBackground:
+                        useDefault: true
+                        item:
+                          name: string
+                          version: 1
+                          title: string
+                          subtitle: string
+                          author: string
+                          thumbnail:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          data:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          image:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          createdTime: 0
+                          updatedTime: 0
+                          userId: string
+                          description: string
+                      useEffect:
+                        useDefault: true
+                        item:
+                          name: string
+                          version: 1
+                          title: string
+                          subtitle: string
+                          author: string
+                          thumbnail:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          data:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          createdTime: 0
+                          updatedTime: 0
+                          userId: string
+                          description: string
+                      useParticle:
+                        useDefault: true
+                        item:
+                          name: string
+                          version: 1
+                          title: string
+                          subtitle: string
+                          author: string
+                          thumbnail:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          data:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          texture:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          userId: string
+                          createdTime: 0
+                          updatedTime: 0
+                          description: string
+                      title: string
+                      artists: string
+                      author: string
+                      cover:
+                        type: LevelData
+                        hash: string
+                        url: string
+                      bgm:
+                        type: LevelData
+                        hash: string
+                        url: string
+                      preview:
+                        type: LevelData
+                        hash: string
+                        url: string
+                      data:
+                        type: LevelData
+                        hash: string
+                        url: string
+                      genre:
+                      - general
+                      public: false
+                      userId: string
+                      notes: 1
+                      createdTime: 0
+                      updatedTime: 0
+                      description: string
+                      length: 0
+                    search:
+                      options: []
               schema:
                 $ref: '#/components/schemas/GetLevelListResponse'
           description: OK
@@ -3134,12 +3533,14 @@ paths:
       responses:
         "200":
           description: OK
+      security:
+      - Authorization: []
       summary: Delete announce
       tags:
       - announces
     get:
       description: 指定されたアナウンスデータを返す
-      operationId: getAnnounce
+      operationId: getDefaultAnnounce
       parameters:
       - explode: false
         in: path
@@ -3177,9 +3578,42 @@ paths:
       responses:
         "200":
           description: OK
+      security:
+      - Authorization: []
       summary: Edit announce
       tags:
       - announces
+  /upload:
+    post:
+      description: |-
+        ファイルのアップロードを受け付ける
+        (投稿から1時間以上使用されないファイルは自動削除したい)
+      operationId: uploadFile
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Upload'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostUploadResponse'
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "413":
+          description: Request Entity Too Large
+        "429":
+          description: Too Many Requests
+      security:
+      - Authorization: []
+      summary: Upload a file
+      tags:
+      - uploads
 components:
   parameters:
     localization:
@@ -3223,10 +3657,13 @@ components:
     Level:
       description: |-
         A level provides a list of entities and powered by scripted behavior in engine, with skin, effect, background and particle, to create gameplay experience for players / It defines level for actual user play. It includes all data to play one level.
-        https://github.com/NonSpicyBurrito/sonolus-wiki/wiki/Level
+        https://wiki.sonolus.com/custom-server-specs/misc/level-item.html
       example:
-        updatedTime: 0
-        notes: 6027456
+        preview:
+          type: LevelData
+          hash: hash
+          url: url
+        notes: 5637377
         data:
           type: LevelData
           hash: hash
@@ -3255,9 +3692,7 @@ components:
             version: 1
             userId: userId
           useDefault: true
-        author: author
         rating: 81
-        length: 0
         useSkin:
           item:
             updatedTime: 0
@@ -3288,8 +3723,7 @@ components:
           url: url
         description: description
         title: title
-        version: 1
-        userId: userId
+        mylists: 7061401
         cover:
           type: LevelData
           hash: hash
@@ -3402,26 +3836,6 @@ components:
             version: 1
             userId: userId
         artists: artists
-        useEffect:
-          item:
-            updatedTime: 0
-            thumbnail:
-              type: LevelData
-              hash: hash
-              url: url
-            data:
-              type: LevelData
-              hash: hash
-              url: url
-            author: author
-            subtitle: subtitle
-            name: name
-            createdTime: 0
-            description: description
-            title: title
-            version: 1
-            userId: userId
-          useDefault: true
         useParticle:
           item:
             updatedTime: 0
@@ -3446,9 +3860,37 @@ components:
             version: 1
             userId: userId
           useDefault: true
-        name: name
-        genre: general
+        genre:
+        - general
         createdTime: 0
+        bpm: 5962
+        likes: 2302135
+        updatedTime: 0
+        author: author
+        length: 0
+        version: 1
+        userId: userId
+        useEffect:
+          item:
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+          useDefault: true
+        name: name
       properties:
         name:
           description: english and number only name for searching
@@ -3502,21 +3944,20 @@ components:
           $ref: '#/components/schemas/SonolusResourceLocator'
         bgm:
           $ref: '#/components/schemas/SonolusResourceLocator'
+        preview:
+          $ref: '#/components/schemas/SonolusResourceLocator'
         data:
           $ref: '#/components/schemas/SonolusResourceLocator'
         genre:
-          default: general
-          description: '独自要素: 楽曲のジャンル'
-          enum:
+          default:
           - general
-          - jpop
-          - anime
-          - vocaloid
-          example: general
-          maxLength: 20
-          minLength: 1
+          description: '独自要素: 楽曲のジャンル'
+          example:
+          - general
+          items:
+            type: string
           title: genre
-          type: string
+          type: array
         public:
           default: false
           description: '独自要素: 楽曲が全体公開かどうか'
@@ -3528,12 +3969,6 @@ components:
           minLength: 1
           title: userId
           type: string
-        notes:
-          description: '独自要素: 譜面内のノーツ数'
-          maximum: 10000000
-          minimum: 1
-          title: notes
-          type: integer
         createdTime:
           description: '独自要素: データを作成したエポックミリ秒(ソート用)'
           minimum: 0
@@ -3558,14 +3993,40 @@ components:
           minimum: 0
           title: length
           type: integer
+        bpm:
+          description: BPM
+          maximum: 10000
+          minimum: 0
+          title: bpm
+          type: integer
+        notes:
+          default: 1
+          description: '独自要素: 譜面内のノーツ数'
+          maximum: 10000000
+          minimum: 1
+          title: notes
+          type: integer
+        likes:
+          default: 0
+          description: いいねされた回数
+          maximum: 10000000
+          minimum: 0
+          title: likes
+          type: integer
+        mylists:
+          default: 0
+          description: マイリストされた回数
+          maximum: 10000000
+          minimum: 0
+          title: mylists
+          type: integer
       title: Level
       type: object
       x-examples: {}
     Skin:
       description: |-
         A skin provides graphic elements to levels / It defines graphics for specific level
-        https://github.com/NonSpicyBurrito/sonolus-wiki/wiki/Skin
-        https://github.com/NonSpicyBurrito/sonolus-wiki/wiki/Server
+        https://wiki.sonolus.com/custom-server-specs/misc/skin-item.html
       example:
         updatedTime: 0
         thumbnail:
@@ -3745,7 +4206,7 @@ components:
     Effect:
       description: |-
         An effect provides audio elements to levels / It defines audio effect used for specific level
-        https://github.com/NonSpicyBurrito/sonolus-wiki/wiki/Effect
+        https://wiki.sonolus.com/custom-server-specs/misc/effect-item.html
       example:
         updatedTime: 0
         thumbnail:
@@ -3828,7 +4289,7 @@ components:
     Particle:
       description: |-
         A particle provides particle effect elements to levels / It defines particle effect used for specific level
-        https://github.com/NonSpicyBurrito/sonolus-wiki/wiki/Particle
+        https://wiki.sonolus.com/custom-server-specs/misc/particle-item.html
       example:
         updatedTime: 0
         thumbnail:
@@ -3918,7 +4379,7 @@ components:
     Engine:
       description: |-
         An engine provides scripted behaviors to levels / It defines shared game engine for playing
-        https://github.com/NonSpicyBurrito/sonolus-wiki/wiki/Engine
+        https://wiki.sonolus.com/custom-server-specs/misc/engine-item.html
       example:
         updatedTime: 0
         thumbnail:
@@ -4101,7 +4562,7 @@ components:
       description: |-
         Sonolus Resource Locator(SRL) is used in server endpoints in order for Sonolus to locate a resource.
         All resources must be gzip compressed.
-        https://github.com/NonSpicyBurrito/sonolus-wiki/wiki/Resource-and-SRL
+        https://wiki.sonolus.com/custom-server-specs/misc/srl.html
       example:
         type: LevelData
         hash: hash
@@ -4121,6 +4582,7 @@ components:
           - BackgroundThumbnail
           - EngineConfiguration
           - LevelData
+          - LevelPreview
           - ParticleTexture
           - BackgroundData
           - EngineData
@@ -4154,9 +4616,15 @@ components:
           hash: addb1eb6402aa0dcb0d65c5a8dfd3935f08e3d39
           url: /repository/EffectData/addb1eb6402aa0dcb0d65c5a8dfd3935f08e3d39
     GetBackgroundListResponse:
-      description: Response struct of getBackgroundList
+      description: |-
+        Response struct of getBackgroundList
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-backgrounds-list.html
       example:
         pageCount: 1
+        search:
+          options:
+          - ""
+          - ""
         items:
         - image:
             type: LevelData
@@ -4213,40 +4681,25 @@ components:
             $ref: '#/components/schemas/Background'
           title: items
           type: array
+        search:
+          $ref: '#/components/schemas/Search'
       required:
       - items
       - pageCount
+      - search
       title: GetBackgroundListResponse
       type: object
-      x-examples:
-        example-1:
-          value:
-            pageCount: 1
-            items:
-            - name: string
-              version: 1
-              title: string
-              subtitle: string
-              author: string
-              thumbnail:
-                type: LevelData
-                hash: string
-                url: string
-              data:
-                type: LevelData
-                hash: string
-                url: string
-              image:
-                type: LevelData
-                hash: string
-                url: string
-              createdTime: 0
-              updatedTime: 0
-              userId: string
+      x-examples: {}
     GetEffectListResponse:
-      description: Response struct of getEffectList
+      description: |-
+        Response struct of getEffectList
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-effects-list.html
       example:
         pageCount: 1
+        search:
+          options:
+          - ""
+          - ""
         items:
         - updatedTime: 0
           thumbnail:
@@ -4295,16 +4748,25 @@ components:
             $ref: '#/components/schemas/Effect'
           title: items
           type: array
+        search:
+          $ref: '#/components/schemas/Search'
       required:
       - items
       - pageCount
+      - search
       title: GetEffectListResponse
       type: object
       x-examples: {}
     GetEngineListResponse:
-      description: Response struct of getEngineList
+      description: |-
+        Response struct of getEngineList
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-engines-list.html
       example:
         pageCount: 1
+        search:
+          options:
+          - ""
+          - ""
         items:
         - updatedTime: 0
           thumbnail:
@@ -4529,19 +4991,31 @@ components:
             $ref: '#/components/schemas/Engine'
           title: items
           type: array
+        search:
+          $ref: '#/components/schemas/Search'
       required:
       - items
       - pageCount
+      - search
       title: GetEngineListResponse
       type: object
       x-examples: {}
     GetLevelListResponse:
-      description: Response struct of getLevelList
+      description: |-
+        Response struct of getLevelList
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-levels-list.html
       example:
         pageCount: 1
+        search:
+          options:
+          - ""
+          - ""
         items:
-        - updatedTime: 0
-          notes: 6027456
+        - preview:
+            type: LevelData
+            hash: hash
+            url: url
+          notes: 5637377
           data:
             type: LevelData
             hash: hash
@@ -4570,9 +5044,7 @@ components:
               version: 1
               userId: userId
             useDefault: true
-          author: author
           rating: 81
-          length: 0
           useSkin:
             item:
               updatedTime: 0
@@ -4603,8 +5075,7 @@ components:
             url: url
           description: description
           title: title
-          version: 1
-          userId: userId
+          mylists: 7061401
           cover:
             type: LevelData
             hash: hash
@@ -4717,26 +5188,6 @@ components:
               version: 1
               userId: userId
           artists: artists
-          useEffect:
-            item:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
           useParticle:
             item:
               updatedTime: 0
@@ -4761,11 +5212,42 @@ components:
               version: 1
               userId: userId
             useDefault: true
-          name: name
-          genre: general
+          genre:
+          - general
           createdTime: 0
-        - updatedTime: 0
-          notes: 6027456
+          bpm: 5962
+          likes: 2302135
+          updatedTime: 0
+          author: author
+          length: 0
+          version: 1
+          userId: userId
+          useEffect:
+            item:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          name: name
+        - preview:
+            type: LevelData
+            hash: hash
+            url: url
+          notes: 5637377
           data:
             type: LevelData
             hash: hash
@@ -4794,9 +5276,7 @@ components:
               version: 1
               userId: userId
             useDefault: true
-          author: author
           rating: 81
-          length: 0
           useSkin:
             item:
               updatedTime: 0
@@ -4827,8 +5307,7 @@ components:
             url: url
           description: description
           title: title
-          version: 1
-          userId: userId
+          mylists: 7061401
           cover:
             type: LevelData
             hash: hash
@@ -4941,26 +5420,6 @@ components:
               version: 1
               userId: userId
           artists: artists
-          useEffect:
-            item:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
           useParticle:
             item:
               updatedTime: 0
@@ -4985,9 +5444,37 @@ components:
               version: 1
               userId: userId
             useDefault: true
-          name: name
-          genre: general
+          genre:
+          - general
           createdTime: 0
+          bpm: 5962
+          likes: 2302135
+          updatedTime: 0
+          author: author
+          length: 0
+          version: 1
+          userId: userId
+          useEffect:
+            item:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          name: name
       properties:
         pageCount:
           default: 1
@@ -5001,16 +5488,25 @@ components:
             $ref: '#/components/schemas/Level'
           title: items
           type: array
+        search:
+          $ref: '#/components/schemas/Search'
       required:
       - items
       - pageCount
+      - search
       title: GetLevelListResponse
       type: object
       x-examples: {}
     GetParticleListResponse:
-      description: Response struct of getParticleList
+      description: |-
+        Response struct of getParticleList
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-particles-list.html
       example:
         pageCount: 1
+        search:
+          options:
+          - ""
+          - ""
         items:
         - updatedTime: 0
           thumbnail:
@@ -5067,16 +5563,25 @@ components:
             $ref: '#/components/schemas/Particle'
           title: items
           type: array
+        search:
+          $ref: '#/components/schemas/Search'
       required:
       - items
       - pageCount
+      - search
       title: GetParticleListResponse
       type: object
       x-examples: {}
     GetSkinListResponse:
-      description: Response struct of getSkinList
+      description: |-
+        Response struct of getSkinList
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-skins-list.html
       example:
         pageCount: 1
+        search:
+          options:
+          - ""
+          - ""
         items:
         - updatedTime: 0
           thumbnail:
@@ -5133,18 +5638,26 @@ components:
             $ref: '#/components/schemas/Skin'
           title: items
           type: array
+        search:
+          $ref: '#/components/schemas/Search'
       required:
       - items
       - pageCount
+      - search
       title: GetSkinListResponse
       type: object
       x-examples: {}
     GetLevelResponse:
-      description: Response struct of getLevel
+      description: |-
+        Response struct of getLevel
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-levels-name.html
       example:
         item:
-          updatedTime: 0
-          notes: 6027456
+          preview:
+            type: LevelData
+            hash: hash
+            url: url
+          notes: 5637377
           data:
             type: LevelData
             hash: hash
@@ -5173,9 +5686,7 @@ components:
               version: 1
               userId: userId
             useDefault: true
-          author: author
           rating: 81
-          length: 0
           useSkin:
             item:
               updatedTime: 0
@@ -5206,8 +5717,7 @@ components:
             url: url
           description: description
           title: title
-          version: 1
-          userId: userId
+          mylists: 7061401
           cover:
             type: LevelData
             hash: hash
@@ -5320,26 +5830,6 @@ components:
               version: 1
               userId: userId
           artists: artists
-          useEffect:
-            item:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
           useParticle:
             item:
               updatedTime: 0
@@ -5364,13 +5854,44 @@ components:
               version: 1
               userId: userId
             useDefault: true
-          name: name
-          genre: general
+          genre:
+          - general
           createdTime: 0
+          bpm: 5962
+          likes: 2302135
+          updatedTime: 0
+          author: author
+          length: 0
+          version: 1
+          userId: userId
+          useEffect:
+            item:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          name: name
         description: description
         recommended:
-        - updatedTime: 0
-          notes: 6027456
+        - preview:
+            type: LevelData
+            hash: hash
+            url: url
+          notes: 5637377
           data:
             type: LevelData
             hash: hash
@@ -5399,9 +5920,7 @@ components:
               version: 1
               userId: userId
             useDefault: true
-          author: author
           rating: 81
-          length: 0
           useSkin:
             item:
               updatedTime: 0
@@ -5432,8 +5951,7 @@ components:
             url: url
           description: description
           title: title
-          version: 1
-          userId: userId
+          mylists: 7061401
           cover:
             type: LevelData
             hash: hash
@@ -5546,26 +6064,6 @@ components:
               version: 1
               userId: userId
           artists: artists
-          useEffect:
-            item:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
           useParticle:
             item:
               updatedTime: 0
@@ -5590,11 +6088,42 @@ components:
               version: 1
               userId: userId
             useDefault: true
-          name: name
-          genre: general
+          genre:
+          - general
           createdTime: 0
-        - updatedTime: 0
-          notes: 6027456
+          bpm: 5962
+          likes: 2302135
+          updatedTime: 0
+          author: author
+          length: 0
+          version: 1
+          userId: userId
+          useEffect:
+            item:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          name: name
+        - preview:
+            type: LevelData
+            hash: hash
+            url: url
+          notes: 5637377
           data:
             type: LevelData
             hash: hash
@@ -5623,9 +6152,7 @@ components:
               version: 1
               userId: userId
             useDefault: true
-          author: author
           rating: 81
-          length: 0
           useSkin:
             item:
               updatedTime: 0
@@ -5656,8 +6183,7 @@ components:
             url: url
           description: description
           title: title
-          version: 1
-          userId: userId
+          mylists: 7061401
           cover:
             type: LevelData
             hash: hash
@@ -5770,26 +6296,6 @@ components:
               version: 1
               userId: userId
           artists: artists
-          useEffect:
-            item:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
           useParticle:
             item:
               updatedTime: 0
@@ -5814,9 +6320,37 @@ components:
               version: 1
               userId: userId
             useDefault: true
-          name: name
-          genre: general
+          genre:
+          - general
           createdTime: 0
+          bpm: 5962
+          likes: 2302135
+          updatedTime: 0
+          author: author
+          length: 0
+          version: 1
+          userId: userId
+          useEffect:
+            item:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          name: name
       properties:
         item:
           $ref: '#/components/schemas/Level'
@@ -5837,7 +6371,9 @@ components:
       type: object
       x-examples: {}
     GetBackgroundResponse:
-      description: Response struct of getBackground
+      description: |-
+        Response struct of getBackground
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-backgrounds-name.html
       example:
         item:
           image:
@@ -5925,7 +6461,9 @@ components:
       type: object
       x-examples: {}
     GetEffectResponse:
-      description: Response struct of getEffect
+      description: |-
+        Response struct of getEffect
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-effects-name.html
       example:
         item:
           updatedTime: 0
@@ -6001,7 +6539,9 @@ components:
       type: object
       x-examples: {}
     GetEngineResponse:
-      description: Response struct of getEngine
+      description: |-
+        Response struct of getEngine
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-engines-name.html
       example:
         item:
           updatedTime: 0
@@ -6341,7 +6881,9 @@ components:
       type: object
       x-examples: {}
     GetParticleResponse:
-      description: Response struct of getParticle
+      description: |-
+        Response struct of getParticle
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-particles-name.html
       example:
         item:
           updatedTime: 0
@@ -6429,7 +6971,9 @@ components:
       type: object
       x-examples: {}
     GetSkinResponse:
-      description: Response struct of getSkin
+      description: |-
+        Response struct of getSkin
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-skins-name.html
       example:
         item:
           updatedTime: 0
@@ -6517,103 +7061,105 @@ components:
       type: object
       x-examples: {}
     ServerInfo:
-      description: Response / Request struct of getServerInfo
+      description: |-
+        Response struct of getServerInfo
+        https://wiki.sonolus.com/custom-server-specs/endpoints/get-info.html
       example:
         skins:
-        - updatedTime: 0
-          thumbnail:
-            type: LevelData
-            hash: hash
-            url: url
-          data:
-            type: LevelData
-            hash: hash
-            url: url
-          author: author
-          texture:
-            type: LevelData
-            hash: hash
-            url: url
-          subtitle: subtitle
-          name: name
-          createdTime: 0
-          description: description
-          title: title
-          version: 1
-          userId: userId
-        - updatedTime: 0
-          thumbnail:
-            type: LevelData
-            hash: hash
-            url: url
-          data:
-            type: LevelData
-            hash: hash
-            url: url
-          author: author
-          texture:
-            type: LevelData
-            hash: hash
-            url: url
-          subtitle: subtitle
-          name: name
-          createdTime: 0
-          description: description
-          title: title
-          version: 1
-          userId: userId
+          search:
+            options:
+            - ""
+            - ""
+          items:
+          - updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            texture:
+              type: LevelData
+              hash: hash
+              url: url
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+          - updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            texture:
+              type: LevelData
+              hash: hash
+              url: url
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
         effects:
-        - updatedTime: 0
-          thumbnail:
-            type: LevelData
-            hash: hash
-            url: url
-          data:
-            type: LevelData
-            hash: hash
-            url: url
-          author: author
-          subtitle: subtitle
-          name: name
-          createdTime: 0
-          description: description
-          title: title
-          version: 1
-          userId: userId
-        - updatedTime: 0
-          thumbnail:
-            type: LevelData
-            hash: hash
-            url: url
-          data:
-            type: LevelData
-            hash: hash
-            url: url
-          author: author
-          subtitle: subtitle
-          name: name
-          createdTime: 0
-          description: description
-          title: title
-          version: 1
-          userId: userId
+          search:
+            options:
+            - ""
+            - ""
+          items:
+          - updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+          - updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
         engines:
-        - updatedTime: 0
-          thumbnail:
-            type: LevelData
-            hash: hash
-            url: url
-          data:
-            type: LevelData
-            hash: hash
-            url: url
-          configuration:
-            type: LevelData
-            hash: hash
-            url: url
-          author: author
-          skin:
-            updatedTime: 0
+          search:
+            options:
+            - ""
+            - ""
+          items:
+          - updatedTime: 0
             thumbnail:
               type: LevelData
               hash: hash
@@ -6622,28 +7168,103 @@ components:
               type: LevelData
               hash: hash
               url: url
-            author: author
-            texture:
+            configuration:
               type: LevelData
               hash: hash
               url: url
-            subtitle: subtitle
-            name: name
-            createdTime: 0
+            author: author
+            skin:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              texture:
+                type: LevelData
+                hash: hash
+                url: url
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
             description: description
             title: title
             version: 1
             userId: userId
-          description: description
-          title: title
-          version: 1
-          userId: userId
-          background:
-            image:
-              type: LevelData
-              hash: hash
-              url: url
-            updatedTime: 0
+            background:
+              image:
+                type: LevelData
+                hash: hash
+                url: url
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            subtitle: subtitle
+            effect:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            name: name
+            createdTime: 0
+            particle:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              texture:
+                type: LevelData
+                hash: hash
+                url: url
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+          - updatedTime: 0
             thumbnail:
               type: LevelData
               hash: hash
@@ -6652,728 +7273,681 @@ components:
               type: LevelData
               hash: hash
               url: url
-            author: author
-            subtitle: subtitle
-            name: name
-            createdTime: 0
-            description: description
-            title: title
-            version: 1
-            userId: userId
-          subtitle: subtitle
-          effect:
-            updatedTime: 0
-            thumbnail:
-              type: LevelData
-              hash: hash
-              url: url
-            data:
+            configuration:
               type: LevelData
               hash: hash
               url: url
             author: author
-            subtitle: subtitle
-            name: name
-            createdTime: 0
+            skin:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              texture:
+                type: LevelData
+                hash: hash
+                url: url
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
             description: description
             title: title
             version: 1
             userId: userId
-          name: name
-          createdTime: 0
-          particle:
-            updatedTime: 0
-            thumbnail:
-              type: LevelData
-              hash: hash
-              url: url
-            data:
-              type: LevelData
-              hash: hash
-              url: url
-            author: author
-            texture:
-              type: LevelData
-              hash: hash
-              url: url
+            background:
+              image:
+                type: LevelData
+                hash: hash
+                url: url
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
             subtitle: subtitle
+            effect:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
             name: name
             createdTime: 0
-            description: description
-            title: title
-            version: 1
-            userId: userId
-        - updatedTime: 0
-          thumbnail:
-            type: LevelData
-            hash: hash
-            url: url
-          data:
-            type: LevelData
-            hash: hash
-            url: url
-          configuration:
-            type: LevelData
-            hash: hash
-            url: url
-          author: author
-          skin:
-            updatedTime: 0
-            thumbnail:
-              type: LevelData
-              hash: hash
-              url: url
-            data:
-              type: LevelData
-              hash: hash
-              url: url
-            author: author
-            texture:
-              type: LevelData
-              hash: hash
-              url: url
-            subtitle: subtitle
-            name: name
-            createdTime: 0
-            description: description
-            title: title
-            version: 1
-            userId: userId
-          description: description
-          title: title
-          version: 1
-          userId: userId
-          background:
-            image:
-              type: LevelData
-              hash: hash
-              url: url
-            updatedTime: 0
-            thumbnail:
-              type: LevelData
-              hash: hash
-              url: url
-            data:
-              type: LevelData
-              hash: hash
-              url: url
-            author: author
-            subtitle: subtitle
-            name: name
-            createdTime: 0
-            description: description
-            title: title
-            version: 1
-            userId: userId
-          subtitle: subtitle
-          effect:
-            updatedTime: 0
-            thumbnail:
-              type: LevelData
-              hash: hash
-              url: url
-            data:
-              type: LevelData
-              hash: hash
-              url: url
-            author: author
-            subtitle: subtitle
-            name: name
-            createdTime: 0
-            description: description
-            title: title
-            version: 1
-            userId: userId
-          name: name
-          createdTime: 0
-          particle:
-            updatedTime: 0
-            thumbnail:
-              type: LevelData
-              hash: hash
-              url: url
-            data:
-              type: LevelData
-              hash: hash
-              url: url
-            author: author
-            texture:
-              type: LevelData
-              hash: hash
-              url: url
-            subtitle: subtitle
-            name: name
-            createdTime: 0
-            description: description
-            title: title
-            version: 1
-            userId: userId
+            particle:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              texture:
+                type: LevelData
+                hash: hash
+                url: url
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
         backgrounds:
-        - image:
-            type: LevelData
-            hash: hash
-            url: url
-          updatedTime: 0
-          thumbnail:
-            type: LevelData
-            hash: hash
-            url: url
-          data:
-            type: LevelData
-            hash: hash
-            url: url
-          author: author
-          subtitle: subtitle
-          name: name
-          createdTime: 0
-          description: description
-          title: title
-          version: 1
-          userId: userId
-        - image:
-            type: LevelData
-            hash: hash
-            url: url
-          updatedTime: 0
-          thumbnail:
-            type: LevelData
-            hash: hash
-            url: url
-          data:
-            type: LevelData
-            hash: hash
-            url: url
-          author: author
-          subtitle: subtitle
-          name: name
-          createdTime: 0
-          description: description
-          title: title
-          version: 1
-          userId: userId
+          search:
+            options:
+            - ""
+            - ""
+          items:
+          - image:
+              type: LevelData
+              hash: hash
+              url: url
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+          - image:
+              type: LevelData
+              hash: hash
+              url: url
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
         particles:
-        - updatedTime: 0
-          thumbnail:
-            type: LevelData
-            hash: hash
-            url: url
-          data:
-            type: LevelData
-            hash: hash
-            url: url
-          author: author
-          texture:
-            type: LevelData
-            hash: hash
-            url: url
-          subtitle: subtitle
-          name: name
-          createdTime: 0
-          description: description
-          title: title
-          version: 1
-          userId: userId
-        - updatedTime: 0
-          thumbnail:
-            type: LevelData
-            hash: hash
-            url: url
-          data:
-            type: LevelData
-            hash: hash
-            url: url
-          author: author
-          texture:
-            type: LevelData
-            hash: hash
-            url: url
-          subtitle: subtitle
-          name: name
-          createdTime: 0
-          description: description
-          title: title
-          version: 1
-          userId: userId
+          search:
+            options:
+            - ""
+            - ""
+          items:
+          - updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            texture:
+              type: LevelData
+              hash: hash
+              url: url
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+          - updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            texture:
+              type: LevelData
+              hash: hash
+              url: url
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
         levels:
-        - updatedTime: 0
-          notes: 6027456
-          data:
-            type: LevelData
-            hash: hash
-            url: url
-          useBackground:
-            item:
-              image:
-                type: LevelData
-                hash: hash
-                url: url
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
-          author: author
-          rating: 81
-          length: 0
-          useSkin:
-            item:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              texture:
-                type: LevelData
-                hash: hash
-                url: url
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
-          bgm:
-            type: LevelData
-            hash: hash
-            url: url
-          description: description
-          title: title
-          version: 1
-          userId: userId
-          cover:
-            type: LevelData
-            hash: hash
-            url: url
-          public: false
-          engine:
-            updatedTime: 0
-            thumbnail:
+          search:
+            options:
+            - ""
+            - ""
+          items:
+          - preview:
               type: LevelData
               hash: hash
               url: url
+            notes: 5637377
             data:
               type: LevelData
               hash: hash
               url: url
-            configuration:
+            useBackground:
+              item:
+                image:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              useDefault: true
+            rating: 81
+            useSkin:
+              item:
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                texture:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              useDefault: true
+            bgm:
               type: LevelData
               hash: hash
               url: url
-            author: author
-            skin:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              texture:
-                type: LevelData
-                hash: hash
-                url: url
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
             description: description
             title: title
-            version: 1
-            userId: userId
-            background:
-              image:
-                type: LevelData
-                hash: hash
-                url: url
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            subtitle: subtitle
-            effect:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            name: name
-            createdTime: 0
-            particle:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              texture:
-                type: LevelData
-                hash: hash
-                url: url
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-          artists: artists
-          useEffect:
-            item:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
-          useParticle:
-            item:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              texture:
-                type: LevelData
-                hash: hash
-                url: url
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
-          name: name
-          genre: general
-          createdTime: 0
-        - updatedTime: 0
-          notes: 6027456
-          data:
-            type: LevelData
-            hash: hash
-            url: url
-          useBackground:
-            item:
-              image:
-                type: LevelData
-                hash: hash
-                url: url
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
-          author: author
-          rating: 81
-          length: 0
-          useSkin:
-            item:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              texture:
-                type: LevelData
-                hash: hash
-                url: url
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
-          bgm:
-            type: LevelData
-            hash: hash
-            url: url
-          description: description
-          title: title
-          version: 1
-          userId: userId
-          cover:
-            type: LevelData
-            hash: hash
-            url: url
-          public: false
-          engine:
-            updatedTime: 0
-            thumbnail:
+            mylists: 7061401
+            cover:
               type: LevelData
               hash: hash
               url: url
+            public: false
+            engine:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              configuration:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              skin:
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                texture:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              description: description
+              title: title
+              version: 1
+              userId: userId
+              background:
+                image:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              subtitle: subtitle
+              effect:
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              name: name
+              createdTime: 0
+              particle:
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                texture:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+            artists: artists
+            useParticle:
+              item:
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                texture:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              useDefault: true
+            genre:
+            - general
+            createdTime: 0
+            bpm: 5962
+            likes: 2302135
+            updatedTime: 0
+            author: author
+            length: 0
+            version: 1
+            userId: userId
+            useEffect:
+              item:
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              useDefault: true
+            name: name
+          - preview:
+              type: LevelData
+              hash: hash
+              url: url
+            notes: 5637377
             data:
               type: LevelData
               hash: hash
               url: url
-            configuration:
+            useBackground:
+              item:
+                image:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              useDefault: true
+            rating: 81
+            useSkin:
+              item:
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                texture:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              useDefault: true
+            bgm:
               type: LevelData
               hash: hash
               url: url
-            author: author
-            skin:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              texture:
-                type: LevelData
-                hash: hash
-                url: url
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
             description: description
             title: title
+            mylists: 7061401
+            cover:
+              type: LevelData
+              hash: hash
+              url: url
+            public: false
+            engine:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              configuration:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              skin:
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                texture:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              description: description
+              title: title
+              version: 1
+              userId: userId
+              background:
+                image:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              subtitle: subtitle
+              effect:
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              name: name
+              createdTime: 0
+              particle:
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                texture:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+            artists: artists
+            useParticle:
+              item:
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                texture:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              useDefault: true
+            genre:
+            - general
+            createdTime: 0
+            bpm: 5962
+            likes: 2302135
+            updatedTime: 0
+            author: author
+            length: 0
             version: 1
             userId: userId
-            background:
-              image:
-                type: LevelData
-                hash: hash
-                url: url
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            subtitle: subtitle
-            effect:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
+            useEffect:
+              item:
+                updatedTime: 0
+                thumbnail:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                data:
+                  type: LevelData
+                  hash: hash
+                  url: url
+                author: author
+                subtitle: subtitle
+                name: name
+                createdTime: 0
+                description: description
+                title: title
+                version: 1
+                userId: userId
+              useDefault: true
             name: name
-            createdTime: 0
-            particle:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              texture:
-                type: LevelData
-                hash: hash
-                url: url
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-          artists: artists
-          useEffect:
-            item:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
-          useParticle:
-            item:
-              updatedTime: 0
-              thumbnail:
-                type: LevelData
-                hash: hash
-                url: url
-              data:
-                type: LevelData
-                hash: hash
-                url: url
-              author: author
-              texture:
-                type: LevelData
-                hash: hash
-                url: url
-              subtitle: subtitle
-              name: name
-              createdTime: 0
-              description: description
-              title: title
-              version: 1
-              userId: userId
-            useDefault: true
-          name: name
-          genre: general
-          createdTime: 0
       properties:
         levels:
-          items:
-            $ref: '#/components/schemas/Level'
-          title: levels
-          type: array
+          $ref: '#/components/schemas/ServerInfo_levels'
         skins:
-          items:
-            $ref: '#/components/schemas/Skin'
-          title: skins
-          type: array
+          $ref: '#/components/schemas/ServerInfo_skins'
         backgrounds:
-          items:
-            $ref: '#/components/schemas/Background'
-          title: backgrounds
-          type: array
+          $ref: '#/components/schemas/ServerInfo_backgrounds'
         effects:
-          items:
-            $ref: '#/components/schemas/Effect'
-          title: effects
-          type: array
+          $ref: '#/components/schemas/ServerInfo_effects'
         particles:
-          items:
-            $ref: '#/components/schemas/Particle'
-          title: particles
-          type: array
+          $ref: '#/components/schemas/ServerInfo_particles'
         engines:
-          items:
-            $ref: '#/components/schemas/Engine'
-          title: engines
-          type: array
+          $ref: '#/components/schemas/ServerInfo_engines'
       required:
       - backgrounds
       - effects
@@ -7385,25 +7959,489 @@ components:
       type: object
       x-examples:
         example-1:
-          levels: []
-          skins: []
-          backgrounds: []
-          effects: []
-          particles: []
-          engines: []
+          levels:
+            items:
+            - name: string
+              version: 1
+              rating: 1
+              engine:
+                name: string
+                version: 1
+                title: string
+                subtitle: string
+                author: string
+                thumbnail:
+                  type: LevelData
+                  hash: string
+                  url: string
+                data:
+                  type: LevelData
+                  hash: string
+                  url: string
+                configuration:
+                  type: LevelData
+                  hash: string
+                  url: string
+                skin:
+                  name: string
+                  version: 1
+                  title: string
+                  subtitle: string
+                  author: string
+                  thumbnail:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  data:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  texture:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  createdTime: 0
+                  updatedTime: 0
+                  userId: string
+                  description: string
+                background:
+                  name: string
+                  version: 1
+                  title: string
+                  subtitle: string
+                  author: string
+                  thumbnail:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  data:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  image:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  createdTime: 0
+                  updatedTime: 0
+                  userId: string
+                  description: string
+                effect:
+                  name: string
+                  version: 1
+                  title: string
+                  subtitle: string
+                  author: string
+                  thumbnail:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  data:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  createdTime: 0
+                  updatedTime: 0
+                  userId: string
+                  description: string
+                particle:
+                  name: string
+                  version: 1
+                  title: string
+                  subtitle: string
+                  author: string
+                  thumbnail:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  data:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  texture:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  userId: string
+                  createdTime: 0
+                  updatedTime: 0
+                  description: string
+                createdTime: 0
+                updatedTime: 0
+                userId: string
+                description: string
+              useSkin:
+                useDefault: true
+                item:
+                  name: string
+                  version: 1
+                  title: string
+                  subtitle: string
+                  author: string
+                  thumbnail:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  data:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  texture:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  createdTime: 0
+                  updatedTime: 0
+                  userId: string
+                  description: string
+              useBackground:
+                useDefault: true
+                item:
+                  name: string
+                  version: 1
+                  title: string
+                  subtitle: string
+                  author: string
+                  thumbnail:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  data:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  image:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  createdTime: 0
+                  updatedTime: 0
+                  userId: string
+                  description: string
+              useEffect:
+                useDefault: true
+                item:
+                  name: string
+                  version: 1
+                  title: string
+                  subtitle: string
+                  author: string
+                  thumbnail:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  data:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  createdTime: 0
+                  updatedTime: 0
+                  userId: string
+                  description: string
+              useParticle:
+                useDefault: true
+                item:
+                  name: string
+                  version: 1
+                  title: string
+                  subtitle: string
+                  author: string
+                  thumbnail:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  data:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  texture:
+                    type: LevelData
+                    hash: string
+                    url: string
+                  userId: string
+                  createdTime: 0
+                  updatedTime: 0
+                  description: string
+              title: string
+              artists: string
+              author: string
+              cover:
+                type: LevelData
+                hash: string
+                url: string
+              bgm:
+                type: LevelData
+                hash: string
+                url: string
+              preview:
+                type: LevelData
+                hash: string
+                url: string
+              data:
+                type: LevelData
+                hash: string
+                url: string
+              genre: general
+              public: false
+              userId: string
+              notes: 1
+              createdTime: 0
+              updatedTime: 0
+              description: string
+              length: 0
+            search:
+              options:
+              - query: string
+                name: string
+                type: text
+                placeholder: string
+          skins:
+            items:
+            - name: string
+              version: 1
+              title: string
+              subtitle: string
+              author: string
+              thumbnail:
+                type: LevelData
+                hash: string
+                url: string
+              data:
+                type: LevelData
+                hash: string
+                url: string
+              texture:
+                type: LevelData
+                hash: string
+                url: string
+              createdTime: 0
+              updatedTime: 0
+              userId: string
+              description: string
+            search:
+              options:
+              - query: string
+                name: string
+                type: text
+                placeholder: string
+          backgrounds:
+            items:
+            - name: string
+              version: 1
+              title: string
+              subtitle: string
+              author: string
+              thumbnail:
+                type: LevelData
+                hash: string
+                url: string
+              data:
+                type: LevelData
+                hash: string
+                url: string
+              image:
+                type: LevelData
+                hash: string
+                url: string
+              createdTime: 0
+              updatedTime: 0
+              userId: string
+              description: string
+            search:
+              options:
+              - query: string
+                name: string
+                type: text
+                placeholder: string
+          effects:
+            items:
+            - name: string
+              version: 1
+              title: string
+              subtitle: string
+              author: string
+              thumbnail:
+                type: LevelData
+                hash: string
+                url: string
+              data:
+                type: LevelData
+                hash: string
+                url: string
+              createdTime: 0
+              updatedTime: 0
+              userId: string
+              description: string
+            search:
+              options:
+              - query: string
+                name: string
+                type: text
+                placeholder: string
+          particles:
+            items:
+            - name: string
+              version: 1
+              title: string
+              subtitle: string
+              author: string
+              thumbnail:
+                type: LevelData
+                hash: string
+                url: string
+              data:
+                type: LevelData
+                hash: string
+                url: string
+              texture:
+                type: LevelData
+                hash: string
+                url: string
+              userId: string
+              createdTime: 0
+              updatedTime: 0
+              description: string
+            search:
+              options:
+              - query: string
+                name: string
+                type: text
+                placeholder: string
+          engines:
+            items:
+            - name: string
+              version: 1
+              title: string
+              subtitle: string
+              author: string
+              thumbnail:
+                type: LevelData
+                hash: string
+                url: string
+              data:
+                type: LevelData
+                hash: string
+                url: string
+              configuration:
+                type: LevelData
+                hash: string
+                url: string
+              skin:
+                name: string
+                version: 1
+                title: string
+                subtitle: string
+                author: string
+                thumbnail:
+                  type: LevelData
+                  hash: string
+                  url: string
+                data:
+                  type: LevelData
+                  hash: string
+                  url: string
+                texture:
+                  type: LevelData
+                  hash: string
+                  url: string
+                createdTime: 0
+                updatedTime: 0
+                userId: string
+                description: string
+              background:
+                name: string
+                version: 1
+                title: string
+                subtitle: string
+                author: string
+                thumbnail:
+                  type: LevelData
+                  hash: string
+                  url: string
+                data:
+                  type: LevelData
+                  hash: string
+                  url: string
+                image:
+                  type: LevelData
+                  hash: string
+                  url: string
+                createdTime: 0
+                updatedTime: 0
+                userId: string
+                description: string
+              effect:
+                name: string
+                version: 1
+                title: string
+                subtitle: string
+                author: string
+                thumbnail:
+                  type: LevelData
+                  hash: string
+                  url: string
+                data:
+                  type: LevelData
+                  hash: string
+                  url: string
+                createdTime: 0
+                updatedTime: 0
+                userId: string
+                description: string
+              particle:
+                name: string
+                version: 1
+                title: string
+                subtitle: string
+                author: string
+                thumbnail:
+                  type: LevelData
+                  hash: string
+                  url: string
+                data:
+                  type: LevelData
+                  hash: string
+                  url: string
+                texture:
+                  type: LevelData
+                  hash: string
+                  url: string
+                userId: string
+                createdTime: 0
+                updatedTime: 0
+                description: string
+              createdTime: 0
+              updatedTime: 0
+              userId: string
+              description: string
+            search:
+              options:
+              - query: string
+                name: string
+                type: text
+                placeholder: string
     User:
       description: ユーザー情報型
       example:
         updatedTime: 0
+        total:
+          favorites: 0
+          plays: 0
+          publish:
+            skins: 9
+            effects: 5
+            engines: 5
+            backgrounds: 1
+            particles: 2
+            levels: 7
+          likes: 0
         isDeleted: false
-        totalPlayed: 563737
-        totalFumen: 146581
-        createdTime: 0
         description: description
+        createdTime: 0
         testId: htcckfcn
         isAdmin: false
-        totalLikes: 596213
         userId: gz6xQrm79IN4BiQag78sQqYWYlC3
+        accountKey: super_secret_key
       properties:
         userId:
           default: gz6xQrm79IN4BiQag78sQqYWYlC3
@@ -7421,16 +8459,18 @@ components:
           minLength: 8
           title: testId
           type: string
-        isAdmin:
-          default: false
-          description: 管理者か否か。API経由の変更は不可で管理パネルからどうこうする
-          title: isAdmin
-          type: boolean
-        isDeleted:
-          default: false
-          description: アカウント削除フラグ(trueで削除済み扱い)
-          title: isDeleted
-          type: boolean
+        accountKey:
+          default: super_secret_key
+          description: アカウント鍵
+          example: super_secret_key
+          title: accountKey
+          type: string
+        description:
+          description: '独自要素: サイト内および譜面情報欄に表示される説明文'
+          maxLength: 3000
+          minLength: 1
+          title: description
+          type: string
         createdTime:
           description: '独自要素: データを作成したエポックミリ秒(ソート用)'
           minimum: 0
@@ -7441,58 +8481,85 @@ components:
           minimum: 0
           title: updatedTime
           type: integer
-        description:
-          description: '独自要素: サイト内および譜面情報欄に表示される説明文'
-          maxLength: 3000
-          minLength: 1
-          title: description
-          type: string
-        totalFumen:
-          description: 投稿した譜面数
-          maximum: 1000000
-          minimum: 0
-          title: totalFumen
-          type: integer
-        totalLikes:
-          description: いいねを受けた回数
-          maximum: 1000000
-          minimum: 0
-          title: totalLikes
-          type: integer
-        totalPlayed:
-          description: プレイしたことがある譜面の数(リクエストをカウントするだけなので曖昧...)
-          maximum: 1000000
-          minimum: 0
-          title: totalPlayed
-          type: integer
+        total:
+          $ref: '#/components/schemas/User_total'
+        isAdmin:
+          default: false
+          description: 管理者か否か。API経由の変更は不可で管理パネルからどうこうする
+          title: isAdmin
+          type: boolean
+        isDeleted:
+          default: false
+          description: アカウント削除フラグ(trueで削除済み扱い)
+          title: isDeleted
+          type: boolean
       title: User
       type: object
+      x-examples:
+        example:
+          userId: gz6xQrm79IN4BiQag78sQqYWYlC3
+          testId: htcckfcn
+          accountKey: super_secret_key
+          description: string
+          createdTime: 0
+          updatedTime: 0
+          total:
+            likes: 0
+            plays: 0
+            favorites: 0
+            publish:
+              backgrounds: 0
+              effects: 0
+              engines: 0
+              particles: 0
+              levels: 0
+              skins: 0
+          isAdmin: false
+          isDeleted: false
     GetUserListResponse:
-      description: Structure of getList response
+      description: Struct of getList response
       example:
         total: 0
         pages: 6
         users:
         - updatedTime: 0
+          total:
+            favorites: 0
+            plays: 0
+            publish:
+              skins: 9
+              effects: 5
+              engines: 5
+              backgrounds: 1
+              particles: 2
+              levels: 7
+            likes: 0
           isDeleted: false
-          totalPlayed: 563737
-          totalFumen: 146581
-          createdTime: 0
           description: description
+          createdTime: 0
           testId: htcckfcn
           isAdmin: false
-          totalLikes: 596213
           userId: gz6xQrm79IN4BiQag78sQqYWYlC3
+          accountKey: super_secret_key
         - updatedTime: 0
+          total:
+            favorites: 0
+            plays: 0
+            publish:
+              skins: 9
+              effects: 5
+              engines: 5
+              backgrounds: 1
+              particles: 2
+              levels: 7
+            likes: 0
           isDeleted: false
-          totalPlayed: 563737
-          totalFumen: 146581
-          createdTime: 0
           description: description
+          createdTime: 0
           testId: htcckfcn
           isAdmin: false
-          totalLikes: 596213
           userId: gz6xQrm79IN4BiQag78sQqYWYlC3
+          accountKey: super_secret_key
       properties:
         users:
           description: サーバーに登録されたユーザー一覧
@@ -7578,6 +8645,294 @@ components:
       - title
       title: Announce
       type: object
+    PostUploadResponse:
+      description: Struct of post upload response
+      example:
+        filename: filename
+        message: message
+      properties:
+        message:
+          description: Response status in human readable
+          title: message
+          type: string
+        filename:
+          title: filename
+          type: string
+      required:
+      - message
+      title: PostUploadResponse
+      type: object
+      x-examples:
+        success:
+          value:
+            message: File saved.
+            filename: LHSFemJ5DiiH4QpjbyuU.json
+        failed:
+          value:
+            message: File validation failed.
+    Upload:
+      properties:
+        file:
+          format: binary
+          type: string
+        type:
+          enum:
+          - SkinData
+          - EngineThumbnail
+          - EffectData
+          - SkinTexture
+          - ParticleData
+          - EffectThumbnail
+          - LevelBgm
+          - BackgroundThumbnail
+          - EngineConfiguration
+          - LevelData
+          - LevelPreview
+          - ParticleTexture
+          - BackgroundData
+          - EngineData
+          - BackgroundImage
+          - LevelCover
+          - SkinThumbnail
+          - ParticleThumbnail
+          type: string
+      title: Upload
+      type: object
+    Search:
+      description: It specifies what search query supported
+      example:
+        options:
+        - ""
+        - ""
+      properties:
+        options:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/SearchTextOption'
+            - $ref: '#/components/schemas/SearchSliderOption'
+            - $ref: '#/components/schemas/SearchToggleOption'
+            - $ref: '#/components/schemas/SearchSelectOption'
+          title: options
+          type: array
+      title: Search
+      type: object
+      x-examples:
+        example:
+          options:
+          - query: keywords
+            name: '#KEYWORDS'
+            type: text
+            placeholder: '#KEYWORDS'
+          - query: minLevel
+            name: Minimum Level
+            type: slider
+            def: 5
+            min: 1
+            max: 30
+            step: 1
+            display: number
+          - query: spoiler
+            name: Spoiler
+            type: toggle
+            def: 0
+          - query: length
+            name: Length
+            type: select
+            def: 0
+            values:
+            - Short
+            - Full
+    SearchTextOption:
+      description: Text style search option
+      properties:
+        query:
+          description: query name
+          title: query
+          type: string
+        name:
+          description: 'GUI name, if put in-app supported localizable text that startswith
+            #, it gets localized.'
+          title: name
+          type: string
+        type:
+          default: text
+          description: option type (be autofilled)
+          enum:
+          - text
+          example: text
+          title: type
+          type: string
+        placeholder:
+          description: hint for input
+          title: placeholder
+          type: string
+      required:
+      - name
+      - placeholder
+      - query
+      - type
+      title: SearchTextOption
+      type: object
+    SearchSliderOption:
+      description: Slider style search option
+      properties:
+        query:
+          description: query name
+          title: query
+          type: string
+        name:
+          description: 'GUI name. if put in-app supported localizable text that startswith
+            #, it gets localized.'
+          title: name
+          type: string
+        type:
+          default: slider
+          description: option type (be autofilled)
+          enum:
+          - slider
+          example: slider
+          title: type
+          type: string
+        def:
+          description: default value
+          minimum: 0
+          title: def
+          type: integer
+        min:
+          description: minimum value
+          minimum: 0
+          title: min
+          type: integer
+        max:
+          description: maximum value
+          minimum: 0
+          title: max
+          type: integer
+        step:
+          description: step value per move
+          minimum: 0
+          title: step
+          type: integer
+        display:
+          default: number
+          description: display type (percentage or number)
+          enum:
+          - number
+          - percentage
+          example: number
+          title: display
+          type: string
+      required:
+      - def
+      - display
+      - max
+      - min
+      - name
+      - query
+      - step
+      - type
+      title: SearchSliderOption
+      type: object
+      x-examples:
+        example:
+          query: minLevel
+          name: Minimum Level
+          type: slider
+          def: 5
+          min: 1
+          max: 30
+          step: 1
+          display: number
+    SearchToggleOption:
+      description: Toggle switch style search option
+      properties:
+        query:
+          description: query name
+          title: query
+          type: string
+        name:
+          description: 'GUI name. if put in-app supported localizable text that startswith
+            #, it gets localized.'
+          title: name
+          type: string
+        type:
+          default: toggle
+          description: option type (be autofilled)
+          enum:
+          - toggle
+          example: toggle
+          title: type
+          type: string
+        def:
+          default: 0
+          description: default value true(1)/false(0)
+          example: 1
+          maximum: 1
+          minimum: 0
+          title: def
+          type: integer
+      required:
+      - def
+      - name
+      - query
+      - type
+      title: SearchToggleOption
+      type: object
+      x-examples:
+        example:
+          query: spoiler
+          name: Spoiler
+          type: toggle
+          def: 0
+    SearchSelectOption:
+      description: Select button style search option
+      properties:
+        query:
+          description: query name
+          title: query
+          type: string
+        name:
+          description: 'GUI name. if put in-app supported localizable text that startswith
+            #, it gets localized.'
+          title: name
+          type: string
+        type:
+          default: select
+          description: option type (be autofilled)
+          enum:
+          - select
+          example: select
+          title: type
+          type: string
+        def:
+          default: 0
+          description: default selection index
+          minimum: 0
+          title: def
+          type: integer
+        values:
+          description: selectable text elements array
+          items:
+            type: string
+          title: values
+          type: array
+      required:
+      - def
+      - name
+      - query
+      - type
+      - values
+      title: SearchSelectOption
+      type: object
+      x-examples:
+        example:
+          query: length
+          name: Length
+          type: select
+          def: 0
+          values:
+          - Short
+          - Full
     Level_useSkin:
       example:
         item:
@@ -7605,6 +8960,7 @@ components:
         useDefault: true
       properties:
         useDefault:
+          default: true
           description: If true (recommended), default resource specified by the engine
             will be used.
           title: useDefault
@@ -7640,6 +8996,7 @@ components:
         useDefault: true
       properties:
         useDefault:
+          default: true
           description: If true (recommended), default resource specified by the engine
             will be used.
           title: useDefault
@@ -7671,6 +9028,7 @@ components:
         useDefault: true
       properties:
         useDefault:
+          default: true
           description: If true (recommended), default resource specified by the engine
             will be used.
           title: useDefault
@@ -7706,6 +9064,7 @@ components:
         useDefault: true
       properties:
         useDefault:
+          default: true
           description: If true (recommended), default resource specified by the engine
             will be used.
           title: useDefault
@@ -7713,6 +9072,1038 @@ components:
         item:
           $ref: '#/components/schemas/Particle'
       title: Level_useParticle
+      type: object
+    ServerInfo_levels:
+      example:
+        search:
+          options:
+          - ""
+          - ""
+        items:
+        - preview:
+            type: LevelData
+            hash: hash
+            url: url
+          notes: 5637377
+          data:
+            type: LevelData
+            hash: hash
+            url: url
+          useBackground:
+            item:
+              image:
+                type: LevelData
+                hash: hash
+                url: url
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          rating: 81
+          useSkin:
+            item:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              texture:
+                type: LevelData
+                hash: hash
+                url: url
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          bgm:
+            type: LevelData
+            hash: hash
+            url: url
+          description: description
+          title: title
+          mylists: 7061401
+          cover:
+            type: LevelData
+            hash: hash
+            url: url
+          public: false
+          engine:
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            configuration:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            skin:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              texture:
+                type: LevelData
+                hash: hash
+                url: url
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            description: description
+            title: title
+            version: 1
+            userId: userId
+            background:
+              image:
+                type: LevelData
+                hash: hash
+                url: url
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            subtitle: subtitle
+            effect:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            name: name
+            createdTime: 0
+            particle:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              texture:
+                type: LevelData
+                hash: hash
+                url: url
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+          artists: artists
+          useParticle:
+            item:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              texture:
+                type: LevelData
+                hash: hash
+                url: url
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          genre:
+          - general
+          createdTime: 0
+          bpm: 5962
+          likes: 2302135
+          updatedTime: 0
+          author: author
+          length: 0
+          version: 1
+          userId: userId
+          useEffect:
+            item:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          name: name
+        - preview:
+            type: LevelData
+            hash: hash
+            url: url
+          notes: 5637377
+          data:
+            type: LevelData
+            hash: hash
+            url: url
+          useBackground:
+            item:
+              image:
+                type: LevelData
+                hash: hash
+                url: url
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          rating: 81
+          useSkin:
+            item:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              texture:
+                type: LevelData
+                hash: hash
+                url: url
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          bgm:
+            type: LevelData
+            hash: hash
+            url: url
+          description: description
+          title: title
+          mylists: 7061401
+          cover:
+            type: LevelData
+            hash: hash
+            url: url
+          public: false
+          engine:
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            configuration:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            skin:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              texture:
+                type: LevelData
+                hash: hash
+                url: url
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            description: description
+            title: title
+            version: 1
+            userId: userId
+            background:
+              image:
+                type: LevelData
+                hash: hash
+                url: url
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            subtitle: subtitle
+            effect:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            name: name
+            createdTime: 0
+            particle:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              texture:
+                type: LevelData
+                hash: hash
+                url: url
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+          artists: artists
+          useParticle:
+            item:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              texture:
+                type: LevelData
+                hash: hash
+                url: url
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          genre:
+          - general
+          createdTime: 0
+          bpm: 5962
+          likes: 2302135
+          updatedTime: 0
+          author: author
+          length: 0
+          version: 1
+          userId: userId
+          useEffect:
+            item:
+              updatedTime: 0
+              thumbnail:
+                type: LevelData
+                hash: hash
+                url: url
+              data:
+                type: LevelData
+                hash: hash
+                url: url
+              author: author
+              subtitle: subtitle
+              name: name
+              createdTime: 0
+              description: description
+              title: title
+              version: 1
+              userId: userId
+            useDefault: true
+          name: name
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/Level'
+          title: items
+          type: array
+        search:
+          $ref: '#/components/schemas/Search'
+      required:
+      - items
+      - search
+      title: ServerInfo_levels
+      type: object
+    ServerInfo_skins:
+      example:
+        search:
+          options:
+          - ""
+          - ""
+        items:
+        - updatedTime: 0
+          thumbnail:
+            type: LevelData
+            hash: hash
+            url: url
+          data:
+            type: LevelData
+            hash: hash
+            url: url
+          author: author
+          texture:
+            type: LevelData
+            hash: hash
+            url: url
+          subtitle: subtitle
+          name: name
+          createdTime: 0
+          description: description
+          title: title
+          version: 1
+          userId: userId
+        - updatedTime: 0
+          thumbnail:
+            type: LevelData
+            hash: hash
+            url: url
+          data:
+            type: LevelData
+            hash: hash
+            url: url
+          author: author
+          texture:
+            type: LevelData
+            hash: hash
+            url: url
+          subtitle: subtitle
+          name: name
+          createdTime: 0
+          description: description
+          title: title
+          version: 1
+          userId: userId
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/Skin'
+          title: items
+          type: array
+        search:
+          $ref: '#/components/schemas/Search'
+      required:
+      - items
+      - search
+      title: ServerInfo_skins
+      type: object
+    ServerInfo_backgrounds:
+      example:
+        search:
+          options:
+          - ""
+          - ""
+        items:
+        - image:
+            type: LevelData
+            hash: hash
+            url: url
+          updatedTime: 0
+          thumbnail:
+            type: LevelData
+            hash: hash
+            url: url
+          data:
+            type: LevelData
+            hash: hash
+            url: url
+          author: author
+          subtitle: subtitle
+          name: name
+          createdTime: 0
+          description: description
+          title: title
+          version: 1
+          userId: userId
+        - image:
+            type: LevelData
+            hash: hash
+            url: url
+          updatedTime: 0
+          thumbnail:
+            type: LevelData
+            hash: hash
+            url: url
+          data:
+            type: LevelData
+            hash: hash
+            url: url
+          author: author
+          subtitle: subtitle
+          name: name
+          createdTime: 0
+          description: description
+          title: title
+          version: 1
+          userId: userId
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/Background'
+          title: items
+          type: array
+        search:
+          $ref: '#/components/schemas/Search'
+      required:
+      - items
+      - search
+      title: ServerInfo_backgrounds
+      type: object
+    ServerInfo_effects:
+      example:
+        search:
+          options:
+          - ""
+          - ""
+        items:
+        - updatedTime: 0
+          thumbnail:
+            type: LevelData
+            hash: hash
+            url: url
+          data:
+            type: LevelData
+            hash: hash
+            url: url
+          author: author
+          subtitle: subtitle
+          name: name
+          createdTime: 0
+          description: description
+          title: title
+          version: 1
+          userId: userId
+        - updatedTime: 0
+          thumbnail:
+            type: LevelData
+            hash: hash
+            url: url
+          data:
+            type: LevelData
+            hash: hash
+            url: url
+          author: author
+          subtitle: subtitle
+          name: name
+          createdTime: 0
+          description: description
+          title: title
+          version: 1
+          userId: userId
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/Effect'
+          title: items
+          type: array
+        search:
+          $ref: '#/components/schemas/Search'
+      required:
+      - items
+      - search
+      title: ServerInfo_effects
+      type: object
+    ServerInfo_particles:
+      example:
+        search:
+          options:
+          - ""
+          - ""
+        items:
+        - updatedTime: 0
+          thumbnail:
+            type: LevelData
+            hash: hash
+            url: url
+          data:
+            type: LevelData
+            hash: hash
+            url: url
+          author: author
+          texture:
+            type: LevelData
+            hash: hash
+            url: url
+          subtitle: subtitle
+          name: name
+          createdTime: 0
+          description: description
+          title: title
+          version: 1
+          userId: userId
+        - updatedTime: 0
+          thumbnail:
+            type: LevelData
+            hash: hash
+            url: url
+          data:
+            type: LevelData
+            hash: hash
+            url: url
+          author: author
+          texture:
+            type: LevelData
+            hash: hash
+            url: url
+          subtitle: subtitle
+          name: name
+          createdTime: 0
+          description: description
+          title: title
+          version: 1
+          userId: userId
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/Particle'
+          title: items
+          type: array
+        search:
+          $ref: '#/components/schemas/Search'
+      required:
+      - items
+      - search
+      title: ServerInfo_particles
+      type: object
+    ServerInfo_engines:
+      example:
+        search:
+          options:
+          - ""
+          - ""
+        items:
+        - updatedTime: 0
+          thumbnail:
+            type: LevelData
+            hash: hash
+            url: url
+          data:
+            type: LevelData
+            hash: hash
+            url: url
+          configuration:
+            type: LevelData
+            hash: hash
+            url: url
+          author: author
+          skin:
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            texture:
+              type: LevelData
+              hash: hash
+              url: url
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+          description: description
+          title: title
+          version: 1
+          userId: userId
+          background:
+            image:
+              type: LevelData
+              hash: hash
+              url: url
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+          subtitle: subtitle
+          effect:
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+          name: name
+          createdTime: 0
+          particle:
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            texture:
+              type: LevelData
+              hash: hash
+              url: url
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+        - updatedTime: 0
+          thumbnail:
+            type: LevelData
+            hash: hash
+            url: url
+          data:
+            type: LevelData
+            hash: hash
+            url: url
+          configuration:
+            type: LevelData
+            hash: hash
+            url: url
+          author: author
+          skin:
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            texture:
+              type: LevelData
+              hash: hash
+              url: url
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+          description: description
+          title: title
+          version: 1
+          userId: userId
+          background:
+            image:
+              type: LevelData
+              hash: hash
+              url: url
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+          subtitle: subtitle
+          effect:
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+          name: name
+          createdTime: 0
+          particle:
+            updatedTime: 0
+            thumbnail:
+              type: LevelData
+              hash: hash
+              url: url
+            data:
+              type: LevelData
+              hash: hash
+              url: url
+            author: author
+            texture:
+              type: LevelData
+              hash: hash
+              url: url
+            subtitle: subtitle
+            name: name
+            createdTime: 0
+            description: description
+            title: title
+            version: 1
+            userId: userId
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/Engine'
+          title: items
+          type: array
+        search:
+          $ref: '#/components/schemas/Search'
+      required:
+      - items
+      - search
+      title: ServerInfo_engines
+      type: object
+    User_total_publish:
+      description: 公開した個数
+      example:
+        skins: 9
+        effects: 5
+        engines: 5
+        backgrounds: 1
+        particles: 2
+        levels: 7
+      properties:
+        backgrounds:
+          description: 背景数
+          title: backgrounds
+          type: integer
+        effects:
+          description: 効果音数
+          title: effects
+          type: integer
+        engines:
+          description: エンジン数
+          title: engines
+          type: integer
+        particles:
+          description: パーティクル数
+          title: particles
+          type: integer
+        levels:
+          description: 譜面数
+          title: levels
+          type: integer
+        skins:
+          description: スキン数
+          title: skins
+          type: integer
+      title: User_total_publish
+      type: object
+    User_total:
+      description: 各種統計
+      example:
+        favorites: 0
+        plays: 0
+        publish:
+          skins: 9
+          effects: 5
+          engines: 5
+          backgrounds: 1
+          particles: 2
+          levels: 7
+        likes: 0
+      properties:
+        likes:
+          default: 0
+          description: いいねされた回数
+          example: 0
+          maximum: 10000000
+          minimum: 0
+          title: likes
+          type: integer
+        plays:
+          default: 0
+          description: プレイした回数
+          example: 0
+          maximum: 10000000
+          minimum: 0
+          title: plays
+          type: integer
+        favorites:
+          default: 0
+          description: お気に入りした回数
+          example: 0
+          maximum: 10000000
+          minimum: 0
+          title: favorites
+          type: integer
+        publish:
+          $ref: '#/components/schemas/User_total_publish'
+      title: User_total
       type: object
     Announce_resources:
       description: アイコンとBGM(任意)
@@ -7735,4 +10126,7 @@ components:
           type: string
       title: Announce_resources
       type: object
-  securitySchemes: {}
+  securitySchemes:
+    Authorization:
+      scheme: bearer
+      type: http
