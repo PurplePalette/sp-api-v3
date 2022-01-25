@@ -6,10 +6,12 @@ from .favorite import Favorite
 from .genre import Genre
 from .level import Level
 from .like import Like
+from .log import Log
 from .particle import Particle
 from .pickup import Pickup
 from .skin import Skin
 from .user import User
+from .vote import Vote
 
 __all__ = [
     "Announce",
@@ -20,8 +22,10 @@ __all__ = [
     "Genre",
     "Level",
     "Like",
+    "Log",
     "Particle",
     "Pickup",
     "Skin",
     "User",
+    "Vote",
 ]

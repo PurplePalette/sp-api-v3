@@ -13,10 +13,12 @@ from src.database.objects import (  # noqa: F401
     Genre,
     Level,
     Like,
+    Log,
     Particle,
     Pickup,
     Skin,
     User,
+    Vote,
 )
 
 # this is the Alembic Config object, which provides
