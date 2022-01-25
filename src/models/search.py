@@ -5,11 +5,13 @@ from datetime import date, datetime  # noqa: F401
 
 import re  # noqa: F401
 from typing import Any, Dict, List, Optional  # noqa: F401
+from typing import Union
 
 from pydantic import AnyUrl, BaseModel, EmailStr, validator  # noqa: F401
-from src.models.any_of_search_text_option_search_slider_option_search_toggle_option_search_select_option import (
-    AnyOfSearchTextOptionSearchSliderOptionSearchToggleOptionSearchSelectOption,
-)
+from src.models.search_text_option import SearchTextOption
+from src.models.search_slider_option import SearchSliderOption
+from src.models.search_toggle_option import SearchToggleOption
+from src.models.search_select_option import SearchSelectOption
 
 
 class Search(BaseModel):
@@ -24,7 +26,12 @@ class Search(BaseModel):
 
     options: Optional[
         List[
-            AnyOfSearchTextOptionSearchSliderOptionSearchToggleOptionSearchSelectOption
+            Union[
+                SearchTextOption,
+                SearchSliderOption,
+                SearchToggleOption,
+                SearchSelectOption,
+            ]
         ]
     ] = None
 
