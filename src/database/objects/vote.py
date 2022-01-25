@@ -12,5 +12,5 @@ class Vote(Base, TimeMixin):  # type: ignore
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="votes", uselist=False)
     level_id = Column(Integer, ForeignKey("levels.id"))
-    level = relationship("Level", back_populates="likes", uselist=False)
+    level = relationship("Level", back_populates="votes", uselist=False)
     value = Column(Integer)
