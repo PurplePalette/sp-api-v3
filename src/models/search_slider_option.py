@@ -6,7 +6,7 @@ from datetime import date, datetime  # noqa: F401
 import re  # noqa: F401
 from typing import Any, Dict, List, Optional  # noqa: F401
 
-from pydantic import AnyUrl, BaseModel, EmailStr, validator  # noqa: F401
+from pydantic import AnyUrl, BaseModel, EmailStr, Field, validator  # noqa: F401
 
 
 class SearchSliderOption(BaseModel):
@@ -29,14 +29,14 @@ class SearchSliderOption(BaseModel):
     query: str
     name: str
     type: str
-    _def: int
+    default: int = Field(..., alias="def")
     min: int
     max: int
     step: int
     display: str
 
-    @validator("_def")
-    def _def_min(cls, value):
+    @validator("default")
+    def default_min(cls, value):
         assert value >= 0
         return value
 
@@ -54,5 +54,6 @@ class SearchSliderOption(BaseModel):
     def step_min(cls, value):
         assert value >= 0
         return value
+
 
 SearchSliderOption.update_forward_refs()

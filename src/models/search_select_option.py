@@ -6,7 +6,7 @@ from datetime import date, datetime  # noqa: F401
 import re  # noqa: F401
 from typing import Any, Dict, List, Optional  # noqa: F401
 
-from pydantic import AnyUrl, BaseModel, EmailStr, validator  # noqa: F401
+from pydantic import AnyUrl, BaseModel, EmailStr, Field, validator  # noqa: F401
 
 
 class SearchSelectOption(BaseModel):
@@ -19,18 +19,18 @@ class SearchSelectOption(BaseModel):
         query: The query of this SearchSelectOption.
         name: The name of this SearchSelectOption.
         type: The type of this SearchSelectOption.
-        _def: The _def of this SearchSelectOption.
+        def: The default of this SearchSelectOption.
         values: The values of this SearchSelectOption.
     """
 
     query: str
     name: str
     type: str
-    _def: int
+    default: int = Field(..., alias="def")
     values: List[str]
 
-    @validator("_def")
-    def _def_min(cls, value):
+    @validator("default")
+    def default_min(cls, value):
         assert value >= 0
         return value
 
