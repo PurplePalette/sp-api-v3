@@ -1,12 +1,12 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
 from typing import Dict
 
+from fastapi.testclient import TestClient
 from src.models.background import Background  # noqa: F401
-from src.models.get_background_list_response import (
+from src.models.get_background_list_response import (  # noqa: F401
     GetBackgroundListResponse,
-)  # noqa: F401
+)
 from src.models.get_background_response import GetBackgroundResponse  # noqa: F401
 
 

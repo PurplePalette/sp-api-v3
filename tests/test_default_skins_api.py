@@ -1,8 +1,8 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
 from typing import Dict
 
+from fastapi.testclient import TestClient
 from src.models.get_skin_list_response import GetSkinListResponse  # noqa: F401
 from src.models.get_skin_response import GetSkinResponse  # noqa: F401
 from src.models.skin import Skin  # noqa: F401

@@ -1,8 +1,8 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
 from typing import Dict
 
+from fastapi.testclient import TestClient
 from src.models.effect import Effect  # noqa: F401
 from src.models.get_effect_list_response import GetEffectListResponse  # noqa: F401
 from src.models.get_effect_response import GetEffectResponse  # noqa: F401

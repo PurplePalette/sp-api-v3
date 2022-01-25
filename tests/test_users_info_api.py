@@ -1,8 +1,8 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
 from typing import Dict
 
+from fastapi.testclient import TestClient
 from src.models.server_info import ServerInfo  # noqa: F401
 
 
