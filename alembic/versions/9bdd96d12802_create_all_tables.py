@@ -1,15 +1,16 @@
-"""create tables
+"""create all tables
 
-Revision ID: 8326f43d1c27
-Revises:
-Create Date: 2022-01-23 02:56:39.921151
+Revision ID: 9bdd96d12802
+Revises: 
+Create Date: 2022-01-25 09:30:38.463924
 
 """
-import sqlalchemy as sa
 from alembic import op
+import sqlalchemy as sa
+
 
 # revision identifiers, used by Alembic.
-revision = "8326f43d1c27"
+revision = "9bdd96d12802"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,23 +26,17 @@ def upgrade():
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
-        "pickups",
-        sa.Column("created_time", sa.DateTime(), nullable=True),
-        sa.Column("updated_time", sa.DateTime(), nullable=True),
-        sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
-        sa.Column("order", sa.Integer(), nullable=True),
-        sa.PrimaryKeyConstraint("id"),
-    )
-    op.create_table(
         "users",
         sa.Column("created_time", sa.DateTime(), nullable=True),
         sa.Column("updated_time", sa.DateTime(), nullable=True),
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("display_id", sa.String(length=128), nullable=True),
         sa.Column("test_id", sa.String(length=128), nullable=True),
+        sa.Column("account_id", sa.String(length=128), nullable=True),
         sa.Column("is_admin", sa.Boolean(), server_default="0", nullable=True),
         sa.Column("is_deleted", sa.Boolean(), server_default="0", nullable=True),
         sa.PrimaryKeyConstraint("id"),
+        sa.UniqueConstraint("account_id"),
         sa.UniqueConstraint("display_id"),
         sa.UniqueConstraint("test_id"),
     )
@@ -60,9 +55,9 @@ def upgrade():
         sa.Column("public", sa.Boolean(), server_default="0", nullable=True),
         sa.Column("created_time", sa.DateTime(), nullable=True),
         sa.Column("updated_time", sa.DateTime(), nullable=True),
-        sa.Column("coverHash", sa.String(length=128), nullable=True),
-        sa.Column("bgmHash", sa.String(length=128), nullable=True),
-        sa.Column("dataHash", sa.String(length=128), nullable=True),
+        sa.Column("cover_hash", sa.String(length=128), nullable=True),
+        sa.Column("bgm_hash", sa.String(length=128), nullable=True),
+        sa.Column("data_hash", sa.String(length=128), nullable=True),
         sa.Column("user_id", sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(
             ["user_id"],
@@ -85,9 +80,9 @@ def upgrade():
         sa.Column("public", sa.Boolean(), server_default="0", nullable=True),
         sa.Column("created_time", sa.DateTime(), nullable=True),
         sa.Column("updated_time", sa.DateTime(), nullable=True),
-        sa.Column("thumbnailHash", sa.String(length=128), nullable=True),
-        sa.Column("dataHash", sa.String(length=128), nullable=True),
-        sa.Column("imageHash", sa.String(length=128), nullable=True),
+        sa.Column("thumbnail_hash", sa.String(length=128), nullable=True),
+        sa.Column("data_hash", sa.String(length=128), nullable=True),
+        sa.Column("image_hash", sa.String(length=128), nullable=True),
         sa.Column("user_id", sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(
             ["user_id"],
@@ -110,8 +105,8 @@ def upgrade():
         sa.Column("public", sa.Boolean(), server_default="0", nullable=True),
         sa.Column("created_time", sa.DateTime(), nullable=True),
         sa.Column("updated_time", sa.DateTime(), nullable=True),
-        sa.Column("thumbnailHash", sa.String(length=128), nullable=True),
-        sa.Column("dataHash", sa.String(length=128), nullable=True),
+        sa.Column("thumbnail_hash", sa.String(length=128), nullable=True),
+        sa.Column("data_hash", sa.String(length=128), nullable=True),
         sa.Column("user_id", sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(
             ["user_id"],
@@ -134,9 +129,9 @@ def upgrade():
         sa.Column("public", sa.Boolean(), server_default="0", nullable=True),
         sa.Column("created_time", sa.DateTime(), nullable=True),
         sa.Column("updated_time", sa.DateTime(), nullable=True),
-        sa.Column("thumbnailHash", sa.String(length=128), nullable=True),
-        sa.Column("dataHash", sa.String(length=128), nullable=True),
-        sa.Column("textureHash", sa.String(length=128), nullable=True),
+        sa.Column("thumbnail_hash", sa.String(length=128), nullable=True),
+        sa.Column("data_hash", sa.String(length=128), nullable=True),
+        sa.Column("texture_hash", sa.String(length=128), nullable=True),
         sa.Column("user_id", sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(
             ["user_id"],
@@ -159,9 +154,9 @@ def upgrade():
         sa.Column("public", sa.Boolean(), server_default="0", nullable=True),
         sa.Column("created_time", sa.DateTime(), nullable=True),
         sa.Column("updated_time", sa.DateTime(), nullable=True),
-        sa.Column("thumbnailHash", sa.String(length=128), nullable=True),
-        sa.Column("dataHash", sa.String(length=128), nullable=True),
-        sa.Column("textureHash", sa.String(length=128), nullable=True),
+        sa.Column("thumbnail_hash", sa.String(length=128), nullable=True),
+        sa.Column("data_hash", sa.String(length=128), nullable=True),
+        sa.Column("texture_hash", sa.String(length=128), nullable=True),
         sa.Column("user_id", sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(
             ["user_id"],
@@ -184,9 +179,9 @@ def upgrade():
         sa.Column("public", sa.Boolean(), server_default="0", nullable=True),
         sa.Column("created_time", sa.DateTime(), nullable=True),
         sa.Column("updated_time", sa.DateTime(), nullable=True),
-        sa.Column("thumbnailHash", sa.String(length=128), nullable=True),
-        sa.Column("dataHash", sa.String(length=128), nullable=True),
-        sa.Column("configurationHash", sa.String(length=128), nullable=True),
+        sa.Column("thumbnail_hash", sa.String(length=128), nullable=True),
+        sa.Column("data_hash", sa.String(length=128), nullable=True),
+        sa.Column("configuration_hash", sa.String(length=128), nullable=True),
         sa.Column("background_id", sa.Integer(), nullable=True),
         sa.Column("effect_id", sa.Integer(), nullable=True),
         sa.Column("particle_id", sa.Integer(), nullable=True),
@@ -233,16 +228,15 @@ def upgrade():
         sa.Column("bpm", sa.Integer(), nullable=True),
         sa.Column("notes", sa.Integer(), nullable=True),
         sa.Column("length", sa.Integer(), nullable=True),
-        sa.Column("coverHash", sa.String(length=128), nullable=True),
-        sa.Column("bgmHash", sa.String(length=128), nullable=True),
-        sa.Column("dataHash", sa.String(length=128), nullable=True),
+        sa.Column("cover_hash", sa.String(length=128), nullable=True),
+        sa.Column("bgm_hash", sa.String(length=128), nullable=True),
+        sa.Column("data_hash", sa.String(length=128), nullable=True),
         sa.Column("engine_id", sa.Integer(), nullable=True),
         sa.Column("background_id", sa.Integer(), nullable=True),
         sa.Column("effect_id", sa.Integer(), nullable=True),
         sa.Column("particle_id", sa.Integer(), nullable=True),
         sa.Column("skin_id", sa.Integer(), nullable=True),
         sa.Column("genre_id", sa.Integer(), nullable=True),
-        sa.Column("pickup_id", sa.Integer(), nullable=True),
         sa.Column("user_id", sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(
             ["background_id"],
@@ -263,10 +257,6 @@ def upgrade():
         sa.ForeignKeyConstraint(
             ["particle_id"],
             ["particles.id"],
-        ),
-        sa.ForeignKeyConstraint(
-            ["pickup_id"],
-            ["pickups.id"],
         ),
         sa.ForeignKeyConstraint(
             ["skin_id"],
@@ -312,11 +302,25 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("id"),
     )
+    op.create_table(
+        "pickups",
+        sa.Column("created_time", sa.DateTime(), nullable=True),
+        sa.Column("updated_time", sa.DateTime(), nullable=True),
+        sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
+        sa.Column("order", sa.Integer(), nullable=True),
+        sa.Column("level_id", sa.Integer(), nullable=True),
+        sa.ForeignKeyConstraint(
+            ["level_id"],
+            ["levels.id"],
+        ),
+        sa.PrimaryKeyConstraint("id"),
+    )
     # ### end Alembic commands ###
 
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
+    op.drop_table("pickups")
     op.drop_table("likes")
     op.drop_table("favorites")
     op.drop_table("levels")
@@ -327,6 +331,5 @@ def downgrade():
     op.drop_table("backgrounds")
     op.drop_table("announces")
     op.drop_table("users")
-    op.drop_table("pickups")
     op.drop_table("genres")
     # ### end Alembic commands ###
