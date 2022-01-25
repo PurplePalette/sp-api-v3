@@ -1,8 +1,8 @@
 # coding: utf-8
 
+from fastapi.testclient import TestClient
 from typing import Dict
 
-from fastapi.testclient import TestClient
 from src.models.get_particle_list_response import GetParticleListResponse  # noqa: F401
 from src.models.get_particle_response import GetParticleResponse  # noqa: F401
 from src.models.particle import Particle  # noqa: F401
@@ -11,7 +11,7 @@ from src.models.particle import Particle  # noqa: F401
 def test_add_particle(client: TestClient) -> None:
     """Test case for add_particle
 
-    Add particle
+    Add a particle
     """
     particle = {
         "updated_time": 0,
@@ -28,7 +28,9 @@ def test_add_particle(client: TestClient) -> None:
         "user_id": "userId",
     }
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "POST",
         "/particles",
@@ -36,31 +38,31 @@ def test_add_particle(client: TestClient) -> None:
         json=particle,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
 def test_delete_particle(client: TestClient) -> None:
     """Test case for delete_particle
 
-    Delete particle
+    Delete a particle
     """
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "DELETE",
         "/particles/{particleName}".format(particleName="particle_name_example"),
         headers=headers,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
 def test_edit_particle(client: TestClient) -> None:
     """Test case for edit_particle
 
-    Edit particle
+    Edit a particle
     """
     particle = {
         "updated_time": 0,
@@ -77,7 +79,9 @@ def test_edit_particle(client: TestClient) -> None:
         "user_id": "userId",
     }
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "PATCH",
         "/particles/{particleName}".format(particleName="particle_name_example"),
@@ -85,14 +89,13 @@ def test_edit_particle(client: TestClient) -> None:
         json=particle,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
 def test_get_particle(client: TestClient) -> None:
     """Test case for get_particle
 
-    Get particle
+    Get a particle
     """
 
     headers: Dict[str, str] = {}
@@ -102,7 +105,6 @@ def test_get_particle(client: TestClient) -> None:
         headers=headers,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
@@ -122,5 +124,4 @@ def test_get_particle_list(client: TestClient) -> None:
         params=params,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500

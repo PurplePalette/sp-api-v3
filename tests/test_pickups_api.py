@@ -10,11 +10,13 @@ from src.models.pickup import Pickup  # noqa: F401
 def test_add_pickup(client: TestClient) -> None:
     """Test case for add_pickup
 
-    Add Pickup
+    Add pickup
     """
     pickup = {"level_name": "levelName", "order": 17207}
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "POST",
         "/pickups",
@@ -22,7 +24,6 @@ def test_add_pickup(client: TestClient) -> None:
         json=pickup,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
@@ -33,7 +34,9 @@ def test_delete_pickup(client: TestClient) -> None:
     """
     pickup = {"level_name": "levelName", "order": 17207}
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "DELETE",
         "/pickups/{pickupName}".format(pickupName="pickup_name_example"),
@@ -41,45 +44,6 @@ def test_delete_pickup(client: TestClient) -> None:
         json=pickup,
     )
 
-    # uncomment below to assert the status code of the HTTP response
-    assert response.status_code != 500
-
-
-def test_get_account_fresh_levels(client: TestClient) -> None:
-    """Test case for get_account_fresh_levels
-
-    Get pickups
-    """
-
-    headers: Dict[str, str] = {}
-    response = client.request(
-        "GET",
-        "/accounts/{accountKey}/levels/fresh-release".format(
-            accountKey="account_key_example"
-        ),
-        headers=headers,
-    )
-
-    # uncomment below to assert the status code of the HTTP response
-    assert response.status_code != 500
-
-
-def test_get_account_pickup_levels(client: TestClient) -> None:
-    """Test case for get_account_pickup_levels
-
-    Get pickups
-    """
-
-    headers: Dict[str, str] = {}
-    response = client.request(
-        "GET",
-        "/accounts/{accountKey}/levels/pickups".format(
-            accountKey="account_key_example"
-        ),
-        headers=headers,
-    )
-
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
@@ -96,5 +60,4 @@ def test_get_pickup(client: TestClient) -> None:
         headers=headers,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500

@@ -1,23 +1,24 @@
 # coding: utf-8
 
+from fastapi.testclient import TestClient
 from typing import Dict
 
-from fastapi.testclient import TestClient
-from src.models.effect import Effect  # noqa: F401
-from src.models.get_effect_list_response import GetEffectListResponse  # noqa: F401
-from src.models.get_effect_response import GetEffectResponse  # noqa: F401
+from src.models.get_skin_list_response import GetSkinListResponse  # noqa: F401
+from src.models.get_skin_response import GetSkinResponse  # noqa: F401
+from src.models.skin import Skin  # noqa: F401
 
 
-def test_add_effect(client: TestClient) -> None:
-    """Test case for add_effect
+def test_add_skin(client: TestClient) -> None:
+    """Test case for add_skin
 
-    Add effect
+    Add a skin
     """
-    effect = {
+    skin = {
         "updated_time": 0,
         "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
         "data": {"type": "LevelData", "hash": "hash", "url": "url"},
         "author": "author",
+        "texture": {"type": "LevelData", "hash": "hash", "url": "url"},
         "subtitle": "subtitle",
         "name": "name",
         "created_time": 0,
@@ -27,45 +28,48 @@ def test_add_effect(client: TestClient) -> None:
         "user_id": "userId",
     }
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "POST",
-        "/effects",
+        "/skins",
         headers=headers,
-        json=effect,
+        json=skin,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
-def test_delete_effect(client: TestClient) -> None:
-    """Test case for delete_effect
+def test_delete_skin(client: TestClient) -> None:
+    """Test case for delete_skin
 
-    Delete effect
+    Delete a skin
     """
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "DELETE",
-        "/effects/{effectName}".format(effectName="effect_name_example"),
+        "/skins/{skinName}".format(skinName="skin_name_example"),
         headers=headers,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
-def test_edit_effect(client: TestClient) -> None:
-    """Test case for edit_effect
+def test_edit_skin(client: TestClient) -> None:
+    """Test case for edit_skin
 
-    Edit effect
+    Edit a skin
     """
-    effect = {
+    skin = {
         "updated_time": 0,
         "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
         "data": {"type": "LevelData", "hash": "hash", "url": "url"},
         "author": "author",
+        "texture": {"type": "LevelData", "hash": "hash", "url": "url"},
         "subtitle": "subtitle",
         "name": "name",
         "created_time": 0,
@@ -75,39 +79,39 @@ def test_edit_effect(client: TestClient) -> None:
         "user_id": "userId",
     }
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "PATCH",
-        "/effects/{effectName}".format(effectName="effect_name_example"),
+        "/skins/{skinName}".format(skinName="skin_name_example"),
         headers=headers,
-        json=effect,
+        json=skin,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
-def test_get_effect(client: TestClient) -> None:
-    """Test case for get_effect
+def test_get_skin(client: TestClient) -> None:
+    """Test case for get_skin
 
-    Get effect
+    Get a skin
     """
 
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/effects/{effectName}".format(effectName="effect_name_example"),
+        "/skins/{skinName}".format(skinName="skin_name_example"),
         headers=headers,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
-def test_get_effect_list(client: TestClient) -> None:
-    """Test case for get_effect_list
+def test_get_skin_list(client: TestClient) -> None:
+    """Test case for get_skin_list
 
-    Get effect list
+    Get skin list
     """
     params: Dict[str, str] = dict(
         [("localization", "en"), ("page", "1"), ("keywords", "Redo")]
@@ -115,10 +119,9 @@ def test_get_effect_list(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/effects/list",
+        "/skins/list",
         headers=headers,
         params=params,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500

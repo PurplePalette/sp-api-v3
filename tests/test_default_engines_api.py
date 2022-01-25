@@ -1,8 +1,8 @@
 # coding: utf-8
 
+from fastapi.testclient import TestClient
 from typing import Dict
 
-from fastapi.testclient import TestClient
 from src.models.engine import Engine  # noqa: F401
 from src.models.get_engine_list_response import GetEngineListResponse  # noqa: F401
 from src.models.get_engine_response import GetEngineResponse  # noqa: F401
@@ -11,7 +11,7 @@ from src.models.get_engine_response import GetEngineResponse  # noqa: F401
 def test_add_engine(client: TestClient) -> None:
     """Test case for add_engine
 
-    Add engine
+    Add an engine
     """
     engine = {
         "updated_time": 0,
@@ -83,7 +83,9 @@ def test_add_engine(client: TestClient) -> None:
         },
     }
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "POST",
         "/engines",
@@ -91,31 +93,31 @@ def test_add_engine(client: TestClient) -> None:
         json=engine,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
 def test_delete_engine(client: TestClient) -> None:
     """Test case for delete_engine
 
-    Delete Engine
+    Delete an engine
     """
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "DELETE",
         "/engines/{engineName}".format(engineName="engine_name_example"),
         headers=headers,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
 def test_edit_engine(client: TestClient) -> None:
     """Test case for edit_engine
 
-    Edit engine
+    Edit an engine
     """
     engine = {
         "updated_time": 0,
@@ -187,7 +189,9 @@ def test_edit_engine(client: TestClient) -> None:
         },
     }
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "PATCH",
         "/engines/{engineName}".format(engineName="engine_name_example"),
@@ -195,14 +199,13 @@ def test_edit_engine(client: TestClient) -> None:
         json=engine,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
 def test_get_engine(client: TestClient) -> None:
     """Test case for get_engine
 
-    Get engine
+    Get an engine
     """
 
     headers: Dict[str, str] = {}
@@ -212,7 +215,6 @@ def test_get_engine(client: TestClient) -> None:
         headers=headers,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
@@ -232,5 +234,4 @@ def test_get_engine_list(client: TestClient) -> None:
         params=params,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500

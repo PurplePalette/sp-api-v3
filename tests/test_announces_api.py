@@ -7,8 +7,6 @@ from src.models.announce import Announce  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse  # noqa: F401
 from src.models.get_level_response import GetLevelResponse  # noqa: F401
 
-headers: Dict[str, str] = {"Authorization": "Bearer test"}
-
 
 def test_add_announce(client: TestClient) -> None:
     """Test case for add_announce
@@ -23,14 +21,18 @@ def test_add_announce(client: TestClient) -> None:
         "body": "body",
         "announce_name": "announceName",
     }
+
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "POST",
         "/announces",
         headers=headers,
         json=announce,
     )
-    # uncomment below to assert the status code of the HTTP response
-    assert response.status_code == 200
+
+    assert response.status_code != 500
 
 
 def test_delete_announce(client: TestClient) -> None:
@@ -39,14 +41,15 @@ def test_delete_announce(client: TestClient) -> None:
     Delete announce
     """
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "DELETE",
         "/announces/{announceName}".format(announceName="announce_name_example"),
         headers=headers,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
@@ -64,7 +67,9 @@ def test_edit_announce(client: TestClient) -> None:
         "announce_name": "announceName",
     }
 
-    headers: Dict[str, str] = {}
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
     response = client.request(
         "PATCH",
         "/announces/{announceName}".format(announceName="announce_name_example"),
@@ -72,12 +77,11 @@ def test_edit_announce(client: TestClient) -> None:
         json=announce,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
-def test_get_announce(client: TestClient) -> None:
-    """Test case for get_announce
+def test_get_default_announce(client: TestClient) -> None:
+    """Test case for get_default_announce
 
     Get announce
     """
@@ -89,12 +93,11 @@ def test_get_announce(client: TestClient) -> None:
         headers=headers,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
-def test_get_announces(client: TestClient) -> None:
-    """Test case for get_announces
+def test_get_default_announces(client: TestClient) -> None:
+    """Test case for get_default_announces
 
     Get announce list
     """
@@ -106,7 +109,6 @@ def test_get_announces(client: TestClient) -> None:
         headers=headers,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
 
 
@@ -123,5 +125,4 @@ def test_get_pickup_list(client: TestClient) -> None:
         headers=headers,
     )
 
-    # uncomment below to assert the status code of the HTTP response
     assert response.status_code != 500
