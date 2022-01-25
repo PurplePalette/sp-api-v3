@@ -1,9 +1,9 @@
 # coding: utf-8
 
 from __future__ import annotations
+from datetime import date, datetime  # noqa: F401
 
 import re  # noqa: F401
-from datetime import date, datetime  # noqa: F401
 from typing import Any, Dict, List, Optional  # noqa: F401
 
 from pydantic import AnyUrl, BaseModel, EmailStr, validator  # noqa: F401
@@ -35,15 +35,19 @@ class Level(BaseModel):
         author: The author of this Level [Optional].
         cover: The cover of this Level [Optional].
         bgm: The bgm of this Level [Optional].
+        preview: The preview of this Level [Optional].
         data: The data of this Level [Optional].
         genre: The genre of this Level [Optional].
         public: The public of this Level [Optional].
         user_id: The user_id of this Level [Optional].
-        notes: The notes of this Level [Optional].
         created_time: The created_time of this Level [Optional].
         updated_time: The updated_time of this Level [Optional].
         description: The description of this Level [Optional].
         length: The length of this Level [Optional].
+        bpm: The bpm of this Level [Optional].
+        notes: The notes of this Level [Optional].
+        likes: The likes of this Level [Optional].
+        mylists: The mylists of this Level [Optional].
     """
 
     name: Optional[str] = None
@@ -59,15 +63,19 @@ class Level(BaseModel):
     author: Optional[str] = None
     cover: Optional[SonolusResourceLocator] = None
     bgm: Optional[SonolusResourceLocator] = None
+    preview: Optional[SonolusResourceLocator] = None
     data: Optional[SonolusResourceLocator] = None
-    genre: Optional[str] = None
+    genre: Optional[List[str]] = None
     public: Optional[bool] = None
     user_id: Optional[str] = None
-    notes: Optional[int] = None
     created_time: Optional[int] = None
     updated_time: Optional[int] = None
     description: Optional[str] = None
     length: Optional[int] = None
+    bpm: Optional[int] = None
+    notes: Optional[int] = None
+    likes: Optional[int] = None
+    mylists: Optional[int] = None
 
     @validator("name")
     def name_min_length(cls, value):
@@ -129,16 +137,6 @@ class Level(BaseModel):
         assert len(value) <= 50
         return value
 
-    @validator("genre")
-    def genre_min_length(cls, value):
-        assert len(value) >= 1
-        return value
-
-    @validator("genre")
-    def genre_max_length(cls, value):
-        assert len(value) <= 20
-        return value
-
     @validator("user_id")
     def user_id_min_length(cls, value):
         assert len(value) >= 1
@@ -147,16 +145,6 @@ class Level(BaseModel):
     @validator("user_id")
     def user_id_max_length(cls, value):
         assert len(value) <= 100
-        return value
-
-    @validator("notes")
-    def notes_max(cls, value):
-        assert value <= 10000000
-        return value
-
-    @validator("notes")
-    def notes_min(cls, value):
-        assert value >= 1
         return value
 
     @validator("created_time")
@@ -186,6 +174,46 @@ class Level(BaseModel):
 
     @validator("length")
     def length_min(cls, value):
+        assert value >= 0
+        return value
+
+    @validator("bpm")
+    def bpm_max(cls, value):
+        assert value <= 10000
+        return value
+
+    @validator("bpm")
+    def bpm_min(cls, value):
+        assert value >= 0
+        return value
+
+    @validator("notes")
+    def notes_max(cls, value):
+        assert value <= 10000000
+        return value
+
+    @validator("notes")
+    def notes_min(cls, value):
+        assert value >= 1
+        return value
+
+    @validator("likes")
+    def likes_max(cls, value):
+        assert value <= 10000000
+        return value
+
+    @validator("likes")
+    def likes_min(cls, value):
+        assert value >= 0
+        return value
+
+    @validator("mylists")
+    def mylists_max(cls, value):
+        assert value <= 10000000
+        return value
+
+    @validator("mylists")
+    def mylists_min(cls, value):
         assert value >= 0
         return value
 

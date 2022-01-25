@@ -1,12 +1,13 @@
 # coding: utf-8
 
 from __future__ import annotations
+from datetime import date, datetime  # noqa: F401
 
 import re  # noqa: F401
-from datetime import date, datetime  # noqa: F401
 from typing import Any, Dict, List, Optional  # noqa: F401
 
 from pydantic import AnyUrl, BaseModel, EmailStr, validator  # noqa: F401
+from src.models.user_total import UserTotal
 
 
 class User(BaseModel):
@@ -18,26 +19,24 @@ class User(BaseModel):
 
         user_id: The user_id of this User [Optional].
         test_id: The test_id of this User [Optional].
-        is_admin: The is_admin of this User [Optional].
-        is_deleted: The is_deleted of this User [Optional].
+        account_key: The account_key of this User [Optional].
+        description: The description of this User [Optional].
         created_time: The created_time of this User [Optional].
         updated_time: The updated_time of this User [Optional].
-        description: The description of this User [Optional].
-        total_fumen: The total_fumen of this User [Optional].
-        total_likes: The total_likes of this User [Optional].
-        total_played: The total_played of this User [Optional].
+        total: The total of this User [Optional].
+        is_admin: The is_admin of this User [Optional].
+        is_deleted: The is_deleted of this User [Optional].
     """
 
     user_id: Optional[str] = None
     test_id: Optional[str] = None
-    is_admin: Optional[bool] = None
-    is_deleted: Optional[bool] = None
+    account_key: Optional[str] = None
+    description: Optional[str] = None
     created_time: Optional[int] = None
     updated_time: Optional[int] = None
-    description: Optional[str] = None
-    total_fumen: Optional[int] = None
-    total_likes: Optional[int] = None
-    total_played: Optional[int] = None
+    total: Optional[UserTotal] = None
+    is_admin: Optional[bool] = None
+    is_deleted: Optional[bool] = None
 
     @validator("user_id")
     def user_id_min_length(cls, value):
@@ -59,16 +58,6 @@ class User(BaseModel):
         assert len(value) <= 8
         return value
 
-    @validator("created_time")
-    def created_time_min(cls, value):
-        assert value >= 0
-        return value
-
-    @validator("updated_time")
-    def updated_time_min(cls, value):
-        assert value >= 0
-        return value
-
     @validator("description")
     def description_min_length(cls, value):
         assert len(value) >= 1
@@ -79,33 +68,13 @@ class User(BaseModel):
         assert len(value) <= 3000
         return value
 
-    @validator("total_fumen")
-    def total_fumen_max(cls, value):
-        assert value <= 1000000
-        return value
-
-    @validator("total_fumen")
-    def total_fumen_min(cls, value):
+    @validator("created_time")
+    def created_time_min(cls, value):
         assert value >= 0
         return value
 
-    @validator("total_likes")
-    def total_likes_max(cls, value):
-        assert value <= 1000000
-        return value
-
-    @validator("total_likes")
-    def total_likes_min(cls, value):
-        assert value >= 0
-        return value
-
-    @validator("total_played")
-    def total_played_max(cls, value):
-        assert value <= 1000000
-        return value
-
-    @validator("total_played")
-    def total_played_min(cls, value):
+    @validator("updated_time")
+    def updated_time_min(cls, value):
         assert value >= 0
         return value
 
