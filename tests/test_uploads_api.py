@@ -1,7 +1,5 @@
 # coding: utf-8
 
-from typing import Dict
-
 from fastapi.testclient import TestClient
 from src.models.post_upload_response import PostUploadResponse  # noqa: F401
 
