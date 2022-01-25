@@ -29,5 +29,6 @@ class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     genre = relationship("Genre", back_populates="levels")
     likes = relationship("Like", back_populates="level")
     favorites = relationship("Favorite", back_populates="level")
+    votes = relationship("Vote", back_populates="level")
     pickup = relationship("Pickup", back_populates="level", uselist=False)
     user = relationship("User", back_populates="levels", uselist=False)

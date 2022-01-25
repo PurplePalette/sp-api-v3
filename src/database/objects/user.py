@@ -11,6 +11,7 @@ class User(Base, TimeMixin):  # type: ignore
     id = Column(Integer, primary_key=True, autoincrement=True)
     display_id = Column(String(128), unique=True)
     test_id = Column(String(128), unique=True)
+    account_id = Column(String(128), unique=True)
     is_admin = Column(Boolean, default=False, server_default="0")
     is_deleted = Column(Boolean, default=False, server_default="0")
     backgrounds = relationship("Background", back_populates="user")
@@ -22,3 +23,5 @@ class User(Base, TimeMixin):  # type: ignore
     likes = relationship("Like", back_populates="user")
     favorites = relationship("Favorite", back_populates="user")
     announces = relationship("Announce", back_populates="user")
+    votes = relationship("Vote", back_populates="user")
+    logs = relationship("Log", back_populates="user")
