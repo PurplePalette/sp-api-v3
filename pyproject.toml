@@ -15,6 +15,7 @@ SQLAlchemy = "1.4.31"
 aiomysql = "^0.0.22"
 alembic = "^1.7.5"
 fastapi-cloudauth = "^0.4.3"
+python-multipart = "^0.0.5"
 
 [tool.poetry.dev-dependencies]
 pysen = {version = "0.10.1", extras = ["lint"]}
