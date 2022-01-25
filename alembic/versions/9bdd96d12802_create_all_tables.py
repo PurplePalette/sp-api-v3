@@ -1,7 +1,7 @@
 """create all tables
 
 Revision ID: 9bdd96d12802
-Revises: 
+Revises:
 Create Date: 2022-01-25 09:30:38.463924
 
 """
