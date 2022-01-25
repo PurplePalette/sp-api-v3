@@ -15,12 +15,16 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-from src.apis.defaults import (
-    defaultBody,
-    defaultKeywords,
-    defaultLocalization,
-    defaultPage,
-    defaultPath,
+from fastapi_cloudauth.firebase import FirebaseClaims
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.apis.depends import (
+    dependsBody,
+    dependsDatabase,
+    dependsFirebase,
+    dependsKeywords,
+    dependsLocalization,
+    dependsPage,
+    dependsPath,
 )
 from src.models.engine import Engine
 from src.models.extra_models import TokenModel  # noqa: F401
@@ -38,11 +42,13 @@ router = APIRouter()
         401: {"description": "Unauthorized"},
         409: {"description": "Conflict"},
     },
-    tags=["engines"],
-    summary="Add engine",
+    tags=["default_engines"],
+    summary="Add an engine",
 )
 async def add_engine(
-    engine: Engine = defaultBody,
+    engine: Engine = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたゲームエンジンをサーバーに登録します"""
     ...
@@ -53,11 +59,13 @@ async def add_engine(
     responses={
         200: {"description": "OK"},
     },
-    tags=["engines"],
-    summary="Delete Engine",
+    tags=["default_engines"],
+    summary="Delete an engine",
 )
 async def delete_engine(
-    engineName: str = defaultPath,
+    engineName: str = dependsPath,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """delete a engine"""
     ...
@@ -72,12 +80,14 @@ async def delete_engine(
         403: {"description": "Forbidden"},
         404: {"description": "Not Found"},
     },
-    tags=["engines"],
-    summary="Edit engine",
+    tags=["default_engines"],
+    summary="Edit an engine",
 )
 async def edit_engine(
-    engineName: str = defaultPath,
-    engine: Engine = defaultBody,
+    engineName: str = dependsPath,
+    engine: Engine = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたengineを編集します"""
     ...
@@ -89,11 +99,11 @@ async def edit_engine(
         200: {"model": GetEngineResponse, "description": "OK"},
         404: {"description": "Not Found"},
     },
-    tags=["engines"],
-    summary="Get engine",
+    tags=["default_engines"],
+    summary="Get an engine",
 )
 async def get_engine(
-    engineName: str = defaultPath,
+    engineName: str = dependsPath,
 ) -> GetEngineResponse:
     """It returns specified engine info.
     It will raise 404 if the engine is not registered in this server"""
@@ -105,13 +115,13 @@ async def get_engine(
     responses={
         200: {"model": GetEngineListResponse, "description": "OK"},
     },
-    tags=["engines"],
+    tags=["default_engines"],
     summary="Get engine list",
 )
 async def get_engine_list(
-    localization: str = defaultLocalization,
-    page: int = defaultPage,
-    keywords: str = defaultKeywords,
+    localization: str = dependsLocalization,
+    page: int = dependsPage,
+    keywords: str = dependsKeywords,
 ) -> GetEngineListResponse:
     """It returns list of engine infos registered in this server.
     Also it can search using query params"""

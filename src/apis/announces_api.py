@@ -17,19 +17,14 @@ from fastapi import (  # noqa: F401
 )
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.apis.defaults import defaultBody, defaultPath
+from src.apis.depends import dependsBody, dependsDatabase, dependsFirebase, dependsPath
 from src.cruds.announce import create_announce
-from src.database.db import get_db
 from src.models.announce import Announce
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
-from src.security_api import get_current_user
 
 router = APIRouter()
-
-dependsDatabase = Depends(get_db)
-dependsFirebase = Depends(get_current_user)
 
 
 @router.post(
@@ -41,7 +36,7 @@ dependsFirebase = Depends(get_current_user)
     summary="Add announce",
 )
 async def add_announce(
-    announce: Announce = defaultBody,
+    announce: Announce = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> Announce:
@@ -58,7 +53,9 @@ async def add_announce(
     summary="Delete announce",
 )
 async def delete_announce(
-    announceName: str = defaultPath,
+    announceName: str = dependsPath,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたアナウンスを削除します"""
     ...
@@ -73,8 +70,10 @@ async def delete_announce(
     summary="Edit announce",
 )
 async def edit_announce(
-    announceName: str = defaultPath,
-    announce: Announce = defaultBody,
+    announceName: str = dependsPath,
+    announce: Announce = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定したアナウンスを編集します"""
     ...
@@ -88,8 +87,8 @@ async def edit_announce(
     tags=["announces"],
     summary="Get announce",
 )
-async def get_announce(
-    announceName: str = defaultPath,
+async def get_default_announce(
+    announceName: str = dependsPath,
 ) -> GetLevelResponse:
     """指定されたアナウンスデータを返す"""
     ...
@@ -103,7 +102,7 @@ async def get_announce(
     tags=["announces"],
     summary="Get announce list",
 )
-async def get_announces() -> GetLevelListResponse:
+async def get_default_announces() -> GetLevelListResponse:
     """アナウンス中のデータ一覧を返す"""
     ...
 

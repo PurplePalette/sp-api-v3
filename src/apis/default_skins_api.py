@@ -15,12 +15,16 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-from src.apis.defaults import (
-    defaultBody,
-    defaultKeywords,
-    defaultLocalization,
-    defaultPage,
-    defaultPath,
+from fastapi_cloudauth.firebase import FirebaseClaims
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.apis.depends import (
+    dependsBody,
+    dependsDatabase,
+    dependsFirebase,
+    dependsKeywords,
+    dependsLocalization,
+    dependsPage,
+    dependsPath,
 )
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_skin_list_response import GetSkinListResponse
@@ -38,11 +42,13 @@ router = APIRouter()
         401: {"description": "Unauthorized"},
         409: {"description": "Conflict"},
     },
-    tags=["skins"],
-    summary="Add skin",
+    tags=["default_skins"],
+    summary="Add a skin",
 )
 async def add_skin(
-    skin: Skin = defaultBody,
+    skin: Skin = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたスキン情報をサーバーに登録します"""
     ...
@@ -53,11 +59,13 @@ async def add_skin(
     responses={
         200: {"description": "OK"},
     },
-    tags=["skins"],
-    summary="Delete skin",
+    tags=["default_skins"],
+    summary="Delete a skin",
 )
 async def delete_skin(
-    skinName: str = defaultPath,
+    skinName: str = dependsPath,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたスキンを削除します"""
     ...
@@ -72,12 +80,14 @@ async def delete_skin(
         403: {"description": "Forbidden"},
         404: {"description": "Not Found"},
     },
-    tags=["skins"],
-    summary="Edit skin",
+    tags=["default_skins"],
+    summary="Edit a skin",
 )
 async def edit_skin(
-    skinName: str = defaultPath,
-    skin: Skin = defaultBody,
+    skinName: str = dependsPath,
+    skin: Skin = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定したskinを編集します"""
     ...
@@ -89,11 +99,11 @@ async def edit_skin(
         200: {"model": GetSkinResponse, "description": "OK"},
         404: {"description": "Not Found"},
     },
-    tags=["skins"],
-    summary="Get skin",
+    tags=["default_skins"],
+    summary="Get a skin",
 )
 async def get_skin(
-    skinName: str = defaultPath,
+    skinName: str = dependsPath,
 ) -> GetSkinResponse:
     """It returns specified skin info.
     It will raise 404 if the skin is not registered in this server"""
@@ -105,13 +115,13 @@ async def get_skin(
     responses={
         200: {"model": GetSkinListResponse, "description": "OK"},
     },
-    tags=["skins"],
+    tags=["default_skins"],
     summary="Get skin list",
 )
 async def get_skin_list(
-    localization: str = defaultLocalization,
-    page: int = defaultPage,
-    keywords: str = defaultKeywords,
+    localization: str = dependsLocalization,
+    page: int = dependsPage,
+    keywords: str = dependsKeywords,
 ) -> GetSkinListResponse:
     """It returns list of skin infos registered in this server.
     Also it can search using query params"""

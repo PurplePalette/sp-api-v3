@@ -15,12 +15,16 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-from src.apis.defaults import (
-    defaultBody,
-    defaultKeywords,
-    defaultLocalization,
-    defaultPage,
-    defaultPath,
+from fastapi_cloudauth.firebase import FirebaseClaims
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.apis.depends import (
+    dependsBody,
+    dependsDatabase,
+    dependsFirebase,
+    dependsKeywords,
+    dependsLocalization,
+    dependsPage,
+    dependsPath,
 )
 from src.models.effect import Effect
 from src.models.extra_models import TokenModel  # noqa: F401
@@ -38,11 +42,13 @@ router = APIRouter()
         401: {"description": "Unauthorized"},
         409: {"description": "Conflict"},
     },
-    tags=["effects"],
-    summary="Add effect",
+    tags=["default_effects"],
+    summary="Add an effect",
 )
 async def add_effect(
-    effect: Effect = defaultBody,
+    effect: Effect = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたeffectをサーバーに登録します"""
     ...
@@ -53,11 +59,13 @@ async def add_effect(
     responses={
         200: {"description": "OK"},
     },
-    tags=["effects"],
-    summary="Delete effect",
+    tags=["default_effects"],
+    summary="Delete an effect",
 )
 async def delete_effect(
-    effectName: str = defaultPath,
+    effectName: str = dependsPath,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """delete specified effect"""
     ...
@@ -72,12 +80,14 @@ async def delete_effect(
         403: {"description": "Forbidden"},
         404: {"description": "Not Found"},
     },
-    tags=["effects"],
-    summary="Edit effect",
+    tags=["default_effects"],
+    summary="Edit an effect",
 )
 async def edit_effect(
-    effectName: str = defaultPath,
-    effect: Effect = defaultBody,
+    effectName: str = dependsPath,
+    effect: Effect = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたeffectを編集します"""
     ...
@@ -89,11 +99,11 @@ async def edit_effect(
         200: {"model": GetEffectResponse, "description": "OK"},
         404: {"description": "Not Found"},
     },
-    tags=["effects"],
-    summary="Get effect",
+    tags=["default_effects"],
+    summary="Get an effect",
 )
 async def get_effect(
-    effectName: str = defaultPath,
+    effectName: str = dependsPath,
 ) -> GetEffectResponse:
     """It returns specified effect info.
     It will raise 404 if the effect is not registered in this server"""
@@ -105,13 +115,13 @@ async def get_effect(
     responses={
         200: {"model": GetEffectListResponse, "description": "OK"},
     },
-    tags=["effects"],
+    tags=["default_effects"],
     summary="Get effect list",
 )
 async def get_effect_list(
-    localization: str = defaultLocalization,
-    page: int = defaultPage,
-    keywords: str = defaultKeywords,
+    localization: str = dependsLocalization,
+    page: int = dependsPage,
+    keywords: str = dependsKeywords,
 ) -> GetEffectListResponse:
     """It returns list of effect infos registered in this server.
     Also it can search using query params"""

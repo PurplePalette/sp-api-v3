@@ -15,12 +15,16 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-from src.apis.defaults import (
-    defaultBody,
-    defaultKeywords,
-    defaultLocalization,
-    defaultPage,
-    defaultPath,
+from fastapi_cloudauth.firebase import FirebaseClaims
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.apis.depends import (
+    dependsBody,
+    dependsDatabase,
+    dependsFirebase,
+    dependsKeywords,
+    dependsLocalization,
+    dependsPage,
+    dependsPath,
 )
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_particle_list_response import GetParticleListResponse
@@ -38,11 +42,13 @@ router = APIRouter()
         401: {"description": "Unauthorized"},
         409: {"description": "Conflict"},
     },
-    tags=["particles"],
-    summary="Add particle",
+    tags=["default_particles"],
+    summary="Add a particle",
 )
 async def add_particle(
-    particle: Particle = defaultBody,
+    particle: Particle = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたパーティクル情報をサーバーに登録します"""
     ...
@@ -53,11 +59,13 @@ async def add_particle(
     responses={
         200: {"description": "OK"},
     },
-    tags=["particles"],
-    summary="Delete particle",
+    tags=["default_particles"],
+    summary="Delete a particle",
 )
 async def delete_particle(
-    particleName: str = defaultPath,
+    particleName: str = dependsPath,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたパーティクルを削除する"""
     ...
@@ -72,12 +80,14 @@ async def delete_particle(
         403: {"description": "Forbidden"},
         404: {"description": "Not Found"},
     },
-    tags=["particles"],
-    summary="Edit particle",
+    tags=["default_particles"],
+    summary="Edit a particle",
 )
 async def edit_particle(
-    particleName: str = defaultPath,
-    particle: Particle = defaultBody,
+    particleName: str = dependsPath,
+    particle: Particle = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定したparticleを編集します"""
     ...
@@ -89,11 +99,11 @@ async def edit_particle(
         200: {"model": GetParticleResponse, "description": "OK"},
         404: {"description": "Not Found"},
     },
-    tags=["particles"],
-    summary="Get particle",
+    tags=["default_particles"],
+    summary="Get a particle",
 )
 async def get_particle(
-    particleName: str = defaultPath,
+    particleName: str = dependsPath,
 ) -> GetParticleResponse:
     """It returns specified particle info.
     It will raise 404 if the particle is not registered in this server"""
@@ -105,13 +115,13 @@ async def get_particle(
     responses={
         200: {"model": GetParticleListResponse, "description": "OK"},
     },
-    tags=["particles"],
+    tags=["default_particles"],
     summary="Get particle list",
 )
 async def get_particle_list(
-    localization: str = defaultLocalization,
-    page: int = defaultPage,
-    keywords: str = defaultKeywords,
+    localization: str = dependsLocalization,
+    page: int = dependsPage,
+    keywords: str = dependsKeywords,
 ) -> GetParticleListResponse:
     """It returns list of particle infos registered in this server.
     Also it can search using query params"""

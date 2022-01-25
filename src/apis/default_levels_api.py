@@ -15,12 +15,16 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-from src.apis.defaults import (
-    defaultBody,
-    defaultKeywords,
-    defaultLocalization,
-    defaultPage,
-    defaultPath,
+from fastapi_cloudauth.firebase import FirebaseClaims
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.apis.depends import (
+    dependsBody,
+    dependsDatabase,
+    dependsFirebase,
+    dependsKeywords,
+    dependsLocalization,
+    dependsPage,
+    dependsPath,
 )
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse
@@ -38,11 +42,13 @@ router = APIRouter()
         401: {"description": "Unauthorized"},
         409: {"description": "Conflict"},
     },
-    tags=["levels"],
-    summary="Add level",
+    tags=["default_levels"],
+    summary="Add a level",
 )
 async def add_level(
-    level: Level = defaultBody,
+    level: Level = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定された譜面情報をサーバーに登録します"""
     ...
@@ -53,11 +59,13 @@ async def add_level(
     responses={
         200: {"description": "OK"},
     },
-    tags=["levels"],
+    tags=["default_levels"],
     summary="Delete a level",
 )
 async def delete_level(
-    levelName: str = defaultPath,
+    levelName: str = dependsPath,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたレベルを削除します"""
     ...
@@ -72,12 +80,14 @@ async def delete_level(
         403: {"description": "Forbidden"},
         404: {"description": "Not Found"},
     },
-    tags=["levels"],
-    summary="Edit level",
+    tags=["default_levels"],
+    summary="Edit a level",
 )
 async def edit_level(
-    levelName: str = defaultPath,
-    level: Level = defaultBody,
+    levelName: str = dependsPath,
+    level: Level = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたlevelを編集します"""
     ...
@@ -89,11 +99,11 @@ async def edit_level(
         200: {"model": GetLevelResponse, "description": "OK"},
         404: {"description": "Not Found"},
     },
-    tags=["levels"],
-    summary="Get level",
+    tags=["default_levels"],
+    summary="Get a level",
 )
 async def get_level(
-    levelName: str = defaultPath,
+    levelName: str = dependsPath,
 ) -> GetLevelResponse:
     """It returns specified level info.
     It will raise 404 if the level is not registered in this server"""
@@ -105,13 +115,13 @@ async def get_level(
     responses={
         200: {"model": GetLevelListResponse, "description": "OK"},
     },
-    tags=["levels"],
+    tags=["default_levels"],
     summary="Get level list",
 )
 async def get_level_list(
-    localization: str = defaultLocalization,
-    page: int = defaultPage,
-    keywords: str = defaultKeywords,
+    localization: str = dependsLocalization,
+    page: int = dependsPage,
+    keywords: str = dependsKeywords,
 ) -> GetLevelListResponse:
     """It returns list of level infos registered in this server.
     Also it can search using query params"""

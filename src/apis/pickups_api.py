@@ -15,7 +15,9 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-from src.apis.defaults import defaultBody, defaultPath
+from fastapi_cloudauth.firebase import FirebaseClaims
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.apis.depends import dependsBody, dependsDatabase, dependsFirebase, dependsPath
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_response import GetLevelResponse
 from src.models.pickup import Pickup
@@ -29,10 +31,12 @@ router = APIRouter()
         200: {"description": "OK"},
     },
     tags=["pickups"],
-    summary="Add Pickup",
+    summary="Add pickup",
 )
 async def add_pickup(
-    pickup: Pickup = defaultBody,
+    pickup: Pickup = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """譜面のピックアップを追加します"""
     ...
@@ -47,40 +51,12 @@ async def add_pickup(
     summary="Delete pickup",
 )
 async def delete_pickup(
-    pickupName: str = defaultPath,
-    pickup: Pickup = defaultBody,
+    pickupName: str = dependsPath,
+    pickup: Pickup = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定したピックアップを削除します"""
-    ...
-
-
-@router.get(
-    "/accounts/{accountKey}/levels/fresh-release",
-    responses={
-        200: {"model": GetLevelResponse, "description": "OK"},
-    },
-    tags=["pickups"],
-    summary="Get pickups",
-)
-async def get_account_fresh_levels(
-    accountKey: str = defaultPath,
-) -> GetLevelResponse:
-    """新規譜面作者の譜面のみを返すエンドポイント"""
-    ...
-
-
-@router.get(
-    "/accounts/{accountKey}/levels/pickups",
-    responses={
-        200: {"model": GetLevelResponse, "description": "OK"},
-    },
-    tags=["pickups"],
-    summary="Get pickups",
-)
-async def get_account_pickup_levels(
-    accountKey: str = defaultPath,
-) -> GetLevelResponse:
-    """管理者の指定したおすすめ譜面などを返すエンドポイント"""
     ...
 
 
@@ -93,7 +69,7 @@ async def get_account_pickup_levels(
     summary="Get pickup",
 )
 async def get_pickup(
-    pickupName: str = defaultPath,
+    pickupName: str = dependsPath,
 ) -> GetLevelResponse:
     """指定されたIDのピックアップを取得して返す"""
     ...

@@ -15,12 +15,16 @@ from fastapi import (  # noqa: F401
     Security,
     status,
 )
-from src.apis.defaults import (
-    defaultBody,
-    defaultKeywords,
-    defaultLocalization,
-    defaultPage,
-    defaultPath,
+from fastapi_cloudauth.firebase import FirebaseClaims
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.apis.depends import (
+    dependsBody,
+    dependsDatabase,
+    dependsFirebase,
+    dependsKeywords,
+    dependsLocalization,
+    dependsPage,
+    dependsPath,
 )
 from src.models.background import Background
 from src.models.extra_models import TokenModel  # noqa: F401
@@ -38,11 +42,13 @@ router = APIRouter()
         401: {"description": "Unauthorized"},
         409: {"description": "Conflict"},
     },
-    tags=["backgrounds"],
-    summary="Add background",
+    tags=["default_backgrounds"],
+    summary="Add a background",
 )
 async def add_background(
-    background: Background = defaultBody,
+    background: Background = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定された背景情報をサーバーに登録します"""
     ...
@@ -53,11 +59,13 @@ async def add_background(
     responses={
         200: {"description": "OK"},
     },
-    tags=["backgrounds"],
-    summary="Delete background",
+    tags=["default_backgrounds"],
+    summary="Delete a background",
 )
 async def delete_background(
-    backgroundName: str = defaultPath,
+    backgroundName: str = dependsPath,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """Delete specified background"""
     ...
@@ -72,12 +80,14 @@ async def delete_background(
         403: {"description": "Forbidden"},
         404: {"description": "Not Found"},
     },
-    tags=["backgrounds"],
-    summary="Edit background",
+    tags=["default_backgrounds"],
+    summary="Edit a background",
 )
 async def edit_background(
-    backgroundName: str = defaultPath,
-    background: Background = defaultBody,
+    backgroundName: str = dependsPath,
+    background: Background = dependsBody,
+    db: AsyncSession = dependsDatabase,
+    user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定された背景情報を編集します"""
     ...
@@ -89,11 +99,11 @@ async def edit_background(
         200: {"model": GetBackgroundResponse, "description": "OK"},
         404: {"description": "Not Found"},
     },
-    tags=["backgrounds"],
-    summary="Get background",
+    tags=["default_backgrounds"],
+    summary="Get a background",
 )
 async def get_background(
-    backgroundName: str = defaultPath,
+    backgroundName: str = dependsPath,
 ) -> GetBackgroundResponse:
     """It returns specified background info.
     It will raise 404 if the background is not registered in this server"""
@@ -105,13 +115,13 @@ async def get_background(
     responses={
         200: {"model": GetBackgroundListResponse, "description": "OK"},
     },
-    tags=["backgrounds"],
+    tags=["default_backgrounds"],
     summary="Get background list",
 )
 async def get_background_list(
-    localization: str = defaultLocalization,
-    page: int = defaultPage,
-    keywords: str = defaultKeywords,
+    localization: str = dependsLocalization,
+    page: int = dependsPage,
+    keywords: str = dependsKeywords,
 ) -> GetBackgroundListResponse:
     """It returns list of background infos registered in this server.
     Also it can search using query params"""
