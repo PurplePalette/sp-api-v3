@@ -4,11 +4,18 @@
     },
     "python.formatting.provider": "black",
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
-    "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
+    "python.pythonPath": "${workspaceFolder}/.venv/Scripts/python",
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": true,
     "python.linting.flake8Args": ["--config=${workspaceFolder}/.config/flake8"],
-    "python.linting.mypyEnabled": false,
+    "python.linting.mypyEnabled": true,
     "python.linting.lintOnSave": true,
-    "python.languageServer": "Pylance"
+    "python.languageServer": "Pylance",
+    "cSpell.words": [
+        "dotenv"
+    ],
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.pytestEnabled": true
 }
