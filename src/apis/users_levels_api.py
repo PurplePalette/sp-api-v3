@@ -64,6 +64,7 @@ async def get_users_level(
     "/users/{userId}/levels/list",
     responses={
         200: {"model": GetLevelListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["users_levels"],
     summary="Get users level list",

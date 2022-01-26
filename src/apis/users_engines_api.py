@@ -55,6 +55,7 @@ async def get_users_engine(
     "/users/{userId}/engines/list",
     responses={
         200: {"model": GetEngineListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["users_engines"],
     summary="Get users engine list",

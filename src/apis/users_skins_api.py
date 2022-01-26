@@ -55,6 +55,7 @@ async def get_users_skin(
     "/users/{userId}/skins/list",
     responses={
         200: {"model": GetSkinListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["users_skins"],
     summary="Get users skin list",

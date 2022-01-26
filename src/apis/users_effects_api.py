@@ -55,6 +55,7 @@ async def get_users_effect(
     "/users/{userId}/effects/list",
     responses={
         200: {"model": GetEffectListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["users_effects"],
     summary="Get users effect list",

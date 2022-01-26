@@ -55,6 +55,7 @@ async def get_users_background(
     "/users/{userId}/backgrounds/list",
     responses={
         200: {"model": GetBackgroundListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["users_backgrounds"],
     summary="Get users background list",

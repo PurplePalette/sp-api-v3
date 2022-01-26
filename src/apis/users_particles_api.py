@@ -55,6 +55,7 @@ async def get_users_particle(
     "/users/{userId}/particles/list",
     responses={
         200: {"model": GetParticleListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["users_particles"],
     summary="Get users particle list",
