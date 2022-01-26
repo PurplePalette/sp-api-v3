@@ -116,7 +116,7 @@ class Skin(BaseModel):
 
     @validator("description")
     def description_min_length(cls, value):
-        assert len(value) >= 1
+        assert len(value) >= 0
         return value
 
     @validator("description")

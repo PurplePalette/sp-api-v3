@@ -109,12 +109,13 @@ class Effect(BaseModel):
 
     @validator("description")
     def description_min_length(cls, value):
-        assert len(value) >= 1
+        assert len(value) >= 0
         return value
 
     @validator("description")
     def description_max_length(cls, value):
         assert len(value) <= 3000
         return value
+
 
 Effect.update_forward_refs()

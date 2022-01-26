@@ -37,8 +37,8 @@ class Level(BaseModel):
         bgm: The bgm of this Level [Optional].
         preview: The preview of this Level [Optional].
         data: The data of this Level [Optional].
-        genre: The genre of this Level [Optional].
         public: The public of this Level [Optional].
+        genre: The genre of this Level [Optional].
         user_id: The user_id of this Level [Optional].
         created_time: The created_time of this Level [Optional].
         updated_time: The updated_time of this Level [Optional].
@@ -65,8 +65,8 @@ class Level(BaseModel):
     bgm: Optional[SonolusResourceLocator] = None
     preview: Optional[SonolusResourceLocator] = None
     data: Optional[SonolusResourceLocator] = None
-    genre: Optional[List[str]] = None
     public: Optional[bool] = None
+    genre: Optional[list[str]] = None
     user_id: Optional[str] = None
     created_time: Optional[int] = None
     updated_time: Optional[int] = None
@@ -99,7 +99,7 @@ class Level(BaseModel):
 
     @validator("rating")
     def rating_max(cls, value):
-        assert value <= 1000
+        assert value <= 100
         return value
 
     @validator("rating")
@@ -159,7 +159,7 @@ class Level(BaseModel):
 
     @validator("description")
     def description_min_length(cls, value):
-        assert len(value) >= 1
+        assert len(value) >= 0
         return value
 
     @validator("description")

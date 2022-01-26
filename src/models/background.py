@@ -25,6 +25,7 @@ class Background(BaseModel):
         thumbnail: The thumbnail of this Background [Optional].
         data: The data of this Background [Optional].
         image: The image of this Background [Optional].
+        configuration: The configuration of this Background [Optional].
         created_time: The created_time of this Background [Optional].
         updated_time: The updated_time of this Background [Optional].
         user_id: The user_id of this Background [Optional].
@@ -39,6 +40,7 @@ class Background(BaseModel):
     thumbnail: Optional[SonolusResourceLocator] = None
     data: Optional[SonolusResourceLocator] = None
     image: Optional[SonolusResourceLocator] = None
+    configuration: Optional[SonolusResourceLocator] = None
     created_time: Optional[int] = None
     updated_time: Optional[int] = None
     user_id: Optional[str] = None
@@ -116,7 +118,7 @@ class Background(BaseModel):
 
     @validator("description")
     def description_min_length(cls, value):
-        assert len(value) >= 1
+        assert len(value) >= 0
         return value
 
     @validator("description")
