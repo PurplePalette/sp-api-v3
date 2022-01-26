@@ -55,6 +55,7 @@ async def get_accounts_effect(
     "/accounts/{accountKey}/effects/list",
     responses={
         200: {"model": GetEffectListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["accounts_effects"],
     summary="Get accounts effect list",

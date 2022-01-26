@@ -55,6 +55,7 @@ async def get_accounts_background(
     "/accounts/{accountKey}/backgrounds/list",
     responses={
         200: {"model": GetBackgroundListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["accounts_backgrounds"],
     summary="Get accounts background list",

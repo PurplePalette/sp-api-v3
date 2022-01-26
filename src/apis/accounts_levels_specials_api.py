@@ -95,6 +95,7 @@ async def get_account_announce_list(
     "/accounts/{accountKey}/levels/debut",
     responses={
         200: {"model": GetLevelResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["accounts_levels_specials"],
     summary="Get debut levels",
@@ -126,6 +127,7 @@ async def get_account_mylist(
     "/accounts/{accountKey}/levels/pickups",
     responses={
         200: {"model": GetLevelResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["accounts_levels_specials"],
     summary="Get pickup levels",

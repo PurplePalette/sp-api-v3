@@ -55,6 +55,7 @@ async def get_accounts_skin(
     "/accounts/{accountKey}/skins/list",
     responses={
         200: {"model": GetSkinListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["accounts_skins"],
     summary="Get accounts skin list",

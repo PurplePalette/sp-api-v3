@@ -43,6 +43,7 @@ async def get_accounts_particle(
     "/accounts/{accountKey}/particles/list",
     responses={
         200: {"model": GetParticleListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["accounts_particles"],
     summary="Get accounts particle list",

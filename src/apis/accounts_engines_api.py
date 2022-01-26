@@ -55,6 +55,7 @@ async def get_accounts_engine(
     "/accounts/{accountKey}/engines/list",
     responses={
         200: {"model": GetEngineListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["accounts_engines"],
     summary="Get accounts engine list",
