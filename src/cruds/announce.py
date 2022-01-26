@@ -1,36 +1,31 @@
 from datetime import datetime
-from typing import Optional
 
-from fastapi import HTTPException
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import select
-from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.sql.expression import true
+from src.cruds.utils import get_admin_or_403, get_first_item_or_404, not_exist_or_409
 from src.database.objects.announce import Announce as AnnounceObject
-from src.database.objects.user import User as UserObject
 from src.models.announce import Announce as AnnounceModel
 
 
 async def create_announce(
     db: AsyncSession, announce_create: AnnounceModel, user: FirebaseClaims
-) -> AnnounceObject:
+) -> None:
     """お知らせを追加します"""
-    resp: Result = await db.execute(
-        select(UserObject).filter(
-            UserObject.display_id == user["user_id"], UserObject.is_admin == true()
-        )
+    user_db = await get_admin_or_403(db, user)
+    await not_exist_or_409(
+        db,
+        select(AnnounceObject).filter(
+            AnnounceObject.name == announce_create.announce_name
+        ),
     )
-    user_db: Optional[UserObject] = resp.scalars().first()
-    if user_db is None:
-        raise HTTPException(status_code=401, detail="Unauthorized")
     announce_date = datetime.now()
     announce = AnnounceObject(
         name=announce_create.announce_name,
         title=announce_create.title,
-        title_en="",
+        title_en=announce_create.title,
         artists=announce_create.subtitle,
-        artists_en="",
+        artists_en=announce_create.subtitle,
         author=announce_create.date,
         author_en=announce_create.date,
         description=announce_create.body,
@@ -46,4 +41,59 @@ async def create_announce(
     db.add(announce)
     await db.commit()
     await db.refresh(announce)
-    return announce
+
+
+async def edit_announce(
+    db: AsyncSession,
+    announceName: str,
+    announce_edit: AnnounceModel,
+    user: FirebaseClaims,
+) -> None:
+    """お知らせを編集します"""
+    user_db = await get_admin_or_403(db, user)
+    announce_db: AnnounceObject = await get_first_item_or_404(
+        db, select(AnnounceObject).filter(AnnounceObject.name == announceName)
+    )
+    update_data = announce_edit.dict(exclude_unset=True)
+    for k in update_data.keys():
+        if k == "announce_name":
+            announce_db.name = update_data[k]
+        elif k == "title":
+            announce_db.title = update_data[k]
+            announce_db.title_en = update_data[k]
+        elif k == "subtitle":
+            announce_db.artists = update_data[k]
+            announce_db.artists_en = update_data[k]
+        elif k == "date":
+            announce_db.author = update_data[k]
+            announce_db.author_en = update_data[k]
+        elif k == "body":
+            announce_db.description = update_data[k]
+            announce_db.description_en = update_data[k]
+        elif k == "resources":
+            for r in update_data[k].keys():
+                if r == "icon":
+                    announce_db.cover_hash = update_data[k][r]
+                elif r == "bgm":
+                    announce_db.bgm_hash = update_data[k][r]
+                elif r == "level":
+                    announce_db.data_hash = update_data[k][r]
+    announce_db.user = user_db
+    announce_db.updated_time = datetime.now()
+    db.add(announce_db)
+    await db.commit()
+    await db.refresh(announce_db)
+
+
+async def delete_announce(
+    db: AsyncSession,
+    announceName: str,
+    user: FirebaseClaims,
+) -> None:
+    """お知らせを削除します"""
+    await get_admin_or_403(db, user)
+    announce_db: AnnounceObject = await get_first_item_or_404(
+        db, select(AnnounceObject).filter(AnnounceObject.name == announceName)
+    )
+    await db.delete(announce_db)
+    await db.commit()

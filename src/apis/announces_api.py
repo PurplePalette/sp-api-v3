@@ -17,7 +17,9 @@ from fastapi import (  # noqa: F401
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import dependsBody, dependsDatabase, dependsFirebase, dependsPath
-from src.cruds.announce import create_announce
+from src.cruds.announce import create_announce as crud_create
+from src.cruds.announce import delete_announce as crud_delete
+from src.cruds.announce import edit_announce as crud_edit
 from src.models.announce import Announce
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse
@@ -43,8 +45,8 @@ async def add_announce(
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> Announce:
-    """お知らせを追加します"""
-    return await create_announce(db, announce, user)
+    """アナウンスを追加します"""
+    return await crud_create(db, announce, user)
 
 
 @router.delete(
@@ -65,7 +67,8 @@ async def delete_announce(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたアナウンスを削除します"""
-    ...
+    await crud_delete(db, announceName, user)
+    return None
 
 
 @router.patch(
@@ -87,7 +90,8 @@ async def edit_announce(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定したアナウンスを編集します"""
-    ...
+    await crud_edit(db, announceName, announce, user)
+    return None
 
 
 @router.get(

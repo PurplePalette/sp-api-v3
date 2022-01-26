@@ -31,7 +31,6 @@ def test_add_announce(client: TestClient) -> None:
         headers=headers,
         json=announce,
     )
-
     assert response.status_code != 500
 
 
@@ -46,7 +45,7 @@ def test_delete_announce(client: TestClient) -> None:
     }
     response = client.request(
         "DELETE",
-        "/announces/{announceName}".format(announceName="announce_name_example"),
+        "/announces/{announceName}".format(announceName="announceName"),
         headers=headers,
     )
 
@@ -63,7 +62,7 @@ def test_edit_announce(client: TestClient) -> None:
         "subtitle": "subtitle",
         "resources": {"level": "level", "icon": "icon", "bgm": "bgm"},
         "title": "title",
-        "body": "body",
+        "body": "hello_test",
         "announce_name": "announceName",
     }
 
@@ -72,11 +71,10 @@ def test_edit_announce(client: TestClient) -> None:
     }
     response = client.request(
         "PATCH",
-        "/announces/{announceName}".format(announceName="announce_name_example"),
+        "/announces/{announceName}".format(announceName="announceName"),
         headers=headers,
         json=announce,
     )
-
     assert response.status_code != 500
 
 
