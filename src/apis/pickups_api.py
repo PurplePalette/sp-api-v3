@@ -92,6 +92,6 @@ async def get_pickup(
     tags=["pickups"],
     summary="Get pickup list",
 )
-async def get_pickup_list() -> get_level_list_response:
+async def get_pickup_list() -> GetLevelListResponse:
     """ピックアップ中のデータ一覧を返す"""
     ...
