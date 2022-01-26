@@ -66,7 +66,7 @@ class Level(BaseModel):
     preview: Optional[SonolusResourceLocator] = None
     data: Optional[SonolusResourceLocator] = None
     public: Optional[bool] = None
-    genre: Optional[list[str]] = None
+    genre: Optional[List[str]] = None
     user_id: Optional[str] = None
     created_time: Optional[int] = None
     updated_time: Optional[int] = None
