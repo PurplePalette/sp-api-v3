@@ -13,7 +13,6 @@ from fastapi import (  # noqa: F401
     Query,
     Response,
     Security,
-    status,
 )
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession

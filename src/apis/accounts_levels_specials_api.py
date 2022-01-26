@@ -13,7 +13,6 @@ from fastapi import (  # noqa: F401
     Query,
     Response,
     Security,
-    status,
 )
 from src.apis.depends import dependsPath
 from src.models.extra_models import TokenModel  # noqa: F401

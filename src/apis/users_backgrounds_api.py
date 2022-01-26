@@ -13,18 +13,17 @@ from fastapi import (  # noqa: F401
     Query,
     Response,
     Security,
-    status,
 )
 from src.apis.depends import (
+    dependsAuthor,
     dependsKeywords,
     dependsLocalization,
+    dependsOrder,
     dependsPage,
     dependsPath,
-    dependsSort,
-    dependsOrder,
-    dependsStatus,
-    dependsAuthor,
     dependsRandom,
+    dependsSort,
+    dependsStatus,
 )
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_background_list_response import GetBackgroundListResponse

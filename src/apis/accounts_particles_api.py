@@ -4,15 +4,15 @@ from typing import Dict, List  # noqa: F401
 
 from fastapi import APIRouter  # noqa: F401
 from src.apis.depends import (
+    dependsAuthor,
     dependsKeywords,
     dependsLocalization,
+    dependsOrder,
     dependsPage,
     dependsPath,
-    dependsSort,
-    dependsOrder,
-    dependsStatus,
-    dependsAuthor,
     dependsRandom,
+    dependsSort,
+    dependsStatus,
 )
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_particle_list_response import GetParticleListResponse

@@ -13,7 +13,6 @@ from fastapi import (  # noqa: F401
     Query,
     Response,
     Security,
-    status,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import dependsDatabase
