@@ -55,6 +55,7 @@ async def get_background_test(
     "/tests/{testId}/backgrounds/list",
     responses={
         200: {"model": GetBackgroundListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["tests_backgrounds"],
     summary="Get tests background list",

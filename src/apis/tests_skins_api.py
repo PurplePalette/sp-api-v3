@@ -55,6 +55,7 @@ async def get_skin_test(
     "/tests/{testId}/skins/list",
     responses={
         200: {"model": GetSkinListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["tests_skins"],
     summary="Get tests skin list",

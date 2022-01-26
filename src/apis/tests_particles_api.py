@@ -55,6 +55,7 @@ async def get_particle_test(
     "/tests/{testId}/particles/list",
     responses={
         200: {"model": GetParticleListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["tests_particles"],
     summary="Get tests particle list",

@@ -55,6 +55,7 @@ async def get_engine_test(
     "/tests/{testId}/engines/list",
     responses={
         200: {"model": GetEngineListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["tests_engines"],
     summary="Get tests engine list",

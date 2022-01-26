@@ -59,6 +59,7 @@ async def get_level_test(
     "/tests/{testId}/levels/list",
     responses={
         200: {"model": GetLevelListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["tests_levels"],
     summary="Get tests level list",

@@ -55,6 +55,7 @@ async def get_effect_test(
     "/tests/{testId}/effects/list",
     responses={
         200: {"model": GetEffectListResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["tests_effects"],
     summary="Get tests effects list",
