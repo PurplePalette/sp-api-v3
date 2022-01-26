@@ -8,14 +8,56 @@ dependsLocalization = Query(
     min_length=1,
     max_length=50,
 )
-dependsPage = Query(
-    1, description="It filters items for pagination if possible", ge=0, le=10000
-)
+dependsPage = Query(1, description="Filters contents using pagination", ge=0, le=10000)
 dependsKeywords = Query(
-    None,
-    description="It filters items for search from list if possible",
+    "",
+    description="Filter contents by specified keyword, in title and description",
     min_length=1,
     max_length=300,
+)
+dependsSort = Query(
+    "updated_time",
+    description="It sorts contents using specified method",
+    max_length=20,
+)
+dependsOrder = Query(
+    "desc",
+    description="It specifies sort direction",
+    min_length=0,
+    max_length=10,
+)
+dependsStatus = Query(
+    "any",
+    description="Filters contents using specified status",
+    min_length=1,
+    max_length=20,
+)
+dependsAuthor = Query(
+    "any",
+    description="Filter contents by specified author",
+    min_length=0,
+    max_length=100,
+)
+dependsRatingMin = Query(
+    1, description="Filter level contents by minimum rating", ge=1, le=100
+)
+dependsRatingMax: int = Query(
+    50, description="Filter level contents by maximum rating", ge=1, le=100
+)
+dependsGenre = Query(
+    "any", description="Filter contents by specified genre", min_length=0, max_length=20
+)
+dependsLength = Query(
+    "any",
+    description="Filter level contents by specified length",
+    min_length=0,
+    max_length=10,
+)
+dependsRandom = Query(
+    0,
+    description="It shuffles response list",
+    ge=0,
+    le=1,
 )
 dependsPath = Path(None, description="")
 dependsBody = Body(None, description="")

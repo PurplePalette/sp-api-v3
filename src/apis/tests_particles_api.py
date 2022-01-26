@@ -20,6 +20,11 @@ from src.apis.depends import (
     dependsLocalization,
     dependsPage,
     dependsPath,
+    dependsSort,
+    dependsOrder,
+    dependsStatus,
+    dependsAuthor,
+    dependsRandom,
 )
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_particle_list_response import GetParticleListResponse
@@ -59,6 +64,11 @@ async def get_tests_particles(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
+    sort: str = dependsSort,
+    order: str = dependsOrder,
+    status: str = dependsStatus,
+    author: str = dependsAuthor,
+    random: int = dependsRandom,
 ) -> GetParticleListResponse:
     """譜面テスト用エンドポイント/ パーティクル一覧を返す(一般の背景リストと同じのが返される)"""
     ...

@@ -20,6 +20,11 @@ from src.apis.depends import (
     dependsLocalization,
     dependsPage,
     dependsPath,
+    dependsSort,
+    dependsOrder,
+    dependsStatus,
+    dependsAuthor,
+    dependsRandom,
 )
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_skin_list_response import GetSkinListResponse
@@ -59,6 +64,11 @@ async def get_tests_skins(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
+    sort: str = dependsSort,
+    order: str = dependsOrder,
+    status: str = dependsStatus,
+    author: str = dependsAuthor,
+    random: int = dependsRandom,
 ) -> GetSkinListResponse:
     """譜面テスト用エンドポイント/ スキン一覧を返す(一般のスキンリストと同じのが返される)"""
     ...

@@ -20,6 +20,11 @@ from src.apis.depends import (
     dependsLocalization,
     dependsPage,
     dependsPath,
+    dependsSort,
+    dependsOrder,
+    dependsStatus,
+    dependsAuthor,
+    dependsRandom,
 )
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_engine_list_response import GetEngineListResponse
@@ -59,6 +64,11 @@ async def get_accounts_engines(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
+    sort: str = dependsSort,
+    order: str = dependsOrder,
+    status: str = dependsStatus,
+    author: str = dependsAuthor,
+    random: int = dependsRandom,
 ) -> GetEngineListResponse:
     """ユーザー個別用エンドポイント/ エンジン一覧を返す"""
     ...

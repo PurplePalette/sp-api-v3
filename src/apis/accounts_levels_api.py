@@ -20,6 +20,15 @@ from src.apis.depends import (
     dependsLocalization,
     dependsPage,
     dependsPath,
+    dependsSort,
+    dependsOrder,
+    dependsStatus,
+    dependsAuthor,
+    dependsRandom,
+    dependsRatingMin,
+    dependsRatingMax,
+    dependsGenre,
+    dependsLength,
 )
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse
@@ -59,6 +68,15 @@ async def get_accounts_levels(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
+    sort: str = dependsSort,
+    order: str = dependsOrder,
+    status: str = dependsStatus,
+    author: str = dependsAuthor,
+    rating_min: int = dependsRatingMin,
+    rating_max: int = dependsRatingMax,
+    genre: str = dependsGenre,
+    length: str = dependsLength,
+    random: int = dependsRandom,
 ) -> GetLevelListResponse:
     """ユーザー個別用エンドポイント/ 譜面一覧を返す"""
     ...

@@ -25,6 +25,11 @@ from src.apis.depends import (
     dependsLocalization,
     dependsPage,
     dependsPath,
+    dependsSort,
+    dependsOrder,
+    dependsStatus,
+    dependsAuthor,
+    dependsRandom,
 )
 from src.models.engine import Engine
 from src.models.extra_models import TokenModel  # noqa: F401
@@ -122,6 +127,11 @@ async def get_engine_list(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
+    sort: str = dependsSort,
+    order: str = dependsOrder,
+    status: str = dependsStatus,
+    author: str = dependsAuthor,
+    random: int = dependsRandom,
 ) -> GetEngineListResponse:
     """It returns list of engine infos registered in this server.
     Also it can search using query params"""

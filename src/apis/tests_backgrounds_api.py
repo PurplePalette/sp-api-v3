@@ -20,6 +20,11 @@ from src.apis.depends import (
     dependsLocalization,
     dependsPage,
     dependsPath,
+    dependsSort,
+    dependsOrder,
+    dependsStatus,
+    dependsAuthor,
+    dependsRandom,
 )
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_background_list_response import GetBackgroundListResponse
@@ -59,6 +64,11 @@ async def get_tests_backgrounds(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
+    sort: str = dependsSort,
+    order: str = dependsOrder,
+    status: str = dependsStatus,
+    author: str = dependsAuthor,
+    random: int = dependsRandom,
 ) -> GetBackgroundListResponse:
     """譜面テスト用エンドポイント/ 背景一覧を返す(一般の背景リストと同じのが返される)"""
     ...
