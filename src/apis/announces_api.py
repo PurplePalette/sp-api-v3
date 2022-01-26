@@ -118,16 +118,3 @@ async def get_default_announce(
 async def get_default_announces() -> GetLevelListResponse:
     """アナウンス中のデータ一覧を返す"""
     ...
-
-
-@router.get(
-    "/pickups/list",
-    responses={
-        200: {"model": GetLevelListResponse, "description": "OK"},
-    },
-    tags=["announces"],
-    summary="Get pickup list",
-)
-async def get_pickup_list() -> GetLevelListResponse:
-    """ピックアップ中のデータ一覧を返す"""
-    ...

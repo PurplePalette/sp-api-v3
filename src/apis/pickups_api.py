@@ -20,6 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import dependsBody, dependsDatabase, dependsFirebase, dependsPath
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_response import GetLevelResponse
+from src.models.get_level_list_response import GetLevelListResponse
 from src.models.pickup import Pickup
 
 router = APIRouter()
@@ -80,4 +81,17 @@ async def get_pickup(
     pickupName: str = dependsPath,
 ) -> GetLevelResponse:
     """指定されたIDのピックアップを取得して返す"""
+    ...
+
+
+@router.get(
+    "/pickups/list",
+    responses={
+        200: {"model": GetLevelListResponse, "description": "OK"},
+    },
+    tags=["pickups"],
+    summary="Get pickup list",
+)
+async def get_pickup_list() -> get_level_list_response:
+    """ピックアップ中のデータ一覧を返す"""
     ...
