@@ -1,12 +1,13 @@
-from sqlalchemy.engine import Result
+from abc import ABCMeta
+from typing import Any, Optional, TypeVar
+
 from fastapi import HTTPException
+from fastapi_cloudauth.firebase import FirebaseClaims
+from sqlalchemy import select
+from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import true
 from src.database.objects.user import User as UserObject
-from typing import Optional, TypeVar, Any
-from sqlalchemy import select
-from fastapi_cloudauth.firebase import FirebaseClaims
-from abc import ABCMeta
 
 
 class MustHaveName(metaclass=ABCMeta):
@@ -16,6 +17,7 @@ class MustHaveName(metaclass=ABCMeta):
 
 
 T = TypeVar("T", bound=MustHaveName)
+
 
 async def get_first_item_or_error(
     db: AsyncSession, statement: Any, error: HTTPException
@@ -75,10 +77,7 @@ async def get_admin_or_403(
     return user_db
 
 
-async def not_exist_or_409(
-    db: AsyncSession,
-    statement: Any
-) -> None:
+async def not_exist_or_409(db: AsyncSession, statement: Any) -> None:
     """データベースに指定された要素が存在すれば409"""
     resp: Result = await db.execute(statement)
     obj_db: bool = resp.scalars().first()
