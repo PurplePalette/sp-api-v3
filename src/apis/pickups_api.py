@@ -28,7 +28,11 @@ router = APIRouter()
 @router.post(
     "/pickups",
     responses={
-        200: {"description": "OK"},
+        200: {"model": GetLevelResponse, "description": "OK"},
+        400: {"description": "Bad Request"},
+        401: {"description": "Unauthorized"},
+        403: {"description": "Forbidden"},
+        409: {"description": "Conflict"},
     },
     tags=["pickups"],
     summary="Add pickup",
@@ -46,13 +50,16 @@ async def add_pickup(
     "/pickups/{pickupName}",
     responses={
         200: {"description": "OK"},
+        401: {"description": "Unauthorized"},
+        403: {"description": "Forbidden"},
+        404: {"description": "Not Found"},
+        409: {"description": "Conflict"},
     },
     tags=["pickups"],
     summary="Delete pickup",
 )
 async def delete_pickup(
     pickupName: str = dependsPath,
-    pickup: Pickup = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
@@ -64,6 +71,7 @@ async def delete_pickup(
     "/pickups/{pickupName}",
     responses={
         200: {"model": GetLevelResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["pickups"],
     summary="Get pickup",

@@ -49,6 +49,9 @@ async def add_user(
     "/users/{userId}",
     responses={
         200: {"description": "OK"},
+        401: {"description": "Unauthorized"},
+        403: {"description": "Forbidden"},
+        409: {"description": "Conflict"},
     },
     tags=["users"],
     summary="Delete a user",

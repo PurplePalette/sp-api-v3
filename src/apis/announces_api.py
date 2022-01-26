@@ -31,6 +31,10 @@ router = APIRouter()
     "/announces",
     responses={
         200: {"description": "OK"},
+        400: {"description": "Bad Request"},
+        401: {"description": "Unauthorized"},
+        403: {"description": "Forbidden"},
+        409: {"description": "Conflict"},
     },
     tags=["announces"],
     summary="Add announce",
@@ -48,6 +52,10 @@ async def add_announce(
     "/announces/{announceName}",
     responses={
         200: {"description": "OK"},
+        401: {"description": "Unauthorized"},
+        403: {"description": "Forbidden"},
+        404: {"description": "Not Found"},
+        409: {"description": "Conflict"},
     },
     tags=["announces"],
     summary="Delete announce",
@@ -65,6 +73,10 @@ async def delete_announce(
     "/announces/{announceName}",
     responses={
         200: {"description": "OK"},
+        401: {"description": "Unauthorized"},
+        403: {"description": "Forbidden"},
+        404: {"description": "Not Found"},
+        409: {"description": "Conflict"},
     },
     tags=["announces"],
     summary="Edit announce",
@@ -83,6 +95,7 @@ async def edit_announce(
     "/announces/{announceName}",
     responses={
         200: {"model": GetLevelResponse, "description": "OK"},
+        404: {"description": "Not Found"},
     },
     tags=["announces"],
     summary="Get announce",
