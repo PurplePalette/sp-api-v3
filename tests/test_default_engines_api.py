@@ -223,9 +223,16 @@ def test_get_engine_list(client: TestClient) -> None:
 
     Get engine list
     """
-    params: Dict[str, str] = dict(
-        [("localization", "en"), ("page", "1"), ("keywords", "Redo")]
-    )
+    params: Dict[str, str] = {
+        "localization": "en",
+        "page": "0",
+        "keywords": "Chino",
+        "sort": "updated_time",
+        "order": "desc",
+        "status": "any",
+        "author": "any",
+        "random": "0",
+    }
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",

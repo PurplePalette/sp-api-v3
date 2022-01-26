@@ -30,9 +30,16 @@ def test_get_tests_effects(client: TestClient) -> None:
 
     Get tests effects list
     """
-    params: Dict[str, str] = dict(
-        [("localization", "en"), ("page", "1"), ("keywords", "Redo")]
-    )
+    params: Dict[str, str] = {
+        "localization": "en",
+        "page": "0",
+        "keywords": "Chino",
+        "sort": "updated_time",
+        "order": "desc",
+        "status": "any",
+        "author": "any",
+        "random": "0",
+    }
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
