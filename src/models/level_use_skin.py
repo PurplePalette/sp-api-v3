@@ -17,11 +17,11 @@ class LevelUseSkin(BaseModel):
 
     LevelUseSkin - a model defined in OpenAPI
 
-        use_default: The use_default of this LevelUseSkin [Optional].
+        useDefault: The use_default of this LevelUseSkin [Optional].
         item: The item of this LevelUseSkin [Optional].
     """
 
-    use_default: Optional[bool] = None
+    useDefault: Optional[bool] = None
     item: Optional[Skin] = None
 
 

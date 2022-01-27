@@ -17,11 +17,11 @@ class LevelUseEffect(BaseModel):
 
     LevelUseEffect - a model defined in OpenAPI
 
-        use_default: The use_default of this LevelUseEffect [Optional].
+        useDefault: The use_default of this LevelUseEffect [Optional].
         item: The item of this LevelUseEffect [Optional].
     """
 
-    use_default: Optional[bool] = None
+    useDefault: Optional[bool] = None
     item: Optional[Effect] = None
 
 

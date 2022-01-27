@@ -17,11 +17,11 @@ class LevelUseBackground(BaseModel):
 
     LevelUseBackground - a model defined in OpenAPI
 
-        use_default: The use_default of this LevelUseBackground [Optional].
+        useDefault: The use_default of this LevelUseBackground [Optional].
         item: The item of this LevelUseBackground [Optional].
     """
 
-    use_default: Optional[bool] = None
+    useDefault: Optional[bool] = None
     item: Optional[Background] = None
 
 

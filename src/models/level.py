@@ -26,10 +26,10 @@ class Level(BaseModel):
         version: The version of this Level [Optional].
         rating: The rating of this Level [Optional].
         engine: The engine of this Level [Optional].
-        use_skin: The use_skin of this Level [Optional].
-        use_background: The use_background of this Level [Optional].
-        use_effect: The use_effect of this Level [Optional].
-        use_particle: The use_particle of this Level [Optional].
+        useSkin: The use_skin of this Level [Optional].
+        useBackground: The use_background of this Level [Optional].
+        useEffect: The use_effect of this Level [Optional].
+        useParticle: The use_particle of this Level [Optional].
         title: The title of this Level [Optional].
         artists: The artists of this Level [Optional].
         author: The author of this Level [Optional].
@@ -54,10 +54,10 @@ class Level(BaseModel):
     version: Optional[int] = None
     rating: Optional[int] = None
     engine: Optional[Engine] = None
-    use_skin: Optional[LevelUseSkin] = None
-    use_background: Optional[LevelUseBackground] = None
-    use_effect: Optional[LevelUseEffect] = None
-    use_particle: Optional[LevelUseParticle] = None
+    useSkin: Optional[LevelUseSkin] = None
+    useBackground: Optional[LevelUseBackground] = None
+    useEffect: Optional[LevelUseEffect] = None
+    useParticle: Optional[LevelUseParticle] = None
     title: Optional[str] = None
     artists: Optional[str] = None
     author: Optional[str] = None

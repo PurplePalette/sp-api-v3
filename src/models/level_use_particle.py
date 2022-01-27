@@ -17,11 +17,11 @@ class LevelUseParticle(BaseModel):
 
     LevelUseParticle - a model defined in OpenAPI
 
-        use_default: The use_default of this LevelUseParticle [Optional].
+        useDefault: The use_default of this LevelUseParticle [Optional].
         item: The item of this LevelUseParticle [Optional].
     """
 
-    use_default: Optional[bool] = None
+    useDefault: Optional[bool] = None
     item: Optional[Particle] = None
 
 
