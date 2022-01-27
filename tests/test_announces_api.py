@@ -14,12 +14,23 @@ def test_add_announce(client: TestClient) -> None:
     Add announce
     """
     announce = {
-        "date": "date",
-        "subtitle": "subtitle",
-        "resources": {"level": "level", "icon": "icon", "bgm": "bgm"},
+        "preview": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "description_en": "No description",
+        "updated_time": 0,
+        "author": "author",
+        "rating": 8,
+        "description": "No description",
+        "bgm": {"type": "LevelData", "hash": "hash", "url": "url"},
         "title": "title",
-        "body": "body",
-        "announce_name": "announceName",
+        "subtitle_en": "subtitleEn",
+        "user_id": "userId",
+        "cover": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "public": 0,
+        "title_en": "titleEn",
+        "subtitle": "subtitle",
+        "name": "name",
+        "created_time": 0,
+        "author_en": "authorEn",
     }
 
     headers = {
@@ -58,12 +69,23 @@ def test_edit_announce(client: TestClient) -> None:
     Edit announce
     """
     announce = {
-        "date": "date",
-        "subtitle": "subtitle",
-        "resources": {"level": "level", "icon": "icon", "bgm": "bgm"},
+        "preview": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "description_en": "No description",
+        "updated_time": 0,
+        "author": "author",
+        "rating": 8,
+        "description": "No description",
+        "bgm": {"type": "LevelData", "hash": "hash", "url": "url"},
         "title": "title",
-        "body": "hello_test",
-        "announce_name": "announceName",
+        "subtitle_en": "subtitleEn",
+        "user_id": "userId",
+        "cover": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "public": 0,
+        "title_en": "titleEn",
+        "subtitle": "subtitle",
+        "name": "name",
+        "created_time": 0,
+        "author_en": "authorEn",
     }
 
     headers = {

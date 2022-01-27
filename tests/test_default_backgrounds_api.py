@@ -16,18 +16,23 @@ def test_add_background(client: TestClient) -> None:
     Add a background
     """
     background = {
+        "description_en": "No description",
         "image": {"type": "LevelData", "hash": "hash", "url": "url"},
         "updated_time": 0,
         "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
         "data": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "configuration": {"type": "LevelData", "hash": "hash", "url": "url"},
         "author": "author",
+        "description": "No description",
+        "title": "title",
+        "version": 1,
+        "subtitle_en": "subtitleEn",
+        "user_id": "userId",
+        "title_en": "titleEn",
         "subtitle": "subtitle",
         "name": "name",
         "created_time": 0,
-        "description": "description",
-        "title": "title",
-        "version": 1,
-        "user_id": "userId",
+        "author_en": "authorEn",
     }
 
     headers = {
@@ -69,18 +74,23 @@ def test_edit_background(client: TestClient) -> None:
     Edit a background
     """
     background = {
+        "description_en": "No description",
         "image": {"type": "LevelData", "hash": "hash", "url": "url"},
         "updated_time": 0,
         "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
         "data": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "configuration": {"type": "LevelData", "hash": "hash", "url": "url"},
         "author": "author",
+        "description": "No description",
+        "title": "title",
+        "version": 1,
+        "subtitle_en": "subtitleEn",
+        "user_id": "userId",
+        "title_en": "titleEn",
         "subtitle": "subtitle",
         "name": "name",
         "created_time": 0,
-        "description": "description",
-        "title": "title",
-        "version": 1,
-        "user_id": "userId",
+        "author_en": "authorEn",
     }
 
     headers = {

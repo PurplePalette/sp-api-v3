@@ -14,18 +14,22 @@ def test_add_skin(client: TestClient) -> None:
     Add a skin
     """
     skin = {
+        "description_en": "No description",
         "updated_time": 0,
         "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
         "data": {"type": "LevelData", "hash": "hash", "url": "url"},
         "author": "author",
         "texture": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "description": "No description",
+        "title": "title",
+        "version": 1,
+        "subtitle_en": "subtitleEn",
+        "user_id": "userId",
+        "title_en": "titleEn",
         "subtitle": "subtitle",
         "name": "name",
         "created_time": 0,
-        "description": "description",
-        "title": "title",
-        "version": 1,
-        "user_id": "userId",
+        "author_en": "authorEn",
     }
 
     headers = {
@@ -65,18 +69,22 @@ def test_edit_skin(client: TestClient) -> None:
     Edit a skin
     """
     skin = {
+        "description_en": "No description",
         "updated_time": 0,
         "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
         "data": {"type": "LevelData", "hash": "hash", "url": "url"},
         "author": "author",
         "texture": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "description": "No description",
+        "title": "title",
+        "version": 1,
+        "subtitle_en": "subtitleEn",
+        "user_id": "userId",
+        "title_en": "titleEn",
         "subtitle": "subtitle",
         "name": "name",
         "created_time": 0,
-        "description": "description",
-        "title": "title",
-        "version": 1,
-        "user_id": "userId",
+        "author_en": "authorEn",
     }
 
     headers = {
