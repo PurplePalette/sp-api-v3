@@ -13,6 +13,7 @@
 
 
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from src.apis.accounts_backgrounds_api import router as AccountsBackgroundsApiRouter
 from src.apis.accounts_effects_api import router as AccountsEffectsApiRouter
@@ -105,4 +106,11 @@ app.include_router(UsersInfoApiRouter)
 app.include_router(UsersLevelsApiRouter)
 app.include_router(UsersParticlesApiRouter)
 app.include_router(UsersSkinsApiRouter)
+
+
+@app.get("/")
+def index():
+    return FileResponse("src/static/index.html")
+
+
 app.mount("/", StaticFiles(directory="src/static"), name="static")
