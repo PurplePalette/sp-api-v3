@@ -26,12 +26,17 @@ class SearchSelectOption(BaseModel):
     query: str
     name: str
     type: str
-    default: int = Field(..., alias="def")
+    default: int
     values: List[str]
 
     @validator("default")
     def default_min(cls, value):
         assert value >= 0
         return value
+
+    class Config:
+        fields = {"default": "def"}
+        allow_population_by_field_name = True
+
 
 SearchSelectOption.update_forward_refs()

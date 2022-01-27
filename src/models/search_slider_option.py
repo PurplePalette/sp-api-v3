@@ -29,7 +29,7 @@ class SearchSliderOption(BaseModel):
     query: str
     name: str
     type: str
-    default: int = Field(..., alias="def")
+    default: int
     min: int
     max: int
     step: int
@@ -54,6 +54,10 @@ class SearchSliderOption(BaseModel):
     def step_min(cls, value):
         assert value >= 0
         return value
+
+    class Config:
+        fields = {"default": "def"}
+        allow_population_by_field_name = True
 
 
 SearchSliderOption.update_forward_refs()
