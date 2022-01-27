@@ -8,7 +8,7 @@ dependsLocalization = Query(
     min_length=1,
     max_length=50,
 )
-dependsPage = Query(1, description="Filters contents using pagination", ge=0, le=10000)
+dependsPage = Query(0, description="Filters contents using pagination", ge=0, le=10000)
 dependsKeywords = Query(
     "",
     description="Filter contents by specified keyword, in title and description",

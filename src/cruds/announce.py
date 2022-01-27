@@ -1,7 +1,9 @@
 from datetime import datetime
+from typing import List
 
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import select
+from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.utils import get_admin_or_403, get_first_item_or_404, not_exist_or_409
 from src.database.objects.announce import Announce as AnnounceObject
@@ -97,3 +99,25 @@ async def delete_announce(
     )
     await db.delete(announce_db)
     await db.commit()
+
+
+async def get_announce(
+    db: AsyncSession,
+    announceName: str,
+) -> AnnounceObject:
+    """お知らせを取得します"""
+    announce_db: AnnounceObject = await get_first_item_or_404(
+        db, select(AnnounceObject).filter(AnnounceObject.name == announceName)
+    )
+    return announce_db
+
+
+async def list_announce(
+    db: AsyncSession,
+) -> List[AnnounceObject]:
+    """お知らせ一覧を取得します"""
+    resp: Result = await db.execute(
+        select(AnnounceObject).order_by(AnnounceObject.updated_time.desc())
+    )
+    announces: List[AnnounceObject] = resp.scalars()
+    return announces

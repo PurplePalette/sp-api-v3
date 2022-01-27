@@ -20,7 +20,10 @@ from src.apis.depends import dependsBody, dependsDatabase, dependsFirebase, depe
 from src.cruds.announce import create_announce as crud_create
 from src.cruds.announce import delete_announce as crud_delete
 from src.cruds.announce import edit_announce as crud_edit
+from src.cruds.announce import get_announce as crud_get
+from src.cruds.announce import list_announce as crud_list
 from src.models.announce import Announce
+from src.models.default_search import defaultSearch
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
@@ -95,6 +98,26 @@ async def edit_announce(
 
 
 @router.get(
+    "/announces/list",
+    responses={
+        200: {"model": GetLevelListResponse, "description": "OK"},
+    },
+    tags=["announces"],
+    summary="Get announce list",
+)
+async def get_announces(
+    db: AsyncSession = dependsDatabase,
+) -> GetLevelListResponse:
+    """アナウンス中のデータ一覧を返す"""
+    announces = await crud_list(db)
+    return GetLevelListResponse(
+        page_count=1,
+        items=[announce.toLevelItem() for announce in announces],
+        search=defaultSearch,
+    )
+
+
+@router.get(
     "/announces/{announceName}",
     responses={
         200: {"model": GetLevelResponse, "description": "OK"},
@@ -103,21 +126,10 @@ async def edit_announce(
     tags=["announces"],
     summary="Get announce",
 )
-async def get_default_announce(
+async def get_announce(
     announceName: str = dependsPath,
+    db: AsyncSession = dependsDatabase,
 ) -> GetLevelResponse:
     """指定されたアナウンスデータを返す"""
-    ...
-
-
-@router.get(
-    "/announces/list",
-    responses={
-        200: {"model": GetLevelListResponse, "description": "OK"},
-    },
-    tags=["announces"],
-    summary="Get announce list",
-)
-async def get_default_announces() -> GetLevelListResponse:
-    """アナウンス中のデータ一覧を返す"""
-    ...
+    announce = await crud_get(db, announceName)
+    return announce.toLevelResponse()
