@@ -17,13 +17,11 @@ async def create_announce(
     user_db = await get_admin_or_403(db, user)
     await not_exist_or_409(
         db,
-        select(AnnounceObject).filter(
-            AnnounceObject.name == announce_create.announce_name
-        ),
+        select(AnnounceObject).filter(AnnounceObject.name == announce_create.name),
     )
     announce_date = datetime.now()
     announce = AnnounceObject(
-        name=announce_create.announce_name,
+        name=announce_create.name,
         title=announce_create.title,
         title_en=announce_create.title,
         artists=announce_create.subtitle,
@@ -58,7 +56,7 @@ async def edit_announce(
     )
     update_data = announce_edit.dict(exclude_unset=True)
     for k in update_data.keys():
-        if k == "announce_name":
+        if k == "name":
             announce_db.name = update_data[k]
         elif k == "title":
             announce_db.title = update_data[k]

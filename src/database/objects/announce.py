@@ -29,8 +29,8 @@ class Announce(SonolusDataMixin, TimeMixin, Base):  # type: ignore
         description: str,
         description_en: str,
         public: bool,
-        created_time: int,
-        updated_time: int,
+        createdTime: int,
+        updatedTime: int,
         cover_hash: str,
         bgm_hash: str,
         data_hash: str,
@@ -46,8 +46,8 @@ class Announce(SonolusDataMixin, TimeMixin, Base):  # type: ignore
         self.description = description
         self.description_en = description_en
         self.public = public
-        self.created_time = created_time
-        self.updated_time = updated_time
+        self.createdTime = createdTime
+        self.updatedTime = updatedTime
         self.cover_hash = cover_hash
         self.bgm_hash = bgm_hash
         self.data_hash = data_hash

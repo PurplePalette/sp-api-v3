@@ -25,7 +25,7 @@ class Announce(BaseModel):
         resources: The resources of this Announce [Optional].
     """
 
-    announce_name: str
+    name: str
     title: str
     subtitle: str
     date: str
