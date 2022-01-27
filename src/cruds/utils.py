@@ -34,7 +34,7 @@ async def get_first_item_or_404(
     db: AsyncSession,
     statement: Any,
 ) -> T:
-    """データベースに指定された要素が存在すれば取得、なければ404"""
+    """データベースに指定された要素が存在すれば取得、なければ NotFound"""
     resp: T = await get_first_item_or_error(
         db, statement, HTTPException(status_code=404, detail="Not found")
     )
@@ -45,7 +45,7 @@ async def get_first_item_or_403(
     db: AsyncSession,
     statement: Any,
 ) -> T:
-    """データベースに指定された要素が存在すれば取得、なければ403"""
+    """データベースに指定された要素が存在すれば取得、なければ Forbidden"""
     resp: T = await get_first_item_or_error(
         db, statement, HTTPException(status_code=403, detail="Forbidden")
     )
@@ -56,7 +56,7 @@ async def get_user_or_404(
     db: AsyncSession,
     user: FirebaseClaims,
 ) -> UserObject:
-    """データベースに指定されたユーザーが存在すれば取得、なければ404"""
+    """データベースに指定されたユーザーが存在すれば取得、なければ NotFound"""
     user_db: UserObject = await get_first_item_or_404(
         db, select(UserObject).filter(UserObject.display_id == user["user_id"])
     )
@@ -67,7 +67,7 @@ async def get_admin_or_403(
     db: AsyncSession,
     user: FirebaseClaims,
 ) -> UserObject:
-    """データベースに指定された管理者ユーザーが存在すれば取得、なければ404"""
+    """データベースに指定された管理者ユーザーが存在すれば取得、なければ Forbidden"""
     user_db: UserObject = await get_first_item_or_403(
         db,
         select(UserObject).filter(
@@ -78,7 +78,7 @@ async def get_admin_or_403(
 
 
 async def not_exist_or_409(db: AsyncSession, statement: Any) -> None:
-    """データベースに指定された要素が存在すれば409"""
+    """データベースに指定された要素が存在すれば Conflict"""
     resp: Result = await db.execute(statement)
     obj_db: bool = resp.scalars().first()
     if obj_db:
