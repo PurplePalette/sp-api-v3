@@ -9,11 +9,11 @@ class User(Base, TimeMixin):  # type: ignore
     __table_args__ = {"extend_existing": True}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    display_id = Column(String(128), unique=True)
-    test_id = Column(String(128), unique=True)
-    account_id = Column(String(128), unique=True)
-    is_admin = Column(Boolean, default=False, server_default="0")
-    is_deleted = Column(Boolean, default=False, server_default="0")
+    userId = Column(String(128), unique=True)
+    testId = Column(String(128), unique=True)
+    accountId = Column(String(128), unique=True)
+    isAdmin = Column(Boolean, default=False, server_default="0")
+    isDeleted = Column(Boolean, default=False, server_default="0")
     backgrounds = relationship("Background", back_populates="user")
     effects = relationship("Effect", back_populates="user")
     engines = relationship("Engine", back_populates="user")

@@ -18,25 +18,25 @@ class User(BaseModel):
     User - a model defined in OpenAPI
 
         userId: The userId of this User [Optional].
-        test_id: The test_id of this User [Optional].
-        account_key: The account_key of this User [Optional].
+        testId: The testId of this User [Optional].
+        accountId: The accountId of this User [Optional].
         description: The description of this User [Optional].
         createdTime: The createdTime of this User [Optional].
         updatedTime: The updatedTime of this User [Optional].
         total: The total of this User [Optional].
-        is_admin: The is_admin of this User [Optional].
-        is_deleted: The is_deleted of this User [Optional].
+        isAdmin: The isAdmin of this User [Optional].
+        isDeleted: The isDeleted of this User [Optional].
     """
 
     userId: Optional[str] = None
-    test_id: Optional[str] = None
-    account_key: Optional[str] = None
+    testId: Optional[str] = None
+    accountId: Optional[str] = None
     description: Optional[str] = None
     createdTime: Optional[int] = None
     updatedTime: Optional[int] = None
     total: Optional[UserTotal] = None
-    is_admin: Optional[bool] = None
-    is_deleted: Optional[bool] = None
+    isAdmin: Optional[bool] = None
+    isDeleted: Optional[bool] = None
 
     @validator("userId")
     def userId_min_length(cls, value):
@@ -48,13 +48,13 @@ class User(BaseModel):
         assert len(value) <= 30
         return value
 
-    @validator("test_id")
-    def test_id_min_length(cls, value):
+    @validator("testId")
+    def testId_min_length(cls, value):
         assert len(value) >= 8
         return value
 
-    @validator("test_id")
-    def test_id_max_length(cls, value):
+    @validator("testId")
+    def testId_max_length(cls, value):
         assert len(value) <= 8
         return value
 

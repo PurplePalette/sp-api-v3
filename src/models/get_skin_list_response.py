@@ -18,17 +18,17 @@ class GetSkinListResponse(BaseModel):
 
     GetSkinListResponse - a model defined in OpenAPI
 
-        page_count: The page_count of this GetSkinListResponse.
+        pageCount: The pageCount of this GetSkinListResponse.
         items: The items of this GetSkinListResponse.
         search: The search of this GetSkinListResponse.
     """
 
-    page_count: int
+    pageCount: int
     items: List[Skin]
     search: Search
 
-    @validator("page_count")
-    def page_count_min(cls, value):
+    @validator("pageCount")
+    def pageCount_min(cls, value):
         assert value >= 1
         return value
 

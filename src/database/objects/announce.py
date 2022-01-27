@@ -21,37 +21,37 @@ class Announce(SonolusDataMixin, TimeMixin, Base):  # type: ignore
         self,
         name: str,
         title: str,
-        title_en: str,
+        titleEn: str,
         artists: str,
-        artists_en: str,
+        artistsEn: str,
         author: str,
-        author_en: str,
+        authorEn: str,
         description: str,
-        description_en: str,
+        descriptionEn: str,
         public: bool,
         createdTime: int,
         updatedTime: int,
-        cover_hash: str,
-        bgm_hash: str,
-        data_hash: str,
-        user_id: int,
+        coverHash: str,
+        bgmHash: str,
+        dataHash: str,
+        userId: int,
     ) -> None:
         self.name = name
         self.title = title
-        self.title_en = title_en
+        self.titleEn = titleEn
         self.artists = artists
-        self.artists_en = artists_en
+        self.artistsEn = artistsEn
         self.author = author
-        self.author_en = author_en
+        self.authorEn = authorEn
         self.description = description
-        self.description_en = description_en
+        self.descriptionEn = descriptionEn
         self.public = public
         self.createdTime = createdTime
         self.updatedTime = updatedTime
-        self.cover_hash = cover_hash
-        self.bgm_hash = bgm_hash
-        self.data_hash = data_hash
-        self.user_id = user_id
+        self.coverHash = coverHash
+        self.bgmHash = bgmHash
+        self.dataHash = dataHash
+        self.userId = userId
         super().__init__()
 
     def toLevelItem(self) -> LevelModel:
@@ -78,13 +78,13 @@ class Announce(SonolusDataMixin, TimeMixin, Base):  # type: ignore
             artists=self.artists,
             author=self.author,
             cover=SonolusResourceLocator(
-                type="LevelCover", hash="", url=self.cover_hash
+                type="LevelCover", hash="", url=self.coverHash
             ),
-            bgm=SonolusResourceLocator(type="LevelBgm", hash="", url=self.bgm_hash),
-            data=SonolusResourceLocator(type="LevelData", hash="", url=self.data_hash),
+            bgm=SonolusResourceLocator(type="LevelBgm", hash="", url=self.bgmHash),
+            data=SonolusResourceLocator(type="LevelData", hash="", url=self.dataHash),
             public=self.public,
             genre=[],
-            userId=self.user_id,
+            userId=self.userId,
             createdTime=1,
             updatedTime=1,
             description=self.description,
@@ -102,7 +102,7 @@ class Announce(SonolusDataMixin, TimeMixin, Base):  # type: ignore
             recommended=[],
         )
 
-    cover_hash = Column(String(128), nullable=True)
-    bgm_hash = Column(String(128), nullable=True)
-    data_hash = Column(String(128), nullable=True)
+    coverHash = Column(String(128), nullable=True)
+    bgmHash = Column(String(128), nullable=True)
+    dataHash = Column(String(128), nullable=True)
     user = relationship("User", back_populates="announces", uselist=False)

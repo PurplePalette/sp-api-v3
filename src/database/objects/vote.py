@@ -9,8 +9,8 @@ class Vote(Base, TimeMixin):  # type: ignore
     __table_args__ = {"extend_existing": True}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
+    userId = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="votes", uselist=False)
-    level_id = Column(Integer, ForeignKey("levels.id"))
+    levelId = Column(Integer, ForeignKey("levels.id"))
     level = relationship("Level", back_populates="votes", uselist=False)
     value = Column(Integer)

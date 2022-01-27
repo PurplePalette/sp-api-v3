@@ -18,17 +18,17 @@ class GetEffectListResponse(BaseModel):
 
     GetEffectListResponse - a model defined in OpenAPI
 
-        page_count: The page_count of this GetEffectListResponse.
+        pageCount: The pageCount of this GetEffectListResponse.
         items: The items of this GetEffectListResponse.
         search: The search of this GetEffectListResponse.
     """
 
-    page_count: int
+    pageCount: int
     items: List[Effect]
     search: Search
 
-    @validator("page_count")
-    def page_count_min(cls, value):
+    @validator("pageCount")
+    def pageCount_min(cls, value):
         assert value >= 1
         return value
 

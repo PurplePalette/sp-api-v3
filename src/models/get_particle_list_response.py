@@ -18,17 +18,17 @@ class GetParticleListResponse(BaseModel):
 
     GetParticleListResponse - a model defined in OpenAPI
 
-        page_count: The page_count of this GetParticleListResponse.
+        pageCount: The pageCount of this GetParticleListResponse.
         items: The items of this GetParticleListResponse.
         search: The search of this GetParticleListResponse.
     """
 
-    page_count: int
+    pageCount: int
     items: List[Particle]
     search: Search
 
-    @validator("page_count")
-    def page_count_min(cls, value):
+    @validator("pageCount")
+    def pageCount_min(cls, value):
         assert value >= 1
         return value
 

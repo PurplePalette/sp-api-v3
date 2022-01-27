@@ -18,17 +18,17 @@ class GetLevelListResponse(BaseModel):
 
     GetLevelListResponse - a model defined in OpenAPI
 
-        page_count: The page_count of this GetLevelListResponse.
+        pageCount: The pageCount of this GetLevelListResponse.
         items: The items of this GetLevelListResponse.
         search: The search of this GetLevelListResponse.
     """
 
-    page_count: int
+    pageCount: int
     items: List[Level]
     search: Search
 
-    @validator("page_count")
-    def page_count_min(cls, value):
+    @validator("pageCount")
+    def pageCount_min(cls, value):
         assert value >= 1
         return value
 

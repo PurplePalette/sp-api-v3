@@ -9,15 +9,15 @@ class SonolusDataMixin(object):  # type: ignore
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(128))
     title = Column(String(128))
-    title_en = Column(String(128))
+    titleEn = Column(String(128))
     artists = Column(String(128))
-    artists_en = Column(String(128))
+    artistsEn = Column(String(128))
     author = Column(String(128))
-    author_en = Column(String(128))
+    authorEn = Column(String(128))
     description = Column(String(512))
-    description_en = Column(String(512))
+    descriptionEn = Column(String(512))
     public = Column(Boolean(), default=False, server_default="0")
 
     @declared_attr
-    def user_id(cls) -> Column:
+    def userId(cls) -> Column:
         return Column(Integer, ForeignKey("users.id"))

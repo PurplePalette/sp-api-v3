@@ -8,9 +8,9 @@ class Background(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     __tablename__ = "backgrounds"
     __table_args__ = {"extend_existing": True}
 
-    thumbnail_hash = Column(String(128))
-    data_hash = Column(String(128))
-    image_hash = Column(String(128))
+    thumbnailHash = Column(String(128))
+    dataHash = Column(String(128))
+    imageHash = Column(String(128))
     engines = relationship("Engine", back_populates="background")
     levels = relationship("Level", back_populates="background")
     user = relationship("User", back_populates="backgrounds", uselist=False)

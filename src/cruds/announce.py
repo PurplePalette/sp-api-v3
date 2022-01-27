@@ -60,16 +60,16 @@ async def edit_announce(
             announce_db.name = update_data[k]
         elif k == "title":
             announce_db.title = update_data[k]
-            announce_db.title_en = update_data[k]
+            announce_db.titleEn = update_data[k]
         elif k == "subtitle":
             announce_db.artists = update_data[k]
-            announce_db.artists_en = update_data[k]
+            announce_db.artistsEn = update_data[k]
         elif k == "date":
             announce_db.author = update_data[k]
-            announce_db.author_en = update_data[k]
+            announce_db.authorEn = update_data[k]
         elif k == "body":
             announce_db.description = update_data[k]
-            announce_db.description_en = update_data[k]
+            announce_db.descriptionEn = update_data[k]
         elif k == "resources":
             for r in update_data[k].keys():
                 if r == "icon":

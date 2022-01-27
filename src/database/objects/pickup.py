@@ -11,5 +11,5 @@ class Pickup(Base, TimeMixin):  # type: ignore
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     order = Column(Integer)
-    level_id = Column(Integer, ForeignKey("levels.id"))
+    levelId = Column(Integer, ForeignKey("levels.id"))
     level = relationship("Level", back_populates="pickup", uselist=False)

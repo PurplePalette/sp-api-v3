@@ -18,17 +18,17 @@ class GetEngineListResponse(BaseModel):
 
     GetEngineListResponse - a model defined in OpenAPI
 
-        page_count: The page_count of this GetEngineListResponse.
+        pageCount: The pageCount of this GetEngineListResponse.
         items: The items of this GetEngineListResponse.
         search: The search of this GetEngineListResponse.
     """
 
-    page_count: int
+    pageCount: int
     items: List[Engine]
     search: Search
 
-    @validator("page_count")
-    def page_count_min(cls, value):
+    @validator("pageCount")
+    def pageCount_min(cls, value):
         assert value >= 1
         return value
 

@@ -8,13 +8,13 @@ class Engine(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     __tablename__ = "engines"
     __table_args__ = {"extend_existing": True}
 
-    thumbnail_hash = Column(String(128))
-    data_hash = Column(String(128))
-    configuration_hash = Column(String(128))
-    background_id = Column(Integer, ForeignKey("backgrounds.id"))
-    effect_id = Column(Integer, ForeignKey("effects.id"))
-    particle_id = Column(Integer, ForeignKey("particles.id"))
-    skin_id = Column(Integer, ForeignKey("skins.id"))
+    thumbnailHash = Column(String(128))
+    dataHash = Column(String(128))
+    configurationHash = Column(String(128))
+    backgroundId = Column(Integer, ForeignKey("backgrounds.id"))
+    effectId = Column(Integer, ForeignKey("effects.id"))
+    particleId = Column(Integer, ForeignKey("particles.id"))
+    skinId = Column(Integer, ForeignKey("skins.id"))
     background = relationship("Background", back_populates="engines", uselist=False)
     effect = relationship("Effect", back_populates="engines", uselist=False)
     particle = relationship("Particle", back_populates="engines", uselist=False)

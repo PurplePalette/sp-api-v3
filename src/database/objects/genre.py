@@ -9,5 +9,5 @@ class Genre(Base):  # type: ignore
 
     id = Column(Integer, primary_key=True)
     name = Column(String(128))
-    name_en = Column(String(128))
+    nameEn = Column(String(128))
     levels = relationship("Level", back_populates="genre")

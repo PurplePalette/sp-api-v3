@@ -8,8 +8,8 @@ class Effect(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     __tablename__ = "effects"
     __table_args__ = {"extend_existing": True}
 
-    thumbnail_hash = Column(String(128))
-    data_hash = Column(String(128))
+    thumbnailHash = Column(String(128))
+    dataHash = Column(String(128))
     engines = relationship("Engine", back_populates="effect")
     levels = relationship("Level", back_populates="effect")
     user = relationship("User", back_populates="effects", uselist=False)
