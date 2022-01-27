@@ -20,7 +20,7 @@ class Pickup(BaseModel):
         order: The order of this Pickup.
     """
 
-    level_name: str
+    name: str
     order: int
 
     @validator("order")
