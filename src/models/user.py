@@ -17,34 +17,34 @@ class User(BaseModel):
 
     User - a model defined in OpenAPI
 
-        user_id: The user_id of this User [Optional].
+        userId: The userId of this User [Optional].
         test_id: The test_id of this User [Optional].
         account_key: The account_key of this User [Optional].
         description: The description of this User [Optional].
-        created_time: The created_time of this User [Optional].
-        updated_time: The updated_time of this User [Optional].
+        createdTime: The createdTime of this User [Optional].
+        updatedTime: The updatedTime of this User [Optional].
         total: The total of this User [Optional].
         is_admin: The is_admin of this User [Optional].
         is_deleted: The is_deleted of this User [Optional].
     """
 
-    user_id: Optional[str] = None
+    userId: Optional[str] = None
     test_id: Optional[str] = None
     account_key: Optional[str] = None
     description: Optional[str] = None
-    created_time: Optional[int] = None
-    updated_time: Optional[int] = None
+    createdTime: Optional[int] = None
+    updatedTime: Optional[int] = None
     total: Optional[UserTotal] = None
     is_admin: Optional[bool] = None
     is_deleted: Optional[bool] = None
 
-    @validator("user_id")
-    def user_id_min_length(cls, value):
+    @validator("userId")
+    def userId_min_length(cls, value):
         assert len(value) >= 1
         return value
 
-    @validator("user_id")
-    def user_id_max_length(cls, value):
+    @validator("userId")
+    def userId_max_length(cls, value):
         assert len(value) <= 30
         return value
 
@@ -68,13 +68,13 @@ class User(BaseModel):
         assert len(value) <= 3000
         return value
 
-    @validator("created_time")
-    def created_time_min(cls, value):
+    @validator("createdTime")
+    def createdTime_min(cls, value):
         assert value >= 0
         return value
 
-    @validator("updated_time")
-    def updated_time_min(cls, value):
+    @validator("updatedTime")
+    def updatedTime_min(cls, value):
         assert value >= 0
         return value
 

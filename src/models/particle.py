@@ -25,9 +25,9 @@ class Particle(BaseModel):
         thumbnail: The thumbnail of this Particle [Optional].
         data: The data of this Particle [Optional].
         texture: The texture of this Particle [Optional].
-        user_id: The user_id of this Particle [Optional].
-        created_time: The created_time of this Particle [Optional].
-        updated_time: The updated_time of this Particle [Optional].
+        userId: The userId of this Particle [Optional].
+        createdTime: The createdTime of this Particle [Optional].
+        updatedTime: The updatedTime of this Particle [Optional].
         description: The description of this Particle [Optional].
     """
 
@@ -39,9 +39,9 @@ class Particle(BaseModel):
     thumbnail: Optional[SonolusResourceLocator] = None
     data: Optional[SonolusResourceLocator] = None
     texture: Optional[SonolusResourceLocator] = None
-    user_id: Optional[str] = None
-    created_time: Optional[int] = None
-    updated_time: Optional[int] = None
+    userId: Optional[str] = None
+    createdTime: Optional[int] = None
+    updatedTime: Optional[int] = None
     description: Optional[str] = None
 
     @validator("name")
@@ -94,23 +94,23 @@ class Particle(BaseModel):
         assert len(value) <= 50
         return value
 
-    @validator("user_id")
-    def user_id_min_length(cls, value):
+    @validator("userId")
+    def userId_min_length(cls, value):
         assert len(value) >= 1
         return value
 
-    @validator("user_id")
-    def user_id_max_length(cls, value):
+    @validator("userId")
+    def userId_max_length(cls, value):
         assert len(value) <= 100
         return value
 
-    @validator("created_time")
-    def created_time_min(cls, value):
+    @validator("createdTime")
+    def createdTime_min(cls, value):
         assert value >= 0
         return value
 
-    @validator("updated_time")
-    def updated_time_min(cls, value):
+    @validator("updatedTime")
+    def updatedTime_min(cls, value):
         assert value >= 0
         return value
 

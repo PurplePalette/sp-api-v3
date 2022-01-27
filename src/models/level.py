@@ -39,9 +39,9 @@ class Level(BaseModel):
         data: The data of this Level [Optional].
         public: The public of this Level [Optional].
         genre: The genre of this Level [Optional].
-        user_id: The user_id of this Level [Optional].
-        created_time: The created_time of this Level [Optional].
-        updated_time: The updated_time of this Level [Optional].
+        userId: The userId of this Level [Optional].
+        createdTime: The createdTime of this Level [Optional].
+        updatedTime: The updatedTime of this Level [Optional].
         description: The description of this Level [Optional].
         length: The length of this Level [Optional].
         bpm: The bpm of this Level [Optional].
@@ -67,9 +67,9 @@ class Level(BaseModel):
     data: Optional[SonolusResourceLocator] = None
     public: Optional[bool] = None
     genre: Optional[List[str]] = None
-    user_id: Optional[str] = None
-    created_time: Optional[int] = None
-    updated_time: Optional[int] = None
+    userId: Optional[str] = None
+    createdTime: Optional[int] = None
+    updatedTime: Optional[int] = None
     description: Optional[str] = None
     length: Optional[int] = None
     bpm: Optional[int] = None
@@ -137,23 +137,23 @@ class Level(BaseModel):
         assert len(value) <= 50
         return value
 
-    @validator("user_id")
-    def user_id_min_length(cls, value):
+    @validator("userId")
+    def userId_min_length(cls, value):
         assert len(value) >= 1
         return value
 
-    @validator("user_id")
-    def user_id_max_length(cls, value):
+    @validator("userId")
+    def userId_max_length(cls, value):
         assert len(value) <= 100
         return value
 
-    @validator("created_time")
-    def created_time_min(cls, value):
+    @validator("createdTime")
+    def createdTime_min(cls, value):
         assert value >= 0
         return value
 
-    @validator("updated_time")
-    def updated_time_min(cls, value):
+    @validator("updatedTime")
+    def updatedTime_min(cls, value):
         assert value >= 0
         return value
 

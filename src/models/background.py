@@ -26,9 +26,9 @@ class Background(BaseModel):
         data: The data of this Background [Optional].
         image: The image of this Background [Optional].
         configuration: The configuration of this Background [Optional].
-        created_time: The created_time of this Background [Optional].
-        updated_time: The updated_time of this Background [Optional].
-        user_id: The user_id of this Background [Optional].
+        createdTime: The createdTime of this Background [Optional].
+        updatedTime: The updatedTime of this Background [Optional].
+        userId: The userId of this Background [Optional].
         description: The description of this Background [Optional].
     """
 
@@ -41,9 +41,9 @@ class Background(BaseModel):
     data: Optional[SonolusResourceLocator] = None
     image: Optional[SonolusResourceLocator] = None
     configuration: Optional[SonolusResourceLocator] = None
-    created_time: Optional[int] = None
-    updated_time: Optional[int] = None
-    user_id: Optional[str] = None
+    createdTime: Optional[int] = None
+    updatedTime: Optional[int] = None
+    userId: Optional[str] = None
     description: Optional[str] = None
 
     @validator("name")
@@ -96,23 +96,23 @@ class Background(BaseModel):
         assert len(value) <= 50
         return value
 
-    @validator("created_time")
-    def created_time_min(cls, value):
+    @validator("createdTime")
+    def createdTime_min(cls, value):
         assert value >= 0
         return value
 
-    @validator("updated_time")
-    def updated_time_min(cls, value):
+    @validator("updatedTime")
+    def updatedTime_min(cls, value):
         assert value >= 0
         return value
 
-    @validator("user_id")
-    def user_id_min_length(cls, value):
+    @validator("userId")
+    def userId_min_length(cls, value):
         assert len(value) >= 1
         return value
 
-    @validator("user_id")
-    def user_id_max_length(cls, value):
+    @validator("userId")
+    def userId_max_length(cls, value):
         assert len(value) <= 100
         return value
 

@@ -24,9 +24,9 @@ class Effect(BaseModel):
         author: The author of this Effect [Optional].
         thumbnail: The thumbnail of this Effect [Optional].
         data: The data of this Effect [Optional].
-        created_time: The created_time of this Effect [Optional].
-        updated_time: The updated_time of this Effect [Optional].
-        user_id: The user_id of this Effect [Optional].
+        createdTime: The createdTime of this Effect [Optional].
+        updatedTime: The updatedTime of this Effect [Optional].
+        userId: The userId of this Effect [Optional].
         description: The description of this Effect [Optional].
     """
 
@@ -37,9 +37,9 @@ class Effect(BaseModel):
     author: Optional[str] = None
     thumbnail: Optional[SonolusResourceLocator] = None
     data: Optional[SonolusResourceLocator] = None
-    created_time: Optional[int] = None
-    updated_time: Optional[int] = None
-    user_id: Optional[str] = None
+    createdTime: Optional[int] = None
+    updatedTime: Optional[int] = None
+    userId: Optional[str] = None
     description: Optional[str] = None
 
     @validator("name")
@@ -87,23 +87,23 @@ class Effect(BaseModel):
         assert len(value) >= 1
         return value
 
-    @validator("created_time")
-    def created_time_min(cls, value):
+    @validator("createdTime")
+    def createdTime_min(cls, value):
         assert value >= 0
         return value
 
-    @validator("updated_time")
-    def updated_time_min(cls, value):
+    @validator("updatedTime")
+    def updatedTime_min(cls, value):
         assert value >= 0
         return value
 
-    @validator("user_id")
-    def user_id_min_length(cls, value):
+    @validator("userId")
+    def userId_min_length(cls, value):
         assert len(value) >= 1
         return value
 
-    @validator("user_id")
-    def user_id_max_length(cls, value):
+    @validator("userId")
+    def userId_max_length(cls, value):
         assert len(value) <= 100
         return value
 
