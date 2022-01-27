@@ -20,8 +20,13 @@ class Background(BaseModel):
         name: The name of this Background [Optional].
         version: The version of this Background [Optional].
         title: The title of this Background [Optional].
+        titleEn: The titleEn of this Background [Optional].
         subtitle: The subtitle of this Background [Optional].
+        subtitleEn: The subtitleEn of this Background [Optional].
         author: The author of this Background [Optional].
+        authorEn: The authorEn of this Background [Optional].
+        description: The description of this Background [Optional].
+        descriptionEn: The descriptionEn of this Background [Optional].
         thumbnail: The thumbnail of this Background [Optional].
         data: The data of this Background [Optional].
         image: The image of this Background [Optional].
@@ -29,14 +34,18 @@ class Background(BaseModel):
         createdTime: The createdTime of this Background [Optional].
         updatedTime: The updatedTime of this Background [Optional].
         userId: The userId of this Background [Optional].
-        description: The description of this Background [Optional].
     """
 
     name: Optional[str] = None
     version: Optional[int] = None
     title: Optional[str] = None
+    titleEn: Optional[str] = None
     subtitle: Optional[str] = None
+    subtitleEn: Optional[str] = None
     author: Optional[str] = None
+    authorEn: Optional[str] = None
+    description: Optional[str] = None
+    descriptionEn: Optional[str] = None
     thumbnail: Optional[SonolusResourceLocator] = None
     data: Optional[SonolusResourceLocator] = None
     image: Optional[SonolusResourceLocator] = None
@@ -44,7 +53,6 @@ class Background(BaseModel):
     createdTime: Optional[int] = None
     updatedTime: Optional[int] = None
     userId: Optional[str] = None
-    description: Optional[str] = None
 
     @validator("name")
     def name_min_length(cls, value):
@@ -76,6 +84,16 @@ class Background(BaseModel):
         assert len(value) <= 100
         return value
 
+    @validator("titleEn")
+    def titleEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("titleEn")
+    def titleEn_max_length(cls, value):
+        assert len(value) <= 100
+        return value
+
     @validator("subtitle")
     def subtitle_min_length(cls, value):
         assert len(value) >= 1
@@ -83,6 +101,16 @@ class Background(BaseModel):
 
     @validator("subtitle")
     def subtitle_max_length(cls, value):
+        assert len(value) <= 100
+        return value
+
+    @validator("subtitleEn")
+    def subtitleEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("subtitleEn")
+    def subtitleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -94,6 +122,36 @@ class Background(BaseModel):
     @validator("author")
     def author_max_length(cls, value):
         assert len(value) <= 50
+        return value
+
+    @validator("authorEn")
+    def authorEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("authorEn")
+    def authorEn_max_length(cls, value):
+        assert len(value) <= 50
+        return value
+
+    @validator("description")
+    def description_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("description")
+    def description_max_length(cls, value):
+        assert len(value) <= 3000
+        return value
+
+    @validator("descriptionEn")
+    def descriptionEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("descriptionEn")
+    def descriptionEn_max_length(cls, value):
+        assert len(value) <= 3000
         return value
 
     @validator("createdTime")
@@ -114,16 +172,6 @@ class Background(BaseModel):
     @validator("userId")
     def userId_max_length(cls, value):
         assert len(value) <= 100
-        return value
-
-    @validator("description")
-    def description_min_length(cls, value):
-        assert len(value) >= 0
-        return value
-
-    @validator("description")
-    def description_max_length(cls, value):
-        assert len(value) <= 3000
         return value
 
 

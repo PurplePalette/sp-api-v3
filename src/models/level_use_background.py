@@ -17,7 +17,7 @@ class LevelUseBackground(BaseModel):
 
     LevelUseBackground - a model defined in OpenAPI
 
-        useDefault: The use_default of this LevelUseBackground [Optional].
+        useDefault: The useDefault of this LevelUseBackground [Optional].
         item: The item of this LevelUseBackground [Optional].
     """
 

@@ -20,29 +20,37 @@ class Skin(BaseModel):
         name: The name of this Skin [Optional].
         version: The version of this Skin [Optional].
         title: The title of this Skin [Optional].
+        titleEn: The titleEn of this Skin [Optional].
         subtitle: The subtitle of this Skin [Optional].
+        subtitleEn: The subtitleEn of this Skin [Optional].
         author: The author of this Skin [Optional].
+        authorEn: The authorEn of this Skin [Optional].
+        description: The description of this Skin [Optional].
+        descriptionEn: The descriptionEn of this Skin [Optional].
         thumbnail: The thumbnail of this Skin [Optional].
         data: The data of this Skin [Optional].
         texture: The texture of this Skin [Optional].
         createdTime: The createdTime of this Skin [Optional].
         updatedTime: The updatedTime of this Skin [Optional].
         userId: The userId of this Skin [Optional].
-        description: The description of this Skin [Optional].
     """
 
     name: Optional[str] = None
     version: Optional[int] = None
     title: Optional[str] = None
+    titleEn: Optional[str] = None
     subtitle: Optional[str] = None
+    subtitleEn: Optional[str] = None
     author: Optional[str] = None
+    authorEn: Optional[str] = None
+    description: Optional[str] = None
+    descriptionEn: Optional[str] = None
     thumbnail: Optional[SonolusResourceLocator] = None
     data: Optional[SonolusResourceLocator] = None
     texture: Optional[SonolusResourceLocator] = None
     createdTime: Optional[int] = None
     updatedTime: Optional[int] = None
     userId: Optional[str] = None
-    description: Optional[str] = None
 
     @validator("name")
     def name_min_length(cls, value):
@@ -74,6 +82,16 @@ class Skin(BaseModel):
         assert len(value) <= 100
         return value
 
+    @validator("titleEn")
+    def titleEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("titleEn")
+    def titleEn_max_length(cls, value):
+        assert len(value) <= 100
+        return value
+
     @validator("subtitle")
     def subtitle_min_length(cls, value):
         assert len(value) >= 1
@@ -81,6 +99,16 @@ class Skin(BaseModel):
 
     @validator("subtitle")
     def subtitle_max_length(cls, value):
+        assert len(value) <= 100
+        return value
+
+    @validator("subtitleEn")
+    def subtitleEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("subtitleEn")
+    def subtitleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -92,6 +120,36 @@ class Skin(BaseModel):
     @validator("author")
     def author_max_length(cls, value):
         assert len(value) <= 50
+        return value
+
+    @validator("authorEn")
+    def authorEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("authorEn")
+    def authorEn_max_length(cls, value):
+        assert len(value) <= 50
+        return value
+
+    @validator("description")
+    def description_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("description")
+    def description_max_length(cls, value):
+        assert len(value) <= 3000
+        return value
+
+    @validator("descriptionEn")
+    def descriptionEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("descriptionEn")
+    def descriptionEn_max_length(cls, value):
+        assert len(value) <= 3000
         return value
 
     @validator("createdTime")
@@ -112,16 +170,6 @@ class Skin(BaseModel):
     @validator("userId")
     def userId_max_length(cls, value):
         assert len(value) <= 100
-        return value
-
-    @validator("description")
-    def description_min_length(cls, value):
-        assert len(value) >= 0
-        return value
-
-    @validator("description")
-    def description_max_length(cls, value):
-        assert len(value) <= 3000
         return value
 
 

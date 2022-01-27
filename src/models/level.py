@@ -26,13 +26,18 @@ class Level(BaseModel):
         version: The version of this Level [Optional].
         rating: The rating of this Level [Optional].
         engine: The engine of this Level [Optional].
-        useSkin: The use_skin of this Level [Optional].
-        useBackground: The use_background of this Level [Optional].
-        useEffect: The use_effect of this Level [Optional].
-        useParticle: The use_particle of this Level [Optional].
+        useSkin: The useSkin of this Level [Optional].
+        useBackground: The useBackground of this Level [Optional].
+        useEffect: The useEffect of this Level [Optional].
+        useParticle: The useParticle of this Level [Optional].
         title: The title of this Level [Optional].
+        titleEn: The titleEn of this Level [Optional].
         artists: The artists of this Level [Optional].
+        artistsEn: The artistsEn of this Level [Optional].
         author: The author of this Level [Optional].
+        authorEn: The authorEn of this Level [Optional].
+        description: The description of this Level [Optional].
+        descriptionEn: The descriptionEn of this Level [Optional].
         cover: The cover of this Level [Optional].
         bgm: The bgm of this Level [Optional].
         preview: The preview of this Level [Optional].
@@ -42,7 +47,6 @@ class Level(BaseModel):
         userId: The userId of this Level [Optional].
         createdTime: The createdTime of this Level [Optional].
         updatedTime: The updatedTime of this Level [Optional].
-        description: The description of this Level [Optional].
         length: The length of this Level [Optional].
         bpm: The bpm of this Level [Optional].
         notes: The notes of this Level [Optional].
@@ -59,8 +63,13 @@ class Level(BaseModel):
     useEffect: Optional[LevelUseEffect] = None
     useParticle: Optional[LevelUseParticle] = None
     title: Optional[str] = None
+    titleEn: Optional[str] = None
     artists: Optional[str] = None
+    artistsEn: Optional[str] = None
     author: Optional[str] = None
+    authorEn: Optional[str] = None
+    description: Optional[str] = None
+    descriptionEn: Optional[str] = None
     cover: Optional[SonolusResourceLocator] = None
     bgm: Optional[SonolusResourceLocator] = None
     preview: Optional[SonolusResourceLocator] = None
@@ -70,7 +79,6 @@ class Level(BaseModel):
     userId: Optional[str] = None
     createdTime: Optional[int] = None
     updatedTime: Optional[int] = None
-    description: Optional[str] = None
     length: Optional[int] = None
     bpm: Optional[int] = None
     notes: Optional[int] = None
@@ -117,6 +125,16 @@ class Level(BaseModel):
         assert len(value) <= 100
         return value
 
+    @validator("titleEn")
+    def titleEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("titleEn")
+    def titleEn_max_length(cls, value):
+        assert len(value) <= 100
+        return value
+
     @validator("artists")
     def artists_min_length(cls, value):
         assert len(value) >= 1
@@ -124,6 +142,16 @@ class Level(BaseModel):
 
     @validator("artists")
     def artists_max_length(cls, value):
+        assert len(value) <= 100
+        return value
+
+    @validator("artistsEn")
+    def artistsEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("artistsEn")
+    def artistsEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -135,6 +163,36 @@ class Level(BaseModel):
     @validator("author")
     def author_max_length(cls, value):
         assert len(value) <= 50
+        return value
+
+    @validator("authorEn")
+    def authorEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("authorEn")
+    def authorEn_max_length(cls, value):
+        assert len(value) <= 50
+        return value
+
+    @validator("description")
+    def description_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("description")
+    def description_max_length(cls, value):
+        assert len(value) <= 3000
+        return value
+
+    @validator("descriptionEn")
+    def descriptionEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("descriptionEn")
+    def descriptionEn_max_length(cls, value):
+        assert len(value) <= 3000
         return value
 
     @validator("userId")
@@ -155,16 +213,6 @@ class Level(BaseModel):
     @validator("updatedTime")
     def updatedTime_min(cls, value):
         assert value >= 0
-        return value
-
-    @validator("description")
-    def description_min_length(cls, value):
-        assert len(value) >= 0
-        return value
-
-    @validator("description")
-    def description_max_length(cls, value):
-        assert len(value) <= 3000
         return value
 
     @validator("length")

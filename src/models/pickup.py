@@ -16,7 +16,7 @@ class Pickup(BaseModel):
 
     Pickup - a model defined in OpenAPI
 
-        level_name: The level_name of this Pickup.
+        name: The name of this Pickup.
         order: The order of this Pickup.
     """
 

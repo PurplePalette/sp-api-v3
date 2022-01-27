@@ -7,7 +7,7 @@ import re  # noqa: F401
 from typing import Any, Dict, List, Optional  # noqa: F401
 
 from pydantic import AnyUrl, BaseModel, EmailStr, validator  # noqa: F401
-from src.models.announce_resources import AnnounceResources
+from src.models.sonolus_resource_locator import SonolusResourceLocator
 
 
 class Announce(BaseModel):
@@ -17,20 +17,162 @@ class Announce(BaseModel):
 
     Announce - a model defined in OpenAPI
 
-        announce_name: The announce_name of this Announce.
-        title: The title of this Announce.
-        subtitle: The subtitle of this Announce.
-        date: The date of this Announce.
-        body: The body of this Announce.
-        resources: The resources of this Announce [Optional].
+        name: The name of this Announce [Optional].
+        rating: The rating of this Announce [Optional].
+        title: The title of this Announce [Optional].
+        titleEn: The titleEn of this Announce [Optional].
+        subtitle: The subtitle of this Announce [Optional].
+        subtitleEn: The subtitleEn of this Announce [Optional].
+        author: The author of this Announce [Optional].
+        authorEn: The authorEn of this Announce [Optional].
+        description: The description of this Announce [Optional].
+        descriptionEn: The descriptionEn of this Announce [Optional].
+        cover: The cover of this Announce [Optional].
+        bgm: The bgm of this Announce [Optional].
+        preview: The preview of this Announce [Optional].
+        public: The public of this Announce [Optional].
+        userId: The userId of this Announce [Optional].
+        createdTime: The createdTime of this Announce [Optional].
+        updatedTime: The updatedTime of this Announce [Optional].
     """
 
-    name: str
-    title: str
-    subtitle: str
-    date: str
-    body: str
-    resources: Optional[AnnounceResources] = None
+    name: Optional[str] = None
+    rating: Optional[int] = None
+    title: Optional[str] = None
+    titleEn: Optional[str] = None
+    subtitle: Optional[str] = None
+    subtitleEn: Optional[str] = None
+    author: Optional[str] = None
+    authorEn: Optional[str] = None
+    description: Optional[str] = None
+    descriptionEn: Optional[str] = None
+    cover: Optional[SonolusResourceLocator] = None
+    bgm: Optional[SonolusResourceLocator] = None
+    preview: Optional[SonolusResourceLocator] = None
+    public: Optional[bool] = None
+    userId: Optional[str] = None
+    createdTime: Optional[int] = None
+    updatedTime: Optional[int] = None
+
+    @validator("name")
+    def name_min_length(cls, value):
+        assert len(value) >= 1
+        return value
+
+    @validator("name")
+    def name_max_length(cls, value):
+        assert len(value) <= 100
+        return value
+
+    @validator("rating")
+    def rating_max(cls, value):
+        assert value <= 100
+        return value
+
+    @validator("rating")
+    def rating_min(cls, value):
+        assert value >= 1
+        return value
+
+    @validator("title")
+    def title_min_length(cls, value):
+        assert len(value) >= 1
+        return value
+
+    @validator("title")
+    def title_max_length(cls, value):
+        assert len(value) <= 100
+        return value
+
+    @validator("titleEn")
+    def titleEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("titleEn")
+    def titleEn_max_length(cls, value):
+        assert len(value) <= 100
+        return value
+
+    @validator("subtitle")
+    def subtitle_min_length(cls, value):
+        assert len(value) >= 1
+        return value
+
+    @validator("subtitle")
+    def subtitle_max_length(cls, value):
+        assert len(value) <= 100
+        return value
+
+    @validator("subtitleEn")
+    def subtitleEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("subtitleEn")
+    def subtitleEn_max_length(cls, value):
+        assert len(value) <= 100
+        return value
+
+    @validator("author")
+    def author_min_length(cls, value):
+        assert len(value) >= 1
+        return value
+
+    @validator("author")
+    def author_max_length(cls, value):
+        assert len(value) <= 50
+        return value
+
+    @validator("authorEn")
+    def authorEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("authorEn")
+    def authorEn_max_length(cls, value):
+        assert len(value) <= 50
+        return value
+
+    @validator("description")
+    def description_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("description")
+    def description_max_length(cls, value):
+        assert len(value) <= 3000
+        return value
+
+    @validator("descriptionEn")
+    def descriptionEn_min_length(cls, value):
+        assert len(value) >= 0
+        return value
+
+    @validator("descriptionEn")
+    def descriptionEn_max_length(cls, value):
+        assert len(value) <= 3000
+        return value
+
+    @validator("userId")
+    def userId_min_length(cls, value):
+        assert len(value) >= 1
+        return value
+
+    @validator("userId")
+    def userId_max_length(cls, value):
+        assert len(value) <= 100
+        return value
+
+    @validator("createdTime")
+    def createdTime_min(cls, value):
+        assert value >= 0
+        return value
+
+    @validator("updatedTime")
+    def updatedTime_min(cls, value):
+        assert value >= 0
+        return value
 
 
 Announce.update_forward_refs()

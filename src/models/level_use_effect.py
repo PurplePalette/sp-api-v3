@@ -17,7 +17,7 @@ class LevelUseEffect(BaseModel):
 
     LevelUseEffect - a model defined in OpenAPI
 
-        useDefault: The use_default of this LevelUseEffect [Optional].
+        useDefault: The useDefault of this LevelUseEffect [Optional].
         item: The item of this LevelUseEffect [Optional].
     """
 
