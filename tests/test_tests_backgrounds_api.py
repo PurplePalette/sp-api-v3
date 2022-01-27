@@ -19,7 +19,7 @@ def test_get_background_test(client: TestClient) -> None:
     response = client.request(
         "GET",
         "/tests/{testId}/backgrounds/{backgroundName}".format(
-            testId="test_id_example", backgroundName="background_name_example"
+            testId="testId_example", backgroundName="background_name_example"
         ),
         headers=headers,
     )
@@ -45,7 +45,7 @@ def test_get_tests_backgrounds(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/tests/{testId}/backgrounds/list".format(testId="test_id_example"),
+        "/tests/{testId}/backgrounds/list".format(testId="testId_example"),
         headers=headers,
         params=params,
     )

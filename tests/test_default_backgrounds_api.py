@@ -16,9 +16,9 @@ def test_add_background(client: TestClient) -> None:
     Add a background
     """
     background = {
-        "description_en": "No description",
+        "descriptionEn": "No description",
         "image": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "updated_time": 0,
+        "updatedTime": 0,
         "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
         "data": {"type": "LevelData", "hash": "hash", "url": "url"},
         "configuration": {"type": "LevelData", "hash": "hash", "url": "url"},
@@ -26,13 +26,13 @@ def test_add_background(client: TestClient) -> None:
         "description": "No description",
         "title": "title",
         "version": 1,
-        "subtitle_en": "subtitleEn",
-        "user_id": "userId",
-        "title_en": "titleEn",
+        "subtitleEn": "subtitleEn",
+        "userId": "userId",
+        "titleEn": "titleEn",
         "subtitle": "subtitle",
         "name": "name",
-        "created_time": 0,
-        "author_en": "authorEn",
+        "createdTime": 0,
+        "authorEn": "authorEn",
     }
 
     headers = {
@@ -74,9 +74,9 @@ def test_edit_background(client: TestClient) -> None:
     Edit a background
     """
     background = {
-        "description_en": "No description",
+        "descriptionEn": "No description",
         "image": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "updated_time": 0,
+        "updatedTime": 0,
         "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
         "data": {"type": "LevelData", "hash": "hash", "url": "url"},
         "configuration": {"type": "LevelData", "hash": "hash", "url": "url"},
@@ -84,13 +84,13 @@ def test_edit_background(client: TestClient) -> None:
         "description": "No description",
         "title": "title",
         "version": 1,
-        "subtitle_en": "subtitleEn",
-        "user_id": "userId",
-        "title_en": "titleEn",
+        "subtitleEn": "subtitleEn",
+        "userId": "userId",
+        "titleEn": "titleEn",
         "subtitle": "subtitle",
         "name": "name",
-        "created_time": 0,
-        "author_en": "authorEn",
+        "createdTime": 0,
+        "authorEn": "authorEn",
     }
 
     headers = {

@@ -17,7 +17,7 @@ def test_get_users_engine(client: TestClient) -> None:
     response = client.request(
         "GET",
         "/users/{userId}/engines/{engineName}".format(
-            userId="user_id_example", engineName="engine_name_example"
+            userId="userId_example", engineName="engine_name_example"
         ),
         headers=headers,
     )
@@ -43,7 +43,7 @@ def test_get_users_engines(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/users/{userId}/engines/list".format(userId="user_id_example"),
+        "/users/{userId}/engines/list".format(userId="userId_example"),
         headers=headers,
         params=params,
     )

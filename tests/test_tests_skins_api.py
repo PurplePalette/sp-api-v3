@@ -17,7 +17,7 @@ def test_get_skin_test(client: TestClient) -> None:
     response = client.request(
         "GET",
         "/tests/{testId}/skins/{skinName}".format(
-            testId="test_id_example", skinName="skin_name_example"
+            testId="testId_example", skinName="skin_name_example"
         ),
         headers=headers,
     )
@@ -43,7 +43,7 @@ def test_get_tests_skins(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/tests/{testId}/skins/list".format(testId="test_id_example"),
+        "/tests/{testId}/skins/list".format(testId="testId_example"),
         headers=headers,
         params=params,
     )

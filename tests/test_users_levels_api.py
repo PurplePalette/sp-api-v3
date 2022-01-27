@@ -17,7 +17,7 @@ def test_get_users_level(client: TestClient) -> None:
     response = client.request(
         "GET",
         "/users/{userId}/levels/{levelName}".format(
-            userId="user_id_example", levelName="level_name_example"
+            userId="userId_example", levelName="level_name_example"
         ),
         headers=headers,
     )
@@ -43,7 +43,7 @@ def test_get_users_levels(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/users/{userId}/levels/list".format(userId="user_id_example"),
+        "/users/{userId}/levels/list".format(userId="userId_example"),
         headers=headers,
         params=params,
     )

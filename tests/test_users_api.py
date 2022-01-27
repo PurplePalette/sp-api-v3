@@ -13,7 +13,7 @@ def test_add_user(client: TestClient) -> None:
     Add a user
     """
     user = {
-        "updated_time": 0,
+        "updatedTime": 0,
         "total": {
             "favorites": 0,
             "plays": 0,
@@ -29,10 +29,10 @@ def test_add_user(client: TestClient) -> None:
         },
         "is_deleted": 0,
         "description": "description",
-        "created_time": 0,
-        "test_id": "htcckfcn",
+        "createdTime": 0,
+        "testId": "htcckfcn",
         "is_admin": 0,
-        "user_id": "gz6xQrm79IN4BiQag78sQqYWYlC3",
+        "userId": "gz6xQrm79IN4BiQag78sQqYWYlC3",
         "account_key": "super_secret_key",
     }
 
@@ -60,7 +60,7 @@ def test_delete_user(client: TestClient) -> None:
     }
     response = client.request(
         "DELETE",
-        "/users/{userId}".format(userId="user_id_example"),
+        "/users/{userId}".format(userId="userId_example"),
         headers=headers,
     )
 
@@ -73,7 +73,7 @@ def test_edit_user(client: TestClient) -> None:
     Edit a user
     """
     user = {
-        "updated_time": 0,
+        "updatedTime": 0,
         "total": {
             "favorites": 0,
             "plays": 0,
@@ -89,10 +89,10 @@ def test_edit_user(client: TestClient) -> None:
         },
         "is_deleted": 0,
         "description": "description",
-        "created_time": 0,
-        "test_id": "htcckfcn",
+        "createdTime": 0,
+        "testId": "htcckfcn",
         "is_admin": 0,
-        "user_id": "gz6xQrm79IN4BiQag78sQqYWYlC3",
+        "userId": "gz6xQrm79IN4BiQag78sQqYWYlC3",
         "account_key": "super_secret_key",
     }
 
@@ -101,7 +101,7 @@ def test_edit_user(client: TestClient) -> None:
     }
     response = client.request(
         "PATCH",
-        "/users/{userId}".format(userId="user_id_example"),
+        "/users/{userId}".format(userId="userId_example"),
         headers=headers,
         json=user,
     )
@@ -118,7 +118,7 @@ def test_get_user(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/users/{userId}".format(userId="user_id_example"),
+        "/users/{userId}".format(userId="userId_example"),
         headers=headers,
     )
 

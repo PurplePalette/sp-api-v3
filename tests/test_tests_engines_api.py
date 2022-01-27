@@ -17,7 +17,7 @@ def test_get_engine_test(client: TestClient) -> None:
     response = client.request(
         "GET",
         "/tests/{testId}/engines/{engineName}".format(
-            testId="test_id_example", engineName="engine_name_example"
+            testId="testId_example", engineName="engine_name_example"
         ),
         headers=headers,
     )
@@ -43,7 +43,7 @@ def test_get_tests_engines(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/tests/{testId}/engines/list".format(testId="test_id_example"),
+        "/tests/{testId}/engines/list".format(testId="testId_example"),
         headers=headers,
         params=params,
     )

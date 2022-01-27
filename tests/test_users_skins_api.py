@@ -17,7 +17,7 @@ def test_get_users_skin(client: TestClient) -> None:
     response = client.request(
         "GET",
         "/users/{userId}/skins/{skinName}".format(
-            userId="user_id_example", skinName="skin_name_example"
+            userId="userId_example", skinName="skin_name_example"
         ),
         headers=headers,
     )
@@ -43,7 +43,7 @@ def test_get_users_skins(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/users/{userId}/skins/list".format(userId="user_id_example"),
+        "/users/{userId}/skins/list".format(userId="userId_example"),
         headers=headers,
         params=params,
     )

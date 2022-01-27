@@ -19,7 +19,7 @@ def test_get_users_background(client: TestClient) -> None:
     response = client.request(
         "GET",
         "/users/{userId}/backgrounds/{backgroundName}".format(
-            userId="user_id_example", backgroundName="background_name_example"
+            userId="userId_example", backgroundName="background_name_example"
         ),
         headers=headers,
     )
@@ -45,7 +45,7 @@ def test_get_users_backgrounds(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/users/{userId}/backgrounds/list".format(userId="user_id_example"),
+        "/users/{userId}/backgrounds/list".format(userId="userId_example"),
         headers=headers,
         params=params,
     )

@@ -15,7 +15,7 @@ def test_get_user_server_info(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/users/{userId}/info".format(userId="user_id_example"),
+        "/users/{userId}/info".format(userId="userId_example"),
         headers=headers,
     )
 

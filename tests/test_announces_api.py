@@ -15,22 +15,22 @@ def test_add_announce(client: TestClient) -> None:
     """
     announce = {
         "preview": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "description_en": "No description",
-        "updated_time": 0,
+        "descriptionEn": "No description",
+        "updatedTime": 0,
         "author": "author",
         "rating": 8,
         "description": "No description",
         "bgm": {"type": "LevelData", "hash": "hash", "url": "url"},
         "title": "title",
-        "subtitle_en": "subtitleEn",
-        "user_id": "userId",
+        "subtitleEn": "subtitleEn",
+        "userId": "userId",
         "cover": {"type": "LevelData", "hash": "hash", "url": "url"},
         "public": 0,
-        "title_en": "titleEn",
+        "titleEn": "titleEn",
         "subtitle": "subtitle",
         "name": "name",
-        "created_time": 0,
-        "author_en": "authorEn",
+        "createdTime": 0,
+        "authorEn": "authorEn",
     }
 
     headers = {
@@ -70,22 +70,22 @@ def test_edit_announce(client: TestClient) -> None:
     """
     announce = {
         "preview": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "description_en": "No description",
-        "updated_time": 0,
+        "descriptionEn": "No description",
+        "updatedTime": 0,
         "author": "author",
         "rating": 8,
         "description": "No description",
         "bgm": {"type": "LevelData", "hash": "hash", "url": "url"},
         "title": "title",
-        "subtitle_en": "subtitleEn",
-        "user_id": "userId",
+        "subtitleEn": "subtitleEn",
+        "userId": "userId",
         "cover": {"type": "LevelData", "hash": "hash", "url": "url"},
         "public": 0,
-        "title_en": "titleEn",
+        "titleEn": "titleEn",
         "subtitle": "subtitle",
         "name": "name",
-        "created_time": 0,
-        "author_en": "authorEn",
+        "createdTime": 0,
+        "authorEn": "authorEn",
     }
 
     headers = {

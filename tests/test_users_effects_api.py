@@ -17,7 +17,7 @@ def test_get_users_effect(client: TestClient) -> None:
     response = client.request(
         "GET",
         "/users/{userId}/effects/{effectName}".format(
-            userId="user_id_example", effectName="effect_name_example"
+            userId="userId_example", effectName="effect_name_example"
         ),
         headers=headers,
     )
@@ -43,7 +43,7 @@ def test_get_users_effects(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/users/{userId}/effects/list".format(userId="user_id_example"),
+        "/users/{userId}/effects/list".format(userId="userId_example"),
         headers=headers,
         params=params,
     )

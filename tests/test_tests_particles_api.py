@@ -17,7 +17,7 @@ def test_get_particle_test(client: TestClient) -> None:
     response = client.request(
         "GET",
         "/tests/{testId}/particles/{particleName}".format(
-            testId="test_id_example", particleName="particle_name_example"
+            testId="testId_example", particleName="particle_name_example"
         ),
         headers=headers,
     )
@@ -43,7 +43,7 @@ def test_get_tests_particles(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/tests/{testId}/particles/list".format(testId="test_id_example"),
+        "/tests/{testId}/particles/list".format(testId="testId_example"),
         headers=headers,
         params=params,
     )

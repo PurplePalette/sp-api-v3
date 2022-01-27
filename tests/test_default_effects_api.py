@@ -14,21 +14,21 @@ def test_add_effect(client: TestClient) -> None:
     Add an effect
     """
     effect = {
-        "description_en": "No description",
-        "updated_time": 0,
+        "descriptionEn": "No description",
+        "updatedTime": 0,
         "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
         "data": {"type": "LevelData", "hash": "hash", "url": "url"},
         "author": "author",
         "description": "No description",
         "title": "title",
         "version": 1,
-        "subtitle_en": "subtitleEn",
-        "user_id": "userId",
-        "title_en": "titleEn",
+        "subtitleEn": "subtitleEn",
+        "userId": "userId",
+        "titleEn": "titleEn",
         "subtitle": "subtitle",
         "name": "name",
-        "created_time": 0,
-        "author_en": "authorEn",
+        "createdTime": 0,
+        "authorEn": "authorEn",
     }
 
     headers = {
@@ -68,21 +68,21 @@ def test_edit_effect(client: TestClient) -> None:
     Edit an effect
     """
     effect = {
-        "description_en": "No description",
-        "updated_time": 0,
+        "descriptionEn": "No description",
+        "updatedTime": 0,
         "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
         "data": {"type": "LevelData", "hash": "hash", "url": "url"},
         "author": "author",
         "description": "No description",
         "title": "title",
         "version": 1,
-        "subtitle_en": "subtitleEn",
-        "user_id": "userId",
-        "title_en": "titleEn",
+        "subtitleEn": "subtitleEn",
+        "userId": "userId",
+        "titleEn": "titleEn",
         "subtitle": "subtitle",
         "name": "name",
-        "created_time": 0,
-        "author_en": "authorEn",
+        "createdTime": 0,
+        "authorEn": "authorEn",
     }
 
     headers = {

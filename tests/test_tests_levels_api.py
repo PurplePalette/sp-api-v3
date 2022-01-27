@@ -17,7 +17,7 @@ def test_get_level_test(client: TestClient) -> None:
     response = client.request(
         "GET",
         "/tests/{testId}/levels/{levelName}".format(
-            testId="test_id_example", levelName="level_name_example"
+            testId="testId_example", levelName="level_name_example"
         ),
         headers=headers,
     )
@@ -43,7 +43,7 @@ def test_get_tests_levels(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/tests/{testId}/levels/list".format(testId="test_id_example"),
+        "/tests/{testId}/levels/list".format(testId="testId_example"),
         headers=headers,
         params=params,
     )

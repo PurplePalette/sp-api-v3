@@ -15,7 +15,7 @@ def test_get_test_server_info(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/tests/{testId}/info".format(testId="test_id_example"),
+        "/tests/{testId}/info".format(testId="testId_example"),
         headers=headers,
     )
 
