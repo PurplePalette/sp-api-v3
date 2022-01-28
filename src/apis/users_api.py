@@ -17,6 +17,11 @@ from fastapi import (  # noqa: F401
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import dependsBody, dependsDatabase, dependsFirebase, dependsPath
+from src.cruds.user import create_user as crud_create
+from src.cruds.user import delete_user as crud_delete  # noqa: F401
+from src.cruds.user import edit_user as crud_edit  # noqa: F401
+from src.cruds.user import get_user as crud_get  # noqa: F401
+from src.cruds.user import list_user as crud_list  # noqa: F401
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_user_list_response import GetUserListResponse
 from src.models.user import User
@@ -39,9 +44,9 @@ async def add_user(
     user: User = dependsBody,
     db: AsyncSession = dependsDatabase,
     auth: FirebaseClaims = dependsFirebase,
-) -> None:
+) -> User:
     """Add specified new user to server"""
-    ...
+    return await crud_create(db, user, auth)
 
 
 @router.delete(

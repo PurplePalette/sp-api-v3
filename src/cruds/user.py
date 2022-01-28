@@ -1,36 +1,59 @@
 from datetime import datetime
-from typing import List, Optional  # noqa: F401
+from typing import List, Optional
 
+import shortuuid
+from fastapi import HTTPException  # noqa: F401
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import select  # noqa: F401
 from sqlalchemy.engine import Result  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.cruds.utils import get_first_item_or_404  # noqa: F401
-from src.cruds.utils import not_exist_or_409  # noqa: F401
-from src.cruds.utils import get_admin_or_403, get_user_or_404
+from src.cruds.utils import (
+    get_admin_or_403,
+    get_current_unix,
+    get_first_item_or_404,
+    get_user_or_404,
+    not_exist_or_409,
+)
 from src.database.objects.user import User as UserSave
 from src.models.user import User as UserReqResp
+from src.models.user_total import UserTotal
+from src.models.user_total_publish import UserTotalPublish
 
 
 async def create_user(
     db: AsyncSession, model: UserReqResp, user: FirebaseClaims
 ) -> UserReqResp:
     """ユーザーを追加します"""
-    await not_exist_or_409(db, select(UserSave).filter(UserSave.name == user.user_id))
-    user_db: UserSave = UserSave(
-        name=user.user_id,
-        display_id=model.display_id,
-        test_id=model.test_id,
-        account_id=model.account_id,
-        is_admin=False,
-        is_deleted=False,
-        created_time=datetime.now(),
-        updated_time=datetime.now(),
+    await not_exist_or_409(
+        db,
+        select(UserSave).filter(
+            UserSave.userId == user["user_id"]
+            or UserSave.accountId == model.accountId
+            or UserSave.testId == model.testId
+        ),
     )
-    user_resp: UserReqResp = UserReqResp(**user_db.to_dict())
+    user_db = UserSave(**model.dict(exclude_unset=True))
+    user_db.userId = user["user_id"]
+    user_db.isAdmin = False
+    user_db.isDeleted = False
+    user_db.createdTime = user_db.updatedTime = get_current_unix()
+    if user_db.accountId is None:
+        user_db.accountId = shortuuid.uuid()
+    if user_db.testId is None:
+        user_db.testId = shortuuid.uuid()
+    resp = UserReqResp.from_orm(user_db)
+    resp.total = UserTotal(
+        likes=0,
+        plays=0,
+        favorites=0,
+        publish=UserTotalPublish(
+            backgrounds=0, levels=0, particles=0, skins=0, effects=0, engines=0
+        ),
+    )
+    db.add(user_db)
     await db.commit()
     await db.refresh(user_db)
-    return user_resp
+    return resp
 
 
 async def get_user(

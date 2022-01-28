@@ -28,6 +28,9 @@ class User(BaseModel):
         isDeleted: The isDeleted of this User [Optional].
     """
 
+    class Config:
+        orm_mode = True
+
     userId: Optional[str] = None
     testId: Optional[str] = None
     accountId: Optional[str] = None
