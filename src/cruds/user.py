@@ -1,11 +1,13 @@
 import asyncio
-from typing import Optional
+from typing import Optional, Union
 
 import shortuuid
+import sqlalchemy  # noqa: F401
+from fastapi import HTTPException
 from fastapi_cloudauth.firebase import FirebaseClaims
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
-from sqlalchemy import false, func, select  # noqa: F401
+from sqlalchemy import false, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.utils import (
     get_current_unix,
@@ -108,20 +110,33 @@ async def edit_user(
     name: str,
     model: UserReqResp,
     user: FirebaseClaims,
-) -> None:
+) -> Union[HTTPException, UserReqResp]:
     """ユーザーを編集します"""
     user_db: UserSave = await get_user_or_404(db, user)
     await is_owner_or_admin_otherwise_409(db, user_db, user)
-    model.updatedTime = get_current_unix()
-    model.createdTime = user_db.createdTime
-    model.displayId = user_db.displayId
-    model.is_admin = False
-    model.is_deleted = False
     update_data = model.dict(exclude_unset=True)
+    user_db.updatedTime = get_current_unix()
+    EXCLUDES = [
+        "total",
+        "isDeleted",
+        "isAdmin",
+        "userId",
+        "id",
+        "createdTime",
+        "updatedTime",
+    ]
+    for k in EXCLUDES:
+        update_data.pop(k, None)
     for k in update_data.keys():
         setattr(user_db, k, update_data[k])
-    await db.commit()
-    await db.refresh(user_db)
+    try:
+        await db.commit()
+        await db.refresh(user_db)
+    except sqlalchemy.exc.IntegrityError as e:
+        if "Duplicate entry" in e._message():
+            return HTTPException(status_code=409, detail="Conflicted")
+        return HTTPException(status_code=400, detail="Bad Request")
+    return UserReqResp.from_orm(user_db)
 
 
 async def delete_user(
