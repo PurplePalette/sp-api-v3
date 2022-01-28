@@ -1,3 +1,4 @@
+import time
 from abc import ABCMeta
 from typing import Any, Optional, TypeVar
 
@@ -17,6 +18,11 @@ class MustHaveName(metaclass=ABCMeta):
 
 
 T = TypeVar("T", bound=MustHaveName)
+
+
+def get_current_unix() -> int:
+    """現在のUNIX時刻を取得"""
+    return int(time.time())
 
 
 async def get_first_item_or_error(
@@ -58,7 +64,7 @@ async def get_user_or_404(
 ) -> UserObject:
     """データベースに指定されたユーザーが存在すれば取得、なければ NotFound"""
     user_db: UserObject = await get_first_item_or_404(
-        db, select(UserObject).filter(UserObject.display_id == user["user_id"])
+        db, select(UserObject).filter(UserObject.userId == user["user_id"])
     )
     return user_db
 
@@ -71,7 +77,7 @@ async def get_admin_or_403(
     user_db: UserObject = await get_first_item_or_403(
         db,
         select(UserObject).filter(
-            UserObject.display_id == user["user_id"], UserObject.is_admin == true()
+            UserObject.userId == user["user_id"], UserObject.isAdmin == true()
         ),
     )
     return user_db

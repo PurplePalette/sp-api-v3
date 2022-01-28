@@ -6,8 +6,8 @@ from src.models.search_select_option import SearchSelectOption
 
 
 # 譜面以外のエンドポイント
-defaultSearch: Search = {
-    "options": [
+defaultSearch = Search(
+    options=[
         # KEYWORDS
         SearchTextOption(
             query="keywords",
@@ -54,11 +54,11 @@ defaultSearch: Search = {
             default=False,
         ),
     ]
-}
+)
 
 # 譜面のエンドポイント
-levelSearch: Search = {
-    "options": [
+levelSearch = Search(
+    options=[
         # KEYWORDS
         SearchTextOption(
             query="keywords",
@@ -143,4 +143,4 @@ levelSearch: Search = {
             default=False,
         ),
     ]
-}
+)

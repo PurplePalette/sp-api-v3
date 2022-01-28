@@ -54,6 +54,9 @@ class Announce(BaseModel):
     createdTime: Optional[int] = None
     updatedTime: Optional[int] = None
 
+    class Config:
+        orm_mode = True
+
     @validator("name")
     def name_min_length(cls, value):
         assert len(value) >= 1

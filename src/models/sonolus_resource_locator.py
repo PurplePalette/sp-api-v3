@@ -36,18 +36,8 @@ class SonolusResourceLocator(BaseModel):
         return value
 
     @validator("hash")
-    def hash_min_length(cls, value):
-        assert len(value) >= 0
-        return value
-
-    @validator("hash")
     def hash_max_length(cls, value):
         assert len(value) <= 100
-        return value
-
-    @validator("url")
-    def url_min_length(cls, value):
-        assert len(value) >= 1
         return value
 
     @validator("url")

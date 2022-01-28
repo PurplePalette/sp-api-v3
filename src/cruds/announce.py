@@ -1,46 +1,43 @@
-from datetime import datetime
 from typing import List
 
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.cruds.utils import get_admin_or_403, get_first_item_or_404, not_exist_or_409
+from src.cruds.utils import (
+    get_admin_or_403,
+    get_current_unix,
+    get_first_item_or_404,
+    not_exist_or_409,
+)
 from src.database.objects.announce import Announce as AnnounceObject
 from src.models.announce import Announce as AnnounceModel
+from src.models.default_search import defaultSearch
+from src.models.get_level_list_response import GetLevelListResponse
+from src.models.level import Level as LevelModel
+from src.models.sonolus_resource_locator import SonolusResourceLocator
 
 
 async def create_announce(
     db: AsyncSession, announce_create: AnnounceModel, user: FirebaseClaims
-) -> None:
+) -> LevelModel:
     """お知らせを追加します"""
     user_db = await get_admin_or_403(db, user)
     await not_exist_or_409(
         db,
         select(AnnounceObject).filter(AnnounceObject.name == announce_create.name),
     )
-    announce_date = datetime.now()
-    announce = AnnounceObject(
-        name=announce_create.name,
-        title=announce_create.title,
-        title_en=announce_create.title,
-        artists=announce_create.subtitle,
-        artists_en=announce_create.subtitle,
-        author=announce_create.date,
-        author_en=announce_create.date,
-        description=announce_create.body,
-        description_en=announce_create.body,
-        public=True,
-        created_time=announce_date,
-        updated_time=announce_date,
-        cover_hash=announce_create.resources.icon,
-        bgm_hash=announce_create.resources.bgm,
-        data_hash=announce_create.resources.level,
-        user_id=user_db.id,
-    )
-    db.add(announce)
+    announce_db = AnnounceObject(**announce_create.dict())
+    announce_db.user = user_db
+    announce_db.createdTime = get_current_unix()
+    announce_db.updatedTime = get_current_unix()
+    announce_db.cover = announce_create.cover.hash
+    announce_db.bgm = announce_create.bgm.hash
+    announce_db.preview = announce_create.preview.hash
+    db.add(announce_db)
     await db.commit()
-    await db.refresh(announce)
+    await db.refresh(announce_db)
+    return announce_db.toLevelResponse()
 
 
 async def edit_announce(
@@ -48,41 +45,37 @@ async def edit_announce(
     announceName: str,
     announce_edit: AnnounceModel,
     user: FirebaseClaims,
-) -> None:
+) -> AnnounceModel:
     """お知らせを編集します"""
     user_db = await get_admin_or_403(db, user)
     announce_db: AnnounceObject = await get_first_item_or_404(
         db, select(AnnounceObject).filter(AnnounceObject.name == announceName)
     )
     update_data = announce_edit.dict(exclude_unset=True)
-    for k in update_data.keys():
-        if k == "name":
-            announce_db.name = update_data[k]
-        elif k == "title":
-            announce_db.title = update_data[k]
-            announce_db.titleEn = update_data[k]
-        elif k == "subtitle":
-            announce_db.artists = update_data[k]
-            announce_db.artistsEn = update_data[k]
-        elif k == "date":
-            announce_db.author = update_data[k]
-            announce_db.authorEn = update_data[k]
-        elif k == "body":
-            announce_db.description = update_data[k]
-            announce_db.descriptionEn = update_data[k]
-        elif k == "resources":
-            for r in update_data[k].keys():
-                if r == "icon":
-                    announce_db.cover_hash = update_data[k][r]
-                elif r == "bgm":
-                    announce_db.bgm_hash = update_data[k][r]
-                elif r == "level":
-                    announce_db.data_hash = update_data[k][r]
-    announce_db.user = user_db
-    announce_db.updated_time = datetime.now()
+    update_data["userId"] = user_db.id
+    update_data["createdTime"] = announce_db.createdTime
+    update_data["updatedTime"] = get_current_unix()
+    if "cover" in update_data:
+        update_data["cover"] = announce_edit.cover.hash
+    if "bgm" in update_data:
+        update_data["bgm"] = announce_edit.bgm.hash
+    if "preview" in update_data:
+        update_data["preview"] = announce_edit.preview.hash
+    for key, value in update_data.items():
+        setattr(announce_db, key, value)
     db.add(announce_db)
     await db.commit()
     await db.refresh(announce_db)
+    announce_db.cover = SonolusResourceLocator(
+        type="LevelCover", hash=announce_db.cover, url="a"
+    )
+    announce_db.bgm = SonolusResourceLocator(
+        type="LevelBgm", hash=announce_db.bgm, url="a"
+    )
+    announce_db.preview = SonolusResourceLocator(
+        type="LevelPreview", hash=announce_db.preview, url="a"
+    )
+    return AnnounceModel.from_orm(announce_db)
 
 
 async def delete_announce(
@@ -102,12 +95,12 @@ async def delete_announce(
 async def get_announce(
     db: AsyncSession,
     announceName: str,
-) -> AnnounceObject:
+) -> LevelModel:
     """お知らせを取得します"""
     announce_db: AnnounceObject = await get_first_item_or_404(
         db, select(AnnounceObject).filter(AnnounceObject.name == announceName)
     )
-    return announce_db
+    return announce_db.toLevelResponse()
 
 
 async def list_announce(
@@ -115,7 +108,11 @@ async def list_announce(
 ) -> List[AnnounceObject]:
     """お知らせ一覧を取得します"""
     resp: Result = await db.execute(
-        select(AnnounceObject).order_by(AnnounceObject.updated_time.desc())
+        select(AnnounceObject).order_by(AnnounceObject.updatedTime.desc())
     )
     announces: List[AnnounceObject] = resp.scalars()
-    return announces
+    return GetLevelListResponse(
+        pageCount=1,
+        items=[announce.toLevelItem() for announce in announces],
+        search=defaultSearch,
+    )

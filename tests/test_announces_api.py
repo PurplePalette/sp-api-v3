@@ -56,7 +56,7 @@ def test_delete_announce(client: TestClient) -> None:
     }
     response = client.request(
         "DELETE",
-        "/announces/{announceName}".format(announceName="announceName"),
+        "/announces/{announceName}".format(announceName="name"),
         headers=headers,
     )
 
@@ -82,7 +82,7 @@ def test_edit_announce(client: TestClient) -> None:
         "cover": {"type": "LevelData", "hash": "hash", "url": "url"},
         "public": 0,
         "titleEn": "titleEn",
-        "subtitle": "subtitle",
+        "subtitle": "hello_world",
         "name": "name",
         "createdTime": 0,
         "authorEn": "authorEn",
@@ -93,7 +93,7 @@ def test_edit_announce(client: TestClient) -> None:
     }
     response = client.request(
         "PATCH",
-        "/announces/{announceName}".format(announceName="announceName"),
+        "/announces/{announceName}".format(announceName="name"),
         headers=headers,
         json=announce,
     )
@@ -109,7 +109,7 @@ def test_get_default_announce(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/announces/{announceName}".format(announceName="announce_name_example"),
+        "/announces/{announceName}".format(announceName="WELCOME"),
         headers=headers,
     )
 
@@ -126,22 +126,6 @@ def test_get_default_announces(client: TestClient) -> None:
     response = client.request(
         "GET",
         "/announces/list",
-        headers=headers,
-    )
-
-    assert response.status_code != 500
-
-
-def test_get_pickup_list(client: TestClient) -> None:
-    """Test case for get_pickup_list
-
-    Get pickup list
-    """
-
-    headers: Dict[str, str] = {}
-    response = client.request(
-        "GET",
-        "/pickups/list",
         headers=headers,
     )
 

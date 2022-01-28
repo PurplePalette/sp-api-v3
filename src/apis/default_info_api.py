@@ -63,7 +63,7 @@ async def get_server_info(
     engines: Page[EngineObject]
     levels, skins, backgrounds, effects, particles, engines = await asyncio.gather(
         *[
-            paginate(db, select(obj).order_by(obj.updated_time.desc()), getSize)
+            paginate(db, select(obj).order_by(obj.updatedTime.desc()), getSize)
             for obj in [
                 LevelObject,
                 SkinObject,
