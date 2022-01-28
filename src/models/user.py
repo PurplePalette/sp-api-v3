@@ -52,18 +52,13 @@ class User(BaseModel):
         return value
 
     @validator("testId")
-    def testId_min_length(cls, value):
-        assert len(value) >= 8
-        return value
-
-    @validator("testId")
     def testId_max_length(cls, value):
-        assert len(value) <= 8
+        assert len(value) <= 20
         return value
 
-    @validator("description")
-    def description_min_length(cls, value):
-        assert len(value) >= 1
+    @validator("accountId")
+    def accountId_max_length(cls, value):
+        assert len(value) <= 20
         return value
 
     @validator("description")

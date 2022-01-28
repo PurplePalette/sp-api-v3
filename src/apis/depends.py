@@ -1,6 +1,6 @@
 from fastapi import Body, Depends, Form, Path, Query
 from src.database.db import get_db
-from src.security_api import get_current_user
+from src.security_api import get_current_user, get_current_user_optional
 
 dependsLocalization = Query(
     None,
@@ -64,3 +64,4 @@ dependsBody = Body(None, description="")
 dependsForm = Form(None, description="")
 dependsDatabase = Depends(get_db)
 dependsFirebase = Depends(get_current_user)
+dependsFirebaseOptional = Depends(get_current_user_optional)

@@ -41,4 +41,19 @@ async def get_current_user_stub(
     return DUMMY_USER
 
 
+async def get_current_user_optional_stub(
+    authorization: Optional[str] = dependsHeader,
+) -> FirebaseClaims:
+    if authorization is None:
+        return None
+    separated_authorization = authorization.split("Bearer ")
+    if len(separated_authorization) != 2:
+        return None
+    DUMMY_USER["user_id"] = separated_authorization[1]
+    return DUMMY_USER
+
+
 get_current_user = FirebaseCurrentUser(project_id=os.environ["PROJECT_ID"])
+get_current_user_optional = FirebaseCurrentUser(
+    project_id=os.environ["PROJECT_ID"], auto_error=False
+)

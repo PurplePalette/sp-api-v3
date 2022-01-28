@@ -63,20 +63,28 @@ async def get_user(
 ) -> UserReqResp:
     """ユーザーを取得します"""
     user_db: UserSave = await get_first_item_or_404(
-        db, select(UserSave).filter(UserSave.name == name)
+        db, select(UserSave).filter(UserSave.userId == name)
     )
     # 認証状態
     if user:
         # 同一IDではない場合非表示
-        if user.user_id != user_db.display_id:
-            user_db.account_id = ""
-            user_db.test_id = ""
+        if user["user_id"] != user_db.userId:
+            user_db.accountId = ""
+            user_db.testId = ""
     # 認証状態でない場合非表示
     else:
-        user_db.account_id = ""
-        user_db.test_id = ""
-    user_resp: UserReqResp = UserReqResp(**user_db.to_dict())
-    return user_resp
+        user_db.accountId = ""
+        user_db.testId = ""
+    resp = UserReqResp.from_orm(user_db)
+    resp.total = UserTotal(
+        likes=0,
+        plays=0,
+        favorites=0,
+        publish=UserTotalPublish(
+            backgrounds=0, levels=0, particles=0, skins=0, effects=0, engines=0
+        ),
+    )
+    return resp
 
 
 async def edit_user(
@@ -87,11 +95,11 @@ async def edit_user(
 ) -> None:
     """ユーザーを編集します"""
     user_db: UserSave = await get_user_or_404(db, user)
-    if user_db.display_id != name:
+    if user_db.displayId != name:
         await get_admin_or_403(db, user)
     model.updated_time = datetime.now()
     model.created_time = user_db.created_time()
-    model.display_id = user_db.display_id
+    model.displayId = user_db.displayId
     model.is_admin = False
     model.is_deleted = False
     update_data = model.dict(exclude_unset=True)
@@ -110,7 +118,7 @@ async def delete_user(
     user_db: UserSave = await get_first_item_or_404(
         db, select(UserSave).filter(UserSave.name == name)
     )
-    if user_db.display_id != user.user_id:
+    if user_db.displayId != user.userId:
         await get_admin_or_403(db, user)
     user_db.is_deleted = True
     user_db.updated_time = datetime.now()

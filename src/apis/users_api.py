@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from typing import Dict, List  # noqa: F401
+from typing import Dict, List, Optional  # noqa: F401
 
 from fastapi import (  # noqa: F401
     APIRouter,
@@ -16,7 +16,13 @@ from fastapi import (  # noqa: F401
 )
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.apis.depends import dependsBody, dependsDatabase, dependsFirebase, dependsPath
+from src.apis.depends import (
+    dependsBody,
+    dependsDatabase,
+    dependsFirebase,
+    dependsFirebaseOptional,
+    dependsPath,
+)
 from src.cruds.user import create_user as crud_create
 from src.cruds.user import delete_user as crud_delete  # noqa: F401
 from src.cruds.user import edit_user as crud_edit  # noqa: F401
@@ -66,7 +72,8 @@ async def delete_user(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定したユーザーを削除します"""
-    ...
+    await crud_delete(db, user)
+    return None
 
 
 @router.patch(
@@ -86,9 +93,9 @@ async def edit_user(
     user: User = dependsBody,
     db: AsyncSession = dependsDatabase,
     auth: FirebaseClaims = dependsFirebase,
-) -> None:
+) -> User:
     """指定したuser情報を編集します"""
-    ...
+    return await crud_edit(db, userId, user, auth)
 
 
 @router.get(
@@ -102,9 +109,11 @@ async def edit_user(
 )
 async def get_user(
     userId: str = dependsPath,
+    db: AsyncSession = dependsDatabase,
+    auth: Optional[FirebaseClaims] = dependsFirebaseOptional,
 ) -> User:
     """指定したユーザー情報を取得します"""
-    ...
+    return await crud_get(db, userId, auth)
 
 
 @router.get(
@@ -115,6 +124,8 @@ async def get_user(
     tags=["users"],
     summary="Get user list",
 )
-async def get_user_list() -> GetUserListResponse:
+async def get_user_list(
+    db: AsyncSession = dependsDatabase,
+) -> GetUserListResponse:
     """サーバーに登録されたユーザー一覧を返します"""
-    ...
+    return await crud_list(db)

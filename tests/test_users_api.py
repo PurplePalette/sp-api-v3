@@ -103,10 +103,26 @@ def test_get_user(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/users/{userId}".format(userId="userId_example"),
+        "/users/{userId}".format(userId="special-key"),
         headers=headers,
     )
+    assert response.status_code != 500
 
+
+def test_get_user_with_auth(client: TestClient) -> None:
+    """Test case for get_user
+
+    Get a user using auth
+    """
+
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
+    response = client.request(
+        "GET",
+        "/users/{userId}".format(userId="special-key"),
+        headers=headers,
+    )
     assert response.status_code != 500
 
 
