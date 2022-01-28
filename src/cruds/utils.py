@@ -99,6 +99,14 @@ async def not_exist_or_409(db: AsyncSession, statement: Any) -> None:
         raise HTTPException(status_code=409, detail="Conflict")
 
 
+async def is_owner_or_admin_otherwise_409(
+    db: AsyncSession, user: UserObject, auth: FirebaseClaims
+) -> None:
+    """認証ユーザーが本人または管理者でなければ Forbidden"""
+    if user.userId != auth["user_id"]:
+        await get_admin_or_403(db, auth)
+
+
 async def get_total_publish(db: AsyncSession, databaseId: int) -> UserTotalPublish:
     """指定された内部ユーザーIDのユーザーの各要素の投稿数を取得"""
     counts = await asyncio.gather(

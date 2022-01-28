@@ -73,7 +73,7 @@ async def delete_user(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定したユーザーを削除します"""
-    await crud_delete(db, user)
+    await crud_delete(db, userId, user)
     return None
 
 

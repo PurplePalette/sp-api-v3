@@ -1,5 +1,4 @@
 import asyncio
-from datetime import datetime
 from typing import Optional
 
 import shortuuid
@@ -9,12 +8,12 @@ from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import false, func, select  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.utils import (
-    get_admin_or_403,
     get_current_unix,
     get_first_item_or_404,
     get_internal_id,
     get_total_publish,
     get_user_or_404,
+    is_owner_or_admin_otherwise_409,
     not_exist_or_409,
 )
 from src.database.objects.user import User as UserSave
@@ -85,24 +84,21 @@ async def get_user(
     user_db: UserSave = await get_first_item_or_404(
         db, select(UserSave).filter(UserSave.userId == name)
     )
-    # 認証状態
-    if user:
-        # 同一IDではない場合非表示
-        if user["user_id"] != user_db.userId:
-            user_db.accountId = ""
-            user_db.testId = ""
-    # 認証状態でない場合非表示
-    else:
+    # 認証状態でなければ非表示
+    if user is None:
+        user_db.accountId = ""
+        user_db.testId = ""
+    # 同一IDではない場合非表示
+    elif user_db.userId != user["user_id"]:
         user_db.accountId = ""
         user_db.testId = ""
     resp = UserReqResp.from_orm(user_db)
+    publish = await get_total_publish(db, user_db.id)
     resp.total = UserTotal(
         likes=0,
         plays=0,
         favorites=0,
-        publish=UserTotalPublish(
-            backgrounds=0, levels=0, particles=0, skins=0, effects=0, engines=0
-        ),
+        publish=publish,
     )
     return resp
 
@@ -115,8 +111,7 @@ async def edit_user(
 ) -> None:
     """ユーザーを編集します"""
     user_db: UserSave = await get_user_or_404(db, user)
-    if user_db.userId != name:
-        await get_admin_or_403(db, user)
+    await is_owner_or_admin_otherwise_409(db, user_db, user)
     model.updatedTime = get_current_unix()
     model.createdTime = user_db.createdTime
     model.displayId = user_db.displayId
@@ -136,12 +131,11 @@ async def delete_user(
 ) -> None:
     """ユーザーを削除します"""
     user_db: UserSave = await get_first_item_or_404(
-        db, select(UserSave).filter(UserSave.name == name)
+        db, select(UserSave).filter(UserSave.userId == name)
     )
-    if user_db.displayId != user.userId:
-        await get_admin_or_403(db, user)
-    user_db.is_deleted = True
-    user_db.updated_time = datetime.now()
+    await is_owner_or_admin_otherwise_409(db, user_db, user)
+    user_db.isDeleted = True
+    user_db.updatedTime = get_current_unix()
     db.add(user_db)
     await db.commit()
     await db.refresh(user_db)
