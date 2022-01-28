@@ -1,23 +1,42 @@
+import asyncio
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 import shortuuid
-from fastapi import HTTPException  # noqa: F401
 from fastapi_cloudauth.firebase import FirebaseClaims
-from sqlalchemy import select  # noqa: F401
-from sqlalchemy.engine import Result  # noqa: F401
+from fastapi_pagination import Page, Params
+from fastapi_pagination.ext.async_sqlalchemy import paginate
+from sqlalchemy import false, func, select  # noqa: F401
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.utils import (
     get_admin_or_403,
     get_current_unix,
     get_first_item_or_404,
+    get_internal_id,
+    get_total_publish,
     get_user_or_404,
     not_exist_or_409,
 )
 from src.database.objects.user import User as UserSave
+from src.models.get_user_list_response import GetUserListResponse
+from src.models.sonolus_page import SonolusPage, toSonolusPage
 from src.models.user import User as UserReqResp
 from src.models.user_total import UserTotal
 from src.models.user_total_publish import UserTotalPublish
+
+
+async def get_user_deep(db: AsyncSession, user: UserSave) -> None:
+    """投稿回数等深い部分まで取得する"""
+    user.testId = ""
+    user.accountId = ""
+    internal_id = await get_internal_id(db, user.userId)
+    publish: UserTotalPublish = await get_total_publish(db, internal_id)
+    user.total = UserTotal(
+        likes=0,
+        favorites=0,
+        plays=0,
+        publish=publish,
+    )
 
 
 async def create_user(
@@ -59,6 +78,7 @@ async def create_user(
 async def get_user(
     db: AsyncSession,
     name: str,
+    # 認証してるかどうかは任意
     user: Optional[FirebaseClaims],
 ) -> UserReqResp:
     """ユーザーを取得します"""
@@ -95,10 +115,10 @@ async def edit_user(
 ) -> None:
     """ユーザーを編集します"""
     user_db: UserSave = await get_user_or_404(db, user)
-    if user_db.displayId != name:
+    if user_db.userId != name:
         await get_admin_or_403(db, user)
-    model.updated_time = datetime.now()
-    model.created_time = user_db.created_time()
+    model.updatedTime = get_current_unix()
+    model.createdTime = user_db.createdTime
     model.displayId = user_db.displayId
     model.is_admin = False
     model.is_deleted = False
@@ -127,13 +147,20 @@ async def delete_user(
     await db.refresh(user_db)
 
 
-async def list_user(
-    db: AsyncSession,
-) -> List[UserSave]:
+async def list_user(db: AsyncSession, page: int) -> GetUserListResponse:
     """ユーザー一覧を取得します"""
-    resp: Result = await db.execute(
-        select(UserSave).order_by(UserSave.updated_time.desc())
+    userPage: Page[UserSave] = await paginate(
+        db,
+        select(UserSave)
+        .filter(UserSave.isDeleted == false())
+        .order_by(UserSave.updatedTime.desc()),
+        Params(page=page + 1, size=20),
+    )  # type: ignore
+    userPage.items = [UserReqResp.from_orm(u) for u in userPage.items]
+    await asyncio.gather(*[get_user_deep(db, u) for u in userPage.items])
+    resp: SonolusPage = toSonolusPage(userPage)
+    return GetUserListResponse(
+        users=resp.items,
+        total=resp.total,
+        pages=resp.pageCount,
     )
-    users: List[UserSave] = resp.scalars()
-    users = [UserReqResp(**user.to_dict()) for user in users]
-    return users

@@ -21,6 +21,7 @@ from src.apis.depends import (
     dependsDatabase,
     dependsFirebase,
     dependsFirebaseOptional,
+    dependsPage,
     dependsPath,
 )
 from src.cruds.user import create_user as crud_create
@@ -99,6 +100,23 @@ async def edit_user(
 
 
 @router.get(
+    "/users/list",
+    responses={
+        200: {"model": GetUserListResponse, "description": "OK"},
+    },
+    tags=["users"],
+    summary="Get user list",
+    response_model=GetUserListResponse,
+)
+async def get_user_list(
+    page: int = dependsPage,
+    db: AsyncSession = dependsDatabase,
+) -> GetUserListResponse:
+    """サーバーに登録されたユーザー一覧を返します"""
+    return await crud_list(db, page)
+
+
+@router.get(
     "/users/{userId}",
     responses={
         200: {"model": User, "description": "OK"},
@@ -114,18 +132,3 @@ async def get_user(
 ) -> User:
     """指定したユーザー情報を取得します"""
     return await crud_get(db, userId, auth)
-
-
-@router.get(
-    "/users/list",
-    responses={
-        200: {"model": GetUserListResponse, "description": "OK"},
-    },
-    tags=["users"],
-    summary="Get user list",
-)
-async def get_user_list(
-    db: AsyncSession = dependsDatabase,
-) -> GetUserListResponse:
-    """サーバーに登録されたユーザー一覧を返します"""
-    return await crud_list(db)
