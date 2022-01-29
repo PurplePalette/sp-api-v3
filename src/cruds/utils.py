@@ -28,6 +28,15 @@ class MustHaveName(metaclass=ABCMeta):
 T = TypeVar("T", bound=MustHaveName)
 
 
+class MustHaveUserId(metaclass=ABCMeta):
+    """ユーザーIDを持つオブジェクトを表す基底クラス"""
+
+    userId: str
+
+
+U = TypeVar("U", bound=MustHaveUserId)
+
+
 def get_current_unix() -> int:
     """現在のUNIX時刻を取得"""
     return int(time.time())
@@ -100,10 +109,10 @@ async def not_exist_or_409(db: AsyncSession, statement: Any) -> None:
 
 
 async def is_owner_or_admin_otherwise_409(
-    db: AsyncSession, user: UserObject, auth: FirebaseClaims
+    db: AsyncSession, model: U, auth: FirebaseClaims
 ) -> None:
     """認証ユーザーが本人または管理者でなければ Forbidden"""
-    if user.userId != auth["user_id"]:
+    if model.userId != auth["user_id"]:
         await get_admin_or_403(db, auth)
 
 
