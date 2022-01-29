@@ -41,6 +41,7 @@ class Engine(BaseModel):
         createdTime: The createdTime of this Engine [Optional].
         updatedTime: The updatedTime of this Engine [Optional].
         userId: The userId of this Engine [Optional].
+        public: The public of this Level [Optional].
     """
 
     name: Optional[str] = None
@@ -63,6 +64,7 @@ class Engine(BaseModel):
     createdTime: Optional[int] = None
     updatedTime: Optional[int] = None
     userId: Optional[str] = None
+    public: Optional[bool] = None
 
     @validator("name")
     def name_min_length(cls, value):

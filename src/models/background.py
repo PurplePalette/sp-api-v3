@@ -34,6 +34,7 @@ class Background(BaseModel):
         createdTime: The createdTime of this Background [Optional].
         updatedTime: The updatedTime of this Background [Optional].
         userId: The userId of this Background [Optional].
+        public: The public of this Level [Optional].
     """
 
     name: Optional[str] = None
@@ -53,6 +54,7 @@ class Background(BaseModel):
     createdTime: Optional[int] = None
     updatedTime: Optional[int] = None
     userId: Optional[str] = None
+    public: Optional[bool] = None
 
     @validator("name")
     def name_min_length(cls, value):

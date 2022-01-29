@@ -33,6 +33,7 @@ class Particle(BaseModel):
         userId: The userId of this Particle [Optional].
         createdTime: The createdTime of this Particle [Optional].
         updatedTime: The updatedTime of this Particle [Optional].
+        public: The public of this Level [Optional].
     """
 
     name: Optional[str] = None
@@ -51,6 +52,7 @@ class Particle(BaseModel):
     userId: Optional[str] = None
     createdTime: Optional[int] = None
     updatedTime: Optional[int] = None
+    public: Optional[bool] = None
 
     @validator("name")
     def name_min_length(cls, value):

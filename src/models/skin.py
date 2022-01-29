@@ -33,6 +33,7 @@ class Skin(BaseModel):
         createdTime: The createdTime of this Skin [Optional].
         updatedTime: The updatedTime of this Skin [Optional].
         userId: The userId of this Skin [Optional].
+        public: The public of this Level [Optional].
     """
 
     name: Optional[str] = None
@@ -51,6 +52,7 @@ class Skin(BaseModel):
     createdTime: Optional[int] = None
     updatedTime: Optional[int] = None
     userId: Optional[str] = None
+    public: Optional[bool] = None
 
     @validator("name")
     def name_min_length(cls, value):
