@@ -10,13 +10,14 @@ class SonolusDataMixin(object):  # type: ignore
     name = Column(String(128))
     title = Column(String(128))
     titleEn = Column(String(128))
-    artists = Column(String(128))
-    artistsEn = Column(String(128))
+    subtitle = Column(String(128))
+    subtitleEn = Column(String(128))
     author = Column(String(128))
     authorEn = Column(String(128))
     description = Column(String(512))
     descriptionEn = Column(String(512))
     public = Column(Boolean(), default=False, server_default="0")
+    isDeleted = Column(Boolean(), default=False, server_default="0")
 
     @declared_attr
     def userId(cls) -> Column:
