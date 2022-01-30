@@ -1,15 +1,25 @@
 from abc import ABCMeta, abstractmethod
 from typing import Any, List, Optional, TypeVar
-from sqlalchemy import false, func, select, true
+
+from sqlalchemy import (
+    Boolean,
+    Column,
+    ForeignKey,
+    Integer,
+    String,
+    false,
+    func,
+    select,
+    true,
+)
 from src.models.search_query import (
     SearchGenre,
     SearchLength,
     SearchOrder,
+    SearchQueries,
     SearchSort,
     SearchStatus,
-    SearchQueries,
 )
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 
 
 class Searchable(metaclass=ABCMeta):
