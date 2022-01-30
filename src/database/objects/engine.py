@@ -8,9 +8,9 @@ class Engine(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     __tablename__ = "engines"
     __table_args__ = {"extend_existing": True}
 
-    thumbnailHash = Column(String(128))
-    dataHash = Column(String(128))
-    configurationHash = Column(String(128))
+    thumbnail = Column(String(128))
+    data = Column(String(128))
+    configuration = Column(String(128))
     backgroundId = Column(Integer, ForeignKey("backgrounds.id"))
     effectId = Column(Integer, ForeignKey("effects.id"))
     particleId = Column(Integer, ForeignKey("particles.id"))
