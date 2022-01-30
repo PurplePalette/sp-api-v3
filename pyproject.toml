@@ -59,6 +59,6 @@ mypy_preset = "strict"
 line_length = 88
 py_version = "py38"
 [[tool.pysen.lint.mypy_targets]]
-  paths = [".", "src/apis", "src/database/" ]
+  paths = [".", "src/apis", "src/database/", "src/cruds/"]
 [tool.pysen.lint.source]
-  excludes = ["src/models/"]
+  excludes = ["src/models/", "src/models"]
