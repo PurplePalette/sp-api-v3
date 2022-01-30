@@ -28,7 +28,7 @@ defaultSearch = Search(
             name="sort",
             type="select",
             default=0,
-            values=["updatedTime", "createdTime"],
+            values=["updated_time", "created_time"],
         ),
         # ORDER
         SearchSelectOption(
@@ -79,7 +79,15 @@ levelSearch = Search(
             name="sort",
             type="select",
             default=0,
-            values=["updatedTime", "createdTime"],
+            values=[
+                "updated_time",
+                "created_time",
+                "bpm",
+                "likes",
+                "notes",
+                "mylists",
+                "rating",
+            ],
         ),
         # ORDER
         SearchSelectOption(
