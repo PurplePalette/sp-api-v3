@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
-from database.objects.user import User
+from src.database.objects.user import User
 
 """
 独自定義のクエリEnum
