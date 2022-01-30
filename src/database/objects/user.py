@@ -1,7 +1,13 @@
-from sqlalchemy import Boolean, Column, Integer, String
+from typing import List
+
+from sqlalchemy import Boolean, Column, Integer, String, select
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from src.database.db import Base
 from src.database.mixins import TimeMixin
+from src.database.objects.favorite import Favorite
+from src.database.objects.like import Like
+from src.database.objects.log import Log
 
 
 class User(Base, TimeMixin):  # type: ignore
@@ -29,3 +35,27 @@ class User(Base, TimeMixin):  # type: ignore
     announces = relationship("Announce", back_populates="user")
     votes = relationship("Vote", back_populates="user")
     logs = relationship("Log", back_populates="user")
+
+    @hybrid_property
+    def ids_favorites(self) -> List[int]:
+        return self.favorites  # type: ignore
+
+    @ids_favorites.expression
+    def _ids_favorites_expression(cls) -> select:
+        return select([Favorite.id]).where(Favorite.userId == cls.id)
+
+    @hybrid_property
+    def ids_likes(self) -> List[int]:
+        return self.likes  # type: ignore
+
+    @ids_likes.expression
+    def _ids_likes_expression(cls) -> select:
+        return select([Like.id]).where(Like.userId == cls.id)
+
+    @hybrid_property
+    def ids_played(self) -> List[int]:
+        return self.logs  # type: ignore
+
+    @ids_played.expression
+    def _ids_played_expression(cls) -> select:
+        return select([Log.id]).where(Log.userId == cls.id, Log.type == 0)

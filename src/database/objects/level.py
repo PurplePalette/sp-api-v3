@@ -1,5 +1,8 @@
+from database.objects.favorite import Favorite
+from database.objects.like import Like
 from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import func, relationship, select
 from src.database.db import Base
 from src.database.mixins import SonolusDataMixin, TimeMixin
 
@@ -32,3 +35,19 @@ class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     votes = relationship("Vote", back_populates="level")
     pickup = relationship("Pickup", back_populates="level", uselist=False)
     user = relationship("User", back_populates="levels", uselist=False)
+
+    @hybrid_property
+    def num_favorites(self) -> int:
+        return self.favorites.count()  # type: ignore
+
+    @num_favorites.expression
+    def _num_favorites_expression(cls) -> select:
+        return select([func.count(Favorite.id)]).where(Favorite.levelId == cls.id)
+
+    @hybrid_property
+    def num_likes(self) -> int:
+        return len(self.likes)  # type: ignore
+
+    @num_likes.expression
+    def _num_likes_expression(cls) -> select:
+        return select([func.count(Like.id)]).where(Like.levelId == cls.id)
