@@ -30,10 +30,15 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
+from src.cruds.background import create_background as crud_create
+from src.cruds.background import delete_background as crud_delete  # noqa: F401
+from src.cruds.background import edit_background as crud_edit  # noqa: F401
+from src.cruds.background import get_background as crud_get  # noqa: F401
+from src.cruds.background import list_background as crud_list  # noqa: F401
 from src.models.background import Background
-from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_background_list_response import GetBackgroundListResponse
 from src.models.get_background_response import GetBackgroundResponse
+from src.models.search_query import SearchOrder, SearchQueries, SearchSort, SearchStatus
 
 router = APIRouter()
 
@@ -53,9 +58,9 @@ async def add_background(
     background: Background = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
-) -> None:
+) -> GetBackgroundResponse:
     """指定された背景情報をサーバーに登録します"""
-    ...
+    return await crud_create(db, background, user)
 
 
 @router.delete(
@@ -72,7 +77,8 @@ async def delete_background(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """Delete specified background"""
-    ...
+    await crud_delete(db, backgroundName, user)
+    return None
 
 
 @router.patch(
@@ -92,9 +98,9 @@ async def edit_background(
     background: Background = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
-) -> None:
+) -> GetBackgroundResponse:
     """指定された背景情報を編集します"""
-    ...
+    return await crud_edit(db, backgroundName, background, user)
 
 
 @router.get(
@@ -107,11 +113,12 @@ async def edit_background(
     summary="Get a background",
 )
 async def get_background(
+    db: AsyncSession = dependsDatabase,
     backgroundName: str = dependsPath,
 ) -> GetBackgroundResponse:
     """It returns specified background info.
     It will raise 404 if the background is not registered in this server"""
-    ...
+    return await crud_get(db, backgroundName)
 
 
 @router.get(
@@ -126,12 +133,16 @@ async def get_background_list(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
-    sort: str = dependsSort,
-    order: str = dependsOrder,
-    status: str = dependsStatus,
+    sort: SearchSort = dependsSort,
+    order: SearchOrder = dependsOrder,
+    status: SearchStatus = dependsStatus,
     author: str = dependsAuthor,
     random: int = dependsRandom,
+    db: AsyncSession = dependsDatabase,
 ) -> GetBackgroundListResponse:
     """It returns list of background infos registered in this server.
     Also it can search using query params"""
-    ...
+    queries = SearchQueries(
+        keywords, author, sort, order, status, random, None, None, None, None, None
+    )
+    return await crud_list(db, page, queries)
