@@ -1,10 +1,10 @@
-from src.database.objects.favorite import Favorite
-from src.database.objects.like import Like
 from sqlalchemy import Column, ForeignKey, Integer, String, func, select
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from src.database.db import Base
 from src.database.mixins import SonolusDataMixin, TimeMixin
+from src.database.objects.favorite import Favorite
+from src.database.objects.like import Like
 
 
 class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore

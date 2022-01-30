@@ -1,7 +1,6 @@
 from typing import List
 
 from fastapi_cloudauth.firebase import FirebaseClaims
-from src.models.get_level_response import GetLevelResponse
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -15,6 +14,7 @@ from src.database.objects.announce import Announce as AnnounceObject
 from src.models.announce import Announce as AnnounceModel
 from src.models.default_search import defaultSearch
 from src.models.get_level_list_response import GetLevelListResponse
+from src.models.get_level_response import GetLevelResponse
 from src.models.sonolus_resource_locator import SonolusResourceLocator
 
 
