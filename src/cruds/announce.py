@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi_cloudauth.firebase import FirebaseClaims
+from src.models.get_level_response import GetLevelResponse
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,13 +15,12 @@ from src.database.objects.announce import Announce as AnnounceObject
 from src.models.announce import Announce as AnnounceModel
 from src.models.default_search import defaultSearch
 from src.models.get_level_list_response import GetLevelListResponse
-from src.models.level import Level as LevelModel
 from src.models.sonolus_resource_locator import SonolusResourceLocator
 
 
 async def create_announce(
     db: AsyncSession, announce_create: AnnounceModel, user: FirebaseClaims
-) -> LevelModel:
+) -> GetLevelResponse:
     """お知らせを追加します"""
     user_db = await get_admin_or_403(db, user)
     await not_exist_or_409(
@@ -37,7 +37,8 @@ async def create_announce(
     db.add(announce_db)
     await db.commit()
     await db.refresh(announce_db)
-    return announce_db.toLevelResponse()
+    resp: GetLevelResponse = announce_db.toLevelResponse()
+    return resp
 
 
 async def edit_announce(
@@ -45,7 +46,7 @@ async def edit_announce(
     announceName: str,
     announce_edit: AnnounceModel,
     user: FirebaseClaims,
-) -> AnnounceModel:
+) -> GetLevelResponse:
     """お知らせを編集します"""
     user_db = await get_admin_or_403(db, user)
     announce_db: AnnounceObject = await get_first_item_or_404(
@@ -75,7 +76,8 @@ async def edit_announce(
     announce_db.preview = SonolusResourceLocator(
         type="LevelPreview", hash=announce_db.preview, url="a"
     )
-    return AnnounceModel.from_orm(announce_db)
+    resp: GetLevelResponse = announce_db.toLevelResponse()
+    return resp
 
 
 async def delete_announce(
@@ -95,17 +97,18 @@ async def delete_announce(
 async def get_announce(
     db: AsyncSession,
     announceName: str,
-) -> LevelModel:
+) -> GetLevelResponse:
     """お知らせを取得します"""
     announce_db: AnnounceObject = await get_first_item_or_404(
         db, select(AnnounceObject).filter(AnnounceObject.name == announceName)
     )
-    return announce_db.toLevelResponse()
+    resp: GetLevelResponse = announce_db.toLevelResponse()
+    return resp
 
 
 async def list_announce(
     db: AsyncSession,
-) -> List[AnnounceObject]:
+) -> GetLevelListResponse:
     """お知らせ一覧を取得します"""
     resp: Result = await db.execute(
         select(AnnounceObject).order_by(AnnounceObject.updatedTime.desc())
