@@ -144,5 +144,5 @@ async def get_internal_id(db: AsyncSession, userId: str) -> int:
     user: UserObject = await db.execute(
         select(UserObject.id).filter(UserObject.userId == userId)
     )
-    res = user.scalars().first()
+    res: int = user.scalars().first()
     return res
