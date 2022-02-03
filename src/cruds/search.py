@@ -68,12 +68,15 @@ def buildFilter(
     """フィルタ方法を生成する"""
     filterFields = [
         obj.isDeleted == false(),
-        obj.name.contains(query.keywords),
-        obj.title.contains(query.keywords),
-        obj.titleEn.contains(query.keywords),
-        obj.author.contains(query.author),
-        obj.authorEn.contains(query.keywords),
     ]
+    if query.keywords:
+        filterFields += [
+            obj.name.contains(query.keywords),
+            obj.title.contains(query.keywords),
+            obj.titleEn.contains(query.keywords),
+            obj.author.contains(query.author),
+            obj.authorEn.contains(query.keywords),
+        ]
     # Levelsエンドポイント用フィルタ
     # ジャンル
     if query.genre and obj.genre:
@@ -102,15 +105,15 @@ def buildFilter(
             elif query.length != SearchLength.VERY_LONG:
                 # 5分以上
                 filterFields.append(obj.length > 300)
-    # 一応早期リターン
-    if query.status == SearchStatus.ANY:
-        return filterFields
     # テスト中が指定されていれば
     if query.status == SearchStatus.TESTING and query.user:
         filterFields.append(obj.public == false())
         filterFields.append(obj.userId == query.user.id)
     else:
         filterFields.append(obj.public == true())
+    # 一応早期リターン
+    if query.status == SearchStatus.ANY:
+        return filterFields
     # Accountsエンドポイント用フィルタ
     if query.user:
         if query.status == SearchStatus.LIKED:
