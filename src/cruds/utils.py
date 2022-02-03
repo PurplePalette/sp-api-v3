@@ -1,14 +1,17 @@
 import asyncio
 import time
 from abc import ABCMeta
-from typing import Any, Optional, TypeVar
+from typing import Any, Dict, List, Optional, TypeVar, Union
 
 from fastapi import HTTPException
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import true
+from src.config import CDN_ENDPOINT
+from src.models.sonolus_resource_locator import SonolusResourceLocator
 from src.database.objects.background import Background
 from src.database.objects.effect import Effect
 from src.database.objects.engine import Engine
@@ -35,6 +38,27 @@ class MustHaveUserId(metaclass=ABCMeta):
 
 
 U = TypeVar("U", bound=MustHaveUserId)
+
+
+class MustHaveTime(metaclass=ABCMeta):
+    """最低限時間は持っているオブジェクトを表す基底クラス"""
+
+    userId: int
+    createdTime: int
+    updatedTime: int
+
+
+V = TypeVar("V", bound=MustHaveTime)
+
+
+class MustHaveVersionAndUserId(metaclass=ABCMeta):
+    """最低限時間は持っているオブジェクトを表す基底クラス"""
+
+    userId: int
+    version: int
+
+
+W = TypeVar("W", bound=MustHaveVersionAndUserId)
 
 
 def get_current_unix() -> int:
@@ -146,3 +170,109 @@ async def get_internal_id(db: AsyncSession, userId: str) -> int:
     )
     res: int = user.scalars().first()
     return res
+
+
+def copy_translate_fields(model: Any, field_names: List[str]) -> Any:
+    """指定したフィールドそれぞれの英名フィールドが空なら日本語フィールドからコピーする"""
+    for k in field_names:
+        if not hasattr(model, k):
+            continue
+        attr_name = f"{k}En"
+        if getattr(model, attr_name) is None:
+            setattr(model, attr_name, getattr(model, k))
+    return model
+
+
+async def save_to_db(db: AsyncSession, model: Any) -> Optional[HTTPException]:
+    """データベースにモデルを追加/反映するショートハンド"""
+    db.add(model)
+    try:
+        await db.commit()
+        await db.refresh(model)
+    except IntegrityError as e:
+        if "Duplicate entry" in e._message():
+            return HTTPException(status_code=409, detail="Conflicted")
+        return HTTPException(status_code=400, detail="Bad Request")
+    return None
+
+
+def patch_to_model(
+    model: V,
+    updates: Dict[str, Union[str, Dict[str, str]]],
+    locator_names: List[str],
+    extend_excludes: Optional[List[str]],
+) -> V:
+    """指定されたモデルに、与えられた辞書から要素を反映する"""
+    excludes = [
+        "id",
+        "userId",
+        "createdTime",
+        "updatedTime",
+    ]
+    if extend_excludes:
+        excludes += extend_excludes
+    for k in excludes:
+        updates.pop(k, None)
+    for k, v in updates.items():
+        if k not in locator_names:
+            setattr(model, k, v)
+        else:
+            r: Dict[str, str] = v  # type: ignore
+            if "hash" in r.keys():
+                setattr(model, k, r["hash"])
+    model.updatedTime = get_current_unix()
+    return model
+
+
+class DataBridge:
+    """"リクエスト/DB/レスポンスの変換支援クラス"""
+
+    def __init__(
+        self,
+        db: AsyncSession,
+        auth: Optional[FirebaseClaims],
+        object_name: str,
+        locator_names: List[str],
+        object_version: int,
+        is_new: bool,
+    ):
+        self.db = db
+        self.auth = auth
+        self.object_name = object_name
+        self.locator_names = locator_names
+        self.version = object_version
+        self.is_new = is_new
+
+    async def to_db(self, model: V) -> None:
+        """指定されたモデルのSRLフィールドをハッシュだけにし、調整してDBに格納可能にする"""
+        if self.auth:
+            model.userId = await get_internal_id(self.db, self.auth["user_id"])
+        for k in self.locator_names:
+            field = getattr(model, k)
+            if field is None:
+                raise HTTPException(
+                    status_code=400, detail=f"Bad Request: {k} is missing"
+                )
+            setattr(model, k, field.hash)
+        delattr(model, "version")
+        copy_translate_fields(
+            model, ["title", "description", "author", "subtitle", "artists"]
+        )
+        model.updatedTime = get_current_unix()
+        if self.is_new:
+            model.createdTime = model.updatedTime
+
+    def to_resp(self, model: W) -> None:
+        """指定されたモデルのSRLフィールドをSRLにし、調整して応答可能にする (引数は全て小文字)"""
+        for k in self.locator_names:
+            hash = getattr(model, k)
+            resource_type = f"{self.object_name.capitalize()}{k.capitalize()}"
+            srl = SonolusResourceLocator(
+                type=resource_type,
+                hash=hash,
+                url=f"{CDN_ENDPOINT}/repository/{resource_type}/{hash}",
+            )
+            setattr(model, k, srl)
+        model.version = self.version
+        if self.auth:
+            model.userId = self.auth["user_id"]
