@@ -104,24 +104,6 @@ async def edit_background(
 
 
 @router.get(
-    "/backgrounds/{backgroundName}",
-    responses={
-        200: {"model": GetBackgroundResponse, "description": "OK"},
-        404: {"description": "Not Found"},
-    },
-    tags=["default_backgrounds"],
-    summary="Get a background",
-)
-async def get_background(
-    db: AsyncSession = dependsDatabase,
-    backgroundName: str = dependsPath,
-) -> GetBackgroundResponse:
-    """It returns specified background info.
-    It will raise 404 if the background is not registered in this server"""
-    return await crud_get(db, backgroundName)
-
-
-@router.get(
     "/backgrounds/list",
     responses={
         200: {"model": GetBackgroundListResponse, "description": "OK"},
@@ -146,3 +128,21 @@ async def get_background_list(
         keywords, author, sort, order, status, random, None, None, None, None, None
     )
     return await crud_list(db, page, queries)
+
+
+@router.get(
+    "/backgrounds/{backgroundName}",
+    responses={
+        200: {"model": GetBackgroundResponse, "description": "OK"},
+        404: {"description": "Not Found"},
+    },
+    tags=["default_backgrounds"],
+    summary="Get a background",
+)
+async def get_background(
+    db: AsyncSession = dependsDatabase,
+    backgroundName: str = dependsPath,
+) -> GetBackgroundResponse:
+    """It returns specified background info.
+    It will raise 404 if the background is not registered in this server"""
+    return await crud_get(db, backgroundName)
