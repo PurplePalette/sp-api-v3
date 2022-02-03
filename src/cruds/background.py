@@ -1,4 +1,5 @@
 from typing import Union
+
 import sqlalchemy  # noqa: F401
 from fastapi import HTTPException
 from fastapi_cloudauth.firebase import FirebaseClaims
@@ -6,19 +7,29 @@ from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from src.models.default_search import defaultSearch
+from src.config import BACKGROUND_VERSION
 from src.cruds.search import buildDatabaseQuery
-from src.models.get_background_response import GetBackgroundResponse
-from src.models.search_query import SearchQueries
 from src.cruds.utils import (
+    DataBridge,
     get_current_unix,
     get_first_item_or_404,
     is_owner_or_admin_otherwise_409,
     not_exist_or_409,
+    patch_to_model,
+    save_to_db,
 )
 from src.database.objects.background import Background as BackgroundSave
-from src.models.get_background_list_response import GetBackgroundListResponse
-from src.models.sonolus_page import SonolusPage, toSonolusPage
 from src.models.background import Background as BackgroundReqResp
+from src.models.get_background_list_response import GetBackgroundListResponse
+from src.models.get_background_response import GetBackgroundResponse
+from src.models.search_query import SearchQueries
+from src.models.sonolus_page import SonolusPage, toSonolusPage
+
+
+OBJECT_NAME = "background"
+LOCATER_NAMES = ["thumbnail", "data", "image", "configuration"]
+OBJECT_VERSION = BACKGROUND_VERSION
 
 
 async def create_background(
@@ -31,27 +42,25 @@ async def create_background(
             BackgroundSave.name == model.name,
         ),
     )
-    background_db = BackgroundSave.from_orm(BackgroundReqResp)
-    background_db.userId = auth["user_id"]
-    background_db.createdTime = background_db.updatedTime = get_current_unix()
-    background_db.thumbnail = model.thumbnail.hash
-    background_db.data = model.data.hash
-    background_db.image = model.image.hash
-    background_db.configuration = model.configuration.hash
+    # 入力を DBに合わせる
+    bridge = DataBridge(
+        db,
+        auth,
+        OBJECT_NAME,
+        LOCATER_NAMES,
+        OBJECT_VERSION,
+        True,
+    )
+    await bridge.to_db(model)
+    background_db = BackgroundSave(**model.dict())
+    await save_to_db(db, background_db)
+    bridge.to_resp(background_db)
     item = BackgroundReqResp.from_orm(background_db)
     resp = GetBackgroundResponse(
         item=item,
         description=item.description,
         recommended=[],
     )
-    db.add(background_db)
-    try:
-        await db.commit()
-        await db.refresh(background_db)
-    except sqlalchemy.exc.IntegrityError as e:
-        if "Duplicate entry" in e._message():
-            return HTTPException(status_code=409, detail="Conflicted")
-        return HTTPException(status_code=400, detail="Bad Request")
     return resp
 
 
@@ -63,13 +72,21 @@ async def get_background(
     background_db: BackgroundSave = await get_first_item_or_404(
         db, select(BackgroundSave).filter(BackgroundSave.userId == name)
     )
+    bridge = DataBridge(
+        db,
+        None,
+        OBJECT_NAME,
+        LOCATER_NAMES,
+        OBJECT_VERSION,
+        True,
+    )
+    bridge.to_resp(background_db)
     item = BackgroundReqResp.from_orm(background_db)
-    resp = GetBackgroundResponse(
+    return GetBackgroundResponse(
         item=item,
         description=item.description,
         recommended=[],
     )
-    return resp
 
 
 async def edit_background(
@@ -86,32 +103,23 @@ async def edit_background(
         ),
     )
     await is_owner_or_admin_otherwise_409(db, background_db, auth)
-    update_data = model.dict(exclude_unset=True)
-    background_db.updatedTime = get_current_unix()
-    EXCLUDES = [
-        "id",
-        "userId",
-        "createdTime",
-        "updatedTime",
-    ]
-    for k in EXCLUDES:
-        update_data.pop(k, None)
-    for k in update_data.keys():
-        setattr(background_db, k, update_data[k])
-    try:
-        await db.commit()
-        await db.refresh(background_db)
-    except sqlalchemy.exc.IntegrityError as e:
-        if "Duplicate entry" in e._message():
-            return HTTPException(status_code=409, detail="Conflicted")
-        return HTTPException(status_code=400, detail="Bad Request")
+    bridge = DataBridge(
+        db,
+        None,
+        OBJECT_NAME,
+        LOCATER_NAMES,
+        OBJECT_VERSION,
+        True,
+    )
+    patch_to_model(background_db, model.dict(exclude_unset=True), LOCATER_NAMES, [])
+    await save_to_db(db, background_db)
+    bridge.to_resp(background_db)
     item = BackgroundReqResp.from_orm(background_db)
-    resp = GetBackgroundResponse(
+    return GetBackgroundResponse(
         item=item,
         description=item.description,
         recommended=[],
     )
-    return resp
 
 
 async def delete_background(
@@ -126,9 +134,7 @@ async def delete_background(
     await is_owner_or_admin_otherwise_409(db, background_db, auth)
     background_db.isDeleted = True
     background_db.updatedTime = get_current_unix()
-    db.add(background_db)
-    await db.commit()
-    await db.refresh(background_db)
+    save_to_db(db, background_db)
     return None
 
 
@@ -142,9 +148,19 @@ async def list_background(
         select_query,
         Params(page=page + 1, size=20),
     )  # type: ignore
+    bridge = DataBridge(
+        db,
+        None,
+        OBJECT_NAME,
+        LOCATER_NAMES,
+        OBJECT_VERSION,
+        True,
+    )
     resp: SonolusPage = toSonolusPage(userPage)
+    for r in resp.items:
+        bridge.to_resp(r)
     return GetBackgroundListResponse(
-        users=resp.items,
-        total=resp.total,
-        pages=resp.pageCount,
+        pageCount=resp.pageCount if resp.pageCount > 0 else 1,
+        items=resp.items,
+        search=defaultSearch,
     )
