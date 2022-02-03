@@ -4,9 +4,9 @@ from __future__ import annotations
 from datetime import date, datetime  # noqa: F401
 
 import re  # noqa: F401
-from typing import Any, Dict, List, Optional  # noqa: F401
+from typing import Any, Dict, List, Optional, Union  # noqa: F401
 
-from pydantic import AnyUrl, BaseModel, EmailStr, validator  # noqa: F401
+from pydantic import BaseModel, validator
 from src.models.sonolus_resource_locator import SonolusResourceLocator
 
 
@@ -36,6 +36,9 @@ class Background(BaseModel):
         userId: The userId of this Background [Optional].
         public: The public of this Level [Optional].
     """
+
+    class Config:
+        orm_mode = True
 
     name: Optional[str] = None
     version: Optional[int] = None
@@ -87,11 +90,6 @@ class Background(BaseModel):
         return value
 
     @validator("titleEn")
-    def titleEn_min_length(cls, value):
-        assert len(value) >= 0
-        return value
-
-    @validator("titleEn")
     def titleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
@@ -104,11 +102,6 @@ class Background(BaseModel):
     @validator("subtitle")
     def subtitle_max_length(cls, value):
         assert len(value) <= 100
-        return value
-
-    @validator("subtitleEn")
-    def subtitleEn_min_length(cls, value):
-        assert len(value) >= 0
         return value
 
     @validator("subtitleEn")
@@ -127,11 +120,6 @@ class Background(BaseModel):
         return value
 
     @validator("authorEn")
-    def authorEn_min_length(cls, value):
-        assert len(value) >= 0
-        return value
-
-    @validator("authorEn")
     def authorEn_max_length(cls, value):
         assert len(value) <= 50
         return value
@@ -144,11 +132,6 @@ class Background(BaseModel):
     @validator("description")
     def description_max_length(cls, value):
         assert len(value) <= 3000
-        return value
-
-    @validator("descriptionEn")
-    def descriptionEn_min_length(cls, value):
-        assert len(value) >= 0
         return value
 
     @validator("descriptionEn")
