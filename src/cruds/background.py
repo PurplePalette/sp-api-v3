@@ -7,7 +7,6 @@ from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models.default_search import defaultSearch
 from src.config import BACKGROUND_VERSION
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
@@ -21,11 +20,11 @@ from src.cruds.utils import (
 )
 from src.database.objects.background import Background as BackgroundSave
 from src.models.background import Background as BackgroundReqResp
+from src.models.default_search import defaultSearch
 from src.models.get_background_list_response import GetBackgroundListResponse
 from src.models.get_background_response import GetBackgroundResponse
 from src.models.search_query import SearchQueries
 from src.models.sonolus_page import SonolusPage, toSonolusPage
-
 
 OBJECT_NAME = "background"
 LOCATER_NAMES = ["thumbnail", "data", "image", "configuration"]

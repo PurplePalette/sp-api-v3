@@ -6,12 +6,11 @@ from typing import Any, Dict, List, Optional, TypeVar, Union
 from fastapi import HTTPException
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import func, select
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.engine import Result
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import true
 from src.config import CDN_ENDPOINT
-from src.models.sonolus_resource_locator import SonolusResourceLocator
 from src.database.objects.background import Background
 from src.database.objects.effect import Effect
 from src.database.objects.engine import Engine
@@ -19,6 +18,7 @@ from src.database.objects.level import Level
 from src.database.objects.particle import Particle
 from src.database.objects.skin import Skin
 from src.database.objects.user import User as UserObject
+from src.models.sonolus_resource_locator import SonolusResourceLocator
 from src.models.user_total_publish import UserTotalPublish
 
 
