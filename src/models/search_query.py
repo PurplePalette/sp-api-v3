@@ -102,14 +102,15 @@ class SearchLength(str, Enum):
 
 @dataclass
 class SearchQueries:
+    localization: str
     keywords: str
     author: str
     sort: SearchSort
     order: SearchOrder
     status: SearchStatus
     random: int
-    rating_min: Optional[int]
-    rating_max: Optional[int]
-    genre: Optional[SearchGenre]
-    length: Optional[SearchLength]
-    user: Optional[User]
+    rating_min: Optional[int] = None
+    rating_max: Optional[int] = None
+    genre: Optional[SearchGenre] = None
+    length: Optional[SearchLength] = None
+    user: Optional[User] = None

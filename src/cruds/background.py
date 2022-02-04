@@ -57,15 +57,14 @@ async def create_background(
 
 
 async def get_background(
-    db: AsyncSession,
-    name: str,
+    db: AsyncSession, name: str, localization: str
 ) -> GetBackgroundResponse:
     """背景を取得します"""
     background_db: BackgroundSave = await get_first_item_or_404(
         db, select(BackgroundSave).filter(BackgroundSave.userId == name)
     )
     bridge = DataBridge(db, OBJECT_NAME, LOCATER_NAMES, OBJECT_VERSION)
-    bridge.to_resp(background_db)
+    bridge.to_resp(background_db, localization)
     item = BackgroundReqResp.from_orm(background_db)
     return GetBackgroundResponse(
         item=item,
@@ -129,7 +128,7 @@ async def list_background(
     bridge = DataBridge(db, OBJECT_NAME, LOCATER_NAMES, OBJECT_VERSION)
     resp: SonolusPage = toSonolusPage(userPage)
     for r in resp.items:
-        bridge.to_resp(r)
+        bridge.to_resp(r, queries.localization)
     return GetBackgroundListResponse(
         pageCount=resp.pageCount if resp.pageCount > 0 else 1,
         items=resp.items,

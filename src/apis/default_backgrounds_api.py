@@ -31,10 +31,10 @@ from src.apis.depends import (
     dependsStatus,
 )
 from src.cruds.background import create_background as crud_create
-from src.cruds.background import delete_background as crud_delete  # noqa: F401
-from src.cruds.background import edit_background as crud_edit  # noqa: F401
-from src.cruds.background import get_background as crud_get  # noqa: F401
-from src.cruds.background import list_background as crud_list  # noqa: F401
+from src.cruds.background import delete_background as crud_delete
+from src.cruds.background import edit_background as crud_edit
+from src.cruds.background import get_background as crud_get
+from src.cruds.background import list_background as crud_list
 from src.models.background import Background
 from src.models.get_background_list_response import GetBackgroundListResponse
 from src.models.get_background_response import GetBackgroundResponse
@@ -124,9 +124,7 @@ async def get_background_list(
 ) -> GetBackgroundListResponse:
     """It returns list of background infos registered in this server.
     Also it can search using query params"""
-    queries = SearchQueries(
-        keywords, author, sort, order, status, random, None, None, None, None, None
-    )
+    queries = SearchQueries(localization, keywords, author, sort, order, status, random)
     return await crud_list(db, page, queries)
 
 
@@ -142,7 +140,8 @@ async def get_background_list(
 async def get_background(
     db: AsyncSession = dependsDatabase,
     backgroundName: str = dependsPath,
+    localization: str = dependsLocalization,
 ) -> GetBackgroundResponse:
     """It returns specified background info.
     It will raise 404 if the background is not registered in this server"""
-    return await crud_get(db, backgroundName)
+    return await crud_get(db, backgroundName, localization)

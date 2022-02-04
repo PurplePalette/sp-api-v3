@@ -183,6 +183,17 @@ def copy_translate_fields(model: Any, field_names: List[str]) -> Any:
     return model
 
 
+def move_translate_fields(model: Any, field_names: List[str]) -> Any:
+    """指定したフィールドそれぞれの英名フィールドで日本語フィールドを上書きする"""
+    for k in field_names:
+        if not hasattr(model, k):
+            continue
+        attr_name = f"{k}En"
+        if getattr(model, attr_name) is not None:
+            setattr(model, k, getattr(model, attr_name))
+    return model
+
+
 async def save_to_db(db: AsyncSession, model: Any) -> Optional[HTTPException]:
     """データベースにモデルを追加/反映するショートハンド"""
     db.add(model)
@@ -281,7 +292,7 @@ class DataBridge:
         if self.is_new:
             model.createdTime = model.updatedTime
 
-    def to_resp(self, model: W) -> None:
+    def to_resp(self, model: W, localization: str) -> None:
         """指定されたモデルのSRLフィールドをSRLにし、調整して応答可能にする (引数は全て小文字)"""
         for k in self.locator_names:
             hash = getattr(model, k)
@@ -292,6 +303,10 @@ class DataBridge:
                 url=f"{CDN_ENDPOINT}/repository/{resource_type}/{hash}",
             )
             setattr(model, k, srl)
+        if localization != "ja":
+            move_translate_fields(
+                model, ["title", "description", "author", "subtitle", "artists"]
+            )
         model.version = self.version
         if self.auth:
             model.userId = self.auth["user_id"]
