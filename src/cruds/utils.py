@@ -225,16 +225,35 @@ def patch_to_model(
 
 
 class DataBridge:
-    """"リクエスト/DB/レスポンスの変換支援クラス"""
+    """リクエスト/DB/レスポンスの変換支援クラス
+
+    SQLAlchemyモデルは SRLのうち、Hashのみを持っているのに対して
+    PydanticモデルはSRLモデル内の全てを持っている。
+    この差により、
+    新規作成時は SRLがDBフィールド型に一致しない、
+    更新時も SRLがDBフィールド型に一致しない、
+    取得時も SRLが応答フィールド型に一致しない
+    という問題が発生する。
+    都度変換すればいいのだが、基本的にこの問題が発生するのはSRLだけなため
+    そのテンプレ処理をこのクラスでなんとかする。
+
+    Args:
+        db: データベース
+        object_name: SRLに渡すSonolusオブジェクト名(小文字) ex. background
+        locator_names: SRLフィールド名 ex. [thumbnail, data, image, configuration]
+        object_version: レスポンス変換時に入力される型バージョン ex. 1
+        auth: Create/Edit時はFirebaseAuthを与えると内部ユーザーIDを割り当てる
+        is_new: TrueならtoDB実行時、created_timeにupdated_timeと同じ値を入れる
+    """
 
     def __init__(
         self,
         db: AsyncSession,
-        auth: Optional[FirebaseClaims],
         object_name: str,
         locator_names: List[str],
         object_version: int,
-        is_new: bool,
+        auth: Optional[FirebaseClaims] = None,
+        is_new: Optional[bool] = None,
     ):
         self.db = db
         self.auth = auth
