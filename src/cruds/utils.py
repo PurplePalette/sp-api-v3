@@ -292,7 +292,7 @@ class DataBridge:
         if self.is_new:
             model.createdTime = model.updatedTime
 
-    def to_resp(self, model: W, localization: str) -> None:
+    def to_resp(self, model: W, localization: str = "ja") -> None:
         """指定されたモデルのSRLフィールドをSRLにし、調整して応答可能にする (引数は全て小文字)"""
         for k in self.locator_names:
             hash = getattr(model, k)
