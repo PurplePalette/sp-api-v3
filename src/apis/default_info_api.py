@@ -12,10 +12,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import dependsDatabase, dependsLocalization
 
 # from src.cruds.skin import LOCATOR_NAMES as PARTICLE_LOCATORS
-from src.config import BACKGROUND_VERSION, EFFECT_VERSION, PARTICLE_VERSION
+from src.config import (
+    BACKGROUND_VERSION,
+    EFFECT_VERSION,
+    PARTICLE_VERSION,
+    SKIN_VERSION,
+)
 from src.cruds.background import LOCATOR_NAMES as BACKGROUND_LOCATORS
 from src.cruds.effect import LOCATOR_NAMES as EFFECT_LOCATORS
 from src.cruds.particle import LOCATOR_NAMES as PARTICLE_LOCATORS
+from src.cruds.skin import LOCATOR_NAMES as SKIN_LOCATORS
 from src.cruds.utils import DataBridge, get_first_item_or_404
 from src.database.objects.announce import Announce as AnnounceObject
 from src.database.objects.background import Background as BackgroundObject
@@ -95,6 +101,7 @@ async def get_server_info(
             backgrounds, "background", BACKGROUND_LOCATORS, BACKGROUND_VERSION
         ),
         BridgeObject(effects, "effect", EFFECT_LOCATORS, EFFECT_VERSION),
+        BridgeObject(skins, "skin", SKIN_LOCATORS, SKIN_VERSION),
     ]
     for obj in bridge_objects:
         bridge = DataBridge(db, obj.object_name, obj.locator_names, obj.object_version)
