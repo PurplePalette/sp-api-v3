@@ -59,7 +59,7 @@ async def add_particle(
     particle: Particle = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
-) -> None:
+) -> GetParticleResponse:
     """指定されたパーティクル情報をサーバーに登録します"""
     return await crud_create(db, particle, user)
 
@@ -99,7 +99,7 @@ async def edit_particle(
     particle: Particle = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
-) -> None:
+) -> GetParticleResponse:
     """指定したparticleを編集します"""
     return await crud_edit(db, particleName, particle, user)
 

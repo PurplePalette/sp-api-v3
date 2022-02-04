@@ -59,7 +59,7 @@ async def add_skin(
     skin: Skin = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
-) -> None:
+) -> GetSkinResponse:
     """指定されたスキン情報をサーバーに登録します"""
     return await crud_create(db, skin, user)
 
@@ -99,7 +99,7 @@ async def edit_skin(
     skin: Skin = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
-) -> None:
+) -> GetSkinResponse:
     """指定したskinを編集します"""
     return await crud_edit(db, skinName, skin, user)
 
