@@ -35,6 +35,9 @@ class Effect(BaseModel):
         public: The public of this Level [Optional].
     """
 
+    class Config:
+        orm_mode = True
+
     name: Optional[str] = None
     version: Optional[int] = None
     title: Optional[str] = None

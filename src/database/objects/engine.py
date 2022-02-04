@@ -8,6 +8,9 @@ class Engine(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     __tablename__ = "engines"
     __table_args__ = {"extend_existing": True}
 
+    class Config:
+        orm_mode = True
+
     thumbnail = Column(String(128))
     data = Column(String(128))
     configuration = Column(String(128))

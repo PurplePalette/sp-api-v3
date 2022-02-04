@@ -54,6 +54,9 @@ class Level(BaseModel):
         mylists: The mylists of this Level [Optional].
     """
 
+    class Config:
+        orm_mode = True
+
     name: Optional[str] = None
     version: Optional[int] = None
     rating: Optional[int] = None

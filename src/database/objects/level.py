@@ -11,6 +11,9 @@ class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     __tablename__ = "levels"
     __table_args__ = {"extend_existing": True}
 
+    class Config:
+        orm_mode = True
+
     rating = Column(Integer)
     bpm = Column(Integer)
     notes = Column(Integer)
