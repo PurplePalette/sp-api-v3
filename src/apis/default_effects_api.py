@@ -30,10 +30,16 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
+from src.cruds.effect import create_effect as crud_create
+from src.cruds.effect import delete_effect as crud_delete
+from src.cruds.effect import edit_effect as crud_edit
+from src.cruds.effect import get_effect as crud_get
+from src.cruds.effect import list_effect as crud_list
 from src.models.effect import Effect
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_effect_list_response import GetEffectListResponse
 from src.models.get_effect_response import GetEffectResponse
+from src.models.search_query import SearchOrder, SearchQueries, SearchSort, SearchStatus
 
 router = APIRouter()
 
@@ -50,12 +56,12 @@ router = APIRouter()
     summary="Add an effect",
 )
 async def add_effect(
-    effect: Effect = dependsBody,
     db: AsyncSession = dependsDatabase,
+    effect: Effect = dependsBody,
     user: FirebaseClaims = dependsFirebase,
-) -> None:
+) -> GetEffectResponse:
     """指定されたeffectをサーバーに登録します"""
-    ...
+    return await crud_create(db, effect, user)
 
 
 @router.delete(
@@ -67,12 +73,13 @@ async def add_effect(
     summary="Delete an effect",
 )
 async def delete_effect(
-    effectName: str = dependsPath,
     db: AsyncSession = dependsDatabase,
+    effectName: str = dependsPath,
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """delete specified effect"""
-    ...
+    await crud_delete(db, effectName, user)
+    return None
 
 
 @router.patch(
@@ -88,30 +95,13 @@ async def delete_effect(
     summary="Edit an effect",
 )
 async def edit_effect(
+    db: AsyncSession = dependsDatabase,
     effectName: str = dependsPath,
     effect: Effect = dependsBody,
-    db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
-) -> None:
-    """指定されたeffectを編集します"""
-    ...
-
-
-@router.get(
-    "/effects/{effectName}",
-    responses={
-        200: {"model": GetEffectResponse, "description": "OK"},
-        404: {"description": "Not Found"},
-    },
-    tags=["default_effects"],
-    summary="Get an effect",
-)
-async def get_effect(
-    effectName: str = dependsPath,
 ) -> GetEffectResponse:
-    """It returns specified effect info.
-    It will raise 404 if the effect is not registered in this server"""
-    ...
+    """指定されたeffectを編集します"""
+    return await crud_edit(db, effectName, effect, user)
 
 
 @router.get(
@@ -126,12 +116,33 @@ async def get_effect_list(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
-    sort: str = dependsSort,
-    order: str = dependsOrder,
-    status: str = dependsStatus,
+    sort: SearchSort = dependsSort,
+    order: SearchOrder = dependsOrder,
+    status: SearchStatus = dependsStatus,
     author: str = dependsAuthor,
     random: int = dependsRandom,
+    db: AsyncSession = dependsDatabase,
 ) -> GetEffectListResponse:
     """It returns list of effect infos registered in this server.
     Also it can search using query params"""
-    ...
+    queries = SearchQueries(localization, keywords, author, sort, order, status, random)
+    return await crud_list(db, page, queries)
+
+
+@router.get(
+    "/effects/{effectName}",
+    responses={
+        200: {"model": GetEffectResponse, "description": "OK"},
+        404: {"description": "Not Found"},
+    },
+    tags=["default_effects"],
+    summary="Get an effect",
+)
+async def get_effect(
+    db: AsyncSession = dependsDatabase,
+    effectName: str = dependsPath,
+    localization: str = dependsLocalization,
+) -> GetEffectResponse:
+    """It returns specified effect info.
+    It will raise 404 if the effect is not registered in this server"""
+    return await crud_get(db, effectName, localization)
