@@ -20,9 +20,9 @@ from src.cruds.utils import (
 )
 from src.database.objects.particle import Particle as ParticleSave
 from src.models.default_search import defaultSearch
-from src.models.particle import Particle as ParticleReqResp
 from src.models.get_particle_list_response import GetParticleListResponse
 from src.models.get_particle_response import GetParticleResponse
+from src.models.particle import Particle as ParticleReqResp
 from src.models.search_query import SearchQueries
 from src.models.sonolus_page import SonolusPage, toSonolusPage
 
