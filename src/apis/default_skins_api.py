@@ -30,9 +30,15 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
+from src.cruds.skin import create_skin as crud_create
+from src.cruds.skin import delete_skin as crud_delete
+from src.cruds.skin import edit_skin as crud_edit
+from src.cruds.skin import get_skin as crud_get
+from src.cruds.skin import list_skin as crud_list
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_skin_list_response import GetSkinListResponse
 from src.models.get_skin_response import GetSkinResponse
+from src.models.search_query import SearchOrder, SearchQueries, SearchSort, SearchStatus
 from src.models.skin import Skin
 
 router = APIRouter()
@@ -55,7 +61,7 @@ async def add_skin(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたスキン情報をサーバーに登録します"""
-    ...
+    return await crud_create(db, skin, user)
 
 
 @router.delete(
@@ -72,7 +78,8 @@ async def delete_skin(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたスキンを削除します"""
-    ...
+    await crud_delete(db, skinName, user)
+    return None
 
 
 @router.patch(
@@ -94,24 +101,7 @@ async def edit_skin(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定したskinを編集します"""
-    ...
-
-
-@router.get(
-    "/skins/{skinName}",
-    responses={
-        200: {"model": GetSkinResponse, "description": "OK"},
-        404: {"description": "Not Found"},
-    },
-    tags=["default_skins"],
-    summary="Get a skin",
-)
-async def get_skin(
-    skinName: str = dependsPath,
-) -> GetSkinResponse:
-    """It returns specified skin info.
-    It will raise 404 if the skin is not registered in this server"""
-    ...
+    return await crud_edit(db, skinName, skin, user)
 
 
 @router.get(
@@ -126,12 +116,33 @@ async def get_skin_list(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
-    sort: str = dependsSort,
-    order: str = dependsOrder,
-    status: str = dependsStatus,
+    sort: SearchSort = dependsSort,
+    order: SearchOrder = dependsOrder,
+    status: SearchStatus = dependsStatus,
     author: str = dependsAuthor,
     random: int = dependsRandom,
+    db: AsyncSession = dependsDatabase,
 ) -> GetSkinListResponse:
     """It returns list of skin infos registered in this server.
     Also it can search using query params"""
-    ...
+    queries = SearchQueries(localization, keywords, author, sort, order, status, random)
+    return await crud_list(db, page, queries)
+
+
+@router.get(
+    "/skins/{skinName}",
+    responses={
+        200: {"model": GetSkinResponse, "description": "OK"},
+        404: {"description": "Not Found"},
+    },
+    tags=["default_skins"],
+    summary="Get a skin",
+)
+async def get_skin(
+    db: AsyncSession = dependsDatabase,
+    skinName: str = dependsPath,
+    localization: str = dependsLocalization,
+) -> GetSkinResponse:
+    """It returns specified skin info.
+    It will raise 404 if the skin is not registered in this server"""
+    return await crud_get(db, skinName, localization)
