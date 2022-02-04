@@ -1,31 +1,31 @@
-from .announce import Announce
-from .background import Background
-from .effect import Effect
-from .engine import Engine
-from .favorite import Favorite
-from .genre import Genre
-from .level import Level
-from .like import Like
-from .log import Log
-from .particle import Particle
-from .pickup import Pickup
-from .skin import Skin
-from .user import User
-from .vote import Vote
+from .announce import Announce as AnnounceSave
+from .background import Background as BackgroundSave
+from .effect import Effect as EffectSave
+from .engine import Engine as EngineSave
+from .favorite import Favorite as FavoriteSave
+from .genre import Genre as GenreSave
+from .level import Level as LevelSave
+from .like import Like as LikeSave
+from .log import Log as LogSave
+from .particle import Particle as ParticleSave
+from .pickup import Pickup as PickupSave
+from .skin import Skin as SkinSave
+from .user import User as UserSave
+from .vote import Vote as VoteSave
 
 __all__ = [
-    "Announce",
-    "Background",
-    "Effect",
-    "Engine",
-    "Favorite",
-    "Genre",
-    "Level",
-    "Like",
-    "Log",
-    "Particle",
-    "Pickup",
-    "Skin",
-    "User",
-    "Vote",
+    "AnnounceSave",
+    "BackgroundSave",
+    "EffectSave",
+    "EngineSave",
+    "FavoriteSave",
+    "GenreSave",
+    "LevelSave",
+    "LikeSave",
+    "LogSave",
+    "ParticleSave",
+    "PickupSave",
+    "SkinSave",
+    "UserSave",
+    "VoteSave",
 ]

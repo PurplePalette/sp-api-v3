@@ -8,6 +8,7 @@ from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.config import SKIN_VERSION
+from src.cruds import SKIN_LOCATORS
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
     DataBridge,
@@ -18,7 +19,7 @@ from src.cruds.utils import (
     patch_to_model,
     save_to_db,
 )
-from src.database.objects.skin import Skin as SkinSave
+from src.database.objects import SkinSave
 from src.models.default_search import defaultSearch
 from src.models.get_skin_list_response import GetSkinListResponse
 from src.models.get_skin_response import GetSkinResponse
@@ -27,8 +28,6 @@ from src.models.skin import Skin as SkinReqResp
 from src.models.sonolus_page import SonolusPage, toSonolusPage
 
 OBJECT_NAME = "skin"
-LOCATOR_NAMES = ["thumbnail", "data", "texture"]
-OBJECT_VERSION = SKIN_VERSION
 
 
 async def create_skin(
@@ -42,7 +41,7 @@ async def create_skin(
         ),
     )
     # 入力を DBに合わせる
-    bridge = DataBridge(db, OBJECT_NAME, LOCATOR_NAMES, OBJECT_VERSION, auth, True)
+    bridge = DataBridge(db, OBJECT_NAME, SKIN_LOCATORS, SKIN_VERSION, auth, True)
     await bridge.to_db(model)
     skin_db = SkinSave(**model.dict())
     await save_to_db(db, skin_db)
@@ -61,7 +60,7 @@ async def get_skin(db: AsyncSession, name: str, localization: str) -> GetSkinRes
     skin_db: SkinSave = await get_first_item_or_404(
         db, select(SkinSave).filter(SkinSave.userId == name)
     )
-    bridge = DataBridge(db, OBJECT_NAME, LOCATOR_NAMES, OBJECT_VERSION)
+    bridge = DataBridge(db, OBJECT_NAME, SKIN_LOCATORS, SKIN_VERSION)
     bridge.to_resp(skin_db, localization)
     item = SkinReqResp.from_orm(skin_db)
     return GetSkinResponse(
@@ -85,8 +84,8 @@ async def edit_skin(
         ),
     )
     await is_owner_or_admin_otherwise_409(db, skin_db, auth)
-    bridge = DataBridge(db, OBJECT_NAME, LOCATOR_NAMES, OBJECT_VERSION, auth)
-    patch_to_model(skin_db, model.dict(exclude_unset=True), LOCATOR_NAMES, [])
+    bridge = DataBridge(db, OBJECT_NAME, SKIN_LOCATORS, SKIN_VERSION, auth)
+    patch_to_model(skin_db, model.dict(exclude_unset=True), SKIN_LOCATORS, [])
     await save_to_db(db, skin_db)
     bridge.to_resp(skin_db)
     item = SkinReqResp.from_orm(skin_db)
@@ -123,7 +122,7 @@ async def list_skin(
         select_query,
         Params(page=page + 1, size=20),
     )  # type: ignore
-    bridge = DataBridge(db, OBJECT_NAME, LOCATOR_NAMES, OBJECT_VERSION)
+    bridge = DataBridge(db, OBJECT_NAME, SKIN_LOCATORS, SKIN_VERSION)
     resp: SonolusPage = toSonolusPage(userPage)
     for r in resp.items:
         bridge.to_resp(r, queries.localization)

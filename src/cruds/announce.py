@@ -10,7 +10,7 @@ from src.cruds.utils import (
     get_first_item_or_404,
     not_exist_or_409,
 )
-from src.database.objects.announce import Announce as AnnounceObject
+from src.database.objects import AnnounceSave
 from src.models.announce import Announce as AnnounceModel
 from src.models.default_search import defaultSearch
 from src.models.get_level_list_response import GetLevelListResponse
@@ -25,9 +25,9 @@ async def create_announce(
     user_db = await get_admin_or_403(db, user)
     await not_exist_or_409(
         db,
-        select(AnnounceObject).filter(AnnounceObject.name == announce_create.name),
+        select(AnnounceSave).filter(AnnounceSave.name == announce_create.name),
     )
-    announce_db = AnnounceObject(**announce_create.dict())
+    announce_db = AnnounceSave(**announce_create.dict())
     announce_db.user = user_db
     announce_db.createdTime = get_current_unix()
     announce_db.updatedTime = get_current_unix()
@@ -49,8 +49,8 @@ async def edit_announce(
 ) -> GetLevelResponse:
     """お知らせを編集します"""
     user_db = await get_admin_or_403(db, user)
-    announce_db: AnnounceObject = await get_first_item_or_404(
-        db, select(AnnounceObject).filter(AnnounceObject.name == announceName)
+    announce_db: AnnounceSave = await get_first_item_or_404(
+        db, select(AnnounceSave).filter(AnnounceSave.name == announceName)
     )
     update_data = announce_edit.dict(exclude_unset=True)
     update_data["userId"] = user_db.id
@@ -87,8 +87,8 @@ async def delete_announce(
 ) -> None:
     """お知らせを削除します"""
     await get_admin_or_403(db, user)
-    announce_db: AnnounceObject = await get_first_item_or_404(
-        db, select(AnnounceObject).filter(AnnounceObject.name == announceName)
+    announce_db: AnnounceSave = await get_first_item_or_404(
+        db, select(AnnounceSave).filter(AnnounceSave.name == announceName)
     )
     await db.delete(announce_db)
     await db.commit()
@@ -99,8 +99,8 @@ async def get_announce(
     announceName: str,
 ) -> GetLevelResponse:
     """お知らせを取得します"""
-    announce_db: AnnounceObject = await get_first_item_or_404(
-        db, select(AnnounceObject).filter(AnnounceObject.name == announceName)
+    announce_db: AnnounceSave = await get_first_item_or_404(
+        db, select(AnnounceSave).filter(AnnounceSave.name == announceName)
     )
     resp: GetLevelResponse = announce_db.toLevelResponse()
     return resp
@@ -111,9 +111,9 @@ async def list_announce(
 ) -> GetLevelListResponse:
     """お知らせ一覧を取得します"""
     resp: Result = await db.execute(
-        select(AnnounceObject).order_by(AnnounceObject.updatedTime.desc())
+        select(AnnounceSave).order_by(AnnounceSave.updatedTime.desc())
     )
-    announces: List[AnnounceObject] = resp.scalars()
+    announces: List[AnnounceSave] = resp.scalars()
     return GetLevelListResponse(
         pageCount=1,
         items=[announce.toLevelItem() for announce in announces],
