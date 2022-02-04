@@ -7,7 +7,7 @@ from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.config import BACKGROUND_VERSION
+from src.config import EFFECT_VERSION
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
     DataBridge,
@@ -28,7 +28,7 @@ from src.models.sonolus_page import SonolusPage, toSonolusPage
 
 OBJECT_NAME = "effect"
 LOCATOR_NAMES = ["thumbnail", "data"]
-OBJECT_VERSION = BACKGROUND_VERSION
+OBJECT_VERSION = EFFECT_VERSION
 
 
 async def create_effect(
