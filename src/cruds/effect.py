@@ -27,7 +27,7 @@ from src.models.search_query import SearchQueries
 from src.models.sonolus_page import SonolusPage, toSonolusPage
 
 OBJECT_NAME = "effect"
-LOCATER_NAMES = ["thumbnail", "data"]
+LOCATOR_NAMES = ["thumbnail", "data"]
 OBJECT_VERSION = BACKGROUND_VERSION
 
 
@@ -42,7 +42,7 @@ async def create_effect(
         ),
     )
     # 入力を DBに合わせる
-    bridge = DataBridge(db, OBJECT_NAME, LOCATER_NAMES, OBJECT_VERSION, auth, True)
+    bridge = DataBridge(db, OBJECT_NAME, LOCATOR_NAMES, OBJECT_VERSION, auth, True)
     await bridge.to_db(model)
     effect_db = EffectSave(**model.dict())
     await save_to_db(db, effect_db)
@@ -63,7 +63,7 @@ async def get_effect(
     effect_db: EffectSave = await get_first_item_or_404(
         db, select(EffectSave).filter(EffectSave.userId == name)
     )
-    bridge = DataBridge(db, OBJECT_NAME, LOCATER_NAMES, OBJECT_VERSION)
+    bridge = DataBridge(db, OBJECT_NAME, LOCATOR_NAMES, OBJECT_VERSION)
     bridge.to_resp(effect_db, localization)
     item = EffectReqResp.from_orm(effect_db)
     return GetEffectResponse(
@@ -87,8 +87,8 @@ async def edit_effect(
         ),
     )
     await is_owner_or_admin_otherwise_409(db, effect_db, auth)
-    bridge = DataBridge(db, OBJECT_NAME, LOCATER_NAMES, OBJECT_VERSION, auth)
-    patch_to_model(effect_db, model.dict(exclude_unset=True), LOCATER_NAMES, [])
+    bridge = DataBridge(db, OBJECT_NAME, LOCATOR_NAMES, OBJECT_VERSION, auth)
+    patch_to_model(effect_db, model.dict(exclude_unset=True), LOCATOR_NAMES, [])
     await save_to_db(db, effect_db)
     bridge.to_resp(effect_db)
     item = EffectReqResp.from_orm(effect_db)
@@ -125,7 +125,7 @@ async def list_effect(
         select_query,
         Params(page=page + 1, size=20),
     )  # type: ignore
-    bridge = DataBridge(db, OBJECT_NAME, LOCATER_NAMES, OBJECT_VERSION)
+    bridge = DataBridge(db, OBJECT_NAME, LOCATOR_NAMES, OBJECT_VERSION)
     resp: SonolusPage = toSonolusPage(userPage)
     for r in resp.items:
         bridge.to_resp(r, queries.localization)

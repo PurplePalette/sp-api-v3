@@ -27,7 +27,7 @@ from src.models.search_query import SearchQueries
 from src.models.sonolus_page import SonolusPage, toSonolusPage
 
 OBJECT_NAME = "background"
-LOCATER_NAMES = ["thumbnail", "data", "image", "configuration"]
+LOCATOR_NAMES = ["thumbnail", "data", "image", "configuration"]
 OBJECT_VERSION = BACKGROUND_VERSION
 
 
@@ -42,7 +42,7 @@ async def create_background(
         ),
     )
     # 入力を DBに合わせる
-    bridge = DataBridge(db, OBJECT_NAME, LOCATER_NAMES, OBJECT_VERSION, auth, True)
+    bridge = DataBridge(db, OBJECT_NAME, LOCATOR_NAMES, OBJECT_VERSION, auth, True)
     await bridge.to_db(model)
     background_db = BackgroundSave(**model.dict())
     await save_to_db(db, background_db)
@@ -63,7 +63,7 @@ async def get_background(
     background_db: BackgroundSave = await get_first_item_or_404(
         db, select(BackgroundSave).filter(BackgroundSave.userId == name)
     )
-    bridge = DataBridge(db, OBJECT_NAME, LOCATER_NAMES, OBJECT_VERSION)
+    bridge = DataBridge(db, OBJECT_NAME, LOCATOR_NAMES, OBJECT_VERSION)
     bridge.to_resp(background_db, localization)
     item = BackgroundReqResp.from_orm(background_db)
     return GetBackgroundResponse(
@@ -87,8 +87,8 @@ async def edit_background(
         ),
     )
     await is_owner_or_admin_otherwise_409(db, background_db, auth)
-    bridge = DataBridge(db, OBJECT_NAME, LOCATER_NAMES, OBJECT_VERSION, auth)
-    patch_to_model(background_db, model.dict(exclude_unset=True), LOCATER_NAMES, [])
+    bridge = DataBridge(db, OBJECT_NAME, LOCATOR_NAMES, OBJECT_VERSION, auth)
+    patch_to_model(background_db, model.dict(exclude_unset=True), LOCATOR_NAMES, [])
     await save_to_db(db, background_db)
     bridge.to_resp(background_db)
     item = BackgroundReqResp.from_orm(background_db)
@@ -125,7 +125,7 @@ async def list_background(
         select_query,
         Params(page=page + 1, size=20),
     )  # type: ignore
-    bridge = DataBridge(db, OBJECT_NAME, LOCATER_NAMES, OBJECT_VERSION)
+    bridge = DataBridge(db, OBJECT_NAME, LOCATOR_NAMES, OBJECT_VERSION)
     resp: SonolusPage = toSonolusPage(userPage)
     for r in resp.items:
         bridge.to_resp(r, queries.localization)
