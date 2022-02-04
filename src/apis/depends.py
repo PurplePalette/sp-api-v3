@@ -3,7 +3,7 @@ from src.database.db import get_db
 from src.security_api import get_current_user, get_current_user_optional
 
 dependsLocalization = Query(
-    None,
+    "ja",
     description="It localizes response items if possible",
     min_length=1,
     max_length=50,
