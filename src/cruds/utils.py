@@ -52,7 +52,7 @@ V = TypeVar("V", bound=MustHaveTime)
 
 
 class MustHaveVersionAndUserId(metaclass=ABCMeta):
-    """最低限時間は持っているオブジェクトを表す基底クラス"""
+    """ユーザーIDとバージョンは持っているオブジェクトを表す基底クラス"""
 
     userId: int
     version: int
@@ -64,6 +64,13 @@ W = TypeVar("W", bound=MustHaveVersionAndUserId)
 def get_current_unix() -> int:
     """現在のUNIX時刻を取得"""
     return int(time.time())
+
+
+def get_first_item(db: AsyncSession, statement: Any) -> Optional[T]:
+    """データベースに指定された要素が存在すれば取得"""
+    resp: Result = db.execute(statement)
+    obj_db: Optional[T] = resp.scalars().first()
+    return obj_db
 
 
 async def get_first_item_or_error(
@@ -170,6 +177,16 @@ async def get_internal_id(db: AsyncSession, userId: str) -> int:
     )
     res: int = user.scalars().first()
     return res
+
+
+def all_fields_exists_or_400(fields: List[Optional[Any]]) -> Optional[HTTPException]:
+    """指定した全てのフィールドが存在しなければBadRequest"""
+    for field in fields:
+        if field is None:
+            return HTTPException(
+                status_code=400, detail="Bad request: missing required field"
+            )
+    return None
 
 
 def copy_translate_fields(model: Any, field_names: List[str]) -> Any:
