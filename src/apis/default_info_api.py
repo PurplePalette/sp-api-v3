@@ -1,15 +1,26 @@
 # coding: utf-8
 
 import asyncio
-from typing import List
+from dataclasses import dataclass
+from typing import Any, List
 
 from fastapi import APIRouter
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.apis.depends import dependsDatabase
-from src.cruds.utils import get_first_item_or_404
+from src.apis.depends import dependsDatabase, dependsLocalization
+from src.cruds.utils import DataBridge, get_first_item_or_404
+from src.cruds.background import LOCATOR_NAMES as BACKGROUND_LOCATORS
+from src.cruds.effect import LOCATOR_NAMES as EFFECT_LOCATORS
+from src.cruds.particle import LOCATOR_NAMES as PARTICLE_LOCATORS
+
+# from src.cruds.skin import LOCATOR_NAMES as PARTICLE_LOCATORS
+from src.config import (
+    BACKGROUND_VERSION,
+    EFFECT_VERSION,
+    PARTICLE_VERSION,
+)
 from src.database.objects.announce import Announce as AnnounceObject
 from src.database.objects.background import Background as BackgroundObject
 from src.database.objects.effect import Effect as EffectObject
@@ -29,6 +40,14 @@ from src.models.server_info_skins import ServerInfoSkins
 router = APIRouter()
 
 
+@dataclass
+class BridgeObject:
+    page: Page[Any]
+    object_name: str
+    locator_names: List[str]
+    object_version: int
+
+
 @router.get(
     "/info",
     responses={
@@ -39,7 +58,7 @@ router = APIRouter()
     response_model=ServerInfo,
 )
 async def get_server_info(
-    db: AsyncSession = dependsDatabase,
+    db: AsyncSession = dependsDatabase, localization: str = dependsLocalization
 ) -> ServerInfo:
     """It returns small list of all infos registered in this server.
     (It should be trimmed if the server has too many items)"""
@@ -73,7 +92,18 @@ async def get_server_info(
                 EngineObject,
             ]
         ]
-    )  # type: ignore
+    )
+    bridge_objects: List[BridgeObject] = [
+        BridgeObject(particles, "particle", PARTICLE_LOCATORS, PARTICLE_VERSION),
+        BridgeObject(
+            backgrounds, "background", BACKGROUND_LOCATORS, BACKGROUND_VERSION
+        ),
+        BridgeObject(effects, "effect", EFFECT_LOCATORS, EFFECT_VERSION),
+    ]
+    for obj in bridge_objects:
+        bridge = DataBridge(db, obj.object_name, obj.locator_names, obj.object_version)
+        for obj in obj.page.items:
+            bridge.to_resp(obj, localization)
     return ServerInfo(
         levels=ServerInfoLevels(
             items=tiles
