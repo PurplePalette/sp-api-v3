@@ -22,7 +22,7 @@ info:
     - This file have many tags, since every generated files were too big and needed to separate.
     - Actually many endpoints can inherit another endpoints. it won't be big project.
     - openapi-generator-cli python-fastapi gen makes broken models, you need fix below:
-      - All req/resp fields be snake_case, but sonolus official doc is snakeCase
+      - All req/resp fields be snake_case, but sonolus official doc is camelCase
       - Union type of SearchOptions be broken.
     ### Original comments
     - フロントエンド専用のエンドポイントは一切持たずマイリストなどを含め全てのリクエストはSonolusアプリ内のリクエストと互換するAPI(つまり全部の処理がGETになる、きっも...)
@@ -87,6 +87,8 @@ paths:
       description: |-
         It returns specified background info
         It will raise 404 if the background is not registered in this server
+      parameters:
+        - $ref: '#/components/parameters/localization'
     patch:
       summary: Edit a background
       operationId: editBackground
@@ -110,7 +112,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Background'
+              $ref: '#/components/schemas/EditBackgroundRequest'
       tags:
         - default_backgrounds
       security:
@@ -155,7 +157,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Background'
+              $ref: '#/components/schemas/AddBackgroundRequest'
         description: ''
       tags:
         - default_backgrounds
@@ -210,6 +212,8 @@ paths:
       description: |-
         It returns specified effect info
         It will raise 404 if the effect is not registered in this server
+      parameters:
+        - $ref: '#/components/parameters/localization'
     patch:
       summary: Edit an effect
       operationId: editEffect
@@ -233,7 +237,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Effect'
+              $ref: '#/components/schemas/EditEffectRequest'
       tags:
         - default_effects
       security:
@@ -278,7 +282,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Effect'
+              $ref: '#/components/schemas/AddEffectRequest'
       tags:
         - default_effects
       security:
@@ -332,6 +336,8 @@ paths:
       description: |-
         It returns specified engine info
         It will raise 404 if the engine is not registered in this server
+      parameters:
+        - $ref: '#/components/parameters/localization'
     patch:
       summary: Edit an engine
       operationId: editEngine
@@ -355,7 +361,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Engine'
+              $ref: '#/components/schemas/EditEngineRequest'
       tags:
         - default_engines
       security:
@@ -400,7 +406,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Engine'
+              $ref: '#/components/schemas/AddEngineRequest'
       tags:
         - default_engines
       security:
@@ -421,6 +427,8 @@ paths:
       description: 現在のアナウンス一覧を取得します
       tags:
         - default_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/levels/announce_{announceName}':
     parameters:
       - schema:
@@ -443,6 +451,8 @@ paths:
       description: 指定されたアナウンス情報を表示します
       tags:
         - default_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   /levels/pickups:
     get:
       summary: Get pickup levels
@@ -457,6 +467,8 @@ paths:
       description: 管理者の指定したおすすめ譜面などを返すエンドポイント
       tags:
         - default_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   /levels/debut:
     get:
       summary: Get debut levels
@@ -471,6 +483,8 @@ paths:
       description: 新規譜面作者の譜面のみを返すエンドポイント
       tags:
         - default_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
     parameters: []
   /levels/list:
     get:
@@ -525,6 +539,8 @@ paths:
       description: |-
         It returns specified level info
         It will raise 404 if the level is not registered in this server
+      parameters:
+        - $ref: '#/components/parameters/localization'
     patch:
       summary: Edit a level
       operationId: editLevel
@@ -548,7 +564,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Level'
+              $ref: '#/components/schemas/EditLevelRequest'
       tags:
         - default_levels
       security:
@@ -593,7 +609,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Level'
+              $ref: '#/components/schemas/AddLevelRequest'
       tags:
         - default_levels
       security:
@@ -647,6 +663,8 @@ paths:
       description: |-
         It returns specified particle info
         It will raise 404 if the particle is not registered in this server
+      parameters:
+        - $ref: '#/components/parameters/localization'
     patch:
       summary: Edit a particle
       operationId: editParticle
@@ -670,7 +688,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Particle'
+              $ref: '#/components/schemas/EditParticleRequest'
       tags:
         - default_particles
       security:
@@ -715,7 +733,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Particle'
+              $ref: '#/components/schemas/AddParticleRequest'
       tags:
         - default_particles
       security:
@@ -769,6 +787,8 @@ paths:
       description: |-
         It returns specified skin info
         It will raise 404 if the skin is not registered in this server
+      parameters:
+        - $ref: '#/components/parameters/localization'
     patch:
       summary: Edit a skin
       operationId: editSkin
@@ -792,7 +812,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Skin'
+              $ref: '#/components/schemas/EditSkinRequest'
       tags:
         - default_skins
       security:
@@ -837,7 +857,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Skin'
+              $ref: '#/components/schemas/AddSkinRequest'
       tags:
         - default_skins
       security:
@@ -880,6 +900,10 @@ paths:
           description: Not Found
       operationId: getUser
       description: 指定したユーザー情報を取得します
+      security:
+        - {}
+        - Authorization: []
+      parameters: []
     patch:
       summary: Edit a user
       operationId: editUser
@@ -905,7 +929,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/EditUserRequest'
       security:
         - Authorization: []
     delete:
@@ -948,7 +972,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/AddUserRequest'
       tags:
         - users
       security:
@@ -981,6 +1005,8 @@ paths:
       description: テスト個別の情報一覧を返します
       tags:
         - tests_info
+      parameters:
+        - $ref: '#/components/parameters/localization'
     parameters:
       - schema:
           type: string
@@ -1047,6 +1073,8 @@ paths:
         It will raise 404 if the background is not registered in this server
       tags:
         - tests_backgrounds
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/tests/{testId}/effects/list':
     get:
       summary: Get tests effects list
@@ -1107,6 +1135,8 @@ paths:
         It will raise 404 if the effect is not registered in this server
       tags:
         - tests_effects
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/tests/{testId}/engines/list':
     get:
       summary: Get tests engine list
@@ -1167,6 +1197,8 @@ paths:
         It will raise 404 if the engine is not registered in this server
       tags:
         - tests_engines
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/tests/{testId}/levels/list':
     get:
       summary: Get tests level list
@@ -1231,6 +1263,8 @@ paths:
         It will raise 404 if the level is not registered in this server
       tags:
         - tests_levels
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/tests/{testId}/particles/list':
     get:
       summary: Get tests particle list
@@ -1291,6 +1325,8 @@ paths:
         It will raise 404 if the particle is not registered in this server
       tags:
         - tests_particles
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/tests/{testId}/skins/{skinName}':
     parameters:
       - schema:
@@ -1320,6 +1356,8 @@ paths:
         It will raise 404 if the skin is not registered in this server
       tags:
         - tests_skins
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/tests/{testId}/skins/list':
     get:
       summary: Get tests skin list
@@ -1365,6 +1403,8 @@ paths:
       description: ユーザー個別の情報一覧を返します
       tags:
         - users_info
+      parameters:
+        - $ref: '#/components/parameters/localization'
     parameters:
       - schema:
           type: string
@@ -1431,6 +1471,8 @@ paths:
         It will raise 404 if the background is not registered in this server
       tags:
         - users_backgrounds
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/users/{userId}/effects/list':
     get:
       summary: Get users effect list
@@ -1491,6 +1533,8 @@ paths:
         It will raise 404 if the effect is not registered in this server
       tags:
         - users_effects
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/users/{userId}/engines/list':
     get:
       summary: Get users engine list
@@ -1551,6 +1595,8 @@ paths:
         It will raise 404 if the engine is not registered in this server
       tags:
         - users_engines
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/users/{userId}/levels/list':
     get:
       summary: Get users level list
@@ -1615,6 +1661,8 @@ paths:
         It will raise 404 if the level is not registered in this server
       tags:
         - users_levels
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/users/{userId}/particles/list':
     get:
       summary: Get users particle list
@@ -1675,6 +1723,8 @@ paths:
         It will raise 404 if the particle is not registered in this server
       tags:
         - users_particles
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/users/{userId}/skins/list':
     get:
       summary: Get users skin list
@@ -1735,6 +1785,8 @@ paths:
         It will raise 404 if the skin is not registered in this server
       tags:
         - users_skins
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/info':
     get:
       summary: Get account server info
@@ -1749,6 +1801,8 @@ paths:
       description: ユーザー個別の情報一覧を返します
       tags:
         - accounts_info
+      parameters:
+        - $ref: '#/components/parameters/localization'
     parameters:
       - schema:
           type: string
@@ -1815,6 +1869,8 @@ paths:
         It will raise 404 if the background is not registered in this server
       tags:
         - accounts_backgrounds
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/effects/list':
     get:
       summary: Get accounts effect list
@@ -1875,6 +1931,8 @@ paths:
         It will raise 404 if the effect is not registered in this server
       tags:
         - accounts_effects
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/engines/list':
     get:
       summary: Get accounts engine list
@@ -1935,6 +1993,8 @@ paths:
         It will raise 404 if the engine is not registered in this server
       tags:
         - accounts_engines
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/levels/list':
     get:
       summary: Get accounts level list
@@ -1995,6 +2055,8 @@ paths:
         It will raise 404 if the level is not registered in this server
       tags:
         - accounts_levels
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/levels/pickups':
     get:
       summary: Get pickup levels
@@ -2011,6 +2073,8 @@ paths:
       description: 管理者の指定したおすすめ譜面などを返すエンドポイント
       tags:
         - accounts_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
     parameters:
       - schema:
           type: string
@@ -2033,6 +2097,8 @@ paths:
       description: 新規譜面作者の譜面のみを返すエンドポイント
       tags:
         - accounts_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
     parameters:
       - schema:
           type: string
@@ -2068,6 +2134,8 @@ paths:
         It will raise 404 if the level is not registered in this server
       tags:
         - accounts_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/levels/unfavorite_{levelName}':
     parameters:
       - schema:
@@ -2097,6 +2165,8 @@ paths:
         It will raise 404 if the level is not registered in this server
       tags:
         - accounts_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/levels/like_{levelName}':
     parameters:
       - schema:
@@ -2126,6 +2196,8 @@ paths:
         It will raise 404 if the level is not registered in this server
       tags:
         - accounts_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/levels/flick_{levelName}':
     parameters:
       - schema:
@@ -2153,6 +2225,8 @@ paths:
       description: 譜面のノーツ部分をゴリ押しでフリックのみに差し替えた特殊な譜面を取得する
       tags:
         - accounts_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/levels/rating_increase_{levelName}':
     parameters:
       - schema:
@@ -2182,6 +2256,8 @@ paths:
         It will raise 404 if the level is not registered in this server
       tags:
         - accounts_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/levels/rating_decrease_{levelName}':
     parameters:
       - schema:
@@ -2211,6 +2287,8 @@ paths:
         It will raise 404 if the level is not registered in this server
       tags:
         - accounts_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/levels/mylist':
     parameters:
       - schema:
@@ -2233,6 +2311,8 @@ paths:
       description: 対象の鍵を持つユーザーのマイリストを取得します
       tags:
         - accounts_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/levels/random':
     parameters:
       - schema:
@@ -2255,6 +2335,8 @@ paths:
       description: ランダムな譜面を取得します
       tags:
         - accounts_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/levels/announce':
     parameters:
       - schema:
@@ -2277,6 +2359,8 @@ paths:
       description: 現在のアナウンス一覧を取得します
       tags:
         - accounts_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/levels/announce_{announceName}':
     parameters:
       - schema:
@@ -2304,6 +2388,8 @@ paths:
       description: 指定されたアナウンス情報を表示します
       tags:
         - accounts_levels_specials
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/particles/list':
     get:
       summary: Get accounts particle list
@@ -2364,6 +2450,8 @@ paths:
         It will raise 404 if the particle is not registered in this server
       tags:
         - accounts_particles
+      parameters:
+        - $ref: '#/components/parameters/localization'
   '/accounts/{accountKey}/skins/list':
     get:
       summary: Get accounts skin list
@@ -2424,6 +2512,8 @@ paths:
         It will raise 404 if the skin is not registered in this server
       tags:
         - accounts_skins
+      parameters:
+        - $ref: '#/components/parameters/localization'
   /pickups:
     post:
       summary: Add pickup
@@ -2492,6 +2582,7 @@ paths:
       tags:
         - pickups
       description: 指定されたIDのピックアップを取得して返す
+      parameters: []
   /pickups/list:
     get:
       summary: Get pickup list
@@ -2530,7 +2621,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Announce'
-      description: 譜面のピックアップを追加します
+      description: アナウンスを追加する
       tags:
         - announces
       security:
@@ -2885,6 +2976,304 @@ paths:
         - Authorization: []
 components:
   schemas:
+    AddLevelRequest:
+      description: |-
+        A level provides a list of entities and powered by scripted behavior in engine, with skin, effect, background and particle, to create gameplay experience for players / It defines level for actual user play. It includes all data to play one level.
+        https://wiki.sonolus.com/custom-server-specs/misc/level-item.html
+      type: object
+      x-examples:
+        example-1:
+          rating: 25
+          engine: pjsekai
+          skin: string
+          background: string
+          effect: string
+          particle: string
+          title: テスト譜面
+          titleEn: Test level
+          artists: つくよみちゃん
+          artistsEn: Tsukuyomi-chan
+          author: お窓
+          authorEn: Omado
+          description: 説明文無し
+          descriptionEn: No description
+          cover: ad8a6ffa2ef4f742fee5ec3b917933cc3d2654af
+          bgm: 296638e8452a9f6b798e6ebc5935edd1e15faf07
+          data: 00b9fa09c0b679065069be81f28e1e6eb414bba4
+          preview: 296638e8452a9f6b798e6ebc5935edd1e15faf07
+          genre:
+            - general
+          length: 91
+          bpm: 150
+          notes: 1204
+      title: AddLevelRequest
+      properties:
+        rating:
+          type: integer
+          description: Difficulty of the level
+          minimum: 1
+          maximum: 100
+          example: 25
+        engine:
+          type: string
+          maxLength: 50
+          description: 他要素は指定されていない場合はengineのデフォルトを用いる
+          example: pjsekai
+        skin:
+          type: string
+          description: 特殊スキンを指定する場合利用
+        background:
+          type: string
+          description: 特殊背景を指定する場合利用
+        effect:
+          type: string
+          description: 特殊効果音を指定する場合利用
+        particle:
+          type: string
+          description: 特殊パーティクルを指定する場合利用
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+          example: テスト譜面
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+          example: Test level
+        artists:
+          type: string
+          minLength: 1
+          description: artist names of original music
+          maxLength: 100
+          example: つくよみちゃん
+        artistsEn:
+          type: string
+          maxLength: 100
+          description: artist names(english) of original music
+          example: Tsukuyomi-chan
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+          example: お窓
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+          example: Omado
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: 説明文無し
+          example: テスト用データ
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: This is test data
+        cover:
+          type: string
+          maxLength: 50
+          example: ad8a6ffa2ef4f742fee5ec3b917933cc3d2654af
+        bgm:
+          type: string
+          maxLength: 50
+          example: 296638e8452a9f6b798e6ebc5935edd1e15faf07
+        data:
+          type: string
+          maxLength: 50
+          example: 00b9fa09c0b679065069be81f28e1e6eb414bba4
+        preview:
+          type: string
+          maxLength: 50
+          description: プレビュー再生用、現実的にはbgmと同じ値を使うと思う
+          example: 296638e8452a9f6b798e6ebc5935edd1e15faf07
+        genre:
+          type: array
+          description: 楽曲のジャンル
+          example:
+            - general
+          default:
+            - general
+          uniqueItems: true
+          items:
+            type: string
+            enum:
+              - general
+              - jpop
+              - anime
+              - vocaloid
+              - original
+            example: general
+            default: general
+            minLength: 1
+            maxLength: 20
+        length:
+          type: integer
+          default: 91
+          example: 91
+          minimum: 0
+          maximum: 99999
+          description: 曲の長さ(Webフロント上で計算)
+        bpm:
+          type: integer
+          description: BPM(Webフロント上で計算)
+          minimum: 0
+          maximum: 10000
+          default: 150
+          example: 150
+        notes:
+          type: integer
+          description: 譜面内のノーツ数
+          minimum: 1
+          maximum: 10000000
+          default: 1204
+          example: 1204
+      required:
+        - rating
+        - engine
+        - title
+        - artists
+        - author
+        - description
+        - cover
+        - bgm
+        - data
+        - preview
+        - genre
+        - length
+        - bpm
+        - notes
+    EditLevelRequest:
+      description: |-
+        A level provides a list of entities and powered by scripted behavior in engine, with skin, effect, background and particle, to create gameplay experience for players / It defines level for actual user play. It includes all data to play one level.
+        https://wiki.sonolus.com/custom-server-specs/misc/level-item.html
+      type: object
+      x-examples: {}
+      title: EditLevelRequest
+      properties:
+        rating:
+          type: integer
+          description: Difficulty of the level
+          minimum: 1
+          maximum: 100
+        engine:
+          type: string
+          maxLength: 50
+          description: 他要素は指定されていない場合はengineのデフォルトを用いる
+        skin:
+          type: string
+          description: 特殊スキンを指定する場合利用
+        background:
+          type: string
+          description: 特殊背景を指定する場合利用
+        effect:
+          type: string
+          description: 特殊効果音を指定する場合利用
+        particle:
+          type: string
+          description: 特殊パーティクルを指定する場合利用
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        artists:
+          type: string
+          minLength: 1
+          description: artist names of original music
+          maxLength: 100
+        artistsEn:
+          type: string
+          maxLength: 100
+          description: artist names(english) of original music
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        cover:
+          type: string
+          maxLength: 50
+        bgm:
+          type: string
+          maxLength: 50
+        data:
+          type: string
+          maxLength: 50
+        preview:
+          type: string
+          maxLength: 50
+        genre:
+          type: array
+          description: 楽曲のジャンル
+          example:
+            - general
+          default:
+            - general
+          uniqueItems: true
+          items:
+            type: string
+            enum:
+              - general
+              - jpop
+              - anime
+              - vocaloid
+              - original
+            example: general
+            default: general
+            minLength: 1
+            maxLength: 20
+        length:
+          type: integer
+          default: 91
+          example: 91
+          minimum: 0
+          maximum: 99999
+          description: 曲の長さ(Webフロント上で計算)
+        bpm:
+          type: integer
+          description: BPM(Webフロント上で計算)
+          minimum: 0
+          maximum: 10000
+          default: 150
+          example: 150
+        notes:
+          type: integer
+          description: 譜面内のノーツ数
+          minimum: 1
+          maximum: 10000000
+          default: 1204
+          example: 1204
+        public:
+          type: boolean
+          default: false
+          description: 楽曲が全体公開かどうか
     Level:
       description: |-
         A level provides a list of entities and powered by scripted behavior in engine, with skin, effect, background and particle, to create gameplay experience for players / It defines level for actual user play. It includes all data to play one level.
@@ -2898,6 +3287,7 @@ components:
           minLength: 1
           description: english and number only name for searching
           maxLength: 100
+          example: s7x62wxj
         version:
           type: integer
           default: 1
@@ -2910,6 +3300,7 @@ components:
           description: Difficulty of the level
           minimum: 1
           maximum: 100
+          example: 25
         engine:
           $ref: '#/components/schemas/Engine'
         useSkin:
@@ -2953,34 +3344,40 @@ components:
           minLength: 1
           description: base title of this content
           maxLength: 100
+          example: テスト用譜面
         titleEn:
           type: string
           maxLength: 100
           description: base title(english) of this content
+          example: This is test level
         artists:
           type: string
           minLength: 1
           description: artist names of original music
           maxLength: 100
+          example: つくよみちゃん
         artistsEn:
           type: string
           maxLength: 100
           description: artist names(english) of original music
+          example: Tsukuyomi-chan
         author:
           type: string
           minLength: 1
           description: author of this content
           maxLength: 50
+          example: お窓
         authorEn:
           type: string
           maxLength: 50
           description: author of this content
+          example: Omado
         description:
           type: string
           description: サイト内および譜面情報欄に表示される説明文
           maxLength: 3000
-          default: No description
-          example: No description
+          default: 説明文無し
+          example: 説明文無し
         descriptionEn:
           type: string
           description: サイト内および譜面情報欄に表示される説明文
@@ -2997,7 +3394,7 @@ components:
           $ref: '#/components/schemas/SonolusResourceLocator'
         public:
           type: boolean
-          default: false
+          default: true
           description: 楽曲が全体公開かどうか
         genre:
           type: array
@@ -3014,6 +3411,7 @@ components:
               - jpop
               - anime
               - vocaloid
+              - original
             example: general
             default: general
             minLength: 1
@@ -3023,18 +3421,21 @@ components:
           description: 譜面作成者のユーザーID
           minLength: 1
           maxLength: 100
+          example: fa423sfa242
         createdTime:
           type: integer
           description: データを作成したエポックミリ秒(ソート用)
           minimum: 0
+          example: 1644040400
         updatedTime:
           type: integer
           description: データを更新したエポックミリ秒(ソート用)
           minimum: 0
+          example: 1644040400
         length:
           type: integer
           default: 0
-          example: 0
+          example: 91
           minimum: 0
           maximum: 99999
           description: 曲の長さ
@@ -3044,24 +3445,28 @@ components:
           minimum: 0
           maximum: 10000
           default: 1
+          example: 150
         notes:
           type: integer
           description: 譜面内のノーツ数
           minimum: 1
           maximum: 10000000
           default: 1
+          example: 1204
         likes:
           type: integer
           description: いいねされた回数
           default: 0
           minimum: 0
           maximum: 10000000
+          example: 0
         mylists:
           type: integer
           description: マイリストされた回数
           minimum: 0
           maximum: 10000000
           default: 0
+          example: 0
     Announce:
       description: お知らせ情報のリクエスト
       type: object
@@ -3140,6 +3545,124 @@ components:
           type: integer
           description: データを更新したエポックミリ秒(ソート用)
           minimum: 0
+    AddSkinRequest:
+      description: |-
+        A skin provides graphic elements to levels / It defines graphics for specific level
+        https://wiki.sonolus.com/custom-server-specs/misc/skin-item.html
+      type: object
+      x-examples: {}
+      title: AddSkinRequest
+      properties:
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        subtitle:
+          type: string
+          minLength: 1
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        subtitleEn:
+          type: string
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        thumbnail:
+          type: string
+        data:
+          type: string
+        texture:
+          type: string
+      required:
+        - title
+        - subtitle
+        - author
+        - description
+        - thumbnail
+        - data
+        - texture
+    EditSkinRequest:
+      description: |-
+        A skin provides graphic elements to levels / It defines graphics for specific level
+        https://wiki.sonolus.com/custom-server-specs/misc/skin-item.html
+      type: object
+      x-examples: {}
+      title: EditSkinRequest
+      properties:
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        subtitle:
+          type: string
+          minLength: 1
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        subtitleEn:
+          type: string
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        thumbnail:
+          type: string
+        data:
+          type: string
+        texture:
+          type: string
+        public:
+          type: boolean
+          default: false
+          description: 全体公開かどうか
     Skin:
       description: |-
         A skin provides graphic elements to levels / It defines graphics for specific level
@@ -3222,6 +3745,125 @@ components:
           type: boolean
           default: false
           description: 全体公開かどうか
+    AddBackgroundRequest:
+      description: |-
+        A background provides background graphical element to levels / It defines background used for specific level
+        https://github.com/NonSpicyBurrito/sonolus-wiki/wiki/Background
+      type: object
+      x-examples: {}
+      title: AddBackgroundRequest
+      properties:
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        subtitle:
+          type: string
+          minLength: 1
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        subtitleEn:
+          type: string
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        thumbnail:
+          type: string
+        data:
+          type: string
+        image:
+          type: string
+        configuration:
+          type: string
+      required:
+        - title
+        - subtitle
+        - author
+        - description
+        - thumbnail
+        - data
+        - image
+        - configuration
+    EditBackgroundRequest:
+      description: |-
+        A background provides background graphical element to levels / It defines background used for specific level
+        https://github.com/NonSpicyBurrito/sonolus-wiki/wiki/Background
+      type: object
+      x-examples: {}
+      title: EditBackgroundRequest
+      properties:
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        subtitle:
+          type: string
+          minLength: 1
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        subtitleEn:
+          type: string
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        thumbnail:
+          type: string
+        data:
+          type: string
+        image:
+          type: string
+        configuration:
+          type: string
     Background:
       description: |-
         A background provides background graphical element to levels / It defines background used for specific level
@@ -3306,6 +3948,119 @@ components:
           type: boolean
           default: false
           description: 全体公開かどうか
+    AddEffectRequest:
+      description: |-
+        An effect provides audio elements to levels / It defines audio effect used for specific level
+        https://wiki.sonolus.com/custom-server-specs/misc/effect-item.html
+      type: object
+      x-examples: {}
+      title: AddEffectRequest
+      properties:
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        subtitle:
+          type: string
+          minLength: 1
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        subtitleEn:
+          type: string
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        thumbnail:
+          type: string
+        data:
+          type: string
+      required:
+        - title
+        - subtitle
+        - author
+        - description
+        - thumbnail
+        - data
+    EditEffectRequest:
+      description: |-
+        An effect provides audio elements to levels / It defines audio effect used for specific level
+        https://wiki.sonolus.com/custom-server-specs/misc/effect-item.html
+      type: object
+      x-examples: {}
+      title: EditEffectRequest
+      properties:
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        subtitle:
+          type: string
+          minLength: 1
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        subtitleEn:
+          type: string
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        thumbnail:
+          type: string
+        data:
+          type: string
+        public:
+          type: boolean
+          default: false
+          description: 全体公開かどうか
     Effect:
       description: |-
         An effect provides audio elements to levels / It defines audio effect used for specific level
@@ -3382,6 +4137,124 @@ components:
           description: 譜面作成者のユーザーID
           minLength: 1
           maxLength: 100
+        public:
+          type: boolean
+          default: false
+          description: 全体公開かどうか
+    AddParticleRequest:
+      description: |-
+        A particle provides particle effect elements to levels / It defines particle effect used for specific level
+        https://wiki.sonolus.com/custom-server-specs/misc/particle-item.html
+      type: object
+      x-examples: {}
+      title: AddParticleRequest
+      properties:
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        subtitle:
+          type: string
+          minLength: 1
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        subtitleEn:
+          type: string
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        thumbnail:
+          type: string
+        data:
+          type: string
+        texture:
+          type: string
+      required:
+        - title
+        - subtitle
+        - author
+        - description
+        - thumbnail
+        - data
+        - texture
+    EditParticleRequest:
+      description: |-
+        A particle provides particle effect elements to levels / It defines particle effect used for specific level
+        https://wiki.sonolus.com/custom-server-specs/misc/particle-item.html
+      type: object
+      x-examples: {}
+      title: EditParticleRequest
+      properties:
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        subtitle:
+          type: string
+          minLength: 1
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        subtitleEn:
+          type: string
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        thumbnail:
+          type: string
+        data:
+          type: string
+        texture:
+          type: string
         public:
           type: boolean
           default: false
@@ -3468,6 +4341,162 @@ components:
           type: boolean
           default: false
           description: 全体公開かどうか
+    AddEngineRequest:
+      description: |-
+        An engine provides scripted behaviors to levels / It defines shared game engine for playing
+        https://wiki.sonolus.com/custom-server-specs/misc/engine-item.html
+      type: object
+      x-examples: {}
+      title: AddEngineRequest
+      properties:
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        subtitle:
+          type: string
+          minLength: 1
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        subtitleEn:
+          type: string
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: 説明無し
+          example: 説明無し
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        thumbnail:
+          type: string
+          minLength: 1
+          maxLength: 100
+        data:
+          type: string
+          maxLength: 100
+          minLength: 1
+        configuration:
+          type: string
+          minLength: 1
+          maxLength: 100
+        skin:
+          type: string
+          maxLength: 100
+          minLength: 1
+        background:
+          type: string
+          maxLength: 100
+          minLength: 1
+        effect:
+          type: string
+          minLength: 1
+          maxLength: 100
+        particle:
+          type: string
+          minLength: 1
+          maxLength: 100
+      required:
+        - title
+        - subtitle
+        - author
+        - description
+        - thumbnail
+        - data
+        - configuration
+        - skin
+        - background
+        - effect
+        - particle
+    EditEngineRequest:
+      description: |-
+        An engine provides scripted behaviors to levels / It defines shared game engine for playing
+        https://wiki.sonolus.com/custom-server-specs/misc/engine-item.html
+      type: object
+      x-examples: {}
+      title: EditEngineRequest
+      properties:
+        title:
+          type: string
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        subtitle:
+          type: string
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        subtitleEn:
+          type: string
+          description: something footer(ex. featuring xyz) for this content
+          maxLength: 100
+        author:
+          type: string
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          example: 説明無し
+          default: 説明無し
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        thumbnail:
+          type: string
+          maxLength: 100
+        data:
+          type: string
+          maxLength: 100
+        configuration:
+          type: string
+          maxLength: 100
+        skin:
+          type: string
+          maxLength: 100
+        background:
+          type: string
+          maxLength: 100
+        effect:
+          type: string
+          maxLength: 100
+        particle:
+          type: string
+          maxLength: 100
+        public:
+          type: boolean
+          default: false
+          description: 全体公開かどうか
     Engine:
       description: |-
         An engine provides scripted behaviors to levels / It defines shared game engine for playing
@@ -3519,8 +4548,8 @@ components:
           type: string
           description: サイト内および譜面情報欄に表示される説明文
           maxLength: 3000
-          default: No description
-          example: No description
+          default: 説明無し
+          example: 説明無し
         descriptionEn:
           type: string
           description: サイト内および譜面情報欄に表示される説明文
@@ -4419,6 +5448,83 @@ components:
         - effects
         - particles
         - engines
+    AddUserRequest:
+      title: AddUserRequest
+      type: object
+      description: ユーザー情報型
+      x-examples:
+        example:
+          userId: gz6xQrm79IN4BiQag78sQqYWYlC3
+          testId: htcckfcn
+          accountKey: super_secret_key
+          description: string
+          createdTime: 0
+          updatedTime: 0
+          total:
+            likes: 0
+            plays: 0
+            favorites: 0
+            publish:
+              backgrounds: 0
+              effects: 0
+              engines: 0
+              particles: 0
+              levels: 0
+              skins: 0
+          isAdmin: false
+          isDeleted: false
+      properties:
+        userId:
+          type: string
+          description: FirebaseDatabase上のユーザーID
+          example: gz6xQrm79IN4BiQag78sQqYWYlC3
+          default: gz6xQrm79IN4BiQag78sQqYWYlC3
+          minLength: 1
+          maxLength: 30
+      required:
+        - userId
+    EditUserRequest:
+      title: EditUserRequest
+      type: object
+      description: ユーザー情報型
+      x-examples:
+        example:
+          userId: gz6xQrm79IN4BiQag78sQqYWYlC3
+          testId: htcckfcn
+          accountKey: super_secret_key
+          description: string
+          createdTime: 0
+          updatedTime: 0
+          total:
+            likes: 0
+            plays: 0
+            favorites: 0
+            publish:
+              backgrounds: 0
+              effects: 0
+              engines: 0
+              particles: 0
+              levels: 0
+              skins: 0
+          isAdmin: false
+          isDeleted: false
+      properties:
+        testId:
+          type: string
+          description: テスト用サーバーのエンドポイント
+          example: htcckfcn
+          minLength: 1
+          maxLength: 30
+          default: htcckfcn
+        accountId:
+          type: string
+          description: アカウント鍵
+          default: super_secret_key
+          example: super_secret_key
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
     User:
       title: User
       type: object
