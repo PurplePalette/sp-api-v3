@@ -17,13 +17,13 @@ class EditEngineRequest(BaseModel):
     EditEngineRequest - a model defined in OpenAPI
 
         title: The title of this EditEngineRequest [Optional].
-        title_en: The title_en of this EditEngineRequest [Optional].
+        titleEn: The titleEn of this EditEngineRequest [Optional].
         subtitle: The subtitle of this EditEngineRequest [Optional].
-        subtitle_en: The subtitle_en of this EditEngineRequest [Optional].
+        subtitleEn: The subtitleEn of this EditEngineRequest [Optional].
         author: The author of this EditEngineRequest [Optional].
-        author_en: The author_en of this EditEngineRequest [Optional].
+        authorEn: The authorEn of this EditEngineRequest [Optional].
         description: The description of this EditEngineRequest [Optional].
-        description_en: The description_en of this EditEngineRequest [Optional].
+        descriptionEn: The descriptionEn of this EditEngineRequest [Optional].
         thumbnail: The thumbnail of this EditEngineRequest [Optional].
         data: The data of this EditEngineRequest [Optional].
         configuration: The configuration of this EditEngineRequest [Optional].
@@ -35,13 +35,13 @@ class EditEngineRequest(BaseModel):
     """
 
     title: Optional[str] = None
-    title_en: Optional[str] = None
+    titleEn: Optional[str] = None
     subtitle: Optional[str] = None
-    subtitle_en: Optional[str] = None
+    subtitleEn: Optional[str] = None
     author: Optional[str] = None
-    author_en: Optional[str] = None
+    authorEn: Optional[str] = None
     description: Optional[str] = None
-    description_en: Optional[str] = None
+    descriptionEn: Optional[str] = None
     thumbnail: Optional[str] = None
     data: Optional[str] = None
     configuration: Optional[str] = None
@@ -56,8 +56,8 @@ class EditEngineRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("title_en")
-    def title_en_max_length(cls, value):
+    @validator("titleEn")
+    def titleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -66,8 +66,8 @@ class EditEngineRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("subtitle_en")
-    def subtitle_en_max_length(cls, value):
+    @validator("subtitleEn")
+    def subtitleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -76,8 +76,8 @@ class EditEngineRequest(BaseModel):
         assert len(value) <= 50
         return value
 
-    @validator("author_en")
-    def author_en_max_length(cls, value):
+    @validator("authorEn")
+    def authorEn_max_length(cls, value):
         assert len(value) <= 50
         return value
 
@@ -86,8 +86,8 @@ class EditEngineRequest(BaseModel):
         assert len(value) <= 3000
         return value
 
-    @validator("description_en")
-    def description_en_max_length(cls, value):
+    @validator("descriptionEn")
+    def descriptionEn_max_length(cls, value):
         assert len(value) <= 3000
         return value
 
@@ -125,5 +125,6 @@ class EditEngineRequest(BaseModel):
     def particle_max_length(cls, value):
         assert len(value) <= 100
         return value
+
 
 EditEngineRequest.update_forward_refs()

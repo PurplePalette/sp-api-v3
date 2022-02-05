@@ -23,13 +23,13 @@ class AddLevelRequest(BaseModel):
         effect: The effect of this AddLevelRequest [Optional].
         particle: The particle of this AddLevelRequest [Optional].
         title: The title of this AddLevelRequest.
-        title_en: The title_en of this AddLevelRequest [Optional].
+        titleEn: The titleEn of this AddLevelRequest [Optional].
         artists: The artists of this AddLevelRequest.
-        artists_en: The artists_en of this AddLevelRequest [Optional].
+        artistsEn: The artistsEn of this AddLevelRequest [Optional].
         author: The author of this AddLevelRequest.
-        author_en: The author_en of this AddLevelRequest [Optional].
+        authorEn: The authorEn of this AddLevelRequest [Optional].
         description: The description of this AddLevelRequest.
-        description_en: The description_en of this AddLevelRequest [Optional].
+        descriptionEn: The descriptionEn of this AddLevelRequest [Optional].
         cover: The cover of this AddLevelRequest.
         bgm: The bgm of this AddLevelRequest.
         data: The data of this AddLevelRequest.
@@ -47,13 +47,13 @@ class AddLevelRequest(BaseModel):
     effect: Optional[str] = None
     particle: Optional[str] = None
     title: str
-    title_en: Optional[str] = None
+    titleEn: Optional[str] = None
     artists: str
-    artists_en: Optional[str] = None
+    artistsEn: Optional[str] = None
     author: str
-    author_en: Optional[str] = None
+    authorEn: Optional[str] = None
     description: str
-    description_en: Optional[str] = None
+    descriptionEn: Optional[str] = None
     cover: str
     bgm: str
     data: str
@@ -88,8 +88,8 @@ class AddLevelRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("title_en")
-    def title_en_max_length(cls, value):
+    @validator("titleEn")
+    def titleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -103,8 +103,8 @@ class AddLevelRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("artists_en")
-    def artists_en_max_length(cls, value):
+    @validator("artistsEn")
+    def artistsEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -118,8 +118,8 @@ class AddLevelRequest(BaseModel):
         assert len(value) <= 50
         return value
 
-    @validator("author_en")
-    def author_en_max_length(cls, value):
+    @validator("authorEn")
+    def authorEn_max_length(cls, value):
         assert len(value) <= 50
         return value
 
@@ -128,8 +128,8 @@ class AddLevelRequest(BaseModel):
         assert len(value) <= 3000
         return value
 
-    @validator("description_en")
-    def description_en_max_length(cls, value):
+    @validator("descriptionEn")
+    def descriptionEn_max_length(cls, value):
         assert len(value) <= 3000
         return value
 
@@ -182,5 +182,6 @@ class AddLevelRequest(BaseModel):
     def notes_min(cls, value):
         assert value >= 1
         return value
+
 
 AddLevelRequest.update_forward_refs()

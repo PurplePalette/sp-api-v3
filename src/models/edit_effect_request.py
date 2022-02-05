@@ -17,26 +17,26 @@ class EditEffectRequest(BaseModel):
     EditEffectRequest - a model defined in OpenAPI
 
         title: The title of this EditEffectRequest [Optional].
-        title_en: The title_en of this EditEffectRequest [Optional].
+        titleEn: The titleEn of this EditEffectRequest [Optional].
         subtitle: The subtitle of this EditEffectRequest [Optional].
-        subtitle_en: The subtitle_en of this EditEffectRequest [Optional].
+        subtitleEn: The subtitleEn of this EditEffectRequest [Optional].
         author: The author of this EditEffectRequest [Optional].
-        author_en: The author_en of this EditEffectRequest [Optional].
+        authorEn: The authorEn of this EditEffectRequest [Optional].
         description: The description of this EditEffectRequest [Optional].
-        description_en: The description_en of this EditEffectRequest [Optional].
+        descriptionEn: The descriptionEn of this EditEffectRequest [Optional].
         thumbnail: The thumbnail of this EditEffectRequest [Optional].
         data: The data of this EditEffectRequest [Optional].
         public: The public of this EditEffectRequest [Optional].
     """
 
     title: Optional[str] = None
-    title_en: Optional[str] = None
+    titleEn: Optional[str] = None
     subtitle: Optional[str] = None
-    subtitle_en: Optional[str] = None
+    subtitleEn: Optional[str] = None
     author: Optional[str] = None
-    author_en: Optional[str] = None
+    authorEn: Optional[str] = None
     description: Optional[str] = None
-    description_en: Optional[str] = None
+    descriptionEn: Optional[str] = None
     thumbnail: Optional[str] = None
     data: Optional[str] = None
     public: Optional[bool] = None
@@ -51,8 +51,8 @@ class EditEffectRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("title_en")
-    def title_en_max_length(cls, value):
+    @validator("titleEn")
+    def titleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -66,8 +66,8 @@ class EditEffectRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("subtitle_en")
-    def subtitle_en_max_length(cls, value):
+    @validator("subtitleEn")
+    def subtitleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -81,8 +81,8 @@ class EditEffectRequest(BaseModel):
         assert len(value) <= 50
         return value
 
-    @validator("author_en")
-    def author_en_max_length(cls, value):
+    @validator("authorEn")
+    def authorEn_max_length(cls, value):
         assert len(value) <= 50
         return value
 
@@ -91,9 +91,10 @@ class EditEffectRequest(BaseModel):
         assert len(value) <= 3000
         return value
 
-    @validator("description_en")
-    def description_en_max_length(cls, value):
+    @validator("descriptionEn")
+    def descriptionEn_max_length(cls, value):
         assert len(value) <= 3000
         return value
+
 
 EditEffectRequest.update_forward_refs()

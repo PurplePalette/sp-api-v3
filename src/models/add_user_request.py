@@ -16,19 +16,20 @@ class AddUserRequest(BaseModel):
 
     AddUserRequest - a model defined in OpenAPI
 
-        user_id: The user_id of this AddUserRequest.
+        userId: The userId of this AddUserRequest.
     """
 
-    user_id: str
+    userId: str
 
-    @validator("user_id")
-    def user_id_min_length(cls, value):
+    @validator("userId")
+    def userId_min_length(cls, value):
         assert len(value) >= 1
         return value
 
-    @validator("user_id")
-    def user_id_max_length(cls, value):
+    @validator("userId")
+    def userId_max_length(cls, value):
         assert len(value) <= 30
         return value
+
 
 AddUserRequest.update_forward_refs()

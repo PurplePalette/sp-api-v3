@@ -17,13 +17,13 @@ class EditSkinRequest(BaseModel):
     EditSkinRequest - a model defined in OpenAPI
 
         title: The title of this EditSkinRequest [Optional].
-        title_en: The title_en of this EditSkinRequest [Optional].
+        titleEn: The titleEn of this EditSkinRequest [Optional].
         subtitle: The subtitle of this EditSkinRequest [Optional].
-        subtitle_en: The subtitle_en of this EditSkinRequest [Optional].
+        subtitleEn: The subtitleEn of this EditSkinRequest [Optional].
         author: The author of this EditSkinRequest [Optional].
-        author_en: The author_en of this EditSkinRequest [Optional].
+        authorEn: The authorEn of this EditSkinRequest [Optional].
         description: The description of this EditSkinRequest [Optional].
-        description_en: The description_en of this EditSkinRequest [Optional].
+        descriptionEn: The descriptionEn of this EditSkinRequest [Optional].
         thumbnail: The thumbnail of this EditSkinRequest [Optional].
         data: The data of this EditSkinRequest [Optional].
         texture: The texture of this EditSkinRequest [Optional].
@@ -31,13 +31,13 @@ class EditSkinRequest(BaseModel):
     """
 
     title: Optional[str] = None
-    title_en: Optional[str] = None
+    titleEn: Optional[str] = None
     subtitle: Optional[str] = None
-    subtitle_en: Optional[str] = None
+    subtitleEn: Optional[str] = None
     author: Optional[str] = None
-    author_en: Optional[str] = None
+    authorEn: Optional[str] = None
     description: Optional[str] = None
-    description_en: Optional[str] = None
+    descriptionEn: Optional[str] = None
     thumbnail: Optional[str] = None
     data: Optional[str] = None
     texture: Optional[str] = None
@@ -53,8 +53,8 @@ class EditSkinRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("title_en")
-    def title_en_max_length(cls, value):
+    @validator("titleEn")
+    def titleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -68,8 +68,8 @@ class EditSkinRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("subtitle_en")
-    def subtitle_en_max_length(cls, value):
+    @validator("subtitleEn")
+    def subtitleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -83,8 +83,8 @@ class EditSkinRequest(BaseModel):
         assert len(value) <= 50
         return value
 
-    @validator("author_en")
-    def author_en_max_length(cls, value):
+    @validator("authorEn")
+    def authorEn_max_length(cls, value):
         assert len(value) <= 50
         return value
 
@@ -93,9 +93,10 @@ class EditSkinRequest(BaseModel):
         assert len(value) <= 3000
         return value
 
-    @validator("description_en")
-    def description_en_max_length(cls, value):
+    @validator("descriptionEn")
+    def descriptionEn_max_length(cls, value):
         assert len(value) <= 3000
         return value
+
 
 EditSkinRequest.update_forward_refs()

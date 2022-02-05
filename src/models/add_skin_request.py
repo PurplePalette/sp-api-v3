@@ -17,26 +17,26 @@ class AddSkinRequest(BaseModel):
     AddSkinRequest - a model defined in OpenAPI
 
         title: The title of this AddSkinRequest.
-        title_en: The title_en of this AddSkinRequest [Optional].
+        titleEn: The titleEn of this AddSkinRequest [Optional].
         subtitle: The subtitle of this AddSkinRequest.
-        subtitle_en: The subtitle_en of this AddSkinRequest [Optional].
+        subtitleEn: The subtitleEn of this AddSkinRequest [Optional].
         author: The author of this AddSkinRequest.
-        author_en: The author_en of this AddSkinRequest [Optional].
+        authorEn: The authorEn of this AddSkinRequest [Optional].
         description: The description of this AddSkinRequest.
-        description_en: The description_en of this AddSkinRequest [Optional].
+        descriptionEn: The descriptionEn of this AddSkinRequest [Optional].
         thumbnail: The thumbnail of this AddSkinRequest.
         data: The data of this AddSkinRequest.
         texture: The texture of this AddSkinRequest.
     """
 
     title: str
-    title_en: Optional[str] = None
+    titleEn: Optional[str] = None
     subtitle: str
-    subtitle_en: Optional[str] = None
+    subtitleEn: Optional[str] = None
     author: str
-    author_en: Optional[str] = None
+    authorEn: Optional[str] = None
     description: str
-    description_en: Optional[str] = None
+    descriptionEn: Optional[str] = None
     thumbnail: str
     data: str
     texture: str
@@ -51,8 +51,8 @@ class AddSkinRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("title_en")
-    def title_en_max_length(cls, value):
+    @validator("titleEn")
+    def titleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -66,8 +66,8 @@ class AddSkinRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("subtitle_en")
-    def subtitle_en_max_length(cls, value):
+    @validator("subtitleEn")
+    def subtitleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -81,8 +81,8 @@ class AddSkinRequest(BaseModel):
         assert len(value) <= 50
         return value
 
-    @validator("author_en")
-    def author_en_max_length(cls, value):
+    @validator("authorEn")
+    def authorEn_max_length(cls, value):
         assert len(value) <= 50
         return value
 
@@ -91,9 +91,10 @@ class AddSkinRequest(BaseModel):
         assert len(value) <= 3000
         return value
 
-    @validator("description_en")
-    def description_en_max_length(cls, value):
+    @validator("descriptionEn")
+    def descriptionEn_max_length(cls, value):
         assert len(value) <= 3000
         return value
+
 
 AddSkinRequest.update_forward_refs()

@@ -23,13 +23,13 @@ class EditLevelRequest(BaseModel):
         effect: The effect of this EditLevelRequest [Optional].
         particle: The particle of this EditLevelRequest [Optional].
         title: The title of this EditLevelRequest [Optional].
-        title_en: The title_en of this EditLevelRequest [Optional].
+        titleEn: The titleEn of this EditLevelRequest [Optional].
         artists: The artists of this EditLevelRequest [Optional].
-        artists_en: The artists_en of this EditLevelRequest [Optional].
+        artistsEn: The artistsEn of this EditLevelRequest [Optional].
         author: The author of this EditLevelRequest [Optional].
-        author_en: The author_en of this EditLevelRequest [Optional].
+        authorEn: The authorEn of this EditLevelRequest [Optional].
         description: The description of this EditLevelRequest [Optional].
-        description_en: The description_en of this EditLevelRequest [Optional].
+        descriptionEn: The descriptionEn of this EditLevelRequest [Optional].
         cover: The cover of this EditLevelRequest [Optional].
         bgm: The bgm of this EditLevelRequest [Optional].
         data: The data of this EditLevelRequest [Optional].
@@ -48,13 +48,13 @@ class EditLevelRequest(BaseModel):
     effect: Optional[str] = None
     particle: Optional[str] = None
     title: Optional[str] = None
-    title_en: Optional[str] = None
+    titleEn: Optional[str] = None
     artists: Optional[str] = None
-    artists_en: Optional[str] = None
+    artistsEn: Optional[str] = None
     author: Optional[str] = None
-    author_en: Optional[str] = None
+    authorEn: Optional[str] = None
     description: Optional[str] = None
-    description_en: Optional[str] = None
+    descriptionEn: Optional[str] = None
     cover: Optional[str] = None
     bgm: Optional[str] = None
     data: Optional[str] = None
@@ -90,8 +90,8 @@ class EditLevelRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("title_en")
-    def title_en_max_length(cls, value):
+    @validator("titleEn")
+    def titleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -105,8 +105,8 @@ class EditLevelRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("artists_en")
-    def artists_en_max_length(cls, value):
+    @validator("artistsEn")
+    def artistsEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -120,8 +120,8 @@ class EditLevelRequest(BaseModel):
         assert len(value) <= 50
         return value
 
-    @validator("author_en")
-    def author_en_max_length(cls, value):
+    @validator("authorEn")
+    def authorEn_max_length(cls, value):
         assert len(value) <= 50
         return value
 
@@ -130,8 +130,8 @@ class EditLevelRequest(BaseModel):
         assert len(value) <= 3000
         return value
 
-    @validator("description_en")
-    def description_en_max_length(cls, value):
+    @validator("descriptionEn")
+    def descriptionEn_max_length(cls, value):
         assert len(value) <= 3000
         return value
 
@@ -184,5 +184,6 @@ class EditLevelRequest(BaseModel):
     def notes_min(cls, value):
         assert value >= 1
         return value
+
 
 EditLevelRequest.update_forward_refs()

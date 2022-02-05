@@ -17,26 +17,26 @@ class AddParticleRequest(BaseModel):
     AddParticleRequest - a model defined in OpenAPI
 
         title: The title of this AddParticleRequest.
-        title_en: The title_en of this AddParticleRequest [Optional].
+        titleEn: The titleEn of this AddParticleRequest [Optional].
         subtitle: The subtitle of this AddParticleRequest.
-        subtitle_en: The subtitle_en of this AddParticleRequest [Optional].
+        subtitleEn: The subtitleEn of this AddParticleRequest [Optional].
         author: The author of this AddParticleRequest.
-        author_en: The author_en of this AddParticleRequest [Optional].
+        authorEn: The authorEn of this AddParticleRequest [Optional].
         description: The description of this AddParticleRequest.
-        description_en: The description_en of this AddParticleRequest [Optional].
+        descriptionEn: The descriptionEn of this AddParticleRequest [Optional].
         thumbnail: The thumbnail of this AddParticleRequest.
         data: The data of this AddParticleRequest.
         texture: The texture of this AddParticleRequest.
     """
 
     title: str
-    title_en: Optional[str] = None
+    titleEn: Optional[str] = None
     subtitle: str
-    subtitle_en: Optional[str] = None
+    subtitleEn: Optional[str] = None
     author: str
-    author_en: Optional[str] = None
+    authorEn: Optional[str] = None
     description: str
-    description_en: Optional[str] = None
+    descriptionEn: Optional[str] = None
     thumbnail: str
     data: str
     texture: str
@@ -51,8 +51,8 @@ class AddParticleRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("title_en")
-    def title_en_max_length(cls, value):
+    @validator("titleEn")
+    def titleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -66,8 +66,8 @@ class AddParticleRequest(BaseModel):
         assert len(value) <= 100
         return value
 
-    @validator("subtitle_en")
-    def subtitle_en_max_length(cls, value):
+    @validator("subtitleEn")
+    def subtitleEn_max_length(cls, value):
         assert len(value) <= 100
         return value
 
@@ -81,8 +81,8 @@ class AddParticleRequest(BaseModel):
         assert len(value) <= 50
         return value
 
-    @validator("author_en")
-    def author_en_max_length(cls, value):
+    @validator("authorEn")
+    def authorEn_max_length(cls, value):
         assert len(value) <= 50
         return value
 
@@ -91,9 +91,10 @@ class AddParticleRequest(BaseModel):
         assert len(value) <= 3000
         return value
 
-    @validator("description_en")
-    def description_en_max_length(cls, value):
+    @validator("descriptionEn")
+    def descriptionEn_max_length(cls, value):
         assert len(value) <= 3000
         return value
+
 
 AddParticleRequest.update_forward_refs()
