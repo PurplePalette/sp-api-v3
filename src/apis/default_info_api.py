@@ -18,10 +18,12 @@ from src.config import (
     PARTICLE_VERSION,
     SKIN_VERSION,
 )
-from src.cruds.background import LOCATOR_NAMES as BACKGROUND_LOCATORS
-from src.cruds.effect import LOCATOR_NAMES as EFFECT_LOCATORS
-from src.cruds.particle import LOCATOR_NAMES as PARTICLE_LOCATORS
-from src.cruds.skin import LOCATOR_NAMES as SKIN_LOCATORS
+from src.cruds.constraints import (
+    BACKGROUND_LOCATORS,
+    EFFECT_LOCATORS,
+    PARTICLE_LOCATORS,
+    SKIN_LOCATORS,
+)
 from src.cruds.utils import DataBridge, get_first_item_or_404
 from src.database.objects.announce import Announce as AnnounceObject
 from src.database.objects.background import Background as BackgroundObject

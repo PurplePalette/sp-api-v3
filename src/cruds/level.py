@@ -6,7 +6,7 @@ from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.config import LEVEL_VERSION
-from src.cruds import LEVEL_LOCATORS
+from src.cruds.constraints import LEVEL_LOCATORS
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
     DataBridge,

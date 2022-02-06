@@ -2,7 +2,6 @@ from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 from src.database.db import Base
 from src.database.mixins import TimeMixin
-from src.database.objects import Level  # noqa: F401
 
 
 class Pickup(Base, TimeMixin):  # type: ignore

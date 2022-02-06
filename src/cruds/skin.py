@@ -8,7 +8,7 @@ from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.config import SKIN_VERSION
-from src.cruds import SKIN_LOCATORS
+from src.cruds.constraints import SKIN_LOCATORS
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
     DataBridge,

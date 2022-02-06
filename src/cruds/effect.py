@@ -8,7 +8,7 @@ from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.config import EFFECT_VERSION
-from src.cruds import EFFECT_LOCATORS
+from src.cruds.constraints import EFFECT_LOCATORS
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
     DataBridge,
