@@ -49,6 +49,7 @@ version = "0.10"
 
 [tool.taskipy.tasks]
 start = { cmd = "uvicorn src.main:app --reload", help = "launch test server" }
+migrate = { cmd = "alembic upgrade head" }
 
 [tool.pysen.lint]
 enable_black = true
