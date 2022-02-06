@@ -5,20 +5,20 @@ from sqlalchemy import engine_from_config, pool
 from src.database.config import DB_URL
 from src.database.db import Base
 from src.database.objects import (  # noqa: F401
-    Announce,
-    Background,
-    Effect,
-    Engine,
-    Favorite,
-    Genre,
-    Level,
-    Like,
-    Log,
-    Particle,
-    Pickup,
-    Skin,
-    User,
-    Vote,
+    AnnounceSave,
+    BackgroundSave,
+    EffectSave,
+    EngineSave,
+    FavoriteSave,
+    GenreSave,
+    LevelSave,
+    LikeSave,
+    LogSave,
+    ParticleSave,
+    PickupSave,
+    SkinSave,
+    UserSave,
+    VoteSave,
 )
 
 # this is the Alembic Config object, which provides
