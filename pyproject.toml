@@ -19,6 +19,7 @@ python-multipart = "^0.0.5"
 fastapi-pagination = "^0.9.1"
 aiofiles = "^0.8.0"
 shortuuid = "^1.0.8"
+sqlalchemy-seed = "^0.3.0"
 
 [tool.poetry.dev-dependencies]
 pysen = {version = "0.10.1", extras = ["lint"]}
@@ -50,6 +51,7 @@ version = "0.10"
 [tool.taskipy.tasks]
 start = { cmd = "uvicorn src.main:app --reload", help = "launch test server" }
 migrate = { cmd = "alembic upgrade head" }
+seed = { cmd = "python seeder.py" }
 
 [tool.pysen.lint]
 enable_black = true
