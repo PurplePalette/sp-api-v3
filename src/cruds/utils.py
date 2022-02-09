@@ -254,7 +254,6 @@ async def save_to_db(db: AsyncSession, model: Any) -> Optional[HTTPException]:
 def patch_to_model(
     model: V,
     updates: Dict[str, Union[str, Dict[str, str]]],
-    locator_names: List[str],
     extend_excludes: Optional[List[str]],
 ) -> V:
     """指定されたモデルに、与えられた辞書から要素を反映する"""
@@ -269,12 +268,7 @@ def patch_to_model(
     for k in excludes:
         updates.pop(k, None)
     for k, v in updates.items():
-        if k not in locator_names:
-            setattr(model, k, v)
-        else:
-            r: Dict[str, str] = v  # type: ignore
-            if "hash" in r.keys():
-                setattr(model, k, r["hash"])
+        setattr(model, k, v)
     model.updatedTime = get_current_unix()
     return model
 
@@ -321,14 +315,6 @@ class DataBridge:
         """指定されたモデルのSRLフィールドをハッシュだけにし、調整してDBに格納可能にする"""
         if self.auth:
             model.userId = await get_internal_id(self.db, self.auth["user_id"])
-        for k in self.locator_names:
-            field = getattr(model, k)
-            if field is None:
-                raise HTTPException(
-                    status_code=400, detail=f"Bad Request: {k} is missing"
-                )
-            setattr(model, k, field.hash)
-        delattr(model, "version")
         copy_translate_fields(
             model, ["title", "description", "author", "subtitle", "artists"]
         )
