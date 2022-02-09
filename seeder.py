@@ -48,7 +48,16 @@ def seed():
     path: str = "development" if os.environ.get("IS_DEV") else "production"
     fixtures = load_fixture_files(
         os.path.join("seeds", path),
-        ["users.yaml", "announces.yaml"],
+        [
+            "users.yaml",
+            "announces.yaml",
+            "backgrounds.yaml",
+            "effects.yaml",
+            "particles.yaml",
+            "skins.yaml",
+            "engines.yaml",
+            "levels.yaml",
+        ],
     )
     session = get_sync_db()
     load_fixtures(session, fixtures)

@@ -1,0 +1,29 @@
+- model: src.database.objects.engine.Engine
+  id: 1
+  fields:
+    # database primary key
+    id: 1
+    # display id
+    name: a
+    # owner id
+    userId: 1
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    title: a
+    titleEn: a
+    subtitle: a
+    subtitleEn: b
+    author: a
+    authorEn: b
+    description: a
+    descriptionEn: b
+    public: true
+    isDeleted: false
+    thumbnail: "dummy_hash"
+    data: "dummy_hash"
+    configuration: "dummy_hash"
+    backgroundId: 1
+    effectId: 1
+    particleId: 1
+    skinId: 1

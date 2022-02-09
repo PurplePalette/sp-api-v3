@@ -1,0 +1,30 @@
+- model: src.database.objects.level.Level
+  id: 1
+  fields:
+    # database primary key
+    id: 1
+    # display id
+    name: a
+    # owner id
+    userId: 1
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    title: a
+    titleEn: a
+    subtitle: a
+    subtitleEn: b
+    author: a
+    authorEn: b
+    description: a
+    descriptionEn: b
+    public: true
+    isDeleted: false
+    rating: 1
+    bpm: 1
+    notes: 1
+    length: 1
+    cover: "dummy_hash"
+    bgm: "dummy_hash"
+    data: "dummy_hash"
+    engineId: 1
