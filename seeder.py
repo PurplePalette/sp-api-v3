@@ -45,15 +45,18 @@ def patch_open():
     builtins.open = __open
 
 
-def main():
-    patch_open()
+def seed():
     print("Seeding database...")
     path: str = "development" if os.environ.get("IS_DEV") else "production"
-    fixtures = load_fixture_files(os.path.join("seeds", path), ["announces.yaml"])
+    fixtures = load_fixture_files(
+        os.path.join("seeds", path),
+        ["users.yaml", "announces.yaml"],
+    )
     session = get_sync_db()
     load_fixtures(session, fixtures)
     print("Now database seeded!")
 
 
 if __name__ == "__main__":
-    main()
+    patch_open()
+    seed()
