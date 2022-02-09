@@ -1,0 +1,42 @@
+- model: src.database.objects.announce.Announce
+  id: 1
+  fields:
+    id: 1
+    createdTime: 1
+    updatedTime: 1
+    name: WELCOME
+    title: SweetPotato 3
+    titleEn: SweetPotato 3
+    author: '最終更新:2022/01/27'
+    authorEn: 'LastUpdate: 2022/01/27'
+    subtitle: PurplePalette
+    subtitleEn: PurplePalette
+    description: SweetPotatoサーバーへようこそ!
+    descriptionEn: Welcome to SweetPotato server!
+    rating: 1
+    public: 1
+    userId: 1
+    cover: 'https://via.placeholder.com/256x256.png?text=Server+Logo'
+    bgm: ''
+    preview: ''
+- model: src.database.objects.announce.Announce
+  id: 2
+  fields:
+    id: 2
+    createdTime: 1
+    updatedTime: 1
+    name: ANNOUNCEMENTS
+    title: 	お知らせ
+    titleEn: Announcements
+    author: '最終更新:2022/01/27'
+    authorEn: 'LastUpdate: 2022/01/27'
+    subtitle: PurplePalette
+    subtitleEn: PurplePalette
+    description: ここには、サーバーの更新等のお知らせを記載していきます。下のおすすめ欄をご確認ください。
+    descriptionEn: This is where we will post notices of server updates and other information. Please check the Recommendations section below.
+    rating: 1
+    public: 1
+    userId: 1
+    cover: 'https://via.placeholder.com/256x256.png?text=Announcement+Logo'
+    bgm: ''
+    preview: ''
