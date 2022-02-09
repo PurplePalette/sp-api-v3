@@ -1,0 +1,51 @@
+- model: src.database.objects.user.User
+  id: 1
+  fields:
+    # database primary key
+    id: 1
+    # firebase userId
+    userId: special-key
+    # accounts endpoint
+    accountId: special-accounts
+    # tests endpoint
+    testId: special-tests
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    description: special-user
+    isAdmin: true
+    isDeleted: false
+- model: src.database.objects.user.User
+  id: 2
+  fields:
+    # database primary key
+    id: 2
+    # firebase userId
+    userId: normal-key
+    # accounts endpoint
+    accountId: normal-accounts
+    # tests endpoint
+    testId: normal-tests
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    description: normal-user
+    isAdmin: false
+    isDeleted: false
+- model: src.database.objects.user.User
+  id: 3
+  fields:
+    # database primary key
+    id: 3
+    # firebase userId
+    userId: deleted-key
+    # accounts endpoint
+    accountId: deleted-accounts
+    # tests endpoint
+    testId: deleted-tests
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    description: deleted-user
+    isAdmin: false
+    isDeleted: true

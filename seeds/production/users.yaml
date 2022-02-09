@@ -1,0 +1,17 @@
+- model: src.database.objects.user.User
+  id: 1
+  fields:
+    # database primary key
+    id: 1
+    # firebase userId
+    userId: input_your_firebase_id
+    # accounts endpoint
+    accountId: input_your_accounts_endpoint
+    # tests endpoint
+    testId: input_your_accounts_endpoint
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    description: 管理ユーザー
+    isAdmin: true
+    isDeleted: false
