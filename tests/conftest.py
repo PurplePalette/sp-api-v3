@@ -15,8 +15,7 @@ from starlette.testclient import ASGI2App, ASGI3App
 from seeder import patch_open, seed
 
 
-@pytest.fixture
-def app() -> FastAPI:
+def pytest_sessionstart():
     print("Dropping database...")
     Base.metadata.drop_all(bind=engine)
     print("Dropped database!")
@@ -27,6 +26,10 @@ def app() -> FastAPI:
     print("Seeding database...")
     seed()
     print("Seeded database!")
+
+
+@pytest.fixture
+def app() -> FastAPI:
     application.dependency_overrides[get_current_user] = get_current_user_stub
     application.dependency_overrides[
         get_current_user_optional
