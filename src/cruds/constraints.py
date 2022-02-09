@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 from typing import List
+
 from src.config import (
-    SKIN_VERSION,
     BACKGROUND_VERSION,
     EFFECT_VERSION,
-    PARTICLE_VERSION,
-    LEVEL_VERSION,
     ENGINE_VERSION,
+    LEVEL_VERSION,
+    PARTICLE_VERSION,
+    SKIN_VERSION,
 )
 
 

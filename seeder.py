@@ -1,12 +1,10 @@
 # coding: utf-8
 import os
-from sqlalchemy_seed import (
-    load_fixtures,
-    load_fixture_files,
-)
-from src.database.db import Base, get_sync_db  # noqa: F401
-from os.path import join, dirname
+from os.path import dirname, join
+
 from dotenv import load_dotenv
+from sqlalchemy_seed import load_fixture_files, load_fixtures
+from src.database.db import Base, get_sync_db  # noqa: F401
 
 load_dotenv(verbose=True)
 dotenv_path = join(dirname(__file__), ".env")

@@ -2,8 +2,8 @@
 
 from typing import Dict
 
-from httpx import AsyncClient
 import pytest
+from httpx import AsyncClient
 from src.database.db import get_db  # noqa: F401
 from src.models.announce import Announce  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse  # noqa: F401

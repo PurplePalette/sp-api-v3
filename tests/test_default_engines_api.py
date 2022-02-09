@@ -2,8 +2,8 @@
 
 from typing import Dict
 
-from httpx import AsyncClient
 import pytest
+from httpx import AsyncClient
 from src.models.engine import Engine  # noqa: F401
 from src.models.get_engine_list_response import GetEngineListResponse  # noqa: F401
 from src.models.get_engine_response import GetEngineResponse  # noqa: F401

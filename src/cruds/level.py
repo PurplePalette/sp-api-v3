@@ -1,4 +1,5 @@
 from typing import Union
+
 from fastapi import HTTPException
 from fastapi_cloudauth.firebase import FirebaseClaims
 from fastapi_pagination import Page, Params
@@ -21,8 +22,8 @@ from src.database.objects import LevelSave
 from src.models.default_search import defaultSearch
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
-from src.models.search_query import SearchQueries
 from src.models.level import Level as LevelReqResp
+from src.models.search_query import SearchQueries
 from src.models.sonolus_page import SonolusPage, toSonolusPage
 
 OBJECT_NAME = "level"

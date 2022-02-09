@@ -2,8 +2,8 @@
 
 from typing import Dict
 
-from httpx import AsyncClient
 import pytest
+from httpx import AsyncClient
 from src.models.server_info import ServerInfo  # noqa: F401
 
 

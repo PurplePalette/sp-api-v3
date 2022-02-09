@@ -1,7 +1,7 @@
 # coding: utf-8
 
-from httpx import AsyncClient
 import pytest
+from httpx import AsyncClient
 from src.models.post_upload_response import PostUploadResponse  # noqa: F401
 
 

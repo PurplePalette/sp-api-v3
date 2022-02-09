@@ -1,7 +1,8 @@
-from abc import ABCMeta
 import asyncio
+from abc import ABCMeta
 from dataclasses import dataclass
 from typing import Any, List, TypeVar
+
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import Column, Integer, select
@@ -12,30 +13,28 @@ from src.config import (
     PARTICLE_VERSION,
     SKIN_VERSION,
 )
-from src.cruds.constraints import (
-    # LEVEL_LOCATORS,
-    SKIN_LOCATORS,
+from src.cruds.constraints import (  # LEVEL_LOCATORS,; ENGINE_LOCATORS,
     BACKGROUND_LOCATORS,
     EFFECT_LOCATORS,
     PARTICLE_LOCATORS,
-    # ENGINE_LOCATORS,
+    SKIN_LOCATORS,
 )
+from src.cruds.utils import DataBridge, get_first_item_or_404
 from src.database.objects import (
     AnnounceSave,
     BackgroundSave,
-    EngineSave,
     EffectSave,
+    EngineSave,
+    LevelSave,
     ParticleSave,
     SkinSave,
-    LevelSave,
 )
-from src.models.default_search import defaultSearch, levelSearch
 from src.models.background import Background as BackgroundResp
-from src.models.engine import Engine as EngineResp
+from src.models.default_search import defaultSearch, levelSearch
 from src.models.effect import Effect as EffectResp
-from src.models.particle import Particle as ParticleResp
-from src.models.skin import Skin as SkinResp
+from src.models.engine import Engine as EngineResp
 from src.models.level import Level as LevelResp
+from src.models.particle import Particle as ParticleResp
 from src.models.server_info import ServerInfo
 from src.models.server_info_backgrounds import ServerInfoBackgrounds
 from src.models.server_info_effects import ServerInfoEffects
@@ -43,7 +42,7 @@ from src.models.server_info_engines import ServerInfoEngines
 from src.models.server_info_levels import ServerInfoLevels
 from src.models.server_info_particles import ServerInfoParticles
 from src.models.server_info_skins import ServerInfoSkins
-from src.cruds.utils import DataBridge, get_first_item_or_404
+from src.models.skin import Skin as SkinResp
 
 PAGE_SIZE: Params = Params(page=1, size=5)
 
@@ -139,7 +138,9 @@ async def list_info(db: AsyncSession, localization: str) -> ServerInfo:
     bridge_objects: List[BridgeObject] = [
         # BridgeObject(levels, "level", PARTICLE_LOCATORS, PARTICLE_VERSION),
         BridgeObject(skins, "skin", SKIN_LOCATORS, SKIN_VERSION),
-        BridgeObject(backgrounds, "background", BACKGROUND_LOCATORS, BACKGROUND_VERSION),
+        BridgeObject(
+            backgrounds, "background", BACKGROUND_LOCATORS, BACKGROUND_VERSION
+        ),
         BridgeObject(effects, "effect", EFFECT_LOCATORS, EFFECT_VERSION),
         BridgeObject(particles, "particle", PARTICLE_LOCATORS, PARTICLE_VERSION),
         # BridgeObject(engines, "engine", ENGINE_LOCATORS, ENGINE_VERSION),

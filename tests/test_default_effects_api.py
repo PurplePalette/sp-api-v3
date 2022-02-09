@@ -2,8 +2,8 @@
 
 from typing import Dict
 
-from httpx import AsyncClient
 import pytest
+from httpx import AsyncClient
 from src.models.effect import Effect  # noqa: F401
 from src.models.get_effect_list_response import GetEffectListResponse  # noqa: F401
 from src.models.get_effect_response import GetEffectResponse  # noqa: F401

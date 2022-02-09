@@ -8,21 +8,21 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.config import BACKGROUND_VERSION
 from src.cruds.constraints import BACKGROUND_LOCATORS
-from src.cruds.utils import get_new_name
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
     DataBridge,
     get_current_unix,
     get_first_item_or_404,
+    get_new_name,
     is_owner_or_admin_otherwise_409,
     patch_to_model,
     save_to_db,
 )
 from src.database.objects import BackgroundSave
 from src.models.add_background_request import AddBackgroundRequest
-from src.models.edit_background_request import EditBackgroundRequest
 from src.models.background import Background as BackgroundReqResp
 from src.models.default_search import defaultSearch
+from src.models.edit_background_request import EditBackgroundRequest
 from src.models.get_background_list_response import GetBackgroundListResponse
 from src.models.get_background_response import GetBackgroundResponse
 from src.models.search_query import SearchQueries

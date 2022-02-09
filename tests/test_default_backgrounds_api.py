@@ -1,8 +1,9 @@
 # coding: utf-8
 
 from typing import Dict
-from httpx import AsyncClient
+
 import pytest
+from httpx import AsyncClient
 from src.models.background import Background  # noqa: F401
 from src.models.get_background_list_response import (  # noqa: F401
     GetBackgroundListResponse,

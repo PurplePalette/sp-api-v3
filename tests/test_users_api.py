@@ -2,8 +2,8 @@
 
 from typing import Dict
 
-from httpx import AsyncClient
 import pytest
+from httpx import AsyncClient
 from src.models.get_user_list_response import GetUserListResponse  # noqa: F401
 from src.models.user import User  # noqa: F401
 

@@ -1,18 +1,18 @@
 import asyncio
 import sys
 from typing import AsyncGenerator
-from httpx import AsyncClient
 
 import pytest_asyncio
-from src.main import app as application
+from httpx import AsyncClient
+from seeder import patch_open, seed
 from src.database.db import Base, engine
+from src.main import app as application
 from src.security_api import (
     get_current_user,
     get_current_user_optional,
     get_current_user_optional_stub,
     get_current_user_stub,
 )
-from seeder import patch_open, seed
 
 """
 Based on async-fastapi-sqlalchemy

@@ -2,8 +2,8 @@
 
 from typing import Dict
 
-from httpx import AsyncClient
 import pytest
+from httpx import AsyncClient
 from src.models.get_particle_list_response import GetParticleListResponse  # noqa: F401
 from src.models.get_particle_response import GetParticleResponse  # noqa: F401
 
