@@ -1,6 +1,7 @@
 # coding: utf-8
 import os
 from os.path import dirname, join
+from typing import Any, Optional
 
 from dotenv import load_dotenv
 from sqlalchemy_seed import load_fixture_files, load_fixtures
@@ -19,31 +20,33 @@ https://qiita.com/ousttrue/items/527a9c3045f710806aa9
 """
 
 
-def patch_open():
+def patch_open() -> None:
+    """patch default file open encoding as utf8"""
     import builtins
 
     __original = open
 
     def __open(
-        file,
-        mode="r",
-        buffering=-1,
-        encoding=None,
-        errors=None,
-        newline=None,
-        closefd=True,
-        opener=None,
-    ):
+        file: str,
+        mode: str = "r",
+        buffering: int = -1,
+        encoding: Optional[str] = None,
+        errors: Any = None,
+        newline: Any = None,
+        closefd: bool = True,
+        opener: Any = None,
+    ) -> Any:
         if "b" not in mode and not encoding:
             encoding = "utf-8"
         return __original(
             file, mode, buffering, encoding, errors, newline, closefd, opener
         )
 
-    builtins.open = __open
+    builtins.open = __open  # type: ignore
 
 
-def seed():
+def seed() -> None:
+    """Add or update database data with seed files"""
     print("Seeding database...")
     path: str = "development" if os.environ.get("IS_DEV") else "production"
     fixtures = load_fixture_files(

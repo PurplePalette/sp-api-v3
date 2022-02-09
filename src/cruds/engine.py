@@ -74,7 +74,7 @@ async def create_engine(
         item = await get_first_item_or_404(
             db, select(model.key).filter(model.key.name == model.value)
         )
-        setattr(model, model.key)
+        setattr(model, model.key, item)
 
     engine_db = EngineSave(**model.dict())
     await save_to_db(db, engine_db)

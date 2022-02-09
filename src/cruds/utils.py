@@ -69,7 +69,10 @@ def get_current_unix() -> int:
 
 def get_random_name() -> str:
     """ランダムな12文字のnameを取得"""
-    return ShortUUID(alphabet="1234567890abcdefghijklmnopqrstuvwxyz").random(length=12)
+    random_name: str = ShortUUID(
+        alphabet="1234567890abcdefghijklmnopqrstuvwxyz"
+    ).random(length=12)
+    return random_name
 
 
 def get_first_item(db: AsyncSession, statement: Any) -> Optional[T]:

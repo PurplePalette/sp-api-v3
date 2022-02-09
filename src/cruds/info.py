@@ -13,12 +13,6 @@ from src.config import (
     PARTICLE_VERSION,
     SKIN_VERSION,
 )
-from src.cruds.constraints import (  # LEVEL_LOCATORS,; ENGINE_LOCATORS,
-    BACKGROUND_LOCATORS,
-    EFFECT_LOCATORS,
-    PARTICLE_LOCATORS,
-    SKIN_LOCATORS,
-)
 from src.cruds.utils import DataBridge, get_first_item_or_404
 from src.database.objects import (
     AnnounceSave,
@@ -43,6 +37,13 @@ from src.models.server_info_levels import ServerInfoLevels
 from src.models.server_info_particles import ServerInfoParticles
 from src.models.server_info_skins import ServerInfoSkins
 from src.models.skin import Skin as SkinResp
+
+from src.cruds.constraints import (  # LEVEL_LOCATORS,; ENGINE_LOCATORS,
+    BACKGROUND_LOCATORS,
+    EFFECT_LOCATORS,
+    PARTICLE_LOCATORS,
+    SKIN_LOCATORS,
+)
 
 PAGE_SIZE: Params = Params(page=1, size=5)
 

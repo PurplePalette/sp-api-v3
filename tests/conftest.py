@@ -1,6 +1,6 @@
 import asyncio
 import sys
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Generator
 
 import pytest_asyncio
 from httpx import AsyncClient
@@ -34,7 +34,7 @@ async def client() -> AsyncGenerator:
 
 
 @pytest_asyncio.fixture(scope="session")
-def event_loop():
+def event_loop() -> Generator:
     """
     Creates an instance of the default event loop for the test session.
     """
@@ -49,7 +49,7 @@ def event_loop():
 
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
-def setup_test_db():
+def setup_test_db() -> Generator:
     with engine.begin():
         print("Dropping database...")
         Base.metadata.drop_all(bind=engine)
