@@ -2,7 +2,7 @@ import asyncio
 import time
 from abc import ABCMeta
 from typing import Any, Dict, List, Optional, TypeVar, Union
-
+from shortuuid import ShortUUID
 from fastapi import HTTPException
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import func, select
@@ -64,6 +64,11 @@ W = TypeVar("W", bound=MustHaveVersionAndUserId)
 def get_current_unix() -> int:
     """現在のUNIX時刻を取得"""
     return int(time.time())
+
+
+def get_random_name() -> str:
+    """ランダムな12文字のnameを取得"""
+    return ShortUUID(alphabet="1234567890abcdefghijklmnopqrstuvwxyz").random(length=12)
 
 
 def get_first_item(db: AsyncSession, statement: Any) -> Optional[T]:
@@ -139,12 +144,34 @@ async def not_exist_or_409(db: AsyncSession, statement: Any) -> None:
         raise HTTPException(status_code=409, detail="Conflict")
 
 
+async def is_exist(db: AsyncSession, statement: Any) -> bool:
+    """指定した要素が存在するかBoolで返す"""
+    resp: Result = await db.execute(statement)
+    obj_db: Optional[Any] = resp.scalars().first()
+    return True if obj_db else False
+
+
 async def is_owner_or_admin_otherwise_409(
     db: AsyncSession, model: U, auth: FirebaseClaims
 ) -> None:
     """認証ユーザーが本人または管理者でなければ Forbidden"""
     if model.userId != auth["user_id"]:
         await get_admin_or_403(db, auth)
+
+
+async def get_new_name(db: AsyncSession, obj: T) -> str:
+    """指定されたObjectの、既存のデータと衝突しない新しいnameを生成"""
+    existed = True
+    newName = ""
+    while existed:
+        newName = get_random_name()
+        existed = await is_exist(
+            db,
+            select(obj).filter(
+                obj.name == newName,
+            ),
+        )
+    return newName
 
 
 async def get_total_publish(db: AsyncSession, databaseId: int) -> UserTotalPublish:
