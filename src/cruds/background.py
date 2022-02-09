@@ -8,14 +8,13 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.config import BACKGROUND_VERSION
 from src.cruds.constraints import BACKGROUND_LOCATORS
-from src.cruds.utils import get_new_name, get_random_name, is_exist
+from src.cruds.utils import get_new_name
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
     DataBridge,
     get_current_unix,
     get_first_item_or_404,
     is_owner_or_admin_otherwise_409,
-    not_exist_or_409,
     patch_to_model,
     save_to_db,
 )
