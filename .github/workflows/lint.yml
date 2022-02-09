@@ -1,22 +1,17 @@
-name: ci python-project-template
-env:
-  PROJECT_NAME: python-project-template
+name: Run lint
 on: [push]
 jobs:
-  deploy:
+  lint:
     name: CI
     timeout-minutes: 5
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.7, 3.8]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.8
         uses: actions/setup-python@v1
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.8
       - name: Install Poetry
         run: |
           curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
@@ -27,6 +22,3 @@ jobs:
       - name: Run Lint
         run: |
           poetry run pysen run lint
-      - name: Run Test
-        run: |
-          poetry run pytest

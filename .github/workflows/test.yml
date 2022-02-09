@@ -1,0 +1,49 @@
+name: Run test
+on: [push]
+jobs:
+  test:
+    name: CI
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: sonolus
+          MYSQL_DATABASE: sonolus
+          MYSQL_USER: sonolus
+          MYSQL_PASSWORD: sonolus
+        options: >-
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Create .env file
+        run: mv .env_test .env
+      - name: Install Poetry
+        run: |
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+          echo "$HOME/.poetry/bin" >> $GITHUB_PATH
+      - name: Install Packages
+        run: |
+          poetry install
+      - name: Run Test
+        run: |
+          poetry run pytest --cov --cov-report=xml
+      - name: Upload result to codecov
+        uses: codecov/codecov-action@v2
+        with:
+          files: coverage.xml
+          name: codecov-umbrella # optional
+          flags: unittests # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
