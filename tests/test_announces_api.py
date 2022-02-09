@@ -2,13 +2,16 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
+from src.database.db import get_db  # noqa: F401
 from src.models.announce import Announce  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse  # noqa: F401
 from src.models.get_level_response import GetLevelResponse  # noqa: F401
 
 
-def test_add_announce(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_add_announce(client: AsyncClient) -> None:
     """Test case for add_announce
 
     Add announce
@@ -36,7 +39,7 @@ def test_add_announce(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "POST",
         "/announces",
         headers=headers,
@@ -45,7 +48,8 @@ def test_add_announce(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_delete_announce(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_delete_announce(client: AsyncClient) -> None:
     """Test case for delete_announce
 
     Delete announce
@@ -54,7 +58,7 @@ def test_delete_announce(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "DELETE",
         "/announces/{announceName}".format(announceName="name"),
         headers=headers,
@@ -63,7 +67,8 @@ def test_delete_announce(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_edit_announce(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_edit_announce(client: AsyncClient) -> None:
     """Test case for edit_announce
 
     Edit announce
@@ -91,7 +96,7 @@ def test_edit_announce(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "PATCH",
         "/announces/{announceName}".format(announceName="name"),
         headers=headers,
@@ -100,14 +105,15 @@ def test_edit_announce(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_default_announce(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_default_announce(client: AsyncClient) -> None:
     """Test case for get_default_announce
 
     Get announce
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/announces/{announceName}".format(announceName="WELCOME"),
         headers=headers,
@@ -116,14 +122,15 @@ def test_get_default_announce(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_default_announces(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_default_announces(client: AsyncClient) -> None:
     """Test case for get_default_announces
 
     Get announce list
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/announces/list",
         headers=headers,

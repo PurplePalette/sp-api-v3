@@ -2,13 +2,15 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.get_particle_list_response import GetParticleListResponse  # noqa: F401
 from src.models.get_particle_response import GetParticleResponse  # noqa: F401
 from src.models.particle import Particle  # noqa: F401
 
 
-def test_add_particle(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_add_particle(client: AsyncClient) -> None:
     """Test case for add_particle
 
     Add a particle
@@ -35,7 +37,7 @@ def test_add_particle(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "POST",
         "/particles",
         headers=headers,
@@ -45,7 +47,8 @@ def test_add_particle(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_delete_particle(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_delete_particle(client: AsyncClient) -> None:
     """Test case for delete_particle
 
     Delete a particle
@@ -54,7 +57,7 @@ def test_delete_particle(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "DELETE",
         "/particles/{particleName}".format(particleName="particle_name_example"),
         headers=headers,
@@ -63,7 +66,8 @@ def test_delete_particle(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_edit_particle(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_edit_particle(client: AsyncClient) -> None:
     """Test case for edit_particle
 
     Edit a particle
@@ -90,7 +94,7 @@ def test_edit_particle(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "PATCH",
         "/particles/{particleName}".format(particleName="particle_name_example"),
         headers=headers,
@@ -100,14 +104,15 @@ def test_edit_particle(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_particle(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_particle(client: AsyncClient) -> None:
     """Test case for get_particle
 
     Get a particle
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/particles/{particleName}".format(particleName="particle_name_example"),
         headers=headers,
@@ -116,7 +121,8 @@ def test_get_particle(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_particle_list(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_particle_list(client: AsyncClient) -> None:
     """Test case for get_particle_list
 
     Get particle list
@@ -132,7 +138,7 @@ def test_get_particle_list(client: TestClient) -> None:
         "random": "0",
     }
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/particles/list",
         headers=headers,

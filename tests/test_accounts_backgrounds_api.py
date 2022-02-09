@@ -2,21 +2,23 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.get_background_list_response import (  # noqa: F401
     GetBackgroundListResponse,
 )
 from src.models.get_background_response import GetBackgroundResponse  # noqa: F401
 
 
-def test_get_accounts_background(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_accounts_background(client: AsyncClient) -> None:
     """Test case for get_accounts_background
 
     Get accounts background
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/accounts/{accountKey}/backgrounds/{backgroundName}".format(
             accountKey="account_key_example", backgroundName="background_name_example"
@@ -27,7 +29,8 @@ def test_get_accounts_background(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_accounts_backgrounds(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_accounts_backgrounds(client: AsyncClient) -> None:
     """Test case for get_accounts_backgrounds
 
     Get accounts background list
@@ -44,7 +47,7 @@ def test_get_accounts_backgrounds(client: TestClient) -> None:
         "random": "0",
     }
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/accounts/{accountKey}/backgrounds/list".format(
             accountKey="account_key_example"

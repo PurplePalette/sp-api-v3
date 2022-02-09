@@ -2,19 +2,21 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.get_effect_list_response import GetEffectListResponse  # noqa: F401
 from src.models.get_effect_response import GetEffectResponse  # noqa: F401
 
 
-def test_get_effect_test(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_effect_test(client: AsyncClient) -> None:
     """Test case for get_effect_test
 
     Get tests effect list
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/tests/{testId}/effects/{effectName}".format(
             testId="testId_example", effectName="effect_name_example"
@@ -25,7 +27,8 @@ def test_get_effect_test(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_tests_effects(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_tests_effects(client: AsyncClient) -> None:
     """Test case for get_tests_effects
 
     Get tests effects list
@@ -41,7 +44,7 @@ def test_get_tests_effects(client: TestClient) -> None:
         "random": "0",
     }
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/tests/{testId}/effects/list".format(testId="testId_example"),
         headers=headers,

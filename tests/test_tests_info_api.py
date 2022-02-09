@@ -2,18 +2,20 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.server_info import ServerInfo  # noqa: F401
 
 
-def test_get_test_server_info(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_test_server_info(client: AsyncClient) -> None:
     """Test case for get_test_server_info
 
     Get test server info
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/tests/{testId}/info".format(testId="testId_example"),
         headers=headers,

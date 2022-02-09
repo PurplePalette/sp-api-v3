@@ -2,19 +2,21 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.get_engine_list_response import GetEngineListResponse  # noqa: F401
 from src.models.get_engine_response import GetEngineResponse  # noqa: F401
 
 
-def test_get_engine_test(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_engine_test(client: AsyncClient) -> None:
     """Test case for get_engine_test
 
     Get tests engine
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/tests/{testId}/engines/{engineName}".format(
             testId="testId_example", engineName="engine_name_example"
@@ -25,7 +27,8 @@ def test_get_engine_test(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_tests_engines(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_tests_engines(client: AsyncClient) -> None:
     """Test case for get_tests_engines
 
     Get tests engine list
@@ -41,7 +44,7 @@ def test_get_tests_engines(client: TestClient) -> None:
         "random": "0",
     }
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/tests/{testId}/engines/list".format(testId="testId_example"),
         headers=headers,

@@ -2,19 +2,21 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.get_skin_list_response import GetSkinListResponse  # noqa: F401
 from src.models.get_skin_response import GetSkinResponse  # noqa: F401
 
 
-def test_get_users_skin(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_users_skin(client: AsyncClient) -> None:
     """Test case for get_users_skin
 
     Get users skin
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/users/{userId}/skins/{skinName}".format(
             userId="userId_example", skinName="skin_name_example"
@@ -25,7 +27,8 @@ def test_get_users_skin(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_users_skins(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_users_skins(client: AsyncClient) -> None:
     """Test case for get_users_skins
 
     Get users skin list
@@ -41,7 +44,7 @@ def test_get_users_skins(client: TestClient) -> None:
         "random": "0",
     }
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/users/{userId}/skins/list".format(userId="userId_example"),
         headers=headers,

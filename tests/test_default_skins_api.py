@@ -2,13 +2,15 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.get_skin_list_response import GetSkinListResponse  # noqa: F401
 from src.models.get_skin_response import GetSkinResponse  # noqa: F401
 from src.models.skin import Skin  # noqa: F401
 
 
-def test_add_skin(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_add_skin(client: AsyncClient) -> None:
     """Test case for add_skin
 
     Add a skin
@@ -35,7 +37,7 @@ def test_add_skin(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "POST",
         "/skins",
         headers=headers,
@@ -45,7 +47,8 @@ def test_add_skin(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_delete_skin(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_delete_skin(client: AsyncClient) -> None:
     """Test case for delete_skin
 
     Delete a skin
@@ -54,7 +57,7 @@ def test_delete_skin(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "DELETE",
         "/skins/{skinName}".format(skinName="skin_name_example"),
         headers=headers,
@@ -63,7 +66,8 @@ def test_delete_skin(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_edit_skin(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_edit_skin(client: AsyncClient) -> None:
     """Test case for edit_skin
 
     Edit a skin
@@ -90,7 +94,7 @@ def test_edit_skin(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "PATCH",
         "/skins/{skinName}".format(skinName="skin_name_example"),
         headers=headers,
@@ -100,14 +104,15 @@ def test_edit_skin(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_skin(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_skin(client: AsyncClient) -> None:
     """Test case for get_skin
 
     Get a skin
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/skins/{skinName}".format(skinName="skin_name_example"),
         headers=headers,
@@ -116,7 +121,8 @@ def test_get_skin(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_skin_list(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_skin_list(client: AsyncClient) -> None:
     """Test case for get_skin_list
 
     Get skin list
@@ -132,7 +138,7 @@ def test_get_skin_list(client: TestClient) -> None:
         "random": "0",
     }
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/skins/list",
         headers=headers,

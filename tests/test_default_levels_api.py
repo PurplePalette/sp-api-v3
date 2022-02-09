@@ -2,13 +2,15 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.get_level_list_response import GetLevelListResponse  # noqa: F401
 from src.models.get_level_response import GetLevelResponse  # noqa: F401
 from src.models.level import Level  # noqa: F401
 
 
-def test_add_level(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_add_level(client: AsyncClient) -> None:
     """Test case for add_level
 
     Add a level
@@ -218,7 +220,7 @@ def test_add_level(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "POST",
         "/levels",
         headers=headers,
@@ -228,7 +230,8 @@ def test_add_level(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_delete_level(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_delete_level(client: AsyncClient) -> None:
     """Test case for delete_level
 
     Delete a level
@@ -237,7 +240,7 @@ def test_delete_level(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "DELETE",
         "/levels/{levelName}".format(levelName="level_name_example"),
         headers=headers,
@@ -246,7 +249,8 @@ def test_delete_level(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_edit_level(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_edit_level(client: AsyncClient) -> None:
     """Test case for edit_level
 
     Edit a level
@@ -456,7 +460,7 @@ def test_edit_level(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "PATCH",
         "/levels/{levelName}".format(levelName="level_name_example"),
         headers=headers,
@@ -466,14 +470,15 @@ def test_edit_level(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_level(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_level(client: AsyncClient) -> None:
     """Test case for get_level
 
     Get a level
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/levels/{levelName}".format(levelName="level_name_example"),
         headers=headers,
@@ -482,7 +487,8 @@ def test_get_level(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_level_list(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_level_list(client: AsyncClient) -> None:
     """Test case for get_level_list
 
     Get level list
@@ -498,7 +504,7 @@ def test_get_level_list(client: TestClient) -> None:
         "random": "0",
     }
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/levels/list",
         headers=headers,

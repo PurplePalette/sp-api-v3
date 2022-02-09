@@ -2,12 +2,14 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.get_user_list_response import GetUserListResponse  # noqa: F401
 from src.models.user import User  # noqa: F401
 
 
-def test_add_user(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_add_user(client: AsyncClient) -> None:
     """Test case for add_user
 
     Add a user
@@ -24,7 +26,7 @@ def test_add_user(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer StarApi",
     }
-    response = client.request(
+    response = await client.request(
         "POST",
         "/users",
         headers=headers,
@@ -34,7 +36,8 @@ def test_add_user(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_delete_user(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_delete_user(client: AsyncClient) -> None:
     """Test case for delete_user
 
     Delete a user
@@ -43,7 +46,7 @@ def test_delete_user(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "DELETE",
         "/users/{userId}".format(userId="userId_example"),
         headers=headers,
@@ -52,7 +55,8 @@ def test_delete_user(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_edit_user(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_edit_user(client: AsyncClient) -> None:
     """Test case for edit_user
 
     Edit a user
@@ -84,7 +88,7 @@ def test_edit_user(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "PATCH",
         "/users/{userId}".format(userId="userId_example"),
         headers=headers,
@@ -94,14 +98,15 @@ def test_edit_user(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_user(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_user(client: AsyncClient) -> None:
     """Test case for get_user
 
     Get a user
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/users/{userId}".format(userId="special-key"),
         headers=headers,
@@ -109,7 +114,8 @@ def test_get_user(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_user_with_auth(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_user_with_auth(client: AsyncClient) -> None:
     """Test case for get_user
 
     Get a user using auth
@@ -118,7 +124,7 @@ def test_get_user_with_auth(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "GET",
         "/users/{userId}".format(userId="special-key"),
         headers=headers,
@@ -126,14 +132,15 @@ def test_get_user_with_auth(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_user_list(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_user_list(client: AsyncClient) -> None:
     """Test case for get_user_list
 
     Get user list
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/users/list",
         headers=headers,

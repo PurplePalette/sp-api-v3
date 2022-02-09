@@ -2,19 +2,21 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.get_level_list_response import GetLevelListResponse  # noqa: F401
 from src.models.get_level_response import GetLevelResponse  # noqa: F401
 
 
-def test_get_accounts_level(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_accounts_level(client: AsyncClient) -> None:
     """Test case for get_accounts_level
 
     Get accounts level
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/accounts/{accountKey}/levels/{levelName}".format(
             accountKey="account_key_example", levelName="level_name_example"
@@ -25,7 +27,8 @@ def test_get_accounts_level(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_accounts_levels(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_accounts_levels(client: AsyncClient) -> None:
     """Test case for get_accounts_levels
 
     Get accounts level list
@@ -41,7 +44,7 @@ def test_get_accounts_levels(client: TestClient) -> None:
         "random": "0",
     }
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/accounts/{accountKey}/levels/list".format(accountKey="account_key_example"),
         headers=headers,

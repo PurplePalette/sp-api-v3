@@ -2,13 +2,15 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.engine import Engine  # noqa: F401
 from src.models.get_engine_list_response import GetEngineListResponse  # noqa: F401
 from src.models.get_engine_response import GetEngineResponse  # noqa: F401
 
 
-def test_add_engine(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_add_engine(client: AsyncClient) -> None:
     """Test case for add_engine
 
     Add an engine
@@ -107,7 +109,7 @@ def test_add_engine(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "POST",
         "/engines",
         headers=headers,
@@ -117,7 +119,8 @@ def test_add_engine(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_delete_engine(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_delete_engine(client: AsyncClient) -> None:
     """Test case for delete_engine
 
     Delete an engine
@@ -126,7 +129,7 @@ def test_delete_engine(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "DELETE",
         "/engines/{engineName}".format(engineName="engine_name_example"),
         headers=headers,
@@ -135,7 +138,8 @@ def test_delete_engine(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_edit_engine(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_edit_engine(client: AsyncClient) -> None:
     """Test case for edit_engine
 
     Edit an engine
@@ -234,7 +238,7 @@ def test_edit_engine(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "PATCH",
         "/engines/{engineName}".format(engineName="engine_name_example"),
         headers=headers,
@@ -244,14 +248,15 @@ def test_edit_engine(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_engine(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_engine(client: AsyncClient) -> None:
     """Test case for get_engine
 
     Get an engine
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/engines/{engineName}".format(engineName="engine_name_example"),
         headers=headers,
@@ -260,7 +265,8 @@ def test_get_engine(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_engine_list(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_engine_list(client: AsyncClient) -> None:
     """Test case for get_engine_list
 
     Get engine list
@@ -276,7 +282,7 @@ def test_get_engine_list(client: TestClient) -> None:
         "random": "0",
     }
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/engines/list",
         headers=headers,

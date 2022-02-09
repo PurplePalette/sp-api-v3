@@ -1,8 +1,8 @@
 # coding: utf-8
 
 from typing import Dict
-
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.background import Background  # noqa: F401
 from src.models.get_background_list_response import (  # noqa: F401
     GetBackgroundListResponse,
@@ -10,7 +10,8 @@ from src.models.get_background_list_response import (  # noqa: F401
 from src.models.get_background_response import GetBackgroundResponse  # noqa: F401
 
 
-def test_add_background(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_add_background(client: AsyncClient) -> None:
     """Test case for add_background
 
     Add a background
@@ -29,7 +30,7 @@ def test_add_background(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "POST",
         "/backgrounds",
         headers=headers,
@@ -39,7 +40,8 @@ def test_add_background(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_delete_background(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_delete_background(client: AsyncClient) -> None:
     """Test case for delete_background
 
     Delete a background
@@ -48,7 +50,7 @@ def test_delete_background(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "DELETE",
         "/backgrounds/{backgroundName}".format(
             backgroundName="background_name_example"
@@ -59,7 +61,8 @@ def test_delete_background(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_edit_background(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_edit_background(client: AsyncClient) -> None:
     """Test case for edit_background
 
     Edit a background
@@ -87,7 +90,7 @@ def test_edit_background(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "PATCH",
         "/backgrounds/{backgroundName}".format(
             backgroundName="background_name_example"
@@ -99,14 +102,15 @@ def test_edit_background(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_background(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_background(client: AsyncClient) -> None:
     """Test case for get_background
 
     Get a background
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/backgrounds/{backgroundName}".format(backgroundName="4dwhzidtjpda"),
         headers=headers,
@@ -115,7 +119,8 @@ def test_get_background(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_background_list(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_background_list(client: AsyncClient) -> None:
     """Test case for get_background_list
 
     Get background list
@@ -131,7 +136,7 @@ def test_get_background_list(client: TestClient) -> None:
         "random": "0",
     }
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/backgrounds/list",
         headers=headers,

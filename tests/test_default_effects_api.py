@@ -2,13 +2,15 @@
 
 from typing import Dict
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.effect import Effect  # noqa: F401
 from src.models.get_effect_list_response import GetEffectListResponse  # noqa: F401
 from src.models.get_effect_response import GetEffectResponse  # noqa: F401
 
 
-def test_add_effect(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_add_effect(client: AsyncClient) -> None:
     """Test case for add_effect
 
     Add an effect
@@ -34,7 +36,7 @@ def test_add_effect(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "POST",
         "/effects",
         headers=headers,
@@ -44,7 +46,8 @@ def test_add_effect(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_delete_effect(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_delete_effect(client: AsyncClient) -> None:
     """Test case for delete_effect
 
     Delete an effect
@@ -53,7 +56,7 @@ def test_delete_effect(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "DELETE",
         "/effects/{effectName}".format(effectName="effect_name_example"),
         headers=headers,
@@ -62,7 +65,8 @@ def test_delete_effect(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_edit_effect(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_edit_effect(client: AsyncClient) -> None:
     """Test case for edit_effect
 
     Edit an effect
@@ -88,7 +92,7 @@ def test_edit_effect(client: TestClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    response = client.request(
+    response = await client.request(
         "PATCH",
         "/effects/{effectName}".format(effectName="effect_name_example"),
         headers=headers,
@@ -98,14 +102,15 @@ def test_edit_effect(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_effect(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_effect(client: AsyncClient) -> None:
     """Test case for get_effect
 
     Get an effect
     """
 
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/effects/{effectName}".format(effectName="effect_name_example"),
         headers=headers,
@@ -114,7 +119,8 @@ def test_get_effect(client: TestClient) -> None:
     assert response.status_code != 500
 
 
-def test_get_effect_list(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_effect_list(client: AsyncClient) -> None:
     """Test case for get_effect_list
 
     Get effect list
@@ -130,7 +136,7 @@ def test_get_effect_list(client: TestClient) -> None:
         "random": "0",
     }
     headers: Dict[str, str] = {}
-    response = client.request(
+    response = await client.request(
         "GET",
         "/effects/list",
         headers=headers,

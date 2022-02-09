@@ -1,10 +1,12 @@
 # coding: utf-8
 
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
+import pytest
 from src.models.post_upload_response import PostUploadResponse  # noqa: F401
 
 
-def test_upload_file(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_upload_file(client: AsyncClient) -> None:
     """Test case for upload_file
 
     Upload a file
@@ -14,7 +16,7 @@ def test_upload_file(client: TestClient) -> None:
         "Authorization": "Bearer special-key",
     }
     data = {"file": "/path/to/file", "type": "type_example"}
-    response = client.request(
+    response = await client.request(
         "POST",
         "/upload",
         headers=headers,
