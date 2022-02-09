@@ -33,9 +33,15 @@ jobs:
         run: |
           curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
           echo "$HOME/.poetry/bin" >> $GITHUB_PATH
-      - name: Install Packages
-        run: |
-          poetry install
+      - name: Load cached dependencies
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Install dependencies
+        run: poetry install
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       - name: Run Test
         run: |
           poetry run pytest --cov --cov-report=xml
