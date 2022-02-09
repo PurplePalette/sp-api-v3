@@ -15,24 +15,15 @@ def test_add_background(client: TestClient) -> None:
 
     Add a background
     """
-    background = {
-        "descriptionEn": "No description",
-        "image": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "updatedTime": 0,
-        "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "configuration": {"type": "LevelData", "hash": "hash", "url": "url"},
+    add_background_request = {
+        "image": "image",
+        "thumbnail": "thumbnail",
+        "data": "data",
+        "configuration": "configuration",
         "author": "author",
-        "description": "No description",
-        "title": "title",
-        "version": 1,
-        "subtitleEn": "subtitleEn",
-        "userId": "userId",
-        "titleEn": "titleEn",
         "subtitle": "subtitle",
-        "name": "name",
-        "createdTime": 0,
-        "authorEn": "authorEn",
+        "description": "No description",
+        "title": "newTitle",
     }
 
     headers = {
@@ -42,7 +33,7 @@ def test_add_background(client: TestClient) -> None:
         "POST",
         "/backgrounds",
         headers=headers,
-        json=background,
+        json=add_background_request,
     )
 
     assert response.status_code != 500
@@ -117,9 +108,7 @@ def test_get_background(client: TestClient) -> None:
     headers: Dict[str, str] = {}
     response = client.request(
         "GET",
-        "/backgrounds/{backgroundName}".format(
-            backgroundName="background_name_example"
-        ),
+        "/backgrounds/{backgroundName}".format(backgroundName="4dwhzidtjpda"),
         headers=headers,
     )
 

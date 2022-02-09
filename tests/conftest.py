@@ -23,5 +23,10 @@ def app() -> FastAPI:
 
 
 @pytest.fixture
+def reset_database() -> None:
+    pass
+
+
+@pytest.fixture
 def client(app: Union[ASGI2App, ASGI3App]) -> TestClient:
     return TestClient(app)

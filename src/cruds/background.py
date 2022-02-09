@@ -7,7 +7,8 @@ from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.config import BACKGROUND_VERSION
-from src.cruds import BACKGROUND_LOCATORS
+from src.cruds.constraints import BACKGROUND_LOCATORS
+from src.cruds.utils import get_new_name, get_random_name, is_exist
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
     DataBridge,
@@ -19,6 +20,8 @@ from src.cruds.utils import (
     save_to_db,
 )
 from src.database.objects import BackgroundSave
+from src.models.add_background_request import AddBackgroundRequest
+from src.models.edit_background_request import EditBackgroundRequest
 from src.models.background import Background as BackgroundReqResp
 from src.models.default_search import defaultSearch
 from src.models.get_background_list_response import GetBackgroundListResponse
@@ -30,21 +33,15 @@ OBJECT_NAME = "background"
 
 
 async def create_background(
-    db: AsyncSession, model: BackgroundReqResp, auth: FirebaseClaims
+    db: AsyncSession, model: AddBackgroundRequest, auth: FirebaseClaims
 ) -> Union[HTTPException, GetBackgroundResponse]:
     """背景を追加します"""
-    await not_exist_or_409(
-        db,
-        select(BackgroundSave).filter(
-            BackgroundSave.name == model.name,
-        ),
-    )
-    # 入力を DBに合わせる
+    background_db = BackgroundSave(**model.dict())
+    background_db.name = await get_new_name(db, BackgroundSave)
     bridge = DataBridge(
         db, OBJECT_NAME, BACKGROUND_LOCATORS, BACKGROUND_VERSION, auth, True
     )
-    await bridge.to_db(model)
-    background_db = BackgroundSave(**model.dict())
+    await bridge.to_db(background_db)
     await save_to_db(db, background_db)
     bridge.to_resp(background_db)
     item = BackgroundReqResp.from_orm(background_db)
@@ -64,7 +61,7 @@ async def get_background(
         db, select(BackgroundSave).filter(BackgroundSave.userId == name)
     )
     bridge = DataBridge(db, OBJECT_NAME, BACKGROUND_LOCATORS, BACKGROUND_VERSION)
-    bridge.to_resp(background_db, localization)
+    bridge.to_resp(background_db)
     item = BackgroundReqResp.from_orm(background_db)
     return GetBackgroundResponse(
         item=item,
@@ -76,7 +73,7 @@ async def get_background(
 async def edit_background(
     db: AsyncSession,
     name: str,
-    model: BackgroundReqResp,
+    model: EditBackgroundRequest,
     auth: FirebaseClaims,
 ) -> Union[HTTPException, GetBackgroundResponse]:
     """背景を編集します"""
@@ -87,12 +84,8 @@ async def edit_background(
         ),
     )
     await is_owner_or_admin_otherwise_409(db, background_db, auth)
-    bridge = DataBridge(db, OBJECT_NAME, BACKGROUND_LOCATORS, BACKGROUND_VERSION, auth)
-    patch_to_model(
-        background_db, model.dict(exclude_unset=True), BACKGROUND_LOCATORS, []
-    )
+    patch_to_model(background_db, model.dict(exclude_unset=True))
     await save_to_db(db, background_db)
-    bridge.to_resp(background_db)
     item = BackgroundReqResp.from_orm(background_db)
     return GetBackgroundResponse(
         item=item,

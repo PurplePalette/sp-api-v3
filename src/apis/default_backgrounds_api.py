@@ -1,19 +1,5 @@
 # coding: utf-8
-
-from typing import Dict, List  # noqa: F401
-
-from fastapi import (  # noqa: F401
-    APIRouter,
-    Body,
-    Cookie,
-    Depends,
-    Form,
-    Header,
-    Path,
-    Query,
-    Response,
-    Security,
-)
+from fastapi import APIRouter
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import (
@@ -29,6 +15,7 @@ from src.apis.depends import (
     dependsRandom,
     dependsSort,
     dependsStatus,
+    dependsAddBackground,
 )
 from src.cruds.background import create_background as crud_create
 from src.cruds.background import delete_background as crud_delete
@@ -36,6 +23,8 @@ from src.cruds.background import edit_background as crud_edit
 from src.cruds.background import get_background as crud_get
 from src.cruds.background import list_background as crud_list
 from src.models.background import Background
+from src.models.add_background_request import AddBackgroundRequest
+from src.models.edit_background_request import EditBackgroundRequest
 from src.models.get_background_list_response import GetBackgroundListResponse
 from src.models.get_background_response import GetBackgroundResponse
 from src.models.search_query import SearchOrder, SearchQueries, SearchSort, SearchStatus
@@ -55,12 +44,12 @@ router = APIRouter()
     summary="Add a background",
 )
 async def add_background(
-    background: Background = dependsBody,
+    add_background_request: AddBackgroundRequest = dependsAddBackground,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> GetBackgroundResponse:
     """指定された背景情報をサーバーに登録します"""
-    return await crud_create(db, background, user)
+    return await crud_create(db, add_background_request, user)
 
 
 @router.delete(
@@ -94,13 +83,13 @@ async def delete_background(
     summary="Edit a background",
 )
 async def edit_background(
-    backgroundName: str = dependsPath,
+    edit_background_request: EditBackgroundRequest = dependsBody,
     background: Background = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> GetBackgroundResponse:
     """指定された背景情報を編集します"""
-    return await crud_edit(db, backgroundName, background, user)
+    return await crud_edit(db, edit_background_request, background, user)
 
 
 @router.get(
