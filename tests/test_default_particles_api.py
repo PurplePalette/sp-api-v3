@@ -4,9 +4,6 @@ from typing import Dict
 
 import pytest
 from httpx import AsyncClient
-from src.models.get_particle_list_response import GetParticleListResponse  # noqa: F401
-from src.models.get_particle_response import GetParticleResponse  # noqa: F401
-from src.models.particle import Particle  # noqa: F401
 
 
 @pytest.mark.asyncio
@@ -15,23 +12,19 @@ async def test_add_particle(client: AsyncClient) -> None:
 
     Add a particle
     """
+
     particle = {
-        "descriptionEn": "No description",
-        "updatedTime": 0,
-        "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "author": "author",
-        "texture": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "description": "No description",
         "title": "title",
-        "version": 1,
-        "subtitleEn": "subtitleEn",
-        "userId": "userId",
         "titleEn": "titleEn",
+        "description": "No description",
+        "descriptionEn": "No description",
         "subtitle": "subtitle",
-        "name": "name",
-        "createdTime": 0,
+        "subtitleEn": "subtitleEn",
+        "author": "author",
         "authorEn": "authorEn",
+        "thumbnail": "hash",
+        "data": "hash",
+        "texture": "hash",
     }
 
     headers = {
@@ -44,7 +37,7 @@ async def test_add_particle(client: AsyncClient) -> None:
         json=particle,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -59,11 +52,11 @@ async def test_delete_particle(client: AsyncClient) -> None:
     }
     response = await client.request(
         "DELETE",
-        "/particles/{particleName}".format(particleName="particle_name_example"),
+        "/particles/{particleName}".format(particleName="a"),
         headers=headers,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -73,22 +66,8 @@ async def test_edit_particle(client: AsyncClient) -> None:
     Edit a particle
     """
     particle = {
-        "descriptionEn": "No description",
-        "updatedTime": 0,
-        "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "author": "author",
-        "texture": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "description": "No description",
-        "title": "title",
-        "version": 1,
-        "subtitleEn": "subtitleEn",
-        "userId": "userId",
-        "titleEn": "titleEn",
-        "subtitle": "subtitle",
-        "name": "name",
-        "createdTime": 0,
-        "authorEn": "authorEn",
+        "title": "b",
+        "titleEn": "b",
     }
 
     headers = {
@@ -96,12 +75,12 @@ async def test_edit_particle(client: AsyncClient) -> None:
     }
     response = await client.request(
         "PATCH",
-        "/particles/{particleName}".format(particleName="particle_name_example"),
+        "/particles/{particleName}".format(particleName="a"),
         headers=headers,
         json=particle,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -114,11 +93,11 @@ async def test_get_particle(client: AsyncClient) -> None:
     headers: Dict[str, str] = {}
     response = await client.request(
         "GET",
-        "/particles/{particleName}".format(particleName="particle_name_example"),
+        "/particles/{particleName}".format(particleName="a"),
         headers=headers,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -145,4 +124,4 @@ async def test_get_particle_list(client: AsyncClient) -> None:
         params=params,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200

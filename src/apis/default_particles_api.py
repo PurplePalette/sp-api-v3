@@ -1,22 +1,10 @@
 # coding: utf-8
 
-from typing import Dict, List  # noqa: F401
-
-from fastapi import (  # noqa: F401
-    APIRouter,
-    Body,
-    Cookie,
-    Depends,
-    Form,
-    Header,
-    Path,
-    Query,
-    Response,
-    Security,
-)
+from fastapi import APIRouter
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import (
+    dependsAddParticle,
     dependsAuthor,
     dependsBody,
     dependsDatabase,
@@ -30,18 +18,15 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
-from src.cruds.particle import create_particle as crud_create
-from src.cruds.particle import delete_particle as crud_delete
-from src.cruds.particle import edit_particle as crud_edit
-from src.cruds.particle import get_particle as crud_get
-from src.cruds.particle import list_particle as crud_list
-from src.models.extra_models import TokenModel  # noqa: F401
+from src.cruds.particle import ParticleCrud
+from src.models.add_particle_request import AddParticleRequest
+from src.models.edit_particle_request import EditParticleRequest
 from src.models.get_particle_list_response import GetParticleListResponse
 from src.models.get_particle_response import GetParticleResponse
-from src.models.particle import Particle
 from src.models.search_query import SearchQueries
 
 router = APIRouter()
+crud = ParticleCrud()
 
 
 @router.post(
@@ -56,12 +41,12 @@ router = APIRouter()
     summary="Add a particle",
 )
 async def add_particle(
-    particle: Particle = dependsBody,
+    particle: AddParticleRequest = dependsAddParticle,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> GetParticleResponse:
     """指定されたパーティクル情報をサーバーに登録します"""
-    return await crud_create(db, particle, user)
+    return await crud.add(db, particle, user)
 
 
 @router.delete(
@@ -78,7 +63,7 @@ async def delete_particle(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたパーティクルを削除する"""
-    await crud_delete(db, particleName, user)
+    await crud.delete(db, particleName, user)
     return None
 
 
@@ -96,12 +81,12 @@ async def delete_particle(
 )
 async def edit_particle(
     particleName: str = dependsPath,
-    particle: Particle = dependsBody,
+    particle: EditParticleRequest = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> GetParticleResponse:
     """指定したparticleを編集します"""
-    return await crud_edit(db, particleName, particle, user)
+    return await crud.edit(db, particleName, particle, user)
 
 
 @router.get(
@@ -126,7 +111,7 @@ async def get_particle_list(
     """It returns list of particle infos registered in this server.
     Also it can search using query params"""
     queries = SearchQueries(localization, keywords, author, sort, order, status, random)
-    return await crud_list(db, page, queries)
+    return await crud.list(db, page, queries)
 
 
 @router.get(
@@ -145,4 +130,4 @@ async def get_particle(
 ) -> GetParticleResponse:
     """It returns specified particle info.
     It will raise 404 if the particle is not registered in this server"""
-    return await crud_get(db, particleName, localization)
+    return await crud.get(db, particleName, localization)
