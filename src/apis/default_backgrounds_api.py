@@ -17,11 +17,7 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
-from src.cruds.background import create_background as crud_create
-from src.cruds.background import delete_background as crud_delete
-from src.cruds.background import edit_background as crud_edit
-from src.cruds.background import get_background as crud_get
-from src.cruds.background import list_background as crud_list
+from src.cruds.background import BackgroundCrud
 from src.models.add_background_request import AddBackgroundRequest
 from src.models.edit_background_request import EditBackgroundRequest
 from src.models.get_background_list_response import GetBackgroundListResponse
@@ -29,6 +25,7 @@ from src.models.get_background_response import GetBackgroundResponse
 from src.models.search_query import SearchOrder, SearchQueries, SearchSort, SearchStatus
 
 router = APIRouter()
+crud = BackgroundCrud()
 
 
 @router.post(
@@ -48,7 +45,7 @@ async def add_background(
     user: FirebaseClaims = dependsFirebase,
 ) -> GetBackgroundResponse:
     """指定された背景情報をサーバーに登録します"""
-    return await crud_create(db, add_background_request, user)
+    return await crud.add(db, add_background_request, user)
 
 
 @router.delete(
@@ -65,7 +62,7 @@ async def delete_background(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """Delete specified background"""
-    await crud_delete(db, backgroundName, user)
+    await crud.delete(db, backgroundName, user)
     return None
 
 
@@ -88,7 +85,7 @@ async def edit_background(
     user: FirebaseClaims = dependsFirebase,
 ) -> GetBackgroundResponse:
     """指定された背景情報を編集します"""
-    return await crud_edit(db, backgroundName, edit_background_request, user)
+    return await crud.edit(db, backgroundName, edit_background_request, user)
 
 
 @router.get(
@@ -113,7 +110,7 @@ async def get_background_list(
     """It returns list of background infos registered in this server.
     Also it can search using query params"""
     queries = SearchQueries(localization, keywords, author, sort, order, status, random)
-    return await crud_list(db, page, queries)
+    return await crud.list(db, page, queries)
 
 
 @router.get(
@@ -132,4 +129,4 @@ async def get_background(
 ) -> GetBackgroundResponse:
     """It returns specified background info.
     It will raise 404 if the background is not registered in this server"""
-    return await crud_get(db, backgroundName, localization)
+    return await crud.get(db, backgroundName, localization)

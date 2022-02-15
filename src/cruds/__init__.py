@@ -5,13 +5,7 @@ from .announce import (
     get_announce,
     list_announce,
 )
-from .background import (
-    create_background,
-    delete_background,
-    edit_background,
-    get_background,
-    list_background,
-)
+from .background import BackgroundCrud
 from .constraints import (
     BACKGROUND_LOCATORS,
     EFFECT_LOCATORS,
@@ -75,6 +69,7 @@ __all__ = [
     "PARTICLE_LOCATORS",
     "SKIN_LOCATORS",
     "LEVEL_LOCATORS",
+    "BackgroundCrud",
     "BridgeObject",
     "DataBridge",
     "Searchable",
@@ -85,7 +80,6 @@ __all__ = [
     "bulk_to_resp",
     "copy_translate_fields",
     "create_announce",
-    "create_background",
     "create_effect",
     "create_engine",
     "create_level",
@@ -94,7 +88,6 @@ __all__ = [
     "create_skin",
     "create_user",
     "delete_announce",
-    "delete_background",
     "delete_effect",
     "delete_engine",
     "delete_level",
@@ -102,7 +95,6 @@ __all__ = [
     "delete_skin",
     "delete_user",
     "edit_announce",
-    "edit_background",
     "edit_effect",
     "edit_engine",
     "edit_level",
@@ -112,7 +104,6 @@ __all__ = [
     "get_admin_or_403",
     "get_announce",
     "get_announces",
-    "get_background",
     "get_content_page",
     "get_current_unix",
     "get_effect",
@@ -131,7 +122,6 @@ __all__ = [
     "get_user_or_404",
     "is_owner_or_admin_otherwise_409",
     "list_announce",
-    "list_background",
     "list_effect",
     "list_engine",
     "list_info",
