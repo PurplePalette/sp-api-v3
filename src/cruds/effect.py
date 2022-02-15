@@ -28,7 +28,7 @@ from src.models.search_query import SearchQueries
 from src.models.sonolus_page import SonolusPage, toSonolusPage
 
 
-class EffectCrud(AbstractCrud):
+class EffectCrud(AbstractCrud):  # type: ignore
     async def add(
         self, db: AsyncSession, model: EffectReqResp, auth: FirebaseClaims
     ) -> Union[HTTPException, GetEffectResponse]:

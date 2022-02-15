@@ -1,3 +1,4 @@
+from .abstract import AbstractCrud
 from .announce import (
     create_announce,
     delete_announce,
@@ -63,6 +64,7 @@ __all__ = [
     "PARTICLE_LOCATORS",
     "SKIN_LOCATORS",
     "LEVEL_LOCATORS",
+    "AbstractCrud",
     "BackgroundCrud",
     "EffectCrud",
     "ParticleCrud",

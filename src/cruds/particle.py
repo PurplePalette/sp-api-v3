@@ -28,7 +28,7 @@ from src.models.search_query import SearchQueries
 from src.models.sonolus_page import SonolusPage, toSonolusPage
 
 
-class ParticleCrud(AbstractCrud):
+class ParticleCrud(AbstractCrud):  # type: ignore
     async def add(
         self, db: AsyncSession, model: ParticleReqResp, auth: FirebaseClaims
     ) -> Union[HTTPException, GetParticleResponse]:

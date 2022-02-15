@@ -30,7 +30,7 @@ from src.models.search_query import SearchQueries
 from src.models.sonolus_page import SonolusPage, toSonolusPage
 
 
-class BackgroundCrud(AbstractCrud):
+class BackgroundCrud(AbstractCrud):  # type: ignore
     async def add(
         self, db: AsyncSession, model: AddBackgroundRequest, auth: FirebaseClaims
     ) -> Union[HTTPException, GetBackgroundResponse]:
