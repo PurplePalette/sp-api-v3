@@ -12,10 +12,10 @@ from src.models.get_background_response import GetBackgroundResponse  # noqa: F4
 
 
 @pytest.mark.asyncio
-async def test_add_background(client: AsyncClient) -> None:
+async def test_add_background_success_valid_data(client: AsyncClient) -> None:
     """Test case for add_background
 
-    Add a background
+    Add a background success with valid data
     """
     add_background_request = {
         "image": "image",
@@ -38,11 +38,91 @@ async def test_add_background(client: AsyncClient) -> None:
         json=add_background_request,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
-async def test_delete_background(client: AsyncClient) -> None:
+async def test_add_background_failed_invalid_data(client: AsyncClient) -> None:
+    """Test case for add_background
+
+    Add a background failed with invalid data
+    """
+    add_background_request = {
+        "author": "author",
+        "subtitle": "subtitle",
+        "description": "No description",
+        "title": "newTitle",
+    }
+
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
+    response = await client.request(
+        "POST",
+        "/backgrounds",
+        headers=headers,
+        json=add_background_request,
+    )
+
+    assert response.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_add_background_failed_no_auth(client: AsyncClient) -> None:
+    """Test case for add_background
+
+    Add a background failed with no auth
+    """
+    add_background_request = {
+        "image": "image",
+        "thumbnail": "thumbnail",
+        "data": "data",
+        "configuration": "configuration",
+        "author": "author",
+        "subtitle": "subtitle",
+        "description": "No description",
+        "title": "newTitle",
+    }
+    response = await client.request(
+        "POST",
+        "/backgrounds",
+        json=add_background_request,
+    )
+
+    assert response.status_code == 401
+
+
+@pytest.mark.asyncio
+async def test_add_background_failed_invalid_auth(client: AsyncClient) -> None:
+    """Test case for add_background
+
+    Add a background failed with invalid auth
+    """
+    add_background_request = {
+        "image": "image",
+        "thumbnail": "thumbnail",
+        "data": "data",
+        "configuration": "configuration",
+        "author": "author",
+        "subtitle": "subtitle",
+        "description": "No description",
+        "title": "newTitle",
+    }
+    headers = {
+        "Authorization": "Bearer invalid-key",
+    }
+    response = await client.request(
+        "POST",
+        "/backgrounds",
+        headers=headers,
+        json=add_background_request,
+    )
+
+    assert response.status_code == 401
+
+
+@pytest.mark.asyncio
+async def test_delete_background_success_admin(client: AsyncClient) -> None:
     """Test case for delete_background
 
     Delete a background
@@ -53,9 +133,7 @@ async def test_delete_background(client: AsyncClient) -> None:
     }
     response = await client.request(
         "DELETE",
-        "/backgrounds/{backgroundName}".format(
-            backgroundName="background_name_example"
-        ),
+        "/backgrounds/{backgroundName}".format(backgroundName="a"),
         headers=headers,
     )
 
@@ -63,29 +141,66 @@ async def test_delete_background(client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_edit_background(client: AsyncClient) -> None:
+async def test_delete_background_success_owner(client: AsyncClient) -> None:
+    """Test case for delete_background
+
+    Delete a background
+    """
+
+    headers = {
+        "Authorization": "Bearer normal-key",
+    }
+    response = await client.request(
+        "DELETE",
+        "/backgrounds/{backgroundName}".format(backgroundName="a"),
+        headers=headers,
+    )
+
+    assert response.status_code != 500
+
+
+@pytest.mark.asyncio
+async def test_delete_background_failed_invalid_auth(client: AsyncClient) -> None:
+    """Test case for delete_background
+
+    Delete a background
+    """
+    headers = {
+        "Authorization": "Bearer invalid-key",
+    }
+    response = await client.request(
+        "DELETE",
+        "/backgrounds/{backgroundName}".format(backgroundName="a"),
+        headers=headers,
+    )
+
+    assert response.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_delete_background_failed_no_auth(client: AsyncClient) -> None:
+    """Test case for delete_background
+
+    Delete a background
+    """
+
+    response = await client.request(
+        "DELETE",
+        "/backgrounds/{backgroundName}".format(backgroundName="a"),
+    )
+
+    assert response.status_code == 401
+
+
+@pytest.mark.asyncio
+async def test_edit_background_success_valid_data(client: AsyncClient) -> None:
     """Test case for edit_background
 
     Edit a background
     """
     background = {
-        "descriptionEn": "No description",
-        "image": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "updatedTime": 0,
-        "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "configuration": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "author": "author",
-        "description": "No description",
-        "title": "title",
-        "version": 1,
-        "subtitleEn": "subtitleEn",
-        "userId": "userId",
-        "titleEn": "titleEn",
-        "subtitle": "subtitle",
-        "name": "name",
-        "createdTime": 0,
-        "authorEn": "authorEn",
+        "title": "b",
+        "titleEn": "b",
     }
 
     headers = {
@@ -93,18 +208,63 @@ async def test_edit_background(client: AsyncClient) -> None:
     }
     response = await client.request(
         "PATCH",
-        "/backgrounds/{backgroundName}".format(
-            backgroundName="background_name_example"
-        ),
+        "/backgrounds/{backgroundName}".format(backgroundName="a"),
         headers=headers,
         json=background,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
-async def test_get_background(client: AsyncClient) -> None:
+async def test_edit_background_success_ignore_data(client: AsyncClient) -> None:
+    """Test case for edit_background
+
+    Edit a background
+    """
+    background = {
+        "name": "bbb",
+        "userId": 2,
+    }
+
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
+    response = await client.request(
+        "PATCH",
+        "/backgrounds/{backgroundName}".format(backgroundName="a"),
+        headers=headers,
+        json=background,
+    )
+
+    assert response.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_edit_background_failed_invalid_data(client: AsyncClient) -> None:
+    """Test case for edit_background
+
+    Edit a background
+    """
+    background = {
+        "title": "香風智乃" * 100,
+    }
+
+    headers = {
+        "Authorization": "Bearer special-key",
+    }
+    response = await client.request(
+        "PATCH",
+        "/backgrounds/{backgroundName}".format(backgroundName="a"),
+        headers=headers,
+        json=background,
+    )
+
+    assert response.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_get_background_success_found(client: AsyncClient) -> None:
     """Test case for get_background
 
     Get a background
@@ -113,11 +273,28 @@ async def test_get_background(client: AsyncClient) -> None:
     headers: Dict[str, str] = {}
     response = await client.request(
         "GET",
-        "/backgrounds/{backgroundName}".format(backgroundName="4dwhzidtjpda"),
+        "/backgrounds/{backgroundName}".format(backgroundName="a"),
         headers=headers,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_get_background_failed_not_found(client: AsyncClient) -> None:
+    """Test case for get_background
+
+    Get a background
+    """
+
+    headers: Dict[str, str] = {}
+    response = await client.request(
+        "GET",
+        "/backgrounds/{backgroundName}".format(backgroundName="not_found"),
+        headers=headers,
+    )
+
+    assert response.status_code == 404
 
 
 @pytest.mark.asyncio
