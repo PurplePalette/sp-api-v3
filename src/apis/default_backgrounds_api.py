@@ -83,13 +83,13 @@ async def delete_background(
     summary="Edit a background",
 )
 async def edit_background(
+    backgroundName: str = dependsPath,
     edit_background_request: EditBackgroundRequest = dependsBody,
-    background: Background = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> GetBackgroundResponse:
     """指定された背景情報を編集します"""
-    return await crud_edit(db, edit_background_request, background, user)
+    return await crud_edit(db, backgroundName, edit_background_request, user)
 
 
 @router.get(
