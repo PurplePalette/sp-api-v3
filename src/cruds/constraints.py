@@ -30,7 +30,7 @@ ENGINE_LOCATORS = ["thumbnail", "data", "configuration"]
 BACKGROUND_LOCATORS = ["thumbnail", "data", "image", "configuration"]
 EFFECT_LOCATORS = ["thumbnail", "data"]
 LEVEL_LOCATORS = ["thumbnail", "data"]
-PARTICLE_LOCATORS = ["thumbnail", "data"]
+PARTICLE_LOCATORS = ["thumbnail", "data", "texture"]
 SKIN_LOCATORS = ["thumbnail", "data"]
 
 
