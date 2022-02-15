@@ -1,13 +1,13 @@
 import asyncio
 from typing import Union
 
-from cruds.abstract import AbstractCrud
 from fastapi import HTTPException
 from fastapi_cloudauth.firebase import FirebaseClaims
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from src.cruds.abstract import AbstractCrud
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
     db_to_resp,

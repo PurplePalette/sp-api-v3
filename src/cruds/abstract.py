@@ -2,8 +2,8 @@ from abc import ABCMeta, abstractmethod
 from typing import Any
 
 from fastapi_cloudauth.firebase import FirebaseClaims
-from models.search_query import SearchQueries
 from sqlalchemy.ext.asyncio import AsyncSession
+from src.models.search_query import SearchQueries
 
 
 class AbstractCrud(metaclass=ABCMeta):
