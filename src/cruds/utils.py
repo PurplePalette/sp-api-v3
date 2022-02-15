@@ -12,6 +12,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import true
 from src.config import CDN_ENDPOINT
+from src.cruds.constraints import SRLDefine, SRL_BRIDGES
 from src.database.objects.background import Background
 from src.database.objects.effect import Effect
 from src.database.objects.engine import Engine
@@ -44,7 +45,7 @@ U = TypeVar("U", bound=MustHaveUserId)
 class MustHaveTime(metaclass=ABCMeta):
     """最低限時間は持っているオブジェクトを表す基底クラス"""
 
-    userId: int
+    userId: Union[int, str]
     createdTime: int
     updatedTime: int
 
@@ -55,7 +56,7 @@ V = TypeVar("V", bound=MustHaveTime)
 class MustHaveVersionAndUserId(metaclass=ABCMeta):
     """ユーザーIDとバージョンは持っているオブジェクトを表す基底クラス"""
 
-    userId: int
+    userId: Union[int, str]
     version: int
 
 
@@ -212,6 +213,17 @@ async def get_internal_id(db: AsyncSession, userId: str) -> int:
     return res
 
 
+async def get_display_id(db: AsyncSession, id: int) -> str:
+    """指定された内部ID(データベースID)のユーザーの表示ID(FirebaseID)を取得"""
+    user = await db.execute(select(UserObject.userId).filter(UserObject.id == id))
+    res: Optional[str] = user.scalars().first()
+    if res is None:
+        raise Exception(
+            "Your account is not registered in this server"
+        )
+    return res
+
+
 def all_fields_exists_or_400(fields: List[Optional[Any]]) -> Optional[HTTPException]:
     """指定した全てのフィールドが存在しなければBadRequest"""
     for field in fields:
@@ -277,6 +289,46 @@ def patch_to_model(
         setattr(model, k, v)
     model.updatedTime = get_current_unix()
     return model
+
+
+async def req_to_db(db: AsyncSession, model: V, is_new: bool = False) -> None:
+    """リクエストモデルをデータベースモデルにするショートハンド"""
+    # Firebase側のIDをDB側のIDに変換
+    model.userId = await get_internal_id(db, str(model.userId))
+    # 英語の欠落フィールドを埋める
+    copy_translate_fields(
+        model, ["title", "description", "author", "subtitle", "artists"]
+    )
+    # データ更新時刻を埋める
+    model.updatedTime = get_current_unix()
+    if is_new:
+        model.createdTime = model.updatedTime
+
+
+async def db_to_resp(db: AsyncSession, model: W, localization: str = "ja") -> None:
+    """データベースモデルをレスポンスモデルにするショートハンド"""
+    # DB側のIDをFirebase側のIDに変換
+    model.userId = await get_display_id(db, int(model.userId))
+    # 予め定義した SRL辞書から バージョンとロケータを取ってくる
+    obj_name = type(model).__name__.lower()
+    if not hasattr(SRL_BRIDGES, obj_name):
+        raise Exception("No bridge for model: " + obj_name)
+    bridge: SRLDefine = getattr(SRL_BRIDGES, obj_name)
+    model.version = bridge.obj_version
+    for k in bridge.locators:
+        hash = getattr(model, k)
+        resource_type = f"{obj_name.capitalize()}{k.capitalize()}"
+        srl = SonolusResourceLocator(
+            type=resource_type,
+            hash=hash,
+            url=f"{CDN_ENDPOINT}/repository/{resource_type}/{hash}",
+        )
+        setattr(model, k, srl)
+    # リクエスト言語が日本語でなければ英語で返す
+    if localization != "ja":
+        move_translate_fields(
+            model, ["title", "description", "author", "subtitle", "artists"]
+        )
 
 
 class DataBridge:

@@ -23,7 +23,6 @@ from src.cruds.background import edit_background as crud_edit
 from src.cruds.background import get_background as crud_get
 from src.cruds.background import list_background as crud_list
 from src.models.add_background_request import AddBackgroundRequest
-from src.models.background import Background
 from src.models.edit_background_request import EditBackgroundRequest
 from src.models.get_background_list_response import GetBackgroundListResponse
 from src.models.get_background_response import GetBackgroundResponse

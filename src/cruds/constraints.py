@@ -3,7 +3,7 @@ from typing import List
 
 
 @dataclass
-class SRL:
+class SRLDefine:
     obj_name: str
     obj_version: int
     locators: List[str]
@@ -11,12 +11,12 @@ class SRL:
 
 @dataclass
 class SRLDict:
-    background: SRL
-    effect: SRL
-    engine: SRL
-    level: SRL
-    particle: SRL
-    skin: SRL
+    background: SRLDefine
+    effect: SRLDefine
+    engine: SRLDefine
+    level: SRLDefine
+    particle: SRLDefine
+    skin: SRLDefine
 
 
 SKIN_VERSION = 2
@@ -34,11 +34,11 @@ PARTICLE_LOCATORS = ["thumbnail", "data"]
 SKIN_LOCATORS = ["thumbnail", "data"]
 
 
-BRIDGE_DICT = SRLDict(
-    SRL("background", BACKGROUND_VERSION, BACKGROUND_LOCATORS),
-    SRL("effect", EFFECT_VERSION, EFFECT_LOCATORS),
-    SRL("engine", ENGINE_VERSION, ENGINE_LOCATORS),
-    SRL("level", LEVEL_VERSION, LEVEL_LOCATORS),
-    SRL("particle", PARTICLE_VERSION, PARTICLE_LOCATORS),
-    SRL("skin", SKIN_VERSION, SKIN_LOCATORS),
+SRL_BRIDGES = SRLDict(
+    SRLDefine("background", BACKGROUND_VERSION, BACKGROUND_LOCATORS),
+    SRLDefine("effect", EFFECT_VERSION, EFFECT_LOCATORS),
+    SRLDefine("engine", ENGINE_VERSION, ENGINE_LOCATORS),
+    SRLDefine("level", LEVEL_VERSION, LEVEL_LOCATORS),
+    SRLDefine("particle", PARTICLE_VERSION, PARTICLE_LOCATORS),
+    SRLDefine("skin", SKIN_VERSION, SKIN_LOCATORS),
 )

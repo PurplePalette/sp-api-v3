@@ -1,3 +1,4 @@
+import asyncio
 from typing import Union
 
 from fastapi import HTTPException
@@ -6,16 +7,15 @@ from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.config import BACKGROUND_VERSION
-from src.cruds.constraints import BACKGROUND_LOCATORS
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
-    DataBridge,
+    db_to_resp,
     get_current_unix,
     get_first_item_or_404,
     get_new_name,
     is_owner_or_admin_otherwise_409,
     patch_to_model,
+    req_to_db,
     save_to_db,
 )
 from src.database.objects import BackgroundSave
@@ -28,8 +28,6 @@ from src.models.get_background_response import GetBackgroundResponse
 from src.models.search_query import SearchQueries
 from src.models.sonolus_page import SonolusPage, toSonolusPage
 
-OBJECT_NAME = "background"
-
 
 async def create_background(
     db: AsyncSession, model: AddBackgroundRequest, auth: FirebaseClaims
@@ -37,12 +35,10 @@ async def create_background(
     """背景を追加します"""
     background_db = BackgroundSave(**model.dict())
     background_db.name = await get_new_name(db, BackgroundSave)
-    bridge = DataBridge(
-        db, OBJECT_NAME, BACKGROUND_LOCATORS, BACKGROUND_VERSION, auth, True
-    )
-    await bridge.to_db(background_db)
+    background_db.userId = auth["user_id"]
+    await req_to_db(db, background_db, is_new=True)
     await save_to_db(db, background_db)
-    bridge.to_resp(background_db)
+    await db_to_resp(db, background_db)
     item = BackgroundReqResp.from_orm(background_db)
     resp = GetBackgroundResponse(
         item=item,
@@ -59,8 +55,7 @@ async def get_background(
     background_db: BackgroundSave = await get_first_item_or_404(
         db, select(BackgroundSave).filter(BackgroundSave.name == name)
     )
-    bridge = DataBridge(db, OBJECT_NAME, BACKGROUND_LOCATORS, BACKGROUND_VERSION)
-    bridge.to_resp(background_db)
+    await db_to_resp(db, background_db, localization)
     item = BackgroundReqResp.from_orm(background_db)
     return GetBackgroundResponse(
         item=item,
@@ -85,8 +80,7 @@ async def edit_background(
     await is_owner_or_admin_otherwise_409(db, background_db, auth)
     patch_to_model(background_db, model.dict(exclude_unset=True))
     await save_to_db(db, background_db)
-    bridge = DataBridge(db, OBJECT_NAME, BACKGROUND_LOCATORS, BACKGROUND_VERSION)
-    bridge.to_resp(background_db)
+    await db_to_resp(db, background_db)
     item = BackgroundReqResp.from_orm(background_db)
     return GetBackgroundResponse(
         item=item,
@@ -107,7 +101,7 @@ async def delete_background(
     await is_owner_or_admin_otherwise_409(db, background_db, auth)
     background_db.isDeleted = True
     background_db.updatedTime = get_current_unix()
-    save_to_db(db, background_db)
+    await save_to_db(db, background_db)
     return None
 
 
@@ -121,10 +115,8 @@ async def list_background(
         select_query,
         Params(page=page + 1, size=20),
     )  # type: ignore
-    bridge = DataBridge(db, OBJECT_NAME, BACKGROUND_LOCATORS, BACKGROUND_VERSION)
     resp: SonolusPage = toSonolusPage(userPage)
-    for r in resp.items:
-        bridge.to_resp(r, queries.localization)
+    await asyncio.gather(*[db_to_resp(db, r, queries.localization) for r in resp.items])
     return GetBackgroundListResponse(
         pageCount=resp.pageCount if resp.pageCount > 0 else 1,
         items=resp.items,
