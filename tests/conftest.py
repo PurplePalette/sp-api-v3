@@ -14,6 +14,17 @@ from src.security_api import (
     get_current_user_stub,
 )
 
+import os
+from os.path import dirname, join
+
+from dotenv import load_dotenv
+
+load_dotenv(verbose=True)
+dotenv_path = join(dirname(__file__), ".env")
+load_dotenv(dotenv_path)
+
+IS_LOCAL = os.environ.get("IS_LOCAL")
+
 """
 Based on async-fastapi-sqlalchemy
 https://github.com/rhoboro/async-fastapi-sqlalchemy/blob/main/app/tests/conftest.py
@@ -51,12 +62,13 @@ def event_loop() -> Generator:
 @pytest_asyncio.fixture(scope="session", autouse=True)
 def setup_test_db() -> Generator:
     with engine.begin():
-        print("Dropping database...")
-        Base.metadata.drop_all(bind=engine)
-        print("Dropped database!")
-        print("Creating database...")
-        Base.metadata.create_all(bind=engine)
-        print("Created database!")
+        if not IS_LOCAL:
+            print("Dropping database...")
+            Base.metadata.drop_all(bind=engine)
+            print("Dropped database!")
+            print("Creating database...")
+            Base.metadata.create_all(bind=engine)
+            print("Created database!")
         patch_open()
         print("Seeding database...")
         seed()
