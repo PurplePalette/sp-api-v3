@@ -203,10 +203,12 @@ async def get_total_publish(db: AsyncSession, databaseId: int) -> UserTotalPubli
 
 async def get_internal_id(db: AsyncSession, userId: str) -> int:
     """指定された表示ID(FirebaseID)のユーザーのデータベース内部IDを取得"""
-    user: UserObject = await db.execute(
-        select(UserObject.id).filter(UserObject.userId == userId)
-    )
-    res: int = user.scalars().first()
+    user = await db.execute(select(UserObject.id).filter(UserObject.userId == userId))
+    res: Optional[int] = user.scalars().first()
+    if res is None:
+        raise HTTPException(
+            status_code=401, detail="Your account is not registered in this server"
+        )
     return res
 
 
@@ -258,7 +260,7 @@ async def save_to_db(db: AsyncSession, model: Any) -> Optional[HTTPException]:
 def patch_to_model(
     model: V,
     updates: Dict[str, Union[str, Dict[str, str]]],
-    extend_excludes: Optional[List[str]],
+    extend_excludes: Optional[List[str]] = None,
 ) -> V:
     """指定されたモデルに、与えられた辞書から要素を反映する"""
     excludes = [
@@ -316,9 +318,10 @@ class DataBridge:
         self.is_new = is_new
 
     async def to_db(self, model: V) -> None:
-        """指定されたモデルのSRLフィールドをハッシュだけにし、調整してDBに格納可能にする"""
+        """欠落フィールドを埋め、データ時刻を更新してDBに格納可能にする"""
         if self.auth:
-            model.userId = await get_internal_id(self.db, self.auth["user_id"])
+            internal_id = await get_internal_id(self.db, self.auth["user_id"])
+            model.userId = internal_id
         copy_translate_fields(
             model, ["title", "description", "author", "subtitle", "artists"]
         )
@@ -327,7 +330,7 @@ class DataBridge:
             model.createdTime = model.updatedTime
 
     def to_resp(self, model: W, localization: str = "ja") -> None:
-        """指定されたモデルのSRLフィールドをSRLにし、調整して応答可能にする (引数は全て小文字)"""
+        """各SRLフィールドをSRLに変換し、調整して応答可能にする"""
         for k in self.locator_names:
             hash = getattr(model, k)
             resource_type = f"{self.object_name.capitalize()}{k.capitalize()}"
