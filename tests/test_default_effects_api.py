@@ -16,21 +16,16 @@ async def test_add_effect(client: AsyncClient) -> None:
     Add an effect
     """
     effect = {
-        "descriptionEn": "No description",
-        "updatedTime": 0,
-        "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "author": "author",
-        "description": "No description",
         "title": "title",
-        "version": 1,
-        "subtitleEn": "subtitleEn",
-        "userId": "userId",
         "titleEn": "titleEn",
+        "description": "No description",
+        "descriptionEn": "No description",
         "subtitle": "subtitle",
-        "name": "name",
-        "createdTime": 0,
+        "subtitleEn": "subtitleEn",
+        "author": "author",
         "authorEn": "authorEn",
+        "thumbnail": "hash",
+        "data": "hash",
     }
 
     headers = {
@@ -42,8 +37,8 @@ async def test_add_effect(client: AsyncClient) -> None:
         headers=headers,
         json=effect,
     )
-
-    assert response.status_code != 500
+    print(response.json())
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -58,11 +53,11 @@ async def test_delete_effect(client: AsyncClient) -> None:
     }
     response = await client.request(
         "DELETE",
-        "/effects/{effectName}".format(effectName="effect_name_example"),
+        "/effects/{effectName}".format(effectName="a"),
         headers=headers,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -72,21 +67,8 @@ async def test_edit_effect(client: AsyncClient) -> None:
     Edit an effect
     """
     effect = {
-        "descriptionEn": "No description",
-        "updatedTime": 0,
-        "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "author": "author",
-        "description": "No description",
-        "title": "title",
-        "version": 1,
-        "subtitleEn": "subtitleEn",
-        "userId": "userId",
-        "titleEn": "titleEn",
-        "subtitle": "subtitle",
-        "name": "name",
-        "createdTime": 0,
-        "authorEn": "authorEn",
+        "title": "b",
+        "titleEn": "b",
     }
 
     headers = {
@@ -94,12 +76,12 @@ async def test_edit_effect(client: AsyncClient) -> None:
     }
     response = await client.request(
         "PATCH",
-        "/effects/{effectName}".format(effectName="effect_name_example"),
+        "/effects/{effectName}".format(effectName="a"),
         headers=headers,
         json=effect,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -112,11 +94,11 @@ async def test_get_effect(client: AsyncClient) -> None:
     headers: Dict[str, str] = {}
     response = await client.request(
         "GET",
-        "/effects/{effectName}".format(effectName="effect_name_example"),
+        "/effects/{effectName}".format(effectName="a"),
         headers=headers,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -143,4 +125,4 @@ async def test_get_effect_list(client: AsyncClient) -> None:
         params=params,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200

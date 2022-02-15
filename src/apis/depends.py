@@ -60,6 +60,7 @@ dependsRandom = Query(
     le=1,
 )
 dependsAddBackground = Body(None, description="Add background request")
+dependsAddEffect = Body(None, description="Add effect request")
 dependsPath = Path(None, description="")
 dependsBody = Body(None, description="")
 dependsForm = Form(None, description="")

@@ -14,7 +14,7 @@ from .constraints import (
     PARTICLE_LOCATORS,
     SKIN_LOCATORS,
 )
-from .effect import create_effect, delete_effect, edit_effect, get_effect, list_effect
+from .effect import EffectCrud
 from .engine import create_engine, delete_engine, edit_engine, get_engine, list_engine
 from .info import (
     BridgeObject,
@@ -70,6 +70,7 @@ __all__ = [
     "SKIN_LOCATORS",
     "LEVEL_LOCATORS",
     "BackgroundCrud",
+    "EffectCrud",
     "BridgeObject",
     "DataBridge",
     "Searchable",
@@ -80,7 +81,6 @@ __all__ = [
     "bulk_to_resp",
     "copy_translate_fields",
     "create_announce",
-    "create_effect",
     "create_engine",
     "create_level",
     "create_particle",
@@ -88,14 +88,12 @@ __all__ = [
     "create_skin",
     "create_user",
     "delete_announce",
-    "delete_effect",
     "delete_engine",
     "delete_level",
     "delete_particle",
     "delete_skin",
     "delete_user",
     "edit_announce",
-    "edit_effect",
     "edit_engine",
     "edit_level",
     "edit_particle",
@@ -106,7 +104,6 @@ __all__ = [
     "get_announces",
     "get_content_page",
     "get_current_unix",
-    "get_effect",
     "get_engine",
     "get_first_item",
     "get_first_item_or_403",
@@ -122,7 +119,6 @@ __all__ = [
     "get_user_or_404",
     "is_owner_or_admin_otherwise_409",
     "list_announce",
-    "list_effect",
     "list_engine",
     "list_info",
     "list_level",
