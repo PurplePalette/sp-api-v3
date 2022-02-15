@@ -12,7 +12,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import true
 from src.config import CDN_ENDPOINT
-from src.cruds.constraints import SRLDefine, SRL_BRIDGES
+from src.cruds.constraints import SRL_BRIDGES, SRLDefine
 from src.database.objects.background import Background
 from src.database.objects.effect import Effect
 from src.database.objects.engine import Engine
@@ -218,9 +218,7 @@ async def get_display_id(db: AsyncSession, id: int) -> str:
     user = await db.execute(select(UserObject.userId).filter(UserObject.id == id))
     res: Optional[str] = user.scalars().first()
     if res is None:
-        raise Exception(
-            "Your account is not registered in this server"
-        )
+        raise Exception("Your account is not registered in this server")
     return res
 
 

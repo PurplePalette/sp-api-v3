@@ -13,16 +13,14 @@ from src.apis.depends import dependsDatabase, dependsLocalization
 
 # from src.cruds.skin import LOCATOR_NAMES as PARTICLE_LOCATORS
 from src.cruds.constraints import (
-    BACKGROUND_VERSION,
-    EFFECT_VERSION,
-    PARTICLE_VERSION,
-    SKIN_VERSION,
-)
-from src.cruds.constraints import (
     BACKGROUND_LOCATORS,
+    BACKGROUND_VERSION,
     EFFECT_LOCATORS,
+    EFFECT_VERSION,
     PARTICLE_LOCATORS,
+    PARTICLE_VERSION,
     SKIN_LOCATORS,
+    SKIN_VERSION,
 )
 from src.cruds.utils import DataBridge, get_first_item_or_404
 from src.database.objects.announce import Announce as AnnounceObject

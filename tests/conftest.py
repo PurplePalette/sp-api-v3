@@ -1,8 +1,11 @@
 import asyncio
+import os
 import sys
+from os.path import dirname, join
 from typing import AsyncGenerator, Generator
 
 import pytest_asyncio
+from dotenv import load_dotenv
 from httpx import AsyncClient
 from seeder import patch_open, seed
 from src.database.db import Base, engine
@@ -13,11 +16,6 @@ from src.security_api import (
     get_current_user_optional_stub,
     get_current_user_stub,
 )
-
-import os
-from os.path import dirname, join
-
-from dotenv import load_dotenv
 
 load_dotenv(verbose=True)
 dotenv_path = join(dirname(__file__), ".env")
