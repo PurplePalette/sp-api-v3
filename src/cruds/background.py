@@ -57,7 +57,7 @@ async def get_background(
 ) -> GetBackgroundResponse:
     """背景を取得します"""
     background_db: BackgroundSave = await get_first_item_or_404(
-        db, select(BackgroundSave).filter(BackgroundSave.userId == name)
+        db, select(BackgroundSave).filter(BackgroundSave.name == name)
     )
     bridge = DataBridge(db, OBJECT_NAME, BACKGROUND_LOCATORS, BACKGROUND_VERSION)
     bridge.to_resp(background_db)
@@ -85,6 +85,8 @@ async def edit_background(
     await is_owner_or_admin_otherwise_409(db, background_db, auth)
     patch_to_model(background_db, model.dict(exclude_unset=True))
     await save_to_db(db, background_db)
+    bridge = DataBridge(db, OBJECT_NAME, BACKGROUND_LOCATORS, BACKGROUND_VERSION)
+    bridge.to_resp(background_db)
     item = BackgroundReqResp.from_orm(background_db)
     return GetBackgroundResponse(
         item=item,
