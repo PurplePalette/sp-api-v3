@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import dependsDatabase, dependsLocalization
 
 # from src.cruds.skin import LOCATOR_NAMES as PARTICLE_LOCATORS
-from src.config import (
+from src.cruds.constraints import (
     BACKGROUND_VERSION,
     EFFECT_VERSION,
     PARTICLE_VERSION,

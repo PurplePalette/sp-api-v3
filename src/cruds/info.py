@@ -7,7 +7,7 @@ from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import Column, Integer, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.config import (
+from src.cruds.constraints import (
     BACKGROUND_VERSION,
     EFFECT_VERSION,
     PARTICLE_VERSION,

@@ -57,7 +57,7 @@ async def add_level(
     level: Level = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
-) -> None:
+) -> GetLevelResponse:
     """指定された譜面情報をサーバーに登録します"""
     ...
 
@@ -96,25 +96,8 @@ async def edit_level(
     level: Level = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
-) -> None:
-    """指定されたlevelを編集します"""
-    ...
-
-
-@router.get(
-    "/levels/{levelName}",
-    responses={
-        200: {"model": GetLevelResponse, "description": "OK"},
-        404: {"description": "Not Found"},
-    },
-    tags=["default_levels"],
-    summary="Get a level",
-)
-async def get_level(
-    levelName: str = dependsPath,
 ) -> GetLevelResponse:
-    """It returns specified level info.
-    It will raise 404 if the level is not registered in this server"""
+    """指定されたlevelを編集します"""
     ...
 
 
@@ -139,7 +122,27 @@ async def get_level_list(
     genre: str = dependsGenre,
     length: str = dependsLength,
     random: int = dependsRandom,
+    db: AsyncSession = dependsDatabase,
 ) -> GetLevelListResponse:
     """It returns list of level infos registered in this server.
     Also it can search using query params"""
+    ...
+
+
+@router.get(
+    "/levels/{levelName}",
+    responses={
+        200: {"model": GetLevelResponse, "description": "OK"},
+        404: {"description": "Not Found"},
+    },
+    tags=["default_levels"],
+    summary="Get a level",
+)
+async def get_level(
+    localization: str = dependsLocalization,
+    levelName: str = dependsPath,
+    db: AsyncSession = dependsDatabase,
+) -> GetLevelResponse:
+    """It returns specified level info.
+    It will raise 404 if the level is not registered in this server"""
     ...
