@@ -16,22 +16,17 @@ async def test_add_skin(client: AsyncClient) -> None:
     Add a skin
     """
     skin = {
-        "descriptionEn": "No description",
-        "updatedTime": 0,
-        "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "author": "author",
-        "texture": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "description": "No description",
         "title": "title",
-        "version": 1,
-        "subtitleEn": "subtitleEn",
-        "userId": "userId",
         "titleEn": "titleEn",
         "subtitle": "subtitle",
-        "name": "name",
-        "createdTime": 0,
+        "subtitleEn": "subtitleEn",
+        "author": "author",
         "authorEn": "authorEn",
+        "description": "No description",
+        "descriptionEn": "No description",
+        "thumbnail": "hash",
+        "data": "hash",
+        "texture": "hash",
     }
 
     headers = {
@@ -44,7 +39,7 @@ async def test_add_skin(client: AsyncClient) -> None:
         json=skin,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -59,11 +54,11 @@ async def test_delete_skin(client: AsyncClient) -> None:
     }
     response = await client.request(
         "DELETE",
-        "/skins/{skinName}".format(skinName="skin_name_example"),
+        "/skins/{skinName}".format(skinName="a"),
         headers=headers,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -73,22 +68,8 @@ async def test_edit_skin(client: AsyncClient) -> None:
     Edit a skin
     """
     skin = {
-        "descriptionEn": "No description",
-        "updatedTime": 0,
-        "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "author": "author",
-        "texture": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "description": "No description",
-        "title": "title",
-        "version": 1,
-        "subtitleEn": "subtitleEn",
-        "userId": "userId",
-        "titleEn": "titleEn",
-        "subtitle": "subtitle",
-        "name": "name",
-        "createdTime": 0,
-        "authorEn": "authorEn",
+        "title": "b",
+        "titleEn": "b",
     }
 
     headers = {
@@ -96,12 +77,12 @@ async def test_edit_skin(client: AsyncClient) -> None:
     }
     response = await client.request(
         "PATCH",
-        "/skins/{skinName}".format(skinName="skin_name_example"),
+        "/skins/{skinName}".format(skinName="a"),
         headers=headers,
         json=skin,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -114,11 +95,11 @@ async def test_get_skin(client: AsyncClient) -> None:
     headers: Dict[str, str] = {}
     response = await client.request(
         "GET",
-        "/skins/{skinName}".format(skinName="skin_name_example"),
+        "/skins/{skinName}".format(skinName="a"),
         headers=headers,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -145,4 +126,4 @@ async def test_get_skin_list(client: AsyncClient) -> None:
         params=params,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200

@@ -1,19 +1,6 @@
 # coding: utf-8
 
-from typing import Dict, List  # noqa: F401
-
-from fastapi import (  # noqa: F401
-    APIRouter,
-    Body,
-    Cookie,
-    Depends,
-    Form,
-    Header,
-    Path,
-    Query,
-    Response,
-    Security,
-)
+from fastapi import APIRouter
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import (
@@ -30,18 +17,15 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
-from src.cruds.skin import create_skin as crud_create
-from src.cruds.skin import delete_skin as crud_delete
-from src.cruds.skin import edit_skin as crud_edit
-from src.cruds.skin import get_skin as crud_get
-from src.cruds.skin import list_skin as crud_list
-from src.models.extra_models import TokenModel  # noqa: F401
+from src.cruds.skin import SkinCrud
+from src.models.add_skin_request import AddSkinRequest
+from src.models.edit_skin_request import EditSkinRequest
 from src.models.get_skin_list_response import GetSkinListResponse
 from src.models.get_skin_response import GetSkinResponse
 from src.models.search_query import SearchOrder, SearchQueries, SearchSort, SearchStatus
-from src.models.skin import Skin
 
 router = APIRouter()
+crud = SkinCrud()
 
 
 @router.post(
@@ -56,12 +40,12 @@ router = APIRouter()
     summary="Add a skin",
 )
 async def add_skin(
-    skin: Skin = dependsBody,
+    skin: AddSkinRequest = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> GetSkinResponse:
     """指定されたスキン情報をサーバーに登録します"""
-    return await crud_create(db, skin, user)
+    return await crud.add(db, skin, user)
 
 
 @router.delete(
@@ -78,7 +62,7 @@ async def delete_skin(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたスキンを削除します"""
-    await crud_delete(db, skinName, user)
+    await crud.delete(db, skinName, user)
     return None
 
 
@@ -96,12 +80,12 @@ async def delete_skin(
 )
 async def edit_skin(
     skinName: str = dependsPath,
-    skin: Skin = dependsBody,
+    skin: EditSkinRequest = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> GetSkinResponse:
     """指定したskinを編集します"""
-    return await crud_edit(db, skinName, skin, user)
+    return await crud.edit(db, skinName, skin, user)
 
 
 @router.get(
@@ -126,7 +110,7 @@ async def get_skin_list(
     """It returns list of skin infos registered in this server.
     Also it can search using query params"""
     queries = SearchQueries(localization, keywords, author, sort, order, status, random)
-    return await crud_list(db, page, queries)
+    return await crud.list(db, page, queries)
 
 
 @router.get(
@@ -145,4 +129,4 @@ async def get_skin(
 ) -> GetSkinResponse:
     """It returns specified skin info.
     It will raise 404 if the skin is not registered in this server"""
-    return await crud_get(db, skinName, localization)
+    return await crud.get(db, skinName, localization)
