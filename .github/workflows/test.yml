@@ -5,6 +5,8 @@ jobs:
     name: CI
     timeout-minutes: 5
     runs-on: ubuntu-latest
+    environment:
+      name: CI
     services:
       db:
         image: mysql:8.0
