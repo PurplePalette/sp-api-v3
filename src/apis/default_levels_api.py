@@ -3,10 +3,6 @@
 from fastapi import APIRouter
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models.search_query import SearchQueries
-from src.models.edit_level_request import EditLevelRequest
-from src.models.add_level_request import AddLevelRequest
-from src.cruds.level import LevelCrud
 from src.apis.depends import (
     dependsAuthor,
     dependsBody,
@@ -25,8 +21,12 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
+from src.cruds.level import LevelCrud
+from src.models.add_level_request import AddLevelRequest
+from src.models.edit_level_request import EditLevelRequest
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
+from src.models.search_query import SearchQueries
 
 router = APIRouter()
 crud = LevelCrud()
@@ -66,7 +66,8 @@ async def delete_level(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたレベルを削除します"""
-    return await crud.delete(db, levelName, user)
+    await crud.delete(db, levelName, user)
+    return None
 
 
 @router.patch(

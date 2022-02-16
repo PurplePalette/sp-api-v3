@@ -1,13 +1,14 @@
 import asyncio
 from dataclasses import dataclass
 from typing import Any, Dict, Union
-from sqlalchemy.orm import selectinload, joinedload
+
 from fastapi import HTTPException
 from fastapi_cloudauth.firebase import FirebaseClaims
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload, selectinload
 from src.cruds.abstract import AbstractCrud
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
@@ -21,19 +22,19 @@ from src.cruds.utils import (
     save_to_db,
 )
 from src.database.objects import (
-    LevelSave,
-    EngineSave,
     BackgroundSave,
     EffectSave,
-    SkinSave,
+    EngineSave,
+    LevelSave,
     ParticleSave,
+    SkinSave,
 )
-from src.models.default_search import defaultSearch
-from src.models.level import Level as LevelReqResp
 from src.models.add_level_request import AddLevelRequest
+from src.models.default_search import defaultSearch
 from src.models.edit_level_request import EditLevelRequest
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
+from src.models.level import Level as LevelReqResp
 from src.models.search_query import SearchQueries
 from src.models.sonolus_page import SonolusPage, toSonolusPage
 
@@ -58,7 +59,7 @@ class LevelCrud(AbstractCrud):  # type: ignore
         self, db: AsyncSession, model: LevelReqResp, exclude_unset: bool = False
     ) -> Dict[str, Any]:
         """モデルに指定されたSonolusオブジェクトをDBから取り出してIDを埋めます"""
-        model_import = model.dict(exclude_unset=exclude_unset)
+        model_import: Dict[str, Any] = model.dict(exclude_unset=exclude_unset)
         # DB側カラム名に合わせる
         if "artists" in model_import:
             model_import["subtitle"] = model_import["artists"]
