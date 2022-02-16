@@ -11,21 +11,21 @@ defaultSearch = Search(
         # KEYWORDS
         SearchTextOption(
             query="keywords",
-            name="text",
+            name="#KEYWORDS",
             type="text",
-            placeholder="Search text",
+            placeholder="#KEYWORDS",
         ),
         # AUTHOR
         SearchTextOption(
             query="author",
-            name="text",
+            name="#AUTHOR",
             type="text",
-            placeholder="AUTHOR",
+            placeholder="#AUTHOR",
         ),
         # SORT
         SearchSelectOption(
             query="sort",
-            name="sort",
+            name="Sort",
             type="select",
             default=0,
             values=["updated_time", "created_time"],
@@ -33,7 +33,49 @@ defaultSearch = Search(
         # ORDER
         SearchSelectOption(
             query="order",
-            name="order",
+            name="Order",
+            type="select",
+            default=0,
+            values=["desc", "asc"],
+        ),
+        # RANDOM
+        SearchToggleOption(
+            query="random",
+            name="#RANDOM",
+            type="toggle",
+            default=False,
+        ),
+    ]
+)
+
+defaultUserSearch = Search(
+    options=[
+        # KEYWORDS
+        SearchTextOption(
+            query="keywords",
+            name="#KEYWORDS",
+            type="text",
+            placeholder="#KEYWORDS",
+        ),
+        # AUTHOR
+        SearchTextOption(
+            query="author",
+            name="#AUTHOR",
+            type="text",
+            placeholder="#AUTHOR",
+        ),
+        # SORT
+        SearchSelectOption(
+            query="sort",
+            name="Sort",
+            type="select",
+            default=0,
+            values=["updated_time", "created_time"],
+        ),
+        # ORDER
+        SearchSelectOption(
+            query="order",
+            name="Order",
             type="select",
             default=0,
             values=["desc", "asc"],
@@ -41,7 +83,7 @@ defaultSearch = Search(
         # STATUS
         SearchSelectOption(
             query="status",
-            name="status",
+            name="#CATEGORY",
             type="select",
             default=0,
             values=["any", "testing"],
@@ -49,7 +91,7 @@ defaultSearch = Search(
         # RANDOM
         SearchToggleOption(
             query="random",
-            name="random",
+            name="#RANDOM",
             type="toggle",
             default=False,
         ),
@@ -62,21 +104,109 @@ levelSearch = Search(
         # KEYWORDS
         SearchTextOption(
             query="keywords",
-            name="text",
+            name="#KEYWORDS",
             type="text",
             placeholder="Search text",
         ),
         # AUTHOR
         SearchTextOption(
             query="author",
-            name="text",
+            name="#AUTHOR",
             type="text",
             placeholder="AUTHOR",
         ),
         # SORT
         SearchSelectOption(
             query="sort",
-            name="sort",
+            name="Sort",
+            type="select",
+            default=0,
+            values=[
+                "updated_time",
+                "created_time",
+                "bpm",
+                "likes",
+                "mylists",
+                "notes",
+                "rating",
+            ],
+        ),
+        # ORDER
+        SearchSelectOption(
+            query="order",
+            name="Order",
+            type="select",
+            default=0,
+            values=["desc", "asc"],
+        ),
+        # RATING_MIN
+        SearchSliderOption(
+            query="rating_min",
+            name="#RATING_MINIMUM",
+            type="slider",
+            default=1,
+            min=1,
+            max=50,
+            step=1,
+            display="number",
+        ),
+        # RATING_MAX
+        SearchSliderOption(
+            query="rating_max",
+            name="#RATING_MAXIMUM",
+            type="slider",
+            default=50,
+            min=1,
+            max=50,
+            step=1,
+            display="number",
+        ),
+        # GENRE
+        SearchSelectOption(
+            query="genre",
+            name="#GENRE",
+            type="select",
+            default=0,
+            values=["any", "vocaloid", "jpop", "anime", "general"],
+        ),
+        # LENGTH
+        SearchSelectOption(
+            query="length",
+            name="#LENGTH",
+            type="select",
+            default=0,
+            values=["any", "short", "long", "very_short", "very_long"],
+        ),
+        # RANDOM
+        SearchToggleOption(
+            query="random",
+            name="#RANDOM",
+            type="toggle",
+            default=False,
+        ),
+    ]
+)
+
+levelUserSearch = Search(
+    options=[
+        # KEYWORDS
+        SearchTextOption(
+            query="keywords",
+            name="#KEYWORDS",
+            type="text",
+            placeholder="Search text",
+        ),
+        # AUTHOR
+        SearchTextOption(
+            query="author",
+            name="#AUTHOR",
+            type="text",
+            placeholder="AUTHOR",
+        ),
+        # SORT
+        SearchSelectOption(
+            query="sort",
+            name="Sort",
             type="select",
             default=0,
             values=[
@@ -92,7 +222,7 @@ levelSearch = Search(
         # ORDER
         SearchSelectOption(
             query="order",
-            name="order",
+            name="Order",
             type="select",
             default=0,
             values=["desc", "asc"],
@@ -100,7 +230,7 @@ levelSearch = Search(
         # RATING_MIN
         SearchSliderOption(
             query="rating_min",
-            name="rating_min",
+            name="#RATING_MINIMUM",
             type="slider",
             default=1,
             min=1,
@@ -111,7 +241,7 @@ levelSearch = Search(
         # RATING_MAX
         SearchSliderOption(
             query="rating_max",
-            name="rating_max",
+            name="#RATING_MAXIMUM",
             type="slider",
             default=50,
             min=1,
@@ -122,7 +252,7 @@ levelSearch = Search(
         # GENRE
         SearchSelectOption(
             query="genre",
-            name="genre",
+            name="#GENRE",
             type="select",
             default=0,
             values=["any", "vocaloid", "jpop", "anime", "general"],
@@ -130,7 +260,7 @@ levelSearch = Search(
         # STATUS
         SearchSelectOption(
             query="status",
-            name="status",
+            name="#CATEGORY",
             type="select",
             default=0,
             values=["any", "testing", "played", "unplayed", "liked", "mylisted"],
@@ -138,7 +268,7 @@ levelSearch = Search(
         # LENGTH
         SearchSelectOption(
             query="length",
-            name="length",
+            name="#LENGTH",
             type="select",
             default=0,
             values=["any", "short", "long", "very_short", "very_long"],
@@ -146,7 +276,7 @@ levelSearch = Search(
         # RANDOM
         SearchToggleOption(
             query="random",
-            name="random",
+            name="#RANDOM",
             type="toggle",
             default=False,
         ),
