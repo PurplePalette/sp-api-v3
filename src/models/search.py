@@ -29,8 +29,8 @@ class Search(BaseModel):
             Union[
                 SearchTextOption,
                 SearchSliderOption,
-                SearchToggleOption,
                 SearchSelectOption,
+                SearchToggleOption,
             ]
         ]
     ] = None
