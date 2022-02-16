@@ -1,21 +1,12 @@
 # coding: utf-8
 
-from typing import Dict, List  # noqa: F401
-
-from fastapi import (  # noqa: F401
-    APIRouter,
-    Body,
-    Cookie,
-    Depends,
-    Form,
-    Header,
-    Path,
-    Query,
-    Response,
-    Security,
-)
+from fastapi import APIRouter
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
+from src.models.search_query import SearchQueries
+from src.models.edit_level_request import EditLevelRequest
+from src.models.add_level_request import AddLevelRequest
+from src.cruds.level import LevelCrud
 from src.apis.depends import (
     dependsAuthor,
     dependsBody,
@@ -34,12 +25,11 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
-from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
-from src.models.level import Level
 
 router = APIRouter()
+crud = LevelCrud()
 
 
 @router.post(
@@ -54,12 +44,12 @@ router = APIRouter()
     summary="Add a level",
 )
 async def add_level(
-    level: Level = dependsBody,
+    level: AddLevelRequest = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> GetLevelResponse:
     """指定された譜面情報をサーバーに登録します"""
-    ...
+    return await crud.add(db, level, user)
 
 
 @router.delete(
@@ -76,7 +66,7 @@ async def delete_level(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定されたレベルを削除します"""
-    ...
+    return await crud.delete(db, levelName, user)
 
 
 @router.patch(
@@ -93,12 +83,12 @@ async def delete_level(
 )
 async def edit_level(
     levelName: str = dependsPath,
-    level: Level = dependsBody,
+    level: EditLevelRequest = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> GetLevelResponse:
     """指定されたlevelを編集します"""
-    ...
+    return await crud.edit(db, levelName, level, user)
 
 
 @router.get(
@@ -126,7 +116,20 @@ async def get_level_list(
 ) -> GetLevelListResponse:
     """It returns list of level infos registered in this server.
     Also it can search using query params"""
-    ...
+    queries = SearchQueries(
+        localization,
+        keywords,
+        author,
+        sort,
+        order,
+        status,
+        random,
+        rating_min,
+        rating_max,
+        genre,
+        length,
+    )
+    return await crud.list(db, page, queries)
 
 
 @router.get(
@@ -145,4 +148,4 @@ async def get_level(
 ) -> GetLevelResponse:
     """It returns specified level info.
     It will raise 404 if the level is not registered in this server"""
-    ...
+    return await crud.get(db, levelName, localization)

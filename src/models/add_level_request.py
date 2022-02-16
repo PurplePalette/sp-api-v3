@@ -58,7 +58,7 @@ class AddLevelRequest(BaseModel):
     bgm: str
     data: str
     preview: str
-    genre: list[str]
+    genre: List[str]
     length: int
     bpm: int
     notes: int

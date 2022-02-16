@@ -47,7 +47,6 @@ class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     def toLevelItem(self) -> LevelModel:
         # これが呼ばれる前に db_to_respを通って
         # 無理やり型変換してる
-        print(self.background)
         return LevelModel(
             name=self.name,
             version=self.version,

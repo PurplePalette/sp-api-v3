@@ -59,7 +59,7 @@ class EditLevelRequest(BaseModel):
     bgm: Optional[str] = None
     data: Optional[str] = None
     preview: Optional[str] = None
-    genre: Optional[list[str]] = None
+    genre: Optional[List[str]] = None
     length: Optional[int] = None
     bpm: Optional[int] = None
     notes: Optional[int] = None
