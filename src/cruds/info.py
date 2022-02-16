@@ -6,6 +6,7 @@ from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import Column, Integer, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 from src.cruds.utils import db_to_resp, get_first_item_or_404
 from src.database.objects import (
     AnnounceSave,
@@ -30,7 +31,6 @@ from src.models.server_info_levels import ServerInfoLevels
 from src.models.server_info_particles import ServerInfoParticles
 from src.models.server_info_skins import ServerInfoSkins
 from src.models.skin import Skin as SkinResp
-
 
 PAGE_SIZE: Params = Params(page=1, size=5)
 
@@ -90,23 +90,36 @@ def create_server_info(
 async def list_info(db: AsyncSession, localization: str) -> ServerInfo:
     """サーバー情報を取得します"""
     tiles: List[LevelSave] = await get_announces(db, [1, 2])
-    levels: Page[LevelSave]
+    # joinedload すべきだが、どうやらjoinedloadはlazyできるらしい
+    levels: Page[LevelSave] = await paginate(
+        db,
+        select(LevelSave)
+        .order_by(LevelSave.updatedTime.desc())
+        .options(
+            selectinload(LevelSave.genre),
+            selectinload(LevelSave.likes),
+            selectinload(LevelSave.favorites),
+        ),
+        PAGE_SIZE,
+    )  # type: ignore
     skins: Page[SkinSave]
     backgrounds: Page[BackgroundSave]
     effects: Page[EffectSave]
     particles: Page[ParticleSave]
     engines: Page[EngineSave]
-    objects = [
-        LevelSave,
-        SkinSave,
-        BackgroundSave,
-        EffectSave,
-        ParticleSave,
-        EngineSave,
-    ]
-    levels, skins, backgrounds, effects, particles, engines = await asyncio.gather(
-        *[get_content_page(db, obj) for obj in objects]
-    )
+    objects = [SkinSave, BackgroundSave, EffectSave, ParticleSave, EngineSave]
+    # 各要素リストの生成
+    skins, backgrounds, effects, particles, engines = await asyncio.gather(
+        *[
+            paginate(
+                db,
+                select(obj).order_by(obj.updatedTime.desc()),
+                PAGE_SIZE,
+            )
+            for obj in objects
+        ]
+    )  # type: ignore
+    # 応答型に変換
     bridge_objects: List[Page[Any]] = [
         levels,
         skins,
@@ -118,6 +131,8 @@ async def list_info(db: AsyncSession, localization: str) -> ServerInfo:
     for obj in bridge_objects:
         for item in obj.items:
             await db_to_resp(db, item, localization)
+    levels.items = [level.toLevelItem() for level in levels.items]
+    # お知らせとレベルを結合
     tile_and_levels: List[LevelResp] = tiles + list(
         (levels.items if len(levels.items) <= 3 else levels.items[:2])
     )
