@@ -118,8 +118,7 @@ class LevelCrud(AbstractCrud):  # type: ignore
             level_db.engine.effect,
         ]:
             await db_to_resp(db, db_obj)
-        # TODO: ここで DB側 likes Listを likes intに 辻褄合わせする
-        item = LevelReqResp.from_orm(level_db)
+        item = level_db.toLevelItem()
         resp = GetLevelResponse(
             item=item,
             description=item.description,
