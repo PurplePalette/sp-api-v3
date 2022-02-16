@@ -1,6 +1,6 @@
 import asyncio
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Union
 from sqlalchemy.orm import selectinload, joinedload
 from fastapi import HTTPException
 from fastapi_cloudauth.firebase import FirebaseClaims
@@ -55,44 +55,39 @@ SRLConvertDict = [
 
 class LevelCrud(AbstractCrud):  # type: ignore
     async def create_dict(
-        self, db: AsyncSession, model: LevelReqResp
+        self, db: AsyncSession, model: LevelReqResp, exclude_unset: bool = False
     ) -> Dict[str, Any]:
         """モデルに指定されたSonolusオブジェクトをDBから取り出してIDを埋めます"""
-        model_import = model.dict()
+        model_import = model.dict(exclude_unset=exclude_unset)
         # DB側カラム名に合わせる
-        model_import["subtitle"] = model_import["artists"]
-        model_import["subtitleEn"] = model_import["artistsEn"]
+        if "artists" in model_import:
+            model_import["subtitle"] = model_import["artists"]
+        if "artistsEn" in model_import:
+            model_import["subtitleEn"] = model_import["artistsEn"]
         # SRL周りをDB側のIDに変換
         for convert in SRLConvertDict:
-            obj_req = model_import[convert.name]
-            if obj_req:
-                obj_db = await get_first_item_or_404(
-                    db, select(convert.obj.id).filter(convert.obj.name == obj_req)
-                )
-                model_import[convert.name + "Id"] = obj_db
+            if convert.name in model_import:
+                obj_req = model_import[convert.name]
+                if obj_req:
+                    obj_db = await get_first_item_or_404(
+                        db, select(convert.obj.id).filter(convert.obj.name == obj_req)
+                    )
+                    model_import[convert.name + "Id"] = obj_db
         # 存在してると変換できないフィールドを消す
         for key in ["artists", "artistsEn", "preview", "genre"] + [
             s.name for s in SRLConvertDict
         ]:
-            del model_import[key]
+            if key in model_import:
+                del model_import[key]
         return model_import
 
-    async def add(
-        self, db: AsyncSession, model: AddLevelRequest, auth: FirebaseClaims
-    ) -> Union[HTTPException, GetLevelResponse]:
-        """レベルを追加します"""
-        model_import = await self.create_dict(db, model)
-        level_db = LevelSave(**model_import)
-        level_db.name = await get_new_name(db, LevelSave)
-        level_db.userId = auth["user_id"]
-        await req_to_db(db, level_db, is_new=True)
-        await save_to_db(db, level_db)
+    async def get_single_level(
+        self, stmt: Any, db: AsyncSession, localization: str
+    ) -> LevelReqResp:
         # 保存するとリレーション周りのデータが消し飛ぶのでjoinedして取得し直す
-        level_db = await get_first_item_or_404(
+        level_db: LevelSave = await get_first_item_or_404(
             db,
-            select(LevelSave)
-            .filter(LevelSave.id == level_db.id)
-            .options(
+            stmt.options(
                 joinedload(LevelSave.engine).options(
                     joinedload(EngineSave.background),
                     joinedload(EngineSave.skin),
@@ -117,8 +112,23 @@ class LevelCrud(AbstractCrud):  # type: ignore
             level_db.engine.particle,
             level_db.engine.effect,
         ]:
-            await db_to_resp(db, db_obj)
+            await db_to_resp(db, db_obj, localization)
         item = level_db.toLevelItem()
+        return item
+
+    async def add(
+        self, db: AsyncSession, model: AddLevelRequest, auth: FirebaseClaims
+    ) -> Union[HTTPException, GetLevelResponse]:
+        """レベルを追加します"""
+        model_import = await self.create_dict(db, model)
+        level_db = LevelSave(**model_import)
+        level_db.name = await get_new_name(db, LevelSave)
+        level_db.userId = auth["user_id"]
+        await req_to_db(db, level_db, is_new=True)
+        await save_to_db(db, level_db)
+        item = await self.get_single_level(
+            select(LevelSave).filter(LevelSave.id == level_db.id), db, "ja"
+        )
         resp = GetLevelResponse(
             item=item,
             description=item.description,
@@ -130,11 +140,9 @@ class LevelCrud(AbstractCrud):  # type: ignore
         self, db: AsyncSession, name: str, localization: str
     ) -> GetLevelResponse:
         """レベルを取得します"""
-        level_db: LevelSave = await get_first_item_or_404(
-            db, select(LevelSave).filter(LevelSave.name == name)
+        item = await self.get_single_level(
+            select(LevelSave).filter(LevelSave.name == name), db, localization
         )
-        await db_to_resp(db, level_db, localization)
-        item = LevelReqResp.from_orm(level_db)
         return GetLevelResponse(
             item=item,
             description=item.description,
@@ -156,11 +164,12 @@ class LevelCrud(AbstractCrud):  # type: ignore
             ),
         )
         await is_owner_or_admin_otherwise_409(db, level_db, auth)
-        patch_to_model(level_db, model.dict(exclude_unset=True))
-        await self.fill_level(db, model, level_db)
+        model_import = await self.create_dict(db, model, True)
+        patch_to_model(level_db, model_import)
         await save_to_db(db, level_db)
-        await db_to_resp(db, level_db)
-        item = LevelReqResp.from_orm(level_db)
+        item = await self.get_single_level(
+            select(LevelSave).filter(LevelSave.id == level_db.id), db, "ja"
+        )
         return GetLevelResponse(
             item=item,
             description=item.description,
