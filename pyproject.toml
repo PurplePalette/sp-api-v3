@@ -53,7 +53,7 @@ build-backend = "poetry.core.masonry.api"
 version = "0.10"
 
 [tool.taskipy.tasks]
-start = { cmd = "uvicorn src.main:app --reload", help = "launch test server" }
+start = { cmd = "uvicorn src.main:app --reload --host 0.0.0.0", help = "launch test server" }
 migrate = { cmd = "alembic upgrade head" }
 seed = { cmd = "python seeder.py" }
 
