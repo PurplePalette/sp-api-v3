@@ -16,94 +16,21 @@ async def test_add_engine(client: AsyncClient) -> None:
     Add an engine
     """
     engine = {
-        "descriptionEn": "No description",
-        "updatedTime": 0,
-        "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "configuration": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "author": "author",
-        "skin": {
-            "descriptionEn": "No description",
-            "updatedTime": 0,
-            "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "author": "author",
-            "texture": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "description": "No description",
-            "title": "title",
-            "version": 1,
-            "subtitleEn": "subtitleEn",
-            "userId": "userId",
-            "titleEn": "titleEn",
-            "subtitle": "subtitle",
-            "name": "name",
-            "createdTime": 0,
-            "authorEn": "authorEn",
-        },
-        "description": "No description",
         "title": "title",
-        "version": 1,
-        "subtitleEn": "subtitleEn",
-        "userId": "userId",
         "titleEn": "titleEn",
-        "background": {
-            "descriptionEn": "No description",
-            "image": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "updatedTime": 0,
-            "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "configuration": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "author": "author",
-            "description": "No description",
-            "title": "title",
-            "version": 1,
-            "subtitleEn": "subtitleEn",
-            "userId": "userId",
-            "titleEn": "titleEn",
-            "subtitle": "subtitle",
-            "name": "name",
-            "createdTime": 0,
-            "authorEn": "authorEn",
-        },
-        "subtitle": "subtitle",
-        "effect": {
-            "descriptionEn": "No description",
-            "updatedTime": 0,
-            "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "author": "author",
-            "description": "No description",
-            "title": "title",
-            "version": 1,
-            "subtitleEn": "subtitleEn",
-            "userId": "userId",
-            "titleEn": "titleEn",
-            "subtitle": "subtitle",
-            "name": "name",
-            "createdTime": 0,
-            "authorEn": "authorEn",
-        },
-        "name": "name",
-        "createdTime": 0,
-        "particle": {
-            "descriptionEn": "No description",
-            "updatedTime": 0,
-            "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "author": "author",
-            "texture": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "description": "No description",
-            "title": "title",
-            "version": 1,
-            "subtitleEn": "subtitleEn",
-            "userId": "userId",
-            "titleEn": "titleEn",
-            "subtitle": "subtitle",
-            "name": "name",
-            "createdTime": 0,
-            "authorEn": "authorEn",
-        },
+        "author": "author",
         "authorEn": "authorEn",
+        "subtitle": "subtitle",
+        "subtitleEn": "subtitleEn",
+        "description": "No description",
+        "descriptionEn": "No description",
+        "thumbnail": "hash",
+        "data": "hash",
+        "configuration": "hash",
+        "skin": "a",
+        "background": "a",
+        "particle": "a",
+        "effect": "a",
     }
 
     headers = {
@@ -116,7 +43,7 @@ async def test_add_engine(client: AsyncClient) -> None:
         json=engine,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -131,11 +58,11 @@ async def test_delete_engine(client: AsyncClient) -> None:
     }
     response = await client.request(
         "DELETE",
-        "/engines/{engineName}".format(engineName="engine_name_example"),
+        "/engines/{engineName}".format(engineName="a"),
         headers=headers,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -145,94 +72,8 @@ async def test_edit_engine(client: AsyncClient) -> None:
     Edit an engine
     """
     engine = {
-        "descriptionEn": "No description",
-        "updatedTime": 0,
-        "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "configuration": {"type": "LevelData", "hash": "hash", "url": "url"},
-        "author": "author",
-        "skin": {
-            "descriptionEn": "No description",
-            "updatedTime": 0,
-            "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "author": "author",
-            "texture": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "description": "No description",
-            "title": "title",
-            "version": 1,
-            "subtitleEn": "subtitleEn",
-            "userId": "userId",
-            "titleEn": "titleEn",
-            "subtitle": "subtitle",
-            "name": "name",
-            "createdTime": 0,
-            "authorEn": "authorEn",
-        },
-        "description": "No description",
-        "title": "title",
-        "version": 1,
-        "subtitleEn": "subtitleEn",
-        "userId": "userId",
-        "titleEn": "titleEn",
-        "background": {
-            "descriptionEn": "No description",
-            "image": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "updatedTime": 0,
-            "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "configuration": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "author": "author",
-            "description": "No description",
-            "title": "title",
-            "version": 1,
-            "subtitleEn": "subtitleEn",
-            "userId": "userId",
-            "titleEn": "titleEn",
-            "subtitle": "subtitle",
-            "name": "name",
-            "createdTime": 0,
-            "authorEn": "authorEn",
-        },
-        "subtitle": "subtitle",
-        "effect": {
-            "descriptionEn": "No description",
-            "updatedTime": 0,
-            "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "author": "author",
-            "description": "No description",
-            "title": "title",
-            "version": 1,
-            "subtitleEn": "subtitleEn",
-            "userId": "userId",
-            "titleEn": "titleEn",
-            "subtitle": "subtitle",
-            "name": "name",
-            "createdTime": 0,
-            "authorEn": "authorEn",
-        },
-        "name": "name",
-        "createdTime": 0,
-        "particle": {
-            "descriptionEn": "No description",
-            "updatedTime": 0,
-            "thumbnail": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "data": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "author": "author",
-            "texture": {"type": "LevelData", "hash": "hash", "url": "url"},
-            "description": "No description",
-            "title": "title",
-            "version": 1,
-            "subtitleEn": "subtitleEn",
-            "userId": "userId",
-            "titleEn": "titleEn",
-            "subtitle": "subtitle",
-            "name": "name",
-            "createdTime": 0,
-            "authorEn": "authorEn",
-        },
-        "authorEn": "authorEn",
+        "title": "b",
+        "titleEn": "b",
     }
 
     headers = {
@@ -240,12 +81,12 @@ async def test_edit_engine(client: AsyncClient) -> None:
     }
     response = await client.request(
         "PATCH",
-        "/engines/{engineName}".format(engineName="engine_name_example"),
+        "/engines/{engineName}".format(engineName="a"),
         headers=headers,
         json=engine,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -258,11 +99,11 @@ async def test_get_engine(client: AsyncClient) -> None:
     headers: Dict[str, str] = {}
     response = await client.request(
         "GET",
-        "/engines/{engineName}".format(engineName="engine_name_example"),
+        "/engines/{engineName}".format(engineName="a"),
         headers=headers,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
@@ -289,4 +130,4 @@ async def test_get_engine_list(client: AsyncClient) -> None:
         params=params,
     )
 
-    assert response.status_code != 500
+    assert response.status_code == 200
