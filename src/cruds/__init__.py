@@ -1,11 +1,5 @@
 from .abstract import AbstractCrud
-from .announce import (
-    create_announce,
-    delete_announce,
-    edit_announce,
-    get_announce,
-    list_announce,
-)
+from .announce import AnnounceCrud
 from .background import BackgroundCrud
 from .constraints import (
     BACKGROUND_LOCATORS,
@@ -64,6 +58,7 @@ __all__ = [
     "SkinCrud",
     "LevelCrud",
     "EngineCrud",
+    "AnnounceCrud",
     "DataBridge",
     "Searchable",
     "all_fields_exists_or_400",
@@ -71,16 +66,12 @@ __all__ = [
     "buildFilter",
     "buildSort",
     "copy_translate_fields",
-    "create_announce",
     "create_server_info",
     "create_user",
-    "delete_announce",
     "delete_user",
-    "edit_announce",
     "edit_user",
-    "get_admin_or_403",
-    "get_announce",
     "get_announces",
+    "get_admin_or_403",
     "get_content_page",
     "get_current_unix",
     "get_first_item",
@@ -93,7 +84,6 @@ __all__ = [
     "get_user_deep",
     "get_user_or_404",
     "is_owner_or_admin_otherwise_409",
-    "list_announce",
     "list_info",
     "list_user",
     "move_translate_fields",

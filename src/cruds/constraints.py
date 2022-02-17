@@ -17,6 +17,7 @@ class SRLDict:
     level: SRLDefine
     particle: SRLDefine
     skin: SRLDefine
+    announce: SRLDefine
 
 
 SKIN_VERSION = 2
@@ -30,6 +31,7 @@ ENGINE_LOCATORS = ["thumbnail", "data", "configuration"]
 BACKGROUND_LOCATORS = ["thumbnail", "data", "image", "configuration"]
 EFFECT_LOCATORS = ["thumbnail", "data"]
 LEVEL_LOCATORS = ["cover", "bgm", "data"]
+ANNOUNCE_LOCATORS = ["cover", "bgm"]
 PARTICLE_LOCATORS = ["thumbnail", "data", "texture"]
 SKIN_LOCATORS = ["thumbnail", "data", "texture"]
 
@@ -41,4 +43,5 @@ SRL_BRIDGES = SRLDict(
     SRLDefine("level", LEVEL_VERSION, LEVEL_LOCATORS),
     SRLDefine("particle", PARTICLE_VERSION, PARTICLE_LOCATORS),
     SRLDefine("skin", SKIN_VERSION, SKIN_LOCATORS),
+    SRLDefine("announce", LEVEL_VERSION, ANNOUNCE_LOCATORS),
 )
