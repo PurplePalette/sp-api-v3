@@ -2,21 +2,11 @@
 
 from typing import Dict, List, Optional  # noqa: F401
 
-from fastapi import (  # noqa: F401
-    APIRouter,
-    Body,
-    Cookie,
-    Depends,
-    Form,
-    Header,
-    Path,
-    Query,
-    Response,
-    Security,
-)
+from fastapi import APIRouter
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import (
+    dependsAddUser,
     dependsBody,
     dependsDatabase,
     dependsFirebase,
@@ -24,16 +14,13 @@ from src.apis.depends import (
     dependsPage,
     dependsPath,
 )
-from src.cruds.user import create_user as crud_create
-from src.cruds.user import delete_user as crud_delete  # noqa: F401
-from src.cruds.user import edit_user as crud_edit  # noqa: F401
-from src.cruds.user import get_user as crud_get  # noqa: F401
-from src.cruds.user import list_user as crud_list  # noqa: F401
-from src.models.extra_models import TokenModel  # noqa: F401
+from src.cruds.user import UserCrud
+from src.models.add_user_request import AddUserRequest
 from src.models.get_user_list_response import GetUserListResponse
 from src.models.user import User
 
 router = APIRouter()
+crud = UserCrud()
 
 
 @router.post(
@@ -48,12 +35,11 @@ router = APIRouter()
     summary="Add a user",
 )
 async def add_user(
-    user: User = dependsBody,
     db: AsyncSession = dependsDatabase,
-    auth: FirebaseClaims = dependsFirebase,
+    req: AddUserRequest = dependsAddUser,
 ) -> User:
     """Add specified new user to server"""
-    return await crud_create(db, user, auth)
+    return await crud.add(db, req)
 
 
 @router.delete(
@@ -73,7 +59,7 @@ async def delete_user(
     user: FirebaseClaims = dependsFirebase,
 ) -> None:
     """指定したユーザーを削除します"""
-    await crud_delete(db, userId, user)
+    await crud.delete(db, userId, user)
     return None
 
 
@@ -96,7 +82,7 @@ async def edit_user(
     auth: FirebaseClaims = dependsFirebase,
 ) -> User:
     """指定したuser情報を編集します"""
-    return await crud_edit(db, userId, user, auth)
+    return await crud.edit(db, user, auth)
 
 
 @router.get(
@@ -113,7 +99,7 @@ async def get_user_list(
     db: AsyncSession = dependsDatabase,
 ) -> GetUserListResponse:
     """サーバーに登録されたユーザー一覧を返します"""
-    return await crud_list(db, page)
+    return await crud.list(db, page)
 
 
 @router.get(
@@ -131,4 +117,4 @@ async def get_user(
     auth: Optional[FirebaseClaims] = dependsFirebaseOptional,
 ) -> User:
     """指定したユーザー情報を取得します"""
-    return await crud_get(db, userId, auth)
+    return await crud.get(db, userId, auth)

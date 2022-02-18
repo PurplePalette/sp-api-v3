@@ -62,6 +62,7 @@ dependsRandom = Query(
 dependsAddBackground = Body(None, description="Add background request")
 dependsAddEffect = Body(None, description="Add effect request")
 dependsAddParticle = Body(None, description="Add particle request")
+dependsAddUser = Body(None, description="Add user request")
 dependsPath = Path(None, description="")
 dependsBody = Body(None, description="")
 dependsForm = Form(None, description="")

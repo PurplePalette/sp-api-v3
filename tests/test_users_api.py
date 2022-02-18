@@ -14,14 +14,7 @@ async def test_add_user(client: AsyncClient) -> None:
 
     Add a user
     """
-    user = {
-        "userId": "gz6xQrm79IN4BiQag78sQqYWYlC3",
-        "accountId": "starKey",
-        "testId": "password",
-        "description": "description",
-        "isDeleted": 0,
-        "isAdmin": 0,
-    }
+    user = {"userId": "gz6xQrm79IN4BiQag78sQqYWYlC3"}
 
     headers = {
         "Authorization": "Bearer StarApi",
@@ -62,27 +55,8 @@ async def test_edit_user(client: AsyncClient) -> None:
     Edit a user
     """
     user = {
-        "updatedTime": 0,
-        "total": {
-            "favorites": 0,
-            "plays": 0,
-            "publish": {
-                "skins": 9,
-                "effects": 5,
-                "engines": 5,
-                "backgrounds": 1,
-                "particles": 2,
-                "levels": 7,
-            },
-            "likes": 0,
-        },
-        "is_deleted": 0,
         "description": "description",
-        "createdTime": 0,
         "testId": "htcckfcn",
-        "is_admin": 0,
-        "userId": "gz6xQrm79IN4BiQag78sQqYWYlC3",
-        "account_key": "super_secret_key",
     }
 
     headers = {
