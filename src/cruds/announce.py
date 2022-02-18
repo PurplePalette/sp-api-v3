@@ -15,8 +15,8 @@ from src.cruds.utils import (
     save_to_db,
 )
 from src.database.objects import AnnounceSave
-from src.models.default_search import defaultSearch
 from src.models.add_announce_request import AddAnnounceRequest
+from src.models.default_search import defaultSearch
 from src.models.edit_announce_request import EditAnnounceRequest
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
@@ -94,9 +94,7 @@ class AnnounceCrud(AbstractCrud):  # type: ignore
             select(AnnounceSave).order_by(AnnounceSave.updatedTime.desc())
         )
         announces: List[AnnounceSave] = resp.scalars()
-        await asyncio.gather(
-            *[db_to_resp(db, announce) for announce in announces]
-        )
+        await asyncio.gather(*[db_to_resp(db, announce) for announce in announces])
         return GetLevelListResponse(
             pageCount=1,
             items=[announce.toLevelItem() for announce in announces],
