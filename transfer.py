@@ -1,19 +1,19 @@
 # coding: utf-8
 import asyncio
-from dataclasses import dataclass
+import glob
 import json
 import os
 import os.path
-import glob
-from sqlalchemy.orm import sessionmaker
+from dataclasses import dataclass
 from typing import Any, Dict, List
-from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
 
 from dotenv import load_dotenv
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import sessionmaker
 from src.cruds.utils import get_first_item_or_error, get_internal_id
-from src.database.objects import UserSave, LevelSave, GenreSave
-from src.database.db import async_session, async_engine
+from src.database.db import async_engine, async_session
+from src.database.objects import GenreSave, LevelSave, UserSave
 
 
 @dataclass
@@ -43,7 +43,7 @@ def load_level(path: str) -> OldLevel:
     return OldLevel(info, files[0], files[1], files[2], files[3])
 
 
-async def add_user(sessionmaker: sessionmaker, userDict: Dict[Any, str]):
+async def add_user(sessionmaker: sessionmaker, userDict: Dict[Any, str]) -> None:
     """Add dict user to database"""
     async with sessionmaker() as db:
         userDict.pop("totalFumen", None)
@@ -62,7 +62,7 @@ async def add_user(sessionmaker: sessionmaker, userDict: Dict[Any, str]):
             print("Fatal: ", e)
 
 
-async def add_level(sessionmaker: sessionmaker, level: OldLevel):
+async def add_level(sessionmaker: sessionmaker, level: OldLevel) -> None:
     """Add dict user to database"""
     async with sessionmaker() as db:
         user_id = await get_internal_id(db, level.info["userId"])
@@ -104,7 +104,7 @@ async def add_level(sessionmaker: sessionmaker, level: OldLevel):
         # Need UploadApi...
 
 
-async def main():
+async def main() -> None:
     load_dotenv(verbose=True)
     dotenv_path = os.path.join(os.path.dirname(__file__), ".env")
     load_dotenv(dotenv_path)
@@ -141,5 +141,9 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    import platform
+
+    if platform.system() == "Windows":
+        policy = asyncio.WindowsSelectorEventLoopPolicy()
+        asyncio.set_event_loop_policy(policy)  # type: ignore
     asyncio.run(main())
