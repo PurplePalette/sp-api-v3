@@ -25,10 +25,10 @@ from src.database.objects import (
     BackgroundSave,
     EffectSave,
     EngineSave,
+    GenreSave,
     LevelSave,
     ParticleSave,
     SkinSave,
-    GenreSave,
 )
 from src.models.add_level_request import AddLevelRequest
 from src.models.default_search import defaultSearch

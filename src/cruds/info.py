@@ -61,6 +61,7 @@ async def get_announces(db: AsyncSession, announceIds: List[int]) -> List[LevelS
             for id in announceIds
         ]
     )
+    await asyncio.gather(*[db_to_resp(db, announce) for announce in announces])
     levels: List[LevelSave] = [a.toLevelItem() for a in announces]
     return levels
 
