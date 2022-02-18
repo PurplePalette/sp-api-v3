@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, func, select
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, func, select
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from src.database.db import Base
@@ -26,6 +26,7 @@ class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     cover = Column(String(128))
     bgm = Column(String(128))
     data = Column(String(128))
+    sus = Column(String(128))
     engineId = Column(Integer, ForeignKey("engines.id"))
     backgroundId = Column(Integer, ForeignKey("backgrounds.id"))
     effectId = Column(Integer, ForeignKey("effects.id"))
@@ -43,6 +44,7 @@ class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     votes = relationship("Vote", back_populates="level")
     pickup = relationship("Pickup", back_populates="level", uselist=False)
     user = relationship("User", back_populates="levels", uselist=False)
+    publicSus = Column(Boolean(), default=False, server_default="0")
 
     def toLevelItem(self) -> LevelModel:
         # これが呼ばれる前に db_to_respを通って
@@ -86,7 +88,7 @@ class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
             length=self.length,
             bpm=self.bpm,
             notes=self.notes,
-            genre=[genre.name for genre in self.genre] if self.genre else [],
+            genre=self.genre.name,
             userId=self.userId,
             likes=self.num_likes,
             mylists=self.num_favorites,

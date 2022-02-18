@@ -28,6 +28,7 @@ from src.database.objects import (
     LevelSave,
     ParticleSave,
     SkinSave,
+    GenreSave,
 )
 from src.models.add_level_request import AddLevelRequest
 from src.models.default_search import defaultSearch
@@ -51,6 +52,7 @@ SRLConvertDict = [
     SRLConvert(EffectSave, "effect"),
     SRLConvert(SkinSave, "skin"),
     SRLConvert(ParticleSave, "particle"),
+    SRLConvert(GenreSave, "genre"),
 ]
 
 
@@ -75,7 +77,7 @@ class LevelCrud(AbstractCrud):  # type: ignore
                     )
                     model_import[convert.name + "Id"] = obj_db
         # 存在してると変換できないフィールドを消す
-        for key in ["artists", "artistsEn", "preview", "genre"] + [
+        for key in ["artists", "artistsEn", "preview"] + [
             s.name for s in SRLConvertDict
         ]:
             if key in model_import:
@@ -99,7 +101,7 @@ class LevelCrud(AbstractCrud):  # type: ignore
                 joinedload(LevelSave.effect),
                 joinedload(LevelSave.background),
                 joinedload(LevelSave.skin),
-                selectinload(LevelSave.genre),
+                joinedload(LevelSave.genre),
                 selectinload(LevelSave.likes),
                 selectinload(LevelSave.favorites),
             ),

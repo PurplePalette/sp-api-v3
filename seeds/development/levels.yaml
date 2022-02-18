@@ -28,3 +28,5 @@
     bgm: "dummy_hash"
     data: "dummy_hash"
     engineId: 1
+    genreId: 1
+    publicSus: false

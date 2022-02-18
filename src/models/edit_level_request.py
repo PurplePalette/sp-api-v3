@@ -39,6 +39,7 @@ class EditLevelRequest(BaseModel):
         bpm: The bpm of this EditLevelRequest [Optional].
         notes: The notes of this EditLevelRequest [Optional].
         public: The public of this EditLevelRequest [Optional].
+        publicSus: The publicSus of this EditLevelRequest [Optional].
     """
 
     rating: Optional[int] = None
@@ -59,11 +60,12 @@ class EditLevelRequest(BaseModel):
     bgm: Optional[str] = None
     data: Optional[str] = None
     preview: Optional[str] = None
-    genre: Optional[List[str]] = None
+    genre: Optional[str] = None
     length: Optional[int] = None
     bpm: Optional[int] = None
     notes: Optional[int] = None
     public: Optional[bool] = None
+    publicSus: Optional[bool] = None
 
     @validator("rating")
     def rating_max(cls, value):
@@ -153,6 +155,16 @@ class EditLevelRequest(BaseModel):
     @validator("preview")
     def preview_max_length(cls, value):
         assert len(value) <= 50
+        return value
+
+    @validator("genre")
+    def genre_min_length(cls, value):
+        assert len(value) >= 1
+        return value
+
+    @validator("genre")
+    def genre_max_length(cls, value):
+        assert len(value) <= 30
         return value
 
     @validator("length")

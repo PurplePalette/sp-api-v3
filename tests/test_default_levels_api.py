@@ -24,7 +24,7 @@ async def test_add_level(client: AsyncClient) -> None:
         "artistsEn": "artistsEn",
         "description": "No description",
         "descriptionEn": "No description",
-        "genre": ["general"],
+        "genre": "general",
         "engine": "a",
         "background": None,
         "skin": None,

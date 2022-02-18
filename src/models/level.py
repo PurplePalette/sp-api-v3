@@ -78,7 +78,7 @@ class Level(BaseModel):
     preview: Optional[SonolusResourceLocator] = None
     data: Optional[SonolusResourceLocator] = None
     public: Optional[bool] = None
-    genre: Optional[List[str]] = None
+    genre: Optional[str] = None
     userId: Optional[str] = None
     createdTime: Optional[int] = None
     updatedTime: Optional[int] = None
@@ -87,6 +87,7 @@ class Level(BaseModel):
     notes: Optional[int] = None
     likes: Optional[int] = None
     mylists: Optional[int] = None
+    sus: Optional[str] = None
 
     @validator("name")
     def name_min_length(cls, value):
@@ -216,6 +217,16 @@ class Level(BaseModel):
     @validator("updatedTime")
     def updatedTime_min(cls, value):
         assert value >= 0
+        return value
+
+    @validator("genre")
+    def genre_min_length(cls, value):
+        assert len(value) >= 1
+        return value
+
+    @validator("genre")
+    def genre_max_length(cls, value):
+        assert len(value) <= 30
         return value
 
     @validator("length")

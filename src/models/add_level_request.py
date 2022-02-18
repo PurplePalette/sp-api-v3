@@ -58,7 +58,7 @@ class AddLevelRequest(BaseModel):
     bgm: str
     data: str
     preview: str
-    genre: List[str]
+    genre: str
     length: int
     bpm: int
     notes: int
@@ -151,6 +151,16 @@ class AddLevelRequest(BaseModel):
     @validator("preview")
     def preview_max_length(cls, value):
         assert len(value) <= 50
+        return value
+
+    @validator("genre")
+    def genre_min_length(cls, value):
+        assert len(value) >= 1
+        return value
+
+    @validator("genre")
+    def genre_max_length(cls, value):
+        assert len(value) <= 30
         return value
 
     @validator("length")
