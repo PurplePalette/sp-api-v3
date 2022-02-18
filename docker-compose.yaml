@@ -44,6 +44,11 @@ services:
       - local-net
     depends_on:
       - database
+  firebase:
+    image: ghcr.io/uyamazak/firebase-auth-emulator:latest
+    command: --project ${FIREBASE_PROJECT}
+    ports:
+      - 9099:9099
   minio:
     image: minio/minio
     volumes:

@@ -5,3 +5,5 @@ api_data/
 minio_data/
 *.pyc
 api_gen
+firebase-debug.log
+ui-debug.log
