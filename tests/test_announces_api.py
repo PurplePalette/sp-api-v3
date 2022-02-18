@@ -17,17 +17,17 @@ async def test_add_announce(client: AsyncClient) -> None:
     Add announce
     """
     announce = {
-        "preview": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "preview": "hash",
         "descriptionEn": "No description",
         "updatedTime": 0,
         "author": "author",
         "rating": 8,
         "description": "No description",
-        "bgm": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "bgm": "hash",
         "title": "title",
         "subtitleEn": "subtitleEn",
         "userId": "userId",
-        "cover": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "cover": "hash",
         "public": 0,
         "titleEn": "titleEn",
         "subtitle": "subtitle",
@@ -74,17 +74,16 @@ async def test_edit_announce(client: AsyncClient) -> None:
     Edit announce
     """
     announce = {
-        "preview": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "preview": "url",
         "descriptionEn": "No description",
         "updatedTime": 0,
         "author": "author",
         "rating": 8,
         "description": "No description",
-        "bgm": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "bgm": "hash",
         "title": "title",
         "subtitleEn": "subtitleEn",
-        "userId": "userId",
-        "cover": {"type": "LevelData", "hash": "hash", "url": "url"},
+        "cover": "hash",
         "public": 0,
         "titleEn": "titleEn",
         "subtitle": "hello_world",
