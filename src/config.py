@@ -16,5 +16,11 @@ ASYNC_DB_URL = f"mysql+aiomysql://{USER}:{PASS}@{HOST}:{PORT}/{DB}?charset=utf8"
 DB_URL = f"mysql+pymysql://{USER}:{PASS}@{HOST}:{PORT}/{DB}?charset=utf8"
 
 CDN_ENDPOINT = os.environ.get("CDN_ENDPOINT")
+S3_ENDPOINT = os.environ.get("S3_ENDPOINT")
+S3_BUCKET = os.environ.get("S3_BUCKET")
+S3_KEY = os.environ.get("S3_KEY")
+S3_SECRET = os.environ.get("S3_SECRET")
+
+
 # Server support version
 SONOLUS_VERSION = "0.5.10"

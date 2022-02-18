@@ -44,7 +44,37 @@ services:
       - local-net
     depends_on:
       - database
-
+  minio:
+    image: minio/minio
+    volumes:
+      - ${VOLUME_MINIO_PATH}:/${S3_BUCKET}
+    ports:
+      - ${PORT_MINIO}:9000
+      - ${PORT_MINIO_CONSOLE}:9001
+    environment:
+      MINIO_ACCESS_KEY: ${S3_KEY}
+      MINIO_SECRET_KEY: ${S3_SECRET}
+    command: ["server", "--console-address", ":9001", "${S3_BUCKET}"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - local-net
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc config host add myminio http://minio:9000 ${S3_KEY} ${S3_SECRET}) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb myminio/${S3_BUCKET};
+      /usr/bin/mc policy download myminio/${S3_BUCKET};
+      exit 0;
+      "
+    networks:
+      - local-net
 networks:
   local-net:
     driver: bridge
