@@ -5,12 +5,16 @@ from os.path import dirname, join
 from typing import AsyncGenerator, Generator
 
 import pytest_asyncio
+import requests
 from dotenv import load_dotenv
+from firebase_admin import auth
+from firebase_admin.auth import EmailAlreadyExistsError
 from httpx import AsyncClient
 from seeder import patch_open, seed
 from src.database.db import Base, engine
 from src.main import app as application
 from src.security_api import (
+    default_app,
     get_current_user,
     get_current_user_optional,
     get_current_user_optional_stub,
@@ -71,4 +75,19 @@ def setup_test_db() -> Generator:
         print("Seeding database...")
         seed()
         print("Seeded database!")
+        try:
+            user = auth.create_user(
+                display_name="KafuuChino",
+                email="user@example.com",
+                password="password",
+                app=default_app,
+            )
+            resp = requests.post(
+                "http://localhost:9099/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=fake",
+                json={"email": "user@example.com", "password": "password"},
+            ).json()
+            print("User created:", user.uid)
+            print("User idToken:", resp["idToken"])
+        except EmailAlreadyExistsError:
+            pass
         yield

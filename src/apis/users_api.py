@@ -2,7 +2,8 @@
 
 from typing import Dict, List, Optional  # noqa: F401
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Response
+from fastapi.responses import JSONResponse
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import (
@@ -13,14 +14,34 @@ from src.apis.depends import (
     dependsFirebaseOptional,
     dependsPage,
     dependsPath,
+    dependsStartSession,
 )
 from src.cruds.user import UserCrud
 from src.models.add_user_request import AddUserRequest
 from src.models.get_user_list_response import GetUserListResponse
+from src.models.start_session_request import StartSessionRequest
 from src.models.user import User
+from src.security_api import start_session
 
 router = APIRouter()
 crud = UserCrud()
+
+
+@router.post(
+    "/users/session",
+    responses={
+        200: {"description": "OK"},
+        400: {"description": "Bad Request"},
+        401: {"description": "Unauthorized"},
+    },
+    tags=["users"],
+    summary="Start a session",
+)
+def add_session(
+    req: StartSessionRequest = dependsStartSession,
+) -> JSONResponse:
+    """Add specified new user to server"""
+    return start_session(req)
 
 
 @router.post(
