@@ -2,9 +2,10 @@
 from fastapi import APIRouter
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
+from src.models.add_announce_request import AddAnnounceRequest
+from src.models.edit_announce_request import EditAnnounceRequest
 from src.apis.depends import dependsBody, dependsDatabase, dependsFirebase, dependsPath
 from src.cruds.announce import AnnounceCrud
-from src.models.announce import Announce
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
 
@@ -25,7 +26,7 @@ crud = AnnounceCrud()
     summary="Add announce",
 )
 async def add_announce(
-    announce: Announce = dependsBody,
+    announce: AddAnnounceRequest = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> GetLevelResponse:
@@ -68,7 +69,7 @@ async def delete_announce(
 )
 async def edit_announce(
     announceName: str = dependsPath,
-    announce: Announce = dependsBody,
+    announce: EditAnnounceRequest = dependsBody,
     db: AsyncSession = dependsDatabase,
     user: FirebaseClaims = dependsFirebase,
 ) -> GetLevelResponse:

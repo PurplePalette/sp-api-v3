@@ -17,23 +17,19 @@ async def test_add_announce(client: AsyncClient) -> None:
     Add announce
     """
     announce = {
-        "preview": "hash",
-        "descriptionEn": "No description",
-        "updatedTime": 0,
-        "author": "author",
-        "rating": 8,
-        "description": "No description",
-        "bgm": "hash",
+        "name": "name",
         "title": "title",
-        "subtitleEn": "subtitleEn",
-        "userId": "userId",
-        "cover": "hash",
-        "public": 0,
         "titleEn": "titleEn",
         "subtitle": "subtitle",
-        "name": "name",
-        "createdTime": 0,
+        "subtitleEn": "subtitleEn",
+        "author": "author",
         "authorEn": "authorEn",
+        "description": "No description",
+        "descriptionEn": "No description",
+        "rating": 10,
+        "cover": "hash",
+        "bgm": "hash",
+        "preview": "hash",
     }
 
     headers = {
@@ -74,22 +70,8 @@ async def test_edit_announce(client: AsyncClient) -> None:
     Edit announce
     """
     announce = {
-        "preview": "url",
-        "descriptionEn": "No description",
-        "updatedTime": 0,
-        "author": "author",
-        "rating": 8,
-        "description": "No description",
-        "bgm": "hash",
-        "title": "title",
-        "subtitleEn": "subtitleEn",
-        "cover": "hash",
-        "public": 0,
-        "titleEn": "titleEn",
-        "subtitle": "hello_world",
-        "name": "name",
-        "createdTime": 0,
-        "authorEn": "authorEn",
+        "subtitle": "ハローワールド",
+        "subtitleEn": "hello world",
     }
 
     headers = {
