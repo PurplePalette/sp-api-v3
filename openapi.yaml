@@ -498,6 +498,305 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetLevelListResponse'
+              examples:
+                example-1:
+                  value:
+                    pageCount: 1
+                    items:
+                      - name: s7x62wxj
+                        version: 1
+                        rating: 25
+                        engine:
+                          name: string
+                          version: 1
+                          title: string
+                          titleEn: string
+                          subtitle: string
+                          subtitleEn: string
+                          author: string
+                          authorEn: string
+                          description: 説明無し
+                          descriptionEn: No description
+                          thumbnail:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          data:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          configuration:
+                            type: LevelData
+                            hash: string
+                            url: string
+                          skin:
+                            name: string
+                            version: 1
+                            title: string
+                            titleEn: string
+                            subtitle: string
+                            subtitleEn: string
+                            author: string
+                            authorEn: string
+                            description: No description
+                            descriptionEn: No description
+                            thumbnail:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            data:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            texture:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            createdTime: 0
+                            updatedTime: 0
+                            userId: string
+                            public: false
+                          background:
+                            name: string
+                            version: 1
+                            title: string
+                            titleEn: string
+                            subtitle: string
+                            subtitleEn: string
+                            author: string
+                            authorEn: string
+                            description: No description
+                            descriptionEn: No description
+                            thumbnail:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            data:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            image:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            configuration:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            createdTime: 0
+                            updatedTime: 0
+                            userId: string
+                            public: false
+                          effect:
+                            name: string
+                            version: 1
+                            title: string
+                            titleEn: string
+                            subtitle: string
+                            subtitleEn: string
+                            author: string
+                            authorEn: string
+                            description: No description
+                            descriptionEn: No description
+                            thumbnail:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            data:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            createdTime: 0
+                            updatedTime: 0
+                            userId: string
+                            public: false
+                          particle:
+                            name: string
+                            version: 1
+                            title: string
+                            titleEn: string
+                            subtitle: string
+                            subtitleEn: string
+                            author: string
+                            authorEn: string
+                            description: No description
+                            descriptionEn: No description
+                            thumbnail:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            data:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            texture:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            createdTime: 0
+                            updatedTime: 0
+                            userId: string
+                            public: false
+                          createdTime: 0
+                          updatedTime: 0
+                          userId: string
+                          public: false
+                        useSkin:
+                          useDefault: true
+                          item:
+                            name: string
+                            version: 1
+                            title: string
+                            titleEn: string
+                            subtitle: string
+                            subtitleEn: string
+                            author: string
+                            authorEn: string
+                            description: No description
+                            descriptionEn: No description
+                            thumbnail:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            data:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            texture:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            createdTime: 0
+                            updatedTime: 0
+                            userId: string
+                            public: false
+                        useBackground:
+                          useDefault: true
+                          item:
+                            name: string
+                            version: 1
+                            title: string
+                            titleEn: string
+                            subtitle: string
+                            subtitleEn: string
+                            author: string
+                            authorEn: string
+                            description: No description
+                            descriptionEn: No description
+                            thumbnail:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            data:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            image:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            configuration:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            createdTime: 0
+                            updatedTime: 0
+                            userId: string
+                            public: false
+                        useEffect:
+                          useDefault: true
+                          item:
+                            name: string
+                            version: 1
+                            title: string
+                            titleEn: string
+                            subtitle: string
+                            subtitleEn: string
+                            author: string
+                            authorEn: string
+                            description: No description
+                            descriptionEn: No description
+                            thumbnail:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            data:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            createdTime: 0
+                            updatedTime: 0
+                            userId: string
+                            public: false
+                        useParticle:
+                          useDefault: true
+                          item:
+                            name: string
+                            version: 1
+                            title: string
+                            titleEn: string
+                            subtitle: string
+                            subtitleEn: string
+                            author: string
+                            authorEn: string
+                            description: No description
+                            descriptionEn: No description
+                            thumbnail:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            data:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            texture:
+                              type: LevelData
+                              hash: string
+                              url: string
+                            createdTime: 0
+                            updatedTime: 0
+                            userId: string
+                            public: false
+                        title: テスト用譜面
+                        titleEn: This is test level
+                        artists: つくよみちゃん
+                        artistsEn: Tsukuyomi-chan
+                        author: お窓
+                        authorEn: Omado
+                        description: 説明文無し
+                        descriptionEn: No description
+                        cover:
+                          type: LevelData
+                          hash: string
+                          url: string
+                        bgm:
+                          type: LevelData
+                          hash: string
+                          url: string
+                        preview:
+                          type: LevelData
+                          hash: string
+                          url: string
+                        data:
+                          type: LevelData
+                          hash: string
+                          url: string
+                        public: true
+                        genre: general
+                        userId: fa423sfa242
+                        createdTime: 1644040400
+                        updatedTime: 1644040400
+                        length: 91
+                        bpm: 150
+                        notes: 1204
+                        likes: 0
+                        mylists: 0
+                    search:
+                      options:
+                        - query: string
+                          name: string
+                          type: text
+                          placeholder: string
       operationId: getLevelList
       description: |-
         It returns list of level infos registered in this server
@@ -2620,7 +2919,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Announce'
+              $ref: '#/components/schemas/AddAnnounceRequest'
       description: アナウンスを追加する
       tags:
         - announces
@@ -2863,8 +3162,7 @@ paths:
                           type: LevelData
                           hash: string
                           url: string
-                        genre:
-                          - general
+                        genre: general
                         public: false
                         userId: string
                         notes: 1
@@ -2940,7 +3238,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Announce'
+              $ref: '#/components/schemas/EditAnnounceRequest'
       security:
         - Authorization: []
   /upload:
@@ -3001,8 +3299,7 @@ components:
           bgm: 296638e8452a9f6b798e6ebc5935edd1e15faf07
           data: 00b9fa09c0b679065069be81f28e1e6eb414bba4
           preview: 296638e8452a9f6b798e6ebc5935edd1e15faf07
-          genre:
-            - general
+          genre: general
           length: 91
           bpm: 150
           notes: 1204
@@ -3094,25 +3391,19 @@ components:
           description: プレビュー再生用、現実的にはbgmと同じ値を使うと思う
           example: 296638e8452a9f6b798e6ebc5935edd1e15faf07
         genre:
-          type: array
+          type: string
           description: 楽曲のジャンル
-          example:
+          example: general
+          default: general
+          minLength: 1
+          maxLength: 30
+          enum:
             - general
-          default:
-            - general
-          uniqueItems: true
-          items:
-            type: string
-            enum:
-              - general
-              - jpop
-              - anime
-              - vocaloid
-              - original
-            example: general
-            default: general
-            minLength: 1
-            maxLength: 20
+            - jpop
+            - anime
+            - vocaloid
+            - original
+            - instrumental
         length:
           type: integer
           default: 91
@@ -3230,25 +3521,19 @@ components:
           type: string
           maxLength: 50
         genre:
-          type: array
+          type: string
           description: 楽曲のジャンル
-          example:
+          example: general
+          default: general
+          minLength: 1
+          maxLength: 30
+          enum:
             - general
-          default:
-            - general
-          uniqueItems: true
-          items:
-            type: string
-            enum:
-              - general
-              - jpop
-              - anime
-              - vocaloid
-              - original
-            example: general
-            default: general
-            minLength: 1
-            maxLength: 20
+            - jpop
+            - anime
+            - vocaloid
+            - original
+            - instrumental
         length:
           type: integer
           default: 91
@@ -3274,6 +3559,10 @@ components:
           type: boolean
           default: false
           description: 楽曲が全体公開かどうか
+        publicSus:
+          type: boolean
+          description: SUSファイルを公開するかどうか
+          default: false
     Level:
       description: |-
         A level provides a list of entities and powered by scripted behavior in engine, with skin, effect, background and particle, to create gameplay experience for players / It defines level for actual user play. It includes all data to play one level.
@@ -3397,25 +3686,19 @@ components:
           default: true
           description: 楽曲が全体公開かどうか
         genre:
-          type: array
+          type: string
           description: 楽曲のジャンル
-          example:
+          example: general
+          default: general
+          minLength: 1
+          maxLength: 30
+          enum:
             - general
-          default:
-            - general
-          uniqueItems: true
-          items:
-            type: string
-            enum:
-              - general
-              - jpop
-              - anime
-              - vocaloid
-              - original
-            example: general
-            default: general
-            minLength: 1
-            maxLength: 20
+            - jpop
+            - anime
+            - vocaloid
+            - original
+            - instrumental
         userId:
           type: string
           description: 譜面作成者のユーザーID
@@ -3467,6 +3750,153 @@ components:
           maximum: 10000000
           default: 0
           example: 0
+        sus:
+          type: string
+          description: 公開している場合ここにファイルアドレスが入る
+    AddAnnounceRequest:
+      description: お知らせ情報のリクエスト
+      type: object
+      x-examples: {}
+      title: AddAnnounceRequest
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: english and number only name for searching
+          maxLength: 100
+        rating:
+          type: integer
+          description: Difficulty of the level
+          minimum: 1
+          maximum: 100
+          default: 1
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        subtitle:
+          type: string
+          minLength: 1
+          description: artist names of original music
+          maxLength: 100
+        subtitleEn:
+          type: string
+          maxLength: 100
+          description: artist names(english) of original music
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        cover:
+          type: string
+          description: ジャケット画像
+        bgm:
+          type: string
+          description: BGM(任意)
+        preview:
+          type: string
+          description: プレビューBGM(任意)
+        public:
+          type: boolean
+          default: false
+          description: 楽曲が全体公開かどうか
+      required:
+        - name
+        - title
+        - subtitle
+        - author
+        - description
+        - cover
+    EditAnnounceRequest:
+      description: お知らせ情報のリクエスト
+      type: object
+      x-examples: {}
+      title: EditAnnounceRequest
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: english and number only name for searching
+          maxLength: 100
+        rating:
+          type: integer
+          description: Difficulty of the level
+          minimum: 1
+          maximum: 100
+        title:
+          type: string
+          minLength: 1
+          description: base title of this content
+          maxLength: 100
+        titleEn:
+          type: string
+          maxLength: 100
+          description: base title(english) of this content
+        subtitle:
+          type: string
+          minLength: 1
+          description: artist names of original music
+          maxLength: 100
+        subtitleEn:
+          type: string
+          maxLength: 100
+          description: artist names(english) of original music
+        author:
+          type: string
+          minLength: 1
+          description: author of this content
+          maxLength: 50
+        authorEn:
+          type: string
+          maxLength: 50
+          description: author of this content
+        description:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        descriptionEn:
+          type: string
+          description: サイト内および譜面情報欄に表示される説明文
+          maxLength: 3000
+          default: No description
+          example: No description
+        cover:
+          type: string
+          description: ジャケット画像
+        bgm:
+          type: string
+          description: BGM(任意)
+        preview:
+          type: string
+          description: プレビューBGM(任意)
+        public:
+          type: boolean
+          default: false
+          description: 楽曲が全体公開かどうか
     Announce:
       description: お知らせ情報のリクエスト
       type: object
@@ -5697,6 +6127,7 @@ components:
     Upload:
       title: Upload
       type: object
+      description: 投稿リクエスト型
       properties:
         file:
           type: string
@@ -5722,6 +6153,8 @@ components:
             - LevelCover
             - SkinThumbnail
             - ParticleThumbnail
+            - SusFile
+            - LevelPreview
           maxLength: 50
           minLength: 1
       required:
