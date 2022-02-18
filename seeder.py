@@ -60,6 +60,7 @@ def seed() -> None:
             "skins.yaml",
             "engines.yaml",
             "levels.yaml",
+            "genres.yaml",
         ],
     )
     session = get_sync_db()

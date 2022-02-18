@@ -1,0 +1,42 @@
+- model: src.database.objects.genre.Genre
+  id: 1
+  fields:
+    # database primary key
+    id: 1
+    name: general
+    nameEn: general
+- model: src.database.objects.genre.Genre
+  id: 2
+  fields:
+    # database primary key
+    id: 2
+    name: jpop
+    nameEn: jpop
+- model: src.database.objects.genre.Genre
+  id: 3
+  fields:
+    # database primary key
+    id: 3
+    name: anime
+    nameEn: anime
+- model: src.database.objects.genre.Genre
+  id: 4
+  fields:
+    # database primary key
+    id: 4
+    name: vocaloid
+    nameEn: vocaloid
+- model: src.database.objects.genre.Genre
+  id: 5
+  fields:
+    # database primary key
+    id: 5
+    name: original
+    nameEn: original
+- model: src.database.objects.genre.Genre
+  id: 6
+  fields:
+    # database primary key
+    id: 6
+    name: instrumental
+    nameEn: instrumental
