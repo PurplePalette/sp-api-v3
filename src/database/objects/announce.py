@@ -64,13 +64,9 @@ class Announce(TimeMixin, Base):  # type: ignore
             artistsEn=self.subtitleEn,
             author=self.author,
             authorEn=self.authorEn,
-            cover=SonolusResourceLocator(
-                type="LevelCover", hash="", url=self.cover.url
-            ),
-            bgm=SonolusResourceLocator(type="LevelBgm", hash="", url=self.bgm.url),
-            preview=SonolusResourceLocator(
-                type="LevelPreview", hash="", url=self.bgm.url
-            ),
+            cover=SonolusResourceLocator(type="LevelCover", hash="", url=self.cover),
+            bgm=SonolusResourceLocator(type="LevelBgm", hash="", url=self.bgm),
+            preview=SonolusResourceLocator(type="LevelPreview", hash="", url=self.bgm),
             data=SonolusResourceLocator(type="LevelData", hash="", url=""),
             public=self.public,
             genre=[],
