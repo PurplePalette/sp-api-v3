@@ -2,7 +2,7 @@
 
 from typing import Dict, List, Optional  # noqa: F401
 
-from fastapi import APIRouter, Response
+from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -41,7 +41,8 @@ def add_session(
     req: StartSessionRequest = dependsStartSession,
 ) -> JSONResponse:
     """Add specified new user to server"""
-    return start_session(req)
+    resp: JSONResponse = start_session(req)
+    return resp
 
 
 @router.post(
