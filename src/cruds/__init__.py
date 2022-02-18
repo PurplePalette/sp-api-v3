@@ -18,7 +18,6 @@ from .search import Searchable, buildDatabaseQuery, buildFilter, buildSort
 from .skin import SkinCrud
 from .user import UserCrud, get_user_deep
 from .utils import (
-    DataBridge,
     all_fields_exists_or_400,
     copy_translate_fields,
     get_admin_or_403,
@@ -53,7 +52,6 @@ __all__ = [
     "EngineCrud",
     "AnnounceCrud",
     "UserCrud",
-    "DataBridge",
     "Searchable",
     "all_fields_exists_or_400",
     "buildDatabaseQuery",
