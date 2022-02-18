@@ -35,6 +35,7 @@ class User(Base, TimeMixin):  # type: ignore
     announces = relationship("Announce", back_populates="user")
     votes = relationship("Vote", back_populates="user")
     logs = relationship("Log", back_populates="user")
+    uploads = relationship("Upload", back_populates="user")
 
     @hybrid_property
     def ids_favorites(self) -> List[int]:

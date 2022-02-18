@@ -10,6 +10,7 @@ from .log import Log as LogSave
 from .particle import Particle as ParticleSave
 from .pickup import Pickup as PickupSave
 from .skin import Skin as SkinSave
+from .upload import Upload as UploadSave
 from .user import User as UserSave
 from .vote import Vote as VoteSave
 
@@ -28,4 +29,5 @@ __all__ = [
     "SkinSave",
     "UserSave",
     "VoteSave",
+    "UploadSave",
 ]

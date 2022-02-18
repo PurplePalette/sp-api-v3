@@ -17,6 +17,7 @@ from src.database.objects import (  # noqa: F401
     ParticleSave,
     PickupSave,
     SkinSave,
+    UploadSave,
     UserSave,
     VoteSave,
 )
