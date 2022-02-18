@@ -1,6 +1,6 @@
-from src.config import S3_ENDPOINT, S3_BUCKET, S3_KEY, S3_SECRET
 import boto3
 import botostubs
+from src.config import S3_BUCKET, S3_ENDPOINT, S3_KEY, S3_SECRET
 
 
 def get_bucket() -> botostubs.S3.S3Resource.Bucket:
@@ -11,5 +11,5 @@ def get_bucket() -> botostubs.S3.S3Resource.Bucket:
         aws_access_key_id=S3_KEY,
         aws_secret_access_key=S3_SECRET,
     )
-    bucket = s3.Bucket(S3_BUCKET)
+    bucket = s3.Bucket(S3_BUCKET)  # type: ignore
     return bucket
