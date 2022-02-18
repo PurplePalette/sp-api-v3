@@ -1,5 +1,6 @@
 version: '3.6'
 services:
+  # Main API (Required)
   service:
     container_name: sonolus_fastapi_service
     hostname: sonolus_fastapi_service
@@ -14,6 +15,7 @@ services:
       - local-net
     depends_on:
       - database
+  # MariaDB Database (Required)
   database:
     container_name: sonolus_fastapi_database
     hostname: sonolus_fastapi_database
@@ -33,6 +35,7 @@ services:
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_PASS}
       - TZ='Asia/Tokyo'
+  # Database web console (Optional)
   adminer:
     image: adminer:latest
     container_name: sonolus_fastapi_adminer
@@ -44,11 +47,7 @@ services:
       - local-net
     depends_on:
       - database
-  firebase:
-    image: ghcr.io/uyamazak/firebase-auth-emulator:latest
-    command: --project ${FIREBASE_PROJECT}
-    ports:
-      - 9099:9099
+  # Local S3 with web console (Optional)
   minio:
     image: minio/minio
     volumes:
@@ -67,6 +66,7 @@ services:
       retries: 3
     networks:
       - local-net
+  # Local S3 initialization script (Optional)
   createbuckets:
     image: minio/mc
     depends_on:
@@ -80,6 +80,12 @@ services:
       "
     networks:
       - local-net
+  # Firebase auth emulator for development (Optional)
+  firebase:
+    image: ghcr.io/uyamazak/firebase-auth-emulator:latest
+    command: --project ${FIREBASE_PROJECT}
+    ports:
+      - 9099:9099
 networks:
   local-net:
     driver: bridge
