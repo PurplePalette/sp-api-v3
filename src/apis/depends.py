@@ -1,6 +1,15 @@
-from fastapi import Body, Depends, Form, Path, Query
+from fastapi import Body, Depends, File, Form, Header, Path, Query
 from src.database.db import get_db
 from src.security_api import get_current_user, get_current_user_optional
+
+MAXIMUM_FILESIZE = 50 * 1024 * 1024  # 50 MB
+
+dependsMaximumFileSize = Header(..., lt=MAXIMUM_FILESIZE)
+
+
+async def valid_content_length(content_length: int = dependsMaximumFileSize) -> int:
+    return content_length
+
 
 dependsLocalization = Query(
     "ja",
@@ -66,7 +75,9 @@ dependsAddUser = Body(None, description="Add user request")
 dependsStartSession = Body(None, description="Start session request")
 dependsPath = Path(None, description="")
 dependsBody = Body(None, description="")
+dependsFile = File(None, description="")
 dependsForm = Form(None, description="")
 dependsDatabase = Depends(get_db)
 dependsFirebase = Depends(get_current_user)
+dependsFileSize = Depends(valid_content_length)
 dependsFirebaseOptional = Depends(get_current_user_optional)

@@ -15,12 +15,14 @@ async def test_upload_file(client: AsyncClient) -> None:
     headers = {
         "Authorization": "Bearer special-key",
     }
-    data = {"file": "/path/to/file", "type": "type_example"}
+    with open("./tests/toy_figure_girl.png", "rb") as f:
+        data = f.read()
+    req = {"type": "LevelCover"}
     response = await client.request(
         "POST",
         "/upload",
         headers=headers,
-        data=data,
+        data=req,
+        files={"file": ("toy_figure_girl.png", data, "image/png")},
     )
-
-    assert response.status_code != 500
+    assert response.status_code == 200
