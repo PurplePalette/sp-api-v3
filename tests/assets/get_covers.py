@@ -1,7 +1,8 @@
 import random
-import requests
-from typing import Optional
 import time
+from typing import Optional
+
+import requests
 
 
 class PlaceholdImageBuilder:
