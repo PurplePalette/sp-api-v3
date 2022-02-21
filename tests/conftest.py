@@ -27,6 +27,8 @@ load_dotenv(dotenv_path)
 
 IS_LOCAL = os.environ.get("IS_LOCAL")
 
+TEST_FILE_ENDPOINT = "https://cdn.purplepalette.net/file/potato-test"
+
 """
 Based on async-fastapi-sqlalchemy
 https://github.com/rhoboro/async-fastapi-sqlalchemy/blob/main/app/tests/conftest.py
