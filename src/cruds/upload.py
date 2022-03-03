@@ -146,9 +146,9 @@ async def upload_process(
     if expected_content == "application/json":
         buf = compress_gzip(buf).encode("utf-8")
     # バケットにアップロード
-    bucket = get_bucket()
-    bucket.put_object(Body=buf, Key=f"{file_type}/{file.filename}")
     sha1_hash = sha1(buf).hexdigest()
+    bucket = get_bucket()
+    bucket.put_object(Body=buf, Key=f"{file_type}/{sha1_hash}")
     # DBに挿入
     internal_id = await get_internal_id(db, user["user_id"])
     now = get_current_unix()
@@ -166,5 +166,5 @@ async def upload_process(
     await save_to_db(db, upload)
     return PostUploadResponse(
         message="ok",
-        filename="example.mp3",
+        filename=sha1_hash,
     )
