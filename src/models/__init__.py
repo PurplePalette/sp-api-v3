@@ -6,7 +6,12 @@ from src.models.add_level_request import AddLevelRequest
 from src.models.add_particle_request import AddParticleRequest
 from src.models.add_skin_request import AddSkinRequest
 from src.models.add_user_request import AddUserRequest
-from src.models.default_search import DefaultSearch
+from src.models.default_search import (
+    defaultSearch,
+    defaultUserSearch,
+    levelSearch,
+    levelUserSearch,
+)
 from src.models.edit_announce_request import EditAnnounceRequest
 from src.models.edit_background_request import EditBackgroundRequest
 from src.models.edit_effect_request import EditEffectRequest
@@ -35,7 +40,6 @@ from src.models.level_use_skin import LevelUseSkin
 from src.models.pickup import Pickup
 from src.models.post_upload_response import PostUploadResponse
 from src.models.search import Search
-from src.models.search_query import SearchQuery
 from src.models.search_select_option import SearchSelectOption
 from src.models.search_slider_option import SearchSliderOption
 from src.models.search_text_option import SearchTextOption
@@ -78,7 +82,10 @@ __all__ = [
     "AddParticleRequest",
     "AddSkinRequest",
     "AddUserRequest",
-    "DefaultSearch",
+    "defaultSearch",
+    "defaultUserSearch",
+    "levelSearch",
+    "levelUserSearch",
     "EditAnnounceRequest",
     "EditBackgroundRequest",
     "EditEffectRequest",
@@ -107,7 +114,6 @@ __all__ = [
     "Pickup",
     "PostUploadResponse",
     "Search",
-    "SearchQuery",
     "SearchSelectOption",
     "SearchSliderOption",
     "SearchTextOption",
