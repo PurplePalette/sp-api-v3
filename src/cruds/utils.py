@@ -13,6 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import true
 from src.config import CDN_ENDPOINT
 from src.cruds.constraints import SRL_BRIDGES, SRLDefine
+from src.database.objects import UploadSave
 from src.database.objects.background import Background
 from src.database.objects.effect import Effect
 from src.database.objects.engine import Engine
@@ -293,7 +294,9 @@ def patch_to_model(
     return model
 
 
-async def req_to_db(db: AsyncSession, model: V, is_new: bool = False) -> None:
+async def req_to_db(
+    db: AsyncSession, model: V, is_new: bool = False
+) -> Optional[HTTPException]:
     """リクエストモデルをデータベースモデルにするショートハンド"""
     # Firebase側のIDをDB側のIDに変換
     model.userId = await get_internal_id(db, str(model.userId))
@@ -305,6 +308,20 @@ async def req_to_db(db: AsyncSession, model: V, is_new: bool = False) -> None:
     model.updatedTime = get_current_unix()
     if is_new:
         model.createdTime = model.updatedTime
+    # 予め定義した SRL辞書から ロケータを取ってくる
+    obj_name = type(model).__name__.lower()
+    if not hasattr(SRL_BRIDGES, obj_name):
+        raise Exception("No bridge for model: " + obj_name)
+    bridge: SRLDefine = getattr(SRL_BRIDGES, obj_name)
+    for k in bridge.locators:
+        hash: str = getattr(model, k)
+        obj_exist = await is_exist(db, select(UploadSave.objectHash == hash))
+        if not obj_exist:
+            return HTTPException(
+                status_code=400,
+                detail=f"Bad Request: SRL {obj_name} target {hash} was not found",
+            )
+    return None
 
 
 async def db_to_resp(db: AsyncSession, model: W, localization: str = "ja") -> None:
