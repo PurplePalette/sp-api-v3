@@ -100,7 +100,11 @@ async def get_first_item_or_404(
 ) -> T:
     """データベースに指定された要素が存在すれば取得、なければ NotFound"""
     resp: T = await get_first_item_or_error(
-        db, statement, HTTPException(status_code=404, detail="Not found")
+        db,
+        statement,
+        HTTPException(
+            status_code=404, detail="Specified content was not found on server"
+        ),
     )
     return resp
 
