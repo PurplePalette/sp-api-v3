@@ -327,7 +327,8 @@ async def req_to_db(
 async def db_to_resp(db: AsyncSession, model: W, localization: str = "ja") -> None:
     """データベースモデルをレスポンスモデルにするショートハンド"""
     # DB側のIDをFirebase側のIDに変換
-    model.userId = await get_display_id(db, int(model.userId))
+    if type(model.userId) == int:
+        model.userId = await get_display_id(db, int(model.userId))
     # 予め定義した SRL辞書から バージョンとロケータを取ってくる
     obj_name = type(model).__name__.lower()
     if not hasattr(SRL_BRIDGES, obj_name):
