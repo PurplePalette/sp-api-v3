@@ -6,7 +6,7 @@ from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import Column, Integer, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import joinedload, selectinload
 from src.cruds.utils import db_to_resp, get_first_item_or_404
 from src.database.objects import (
     AnnounceSave,
@@ -100,6 +100,12 @@ async def list_info(db: AsyncSession, localization: str) -> ServerInfo:
             selectinload(LevelSave.genre),
             selectinload(LevelSave.likes),
             selectinload(LevelSave.favorites),
+            joinedload(LevelSave.engine, innerjoin=True).options(
+                selectinload(EngineSave.background),
+                selectinload(EngineSave.skin),
+                selectinload(EngineSave.effect),
+                selectinload(EngineSave.particle),
+            ),
         ),
         PAGE_SIZE,
     )  # type: ignore
@@ -137,6 +143,7 @@ async def list_info(db: AsyncSession, localization: str) -> ServerInfo:
     tile_and_levels: List[LevelResp] = tiles + list(
         (levels.items if len(levels.items) <= 3 else levels.items[:2])
     )
+    print(tile_and_levels)
     return create_server_info(
         levels=tile_and_levels,
         backgrounds=list(backgrounds.items),
