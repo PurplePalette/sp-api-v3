@@ -1,7 +1,7 @@
 from abc import ABCMeta
 from typing import Any, Optional, TypeVar
 
-from cruds.utils.funcs import get_random_name
+from src.cruds.utils.funcs import get_random_name
 from fastapi import HTTPException
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import select
