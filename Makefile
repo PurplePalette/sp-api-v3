@@ -1,18 +1,29 @@
 start:
-	if [ -n "${ENV}" ]; then \
-		.venv/bin/dotenv --file ${ENV} run -- .venv/bin/python src/main.py; \
-	else \
-		.venv/bin/dotenv --file .env.kiryu run -- .venv/bin/python src/main.py; \
-	fi
+	poetry run tasks start
+
+migrate:
+	poetry run tasks migrate
+
+seed:
+	poetry run tasks seed
+
+transfer:
+	poetry run tasks transfer
+
+credential:
+	poetry run tasks credential
 
 lint:
 	poetry run pysen run lint
+
+format:
+	poetry run pysen run format
 
 lint-fix:
 	poetry run pysen run format && \
 	poetry run pysen run lint
 
-test-unit:
+test:
 	poetry run pytest
 
 install-dev:
