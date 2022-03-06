@@ -1,15 +1,19 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, func, select
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
+from src.config import LEVEL_VERSION
+from src.cruds.utils.funcs import create_srl
 from src.database.db import Base
 from src.database.mixins import SonolusDataMixin, TimeMixin
 from src.database.objects.favorite import Favorite
 from src.database.objects.like import Like
-from src.models.level import Level as LevelModel
-from src.models.level_use_background import LevelUseBackground
-from src.models.level_use_effect import LevelUseEffect
-from src.models.level_use_particle import LevelUseParticle
-from src.models.level_use_skin import LevelUseSkin
+from src.models import (
+    LevelReqResp,
+    LevelUseBackground,
+    LevelUseEffect,
+    LevelUseParticle,
+    LevelUseSkin,
+)
 
 
 class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
@@ -46,29 +50,27 @@ class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     user = relationship("User", back_populates="levels", uselist=False)
     publicSus = Column(Boolean(), default=False, server_default="0")
 
-    def toLevelItem(self) -> LevelModel:
-        # これが呼ばれる前に db_to_respを通って
-        # 無理やり型変換してる
-        return LevelModel(
+    def toItem(self) -> LevelReqResp:
+        return LevelReqResp(
             name=self.name,
-            version=self.version,
+            version=LEVEL_VERSION,
             rating=self.rating,
-            engine=self.engine,
+            engine=self.engine.toItem(),
             useSkin=LevelUseSkin(
                 useDefault=not bool(self.skin),
-                item=self.skin,
+                item=self.skin.toItem() if self.skin else None,
             ),
             useBackground=LevelUseBackground(
                 useDefault=not bool(self.background),
-                item=self.background,
+                item=self.background.toItem() if self.background else None,
             ),
             useEffect=LevelUseEffect(
                 useDefault=not bool(self.effect),
-                item=self.effect,
+                item=self.effect.toItem() if self.effect else None,
             ),
             useParticle=LevelUseParticle(
                 useDefault=not bool(self.particle),
-                item=self.particle,
+                item=self.particle.toItem() if self.particle else None,
             ),
             title=self.title,
             titleEn=self.titleEn,
@@ -76,10 +78,10 @@ class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
             artistsEn=self.subtitleEn,
             author=self.author,
             authorEn=self.authorEn,
-            cover=self.cover,
-            bgm=self.bgm,
-            preview=self.bgm,
-            data=self.data,
+            cover=create_srl("LevelCover", self.cover),
+            bgm=create_srl("LevelBgm", self.bgm),
+            preview=create_srl("LevelPreview", self.bgm),
+            data=create_srl("LevelData", self.data),
             public=self.public,
             createdTime=self.createdTime,
             updatedTime=self.updatedTime,

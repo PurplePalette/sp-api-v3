@@ -1,5 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+from src.config import LEVEL_VERSION
+from src.cruds.utils.funcs import create_srl
 from src.database.db import Base
 from src.database.mixins import TimeMixin
 from src.models.engine import Engine as EngineModel
@@ -34,10 +36,10 @@ class Announce(TimeMixin, Base):  # type: ignore
     userId = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="announces", uselist=False)
 
-    def toLevelItem(self) -> LevelModel:
+    def toItem(self) -> LevelModel:
         return LevelModel(
             name=self.name,
-            version=1,
+            version=LEVEL_VERSION,
             rating=self.rating,
             engine=EngineModel(
                 version=1,
@@ -64,9 +66,9 @@ class Announce(TimeMixin, Base):  # type: ignore
             artistsEn=self.subtitleEn,
             author=self.author,
             authorEn=self.authorEn,
-            cover=self.cover,
-            bgm=self.bgm,
-            preview=self.bgm,
+            cover=create_srl("LevelCover", self.cover),
+            bgm=create_srl("LevelBgm", self.bgm),
+            preview=create_srl("LevelPreview", self.bgm),
             data=SonolusResourceLocator(type="LevelData", hash="", url=""),
             public=self.public,
             genre="general",
@@ -84,7 +86,7 @@ class Announce(TimeMixin, Base):  # type: ignore
 
     def toLevelResponse(self) -> GetLevelResponse:
         return GetLevelResponse(
-            item=self.toLevelItem(),
+            item=self.toItem(),
             description=self.description,
             recommended=[],
         )

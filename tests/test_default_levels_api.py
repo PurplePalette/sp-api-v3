@@ -65,7 +65,7 @@ async def test_delete_level(client: AsyncClient) -> None:
     }
     response = await client.request(
         "DELETE",
-        "/levels/{levelName}".format(levelName="a"),
+        "/levels/{levelName}".format(levelName="botorushippunotabi"),
         headers=headers,
     )
 
@@ -88,7 +88,7 @@ async def test_edit_level(client: AsyncClient) -> None:
     }
     response = await client.request(
         "PATCH",
-        "/levels/{levelName}".format(levelName="a"),
+        "/levels/{levelName}".format(levelName="botorushippunotabi"),
         headers=headers,
         json=level,
     )
@@ -106,7 +106,7 @@ async def test_get_level(client: AsyncClient) -> None:
     headers: Dict[str, str] = {}
     response = await client.request(
         "GET",
-        "/levels/{levelName}".format(levelName="a"),
+        "/levels/{levelName}".format(levelName="botorushippunotabi"),
         headers=headers,
     )
 

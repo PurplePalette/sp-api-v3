@@ -13,13 +13,13 @@ from src.cruds.utils import (
     get_first_item_or_404,
     get_internal_id,
     get_random_name,
-    get_total_publish,
     get_user_or_404,
     is_owner_or_admin_otherwise_409,
     not_exist_or_409,
     patch_to_model,
     save_to_db,
 )
+from src.cruds.utils.totals import get_total_publish
 from src.database.objects.user import User as UserSave
 from src.models.add_user_request import AddUserRequest
 from src.models.edit_user_request import EditUserRequest
@@ -31,6 +31,16 @@ from src.models.user_total_publish import UserTotalPublish
 
 
 class UserCrud(AbstractCrud):  # type: ignore
+    def get_query(self, name: str) -> select:
+        """ユーザーを取得するクエリを返します"""
+        return select(UserSave).filter(
+            UserSave.userId == name,
+        )
+
+    async def get_named_item_or_404(self, db: AsyncSession, name: str) -> UserSave:
+        """指定した名称のユーザーが存在すれば取得し、無ければ404を返します"""
+        return await get_first_item_or_404(db, self.get_query(name))
+
     async def add(self, db: AsyncSession, model: AddUserRequest) -> UserReqResp:
         """ユーザーを追加します"""
         await not_exist_or_409(
@@ -67,9 +77,7 @@ class UserCrud(AbstractCrud):  # type: ignore
         user: Optional[FirebaseClaims],
     ) -> UserReqResp:
         """ユーザーを取得します"""
-        user_db: UserSave = await get_first_item_or_404(
-            db, select(UserSave).filter(UserSave.userId == name)
-        )
+        user_db = await self.get_named_item_or_404(db, name)
         # 認証状態でなければ非表示
         if user is None:
             user_db.accountId = ""
@@ -116,13 +124,7 @@ class UserCrud(AbstractCrud):  # type: ignore
         user: FirebaseClaims,
     ) -> None:
         """ユーザーを削除します"""
-        user_db: UserSave = await get_first_item_or_404(
-            db, select(UserSave).filter(UserSave.userId == name)
-        )
-        await is_owner_or_admin_otherwise_409(db, user_db, user)
-        user_db.isDeleted = True
-        user_db.updatedTime = get_current_unix()
-        await save_to_db(db, user_db)
+        await super().delete(db, name, user)
         return None
 
     async def list(self, db: AsyncSession, page: int) -> GetUserListResponse:

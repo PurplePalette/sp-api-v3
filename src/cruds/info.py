@@ -62,7 +62,7 @@ async def get_announces(db: AsyncSession, announceIds: List[int]) -> List[LevelS
         ]
     )
     await asyncio.gather(*[db_to_resp(db, announce) for announce in announces])
-    levels: List[LevelSave] = [a.toLevelItem() for a in announces]
+    levels: List[LevelSave] = [a.toItem() for a in announces]
     return levels
 
 
@@ -97,14 +97,14 @@ async def list_info(db: AsyncSession, localization: str) -> ServerInfo:
         select(LevelSave)
         .order_by(LevelSave.updatedTime.desc())
         .options(
-            selectinload(LevelSave.genre),
+            joinedload(LevelSave.genre),
             selectinload(LevelSave.likes),
             selectinload(LevelSave.favorites),
-            joinedload(LevelSave.engine, innerjoin=True).options(
-                selectinload(EngineSave.background),
-                selectinload(EngineSave.skin),
-                selectinload(EngineSave.effect),
-                selectinload(EngineSave.particle),
+            joinedload(LevelSave.engine).options(
+                joinedload(EngineSave.background),
+                joinedload(EngineSave.skin),
+                joinedload(EngineSave.effect),
+                joinedload(EngineSave.particle),
             ),
         ),
         PAGE_SIZE,
@@ -120,7 +120,11 @@ async def list_info(db: AsyncSession, localization: str) -> ServerInfo:
         *[
             paginate(
                 db,
-                select(obj).order_by(obj.updatedTime.desc()),
+                select(obj)
+                .order_by(obj.updatedTime.asc())
+                .options(
+                    selectinload(obj.user),
+                ),
                 PAGE_SIZE,
             )
             for obj in objects
@@ -136,14 +140,14 @@ async def list_info(db: AsyncSession, localization: str) -> ServerInfo:
         engines,
     ]
     for obj in bridge_objects:
-        for item in obj.items:
-            await db_to_resp(db, item, localization)
-    levels.items = [level.toLevelItem() for level in levels.items]
+        await asyncio.gather(
+            *[db_to_resp(db, item, localization) for item in obj.items]
+        )
+        obj.items = [item.toItem() for item in obj.items]
     # お知らせとレベルを結合
     tile_and_levels: List[LevelResp] = tiles + list(
         (levels.items if len(levels.items) <= 3 else levels.items[:2])
     )
-    print(tile_and_levels)
     return create_server_info(
         levels=tile_and_levels,
         backgrounds=list(backgrounds.items),

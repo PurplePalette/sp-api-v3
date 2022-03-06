@@ -23,6 +23,14 @@ from src.models.get_level_response import GetLevelResponse
 
 
 class AnnounceCrud(AbstractCrud):  # type: ignore
+    def get_query(self, name: str) -> select:
+        """お知らせを取得するクエリを返します"""
+        return select(AnnounceSave).filter(AnnounceSave.name == name)
+
+    async def get_named_item_or_404(self, db: AsyncSession, name: str) -> AnnounceSave:
+        """指定した名称のお知らせが存在すれば取得し、無ければ404を返します"""
+        return await get_first_item_or_404(db, self.get_query(name))
+
     async def add(
         self,
         db: AsyncSession,
@@ -49,9 +57,7 @@ class AnnounceCrud(AbstractCrud):  # type: ignore
     ) -> GetLevelResponse:
         """お知らせを編集します"""
         await get_admin_or_403(db, user)
-        announce_db: AnnounceSave = await get_first_item_or_404(
-            db, select(AnnounceSave).filter(AnnounceSave.name == announceName)
-        )
+        announce_db = await self.get_named_item_or_404(db, announceName)
         patch_to_model(announce_db, announce_edit.dict(exclude_unset=True))
         await save_to_db(db, announce_db)
         await db_to_resp(db, announce_db)
@@ -66,9 +72,7 @@ class AnnounceCrud(AbstractCrud):  # type: ignore
     ) -> None:
         """お知らせを削除します"""
         await get_admin_or_403(db, user)
-        announce_db: AnnounceSave = await get_first_item_or_404(
-            db, select(AnnounceSave).filter(AnnounceSave.name == announceName)
-        )
+        announce_db = await self.get_named_item_or_404(db, announceName)
         await db.delete(announce_db)
         await db.commit()
 
@@ -78,9 +82,7 @@ class AnnounceCrud(AbstractCrud):  # type: ignore
         announceName: str,
     ) -> GetLevelResponse:
         """お知らせを取得します"""
-        announce_db: AnnounceSave = await get_first_item_or_404(
-            db, select(AnnounceSave).filter(AnnounceSave.name == announceName)
-        )
+        announce_db = await self.get_named_item_or_404(db, announceName)
         await db_to_resp(db, announce_db)
         resp: GetLevelResponse = announce_db.toLevelResponse()
         return resp
@@ -97,6 +99,6 @@ class AnnounceCrud(AbstractCrud):  # type: ignore
         await asyncio.gather(*[db_to_resp(db, announce) for announce in announces])
         return GetLevelListResponse(
             pageCount=1,
-            items=[announce.toLevelItem() for announce in announces],
+            items=[announce.toItem() for announce in announces],
             search=defaultSearch,
         )

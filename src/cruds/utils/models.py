@@ -9,7 +9,7 @@ from src.cruds.constraints import SRL_BRIDGES, SRLDefine
 from src.cruds.utils.db import is_exist
 from src.cruds.utils.funcs import get_current_unix
 from src.cruds.utils.ids import get_display_id, get_internal_id
-from src.database.objects import UploadSave
+from src.database.objects.upload import Upload as UploadSave
 from src.models.sonolus_resource_locator import SonolusResourceLocator
 
 
@@ -77,6 +77,11 @@ def patch_to_model(
         "userId",
         "createdTime",
         "updatedTime",
+        "background",
+        "user",
+        "skin",
+        "particle",
+        "effect",
     ]
     if extend_excludes:
         excludes += extend_excludes
@@ -138,11 +143,6 @@ async def db_to_resp(db: AsyncSession, model: W, localization: str = "ja") -> No
     # DB側のIDをFirebase側のIDに変換
     if type(model.userId) == int:
         model.userId = await get_display_id(db, int(model.userId))
-    # 予め定義した SRL辞書から バージョンとロケータを取ってくる
-    obj_name = type(model).__name__.lower()
-    if not hasattr(SRL_BRIDGES, obj_name):
-        raise Exception("No bridge for model: " + obj_name)
-    set_srl(model, obj_name)
     # リクエスト言語が日本語でなければ英語で返す
     if localization != "ja":
         move_translate_fields(

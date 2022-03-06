@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.database.objects import User
+from src.database.objects.user import User
 
 
 async def get_internal_id(db: AsyncSession, userId: str) -> int:

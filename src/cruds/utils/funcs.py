@@ -5,7 +5,7 @@ from src.config import CDN_ENDPOINT
 from src.models import SonolusResourceLocator
 
 
-def create_srl(resource_type: str, hash: str) -> str:
+def create_srl(resource_type: str, hash: str) -> SonolusResourceLocator:
     """SonolusResourceLocatorを作成して返す"""
     url = f"{CDN_ENDPOINT}/repository/{resource_type}/{hash}"
     if "http" in CDN_ENDPOINT:

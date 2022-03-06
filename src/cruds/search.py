@@ -12,6 +12,7 @@ from sqlalchemy import (
     select,
     true,
 )
+from sqlalchemy.orm import joinedload, relationship
 from src.models.search_query import (
     SearchGenre,
     SearchLength,
@@ -40,6 +41,7 @@ class Searchable(metaclass=ABCMeta):
     public = Column(Boolean(), default=False, server_default="0")
     isDeleted = Column(Boolean(), default=False, server_default="0")
     userId = Column(Integer, ForeignKey("users.id"))
+    user = relationship("User", uselist=False)
     createdTime = Column(Integer)
     updatedTime = Column(Integer)
     # 以降レベルモデルにのみ存在
@@ -154,7 +156,7 @@ def buildSort(obj: T, query: SearchQueries) -> Column:
     return sortMethod
 
 
-def buildDatabaseQuery(obj: T, query: SearchQueries) -> select:
+def buildDatabaseQuery(obj: T, query: SearchQueries, joinUser: bool = False) -> select:
     """"与えられたパラメータからクエリを組み立てる(しんどい)"""
     filter: list = buildFilter(obj, query)
     sorter: int = 0
@@ -162,4 +164,7 @@ def buildDatabaseQuery(obj: T, query: SearchQueries) -> select:
         sorter = buildSort(obj, query)
     else:
         sorter = func.random()
-    return select(obj).filter(*filter).order_by(sorter)
+    stmt = select(obj).filter(*filter).order_by(sorter)
+    if joinUser:
+        stmt = stmt.options(joinedload(obj.user))
+    return stmt

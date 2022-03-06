@@ -13,7 +13,14 @@ from src.cruds.utils.db import (
 )
 from src.cruds.utils.funcs import get_current_unix, get_random_name
 from src.cruds.utils.ids import get_display_id, get_internal_id
-from src.cruds.utils.totals import get_total_publish
+from src.cruds.utils.models import (
+    all_fields_exists_or_400,
+    copy_translate_fields,
+    db_to_resp,
+    move_translate_fields,
+    patch_to_model,
+    req_to_db,
+)
 
 __all__ = [
     "get_first_item",
@@ -31,5 +38,10 @@ __all__ = [
     "get_random_name",
     "get_internal_id",
     "get_display_id",
-    "get_total_publish",
+    "db_to_resp",
+    "req_to_db",
+    "all_fields_exists_or_400",
+    "copy_translate_fields",
+    "move_translate_fields",
+    "patch_to_model",
 ]

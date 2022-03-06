@@ -13,7 +13,6 @@ from src.cruds.abstract import AbstractCrud
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
     db_to_resp,
-    get_current_unix,
     get_first_item_or_404,
     get_new_name,
     is_owner_or_admin_otherwise_409,
@@ -84,28 +83,9 @@ class LevelCrud(AbstractCrud):  # type: ignore
                 del model_import[key]
         return model_import
 
-    async def get_single_level(
-        self, stmt: Any, db: AsyncSession, localization: str
-    ) -> LevelReqResp:
-        # 保存するとリレーション周りのデータが消し飛ぶのでjoinedして取得し直す
-        level_db: LevelSave = await get_first_item_or_404(
-            db,
-            stmt.options(
-                joinedload(LevelSave.engine).options(
-                    joinedload(EngineSave.background),
-                    joinedload(EngineSave.skin),
-                    joinedload(EngineSave.particle),
-                    joinedload(EngineSave.effect),
-                ),
-                joinedload(LevelSave.particle),
-                joinedload(LevelSave.effect),
-                joinedload(LevelSave.background),
-                joinedload(LevelSave.skin),
-                joinedload(LevelSave.genre),
-                selectinload(LevelSave.likes),
-                selectinload(LevelSave.favorites),
-            ),
-        )
+    async def bulk_db_to_resp(
+        self, db: AsyncSession, level_db: LevelSave, localization: str = "ja"
+    ) -> None:
         # 各地のSRLを応答型に変換し回る
         for db_obj in [
             level_db,
@@ -116,8 +96,36 @@ class LevelCrud(AbstractCrud):  # type: ignore
             level_db.engine.effect,
         ]:
             await db_to_resp(db, db_obj, localization)
-        item = level_db.toLevelItem()
-        return item
+
+    def get_query(self, name: str) -> select:
+        """レベルを取得するためのクエリを返します"""
+        return select(LevelSave).filter(LevelSave.name == name)
+
+    async def get_named_item_or_404(self, db: AsyncSession, name: str) -> LevelReqResp:
+        """指定した名称のレベルが存在すれば取得し、無ければ404を返します"""
+        stmt = self.get_query(name)
+        # トップレベルのjoinedloadは参照されるまでは省略可能
+        # selectinloadの先のjoinedloadは全て記述が必要
+        level_db: LevelSave = await get_first_item_or_404(
+            db,
+            stmt.options(
+                joinedload(LevelSave.engine).options(
+                    joinedload(EngineSave.user),
+                    joinedload(EngineSave.background).options(
+                        joinedload(BackgroundSave.user)
+                    ),
+                    joinedload(EngineSave.skin).options(joinedload(SkinSave.user)),
+                    joinedload(EngineSave.particle).options(
+                        joinedload(ParticleSave.user)
+                    ),
+                    joinedload(EngineSave.effect).options(joinedload(EffectSave.user)),
+                ),
+                joinedload(LevelSave.genre),
+                selectinload(LevelSave.likes),
+                selectinload(LevelSave.favorites),
+            ),
+        )
+        return level_db
 
     async def add(
         self, db: AsyncSession, model: AddLevelRequest, auth: FirebaseClaims
@@ -129,9 +137,10 @@ class LevelCrud(AbstractCrud):  # type: ignore
         level_db.userId = auth["user_id"]
         await req_to_db(db, level_db, is_new=True)
         await save_to_db(db, level_db)
-        item = await self.get_single_level(
-            select(LevelSave).filter(LevelSave.id == level_db.id), db, "ja"
-        )
+        # 保存したらリレーションが消し飛ぶので取得し直す
+        level_db = await self.get_named_item_or_404(db, level_db.name)
+        await self.bulk_db_to_resp(db, level_db, "ja")
+        item = level_db.toItem()
         resp = GetLevelResponse(
             item=item,
             description=item.description,
@@ -143,9 +152,9 @@ class LevelCrud(AbstractCrud):  # type: ignore
         self, db: AsyncSession, name: str, localization: str
     ) -> GetLevelResponse:
         """レベルを取得します"""
-        item = await self.get_single_level(
-            select(LevelSave).filter(LevelSave.name == name), db, localization
-        )
+        level_db = await self.get_named_item_or_404(db, name)
+        await self.bulk_db_to_resp(db, level_db, localization)
+        item = level_db.toItem()
         return GetLevelResponse(
             item=item,
             description=item.description,
@@ -160,19 +169,15 @@ class LevelCrud(AbstractCrud):  # type: ignore
         auth: FirebaseClaims,
     ) -> Union[HTTPException, GetLevelResponse]:
         """レベルを編集します"""
-        level_db: LevelSave = await get_first_item_or_404(
-            db,
-            select(LevelSave).filter(
-                LevelSave.name == name,
-            ),
-        )
+        level_db = await self.get_named_item_or_404(db, name)
         await is_owner_or_admin_otherwise_409(db, level_db, auth)
         model_import = await self.create_dict(db, model, True)
         patch_to_model(level_db, model_import)
         await save_to_db(db, level_db)
-        item = await self.get_single_level(
-            select(LevelSave).filter(LevelSave.id == level_db.id), db, "ja"
-        )
+        # 保存したらリレーションが消し飛ぶので取得し直す
+        level_db = await self.get_named_item_or_404(db, level_db.name)
+        await self.bulk_db_to_resp(db, level_db, "ja")
+        item = level_db.toItem()
         return GetLevelResponse(
             item=item,
             description=item.description,
@@ -184,31 +189,38 @@ class LevelCrud(AbstractCrud):  # type: ignore
         db: AsyncSession,
         name: str,
         auth: FirebaseClaims,
-    ) -> Union[HTTPException, None]:
+    ) -> None:
         """レベルを削除します"""
-        level_db: LevelSave = await get_first_item_or_404(
-            db, select(LevelSave).filter(LevelSave.name == name)
-        )
-        await is_owner_or_admin_otherwise_409(db, level_db, auth)
-        level_db.isDeleted = True
-        level_db.updatedTime = get_current_unix()
-        await save_to_db(db, level_db)
+        await super().delete(db, name, auth)
         return None
 
     async def list(
         self, db: AsyncSession, page: int, queries: SearchQueries
     ) -> GetLevelListResponse:
         """レベル一覧を取得します"""
-        select_query = buildDatabaseQuery(LevelSave, queries)
+        select_query = buildDatabaseQuery(LevelSave, queries, False)
         userPage: Page[LevelSave] = await paginate(
             db,
-            select_query,
+            select_query.options(
+                selectinload(LevelSave.engine).options(
+                    joinedload(EngineSave.user),
+                    joinedload(EngineSave.background),
+                    joinedload(EngineSave.skin),
+                    joinedload(EngineSave.particle),
+                    joinedload(EngineSave.effect),
+                ),
+                joinedload(LevelSave.genre),
+                joinedload(LevelSave.user),
+                selectinload(LevelSave.likes),
+                selectinload(LevelSave.favorites),
+            ),
             Params(page=page + 1, size=20),
         )  # type: ignore
         resp: SonolusPage = toSonolusPage(userPage)
         await asyncio.gather(
-            *[db_to_resp(db, r, queries.localization) for r in resp.items]
+            *[self.bulk_db_to_resp(db, r, queries.localization) for r in resp.items]
         )
+        resp.items = [r.toItem() for r in resp.items]
         return GetLevelListResponse(
             pageCount=resp.pageCount if resp.pageCount > 0 else 1,
             items=resp.items,

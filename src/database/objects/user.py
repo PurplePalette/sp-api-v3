@@ -8,6 +8,9 @@ from src.database.mixins import TimeMixin
 from src.database.objects.favorite import Favorite
 from src.database.objects.like import Like
 from src.database.objects.log import Log
+from src.models.user import User as UserReqResp
+from src.models.user_total import UserTotal
+from src.models.user_total_publish import UserTotalPublish
 
 
 class User(Base, TimeMixin):  # type: ignore
@@ -36,6 +39,31 @@ class User(Base, TimeMixin):  # type: ignore
     votes = relationship("Vote", back_populates="user")
     logs = relationship("Log", back_populates="user")
     uploads = relationship("Upload", back_populates="user")
+
+    def toItem(self) -> UserReqResp:
+        return UserReqResp(
+            userId=self.userId,
+            testId=self.testId,
+            accountId=self.accountId,
+            description=self.description,
+            createdTime=self.createdTime,
+            updatedTime=self.updatedTime,
+            total=UserTotal(
+                likes=0,
+                plays=0,
+                favorites=0,
+                publish=UserTotalPublish(
+                    backgrounds=0,
+                    effects=0,
+                    engines=0,
+                    particles=0,
+                    levels=0,
+                    skins=0,
+                ),
+            ),
+            isAdmin=self.isAdmin,
+            isDeleted=self.isDeleted,
+        )
 
     @hybrid_property
     def ids_favorites(self) -> List[int]:

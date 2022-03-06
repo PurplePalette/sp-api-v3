@@ -13,7 +13,6 @@ from src.cruds.abstract import AbstractCrud
 from src.cruds.search import buildDatabaseQuery
 from src.cruds.utils import (
     db_to_resp,
-    get_current_unix,
     get_first_item_or_404,
     get_new_name,
     is_owner_or_admin_otherwise_409,
@@ -73,19 +72,9 @@ class EngineCrud(AbstractCrud):  # type: ignore
                 del model_import[key]
         return model_import
 
-    async def get_single_engine(
-        self, stmt: Any, db: AsyncSession, localization: str
-    ) -> EngineReqResp:
-        # 保存するとリレーション周りのデータが消し飛ぶのでjoinedして取得し直す
-        engine_db: EngineSave = await get_first_item_or_404(
-            db,
-            stmt.options(
-                joinedload(EngineSave.background),
-                joinedload(EngineSave.skin),
-                joinedload(EngineSave.particle),
-                joinedload(EngineSave.effect),
-            ),
-        )
+    async def bulk_db_to_resp(
+        self, db: AsyncSession, engine_db: EngineSave, localization: str = "ja"
+    ) -> None:
         # 各地のSRLを応答型に変換し回る
         for db_obj in [
             engine_db,
@@ -95,7 +84,33 @@ class EngineCrud(AbstractCrud):  # type: ignore
             engine_db.effect,
         ]:
             await db_to_resp(db, db_obj, localization)
-        return engine_db  # type: ignore
+
+    def get_query(self, name: str) -> select:
+        """エンジンを取得するためのクエリを返します"""
+        return select(EngineSave).filter(EngineSave.name == name)
+
+    async def get_named_item_or_404(self, db: AsyncSession, name: str) -> EngineReqResp:
+        """指定した名称のエンジンが存在すれば取得し、無ければ404を返します"""
+        stmt = self.get_query(name)
+        engine_db: EngineSave = await get_first_item_or_404(
+            db,
+            stmt.options(
+                joinedload(EngineSave.background).options(
+                    joinedload(BackgroundSave.user),
+                ),
+                joinedload(EngineSave.skin).options(
+                    joinedload(SkinSave.user),
+                ),
+                joinedload(EngineSave.particle).options(
+                    joinedload(ParticleSave.user),
+                ),
+                joinedload(EngineSave.effect).options(
+                    joinedload(EffectSave.user),
+                ),
+                joinedload(EngineSave.user),
+            ),
+        )
+        return engine_db
 
     async def add(
         self, db: AsyncSession, model: AddEngineRequest, auth: FirebaseClaims
@@ -107,9 +122,10 @@ class EngineCrud(AbstractCrud):  # type: ignore
         engine_db.userId = auth["user_id"]
         await req_to_db(db, engine_db, is_new=True)
         await save_to_db(db, engine_db)
-        item = await self.get_single_engine(
-            select(EngineSave).filter(EngineSave.id == engine_db.id), db, "ja"
-        )
+        # 保存したらリレーションが消し飛ぶので取得し直す
+        engine_db = await self.get_named_item_or_404(db, engine_db.name)
+        await self.bulk_db_to_resp(db, engine_db)
+        item = engine_db.toItem()
         resp = GetEngineResponse(
             item=item,
             description=item.description,
@@ -121,9 +137,9 @@ class EngineCrud(AbstractCrud):  # type: ignore
         self, db: AsyncSession, name: str, localization: str
     ) -> GetEngineResponse:
         """エンジンを取得します"""
-        item = await self.get_single_engine(
-            select(EngineSave).filter(EngineSave.name == name), db, localization
-        )
+        engine_db = await self.get_named_item_or_404(db, name)
+        await self.bulk_db_to_resp(db, engine_db, localization)
+        item = engine_db.toItem()
         return GetEngineResponse(
             item=item,
             description=item.description,
@@ -138,19 +154,15 @@ class EngineCrud(AbstractCrud):  # type: ignore
         auth: FirebaseClaims,
     ) -> Union[HTTPException, GetEngineResponse]:
         """エンジンを編集します"""
-        engine_db: EngineSave = await get_first_item_or_404(
-            db,
-            select(EngineSave).filter(
-                EngineSave.name == name,
-            ),
-        )
+        engine_db = await self.get_named_item_or_404(db, name)
         await is_owner_or_admin_otherwise_409(db, engine_db, auth)
         model_import = await self.create_dict(db, model, True)
         patch_to_model(engine_db, model_import)
         await save_to_db(db, engine_db)
-        item = await self.get_single_engine(
-            select(EngineSave).filter(EngineSave.id == engine_db.id), db, "ja"
-        )
+        # 保存したらリレーションが消し飛ぶので取得し直す
+        engine_db = await self.get_named_item_or_404(db, engine_db.name)
+        await self.bulk_db_to_resp(db, engine_db, "ja")
+        item = engine_db.toItem()
         return GetEngineResponse(
             item=item,
             description=item.description,
@@ -162,31 +174,32 @@ class EngineCrud(AbstractCrud):  # type: ignore
         db: AsyncSession,
         name: str,
         auth: FirebaseClaims,
-    ) -> Union[HTTPException, None]:
+    ) -> None:
         """エンジンを削除します"""
-        engine_db: EngineSave = await get_first_item_or_404(
-            db, select(EngineSave).filter(EngineSave.name == name)
-        )
-        await is_owner_or_admin_otherwise_409(db, engine_db, auth)
-        engine_db.isDeleted = True
-        engine_db.updatedTime = get_current_unix()
-        await save_to_db(db, engine_db)
+        await super().delete(db, name, auth)
         return None
 
     async def list(
         self, db: AsyncSession, page: int, queries: SearchQueries
     ) -> GetEngineListResponse:
         """エンジン一覧を取得します"""
-        select_query = buildDatabaseQuery(EngineSave, queries)
+        select_query = buildDatabaseQuery(EngineSave, queries, False)
         userPage: Page[EngineSave] = await paginate(
             db,
-            select_query,
+            select_query.options(
+                joinedload(EngineSave.background),
+                joinedload(EngineSave.skin),
+                joinedload(EngineSave.effect),
+                joinedload(EngineSave.particle),
+                joinedload(EngineSave.user),
+            ),
             Params(page=page + 1, size=20),
         )  # type: ignore
         resp: SonolusPage = toSonolusPage(userPage)
         await asyncio.gather(
-            *[db_to_resp(db, r, queries.localization) for r in resp.items]
+            *[self.bulk_db_to_resp(db, r, queries.localization) for r in resp.items]
         )
+        resp.items = [r.toItem() for r in resp.items]
         return GetEngineListResponse(
             pageCount=resp.pageCount if resp.pageCount > 0 else 1,
             items=resp.items,

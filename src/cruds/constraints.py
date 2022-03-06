@@ -1,6 +1,15 @@
 from dataclasses import dataclass
 from typing import List
 
+from src.config import (
+    BACKGROUND_VERSION,
+    EFFECT_VERSION,
+    ENGINE_VERSION,
+    LEVEL_VERSION,
+    PARTICLE_VERSION,
+    SKIN_VERSION,
+)
+
 
 @dataclass
 class SRLDefine:
@@ -19,13 +28,6 @@ class SRLDict:
     skin: SRLDefine
     announce: SRLDefine
 
-
-SKIN_VERSION = 2
-ENGINE_VERSION = 4
-BACKGROUND_VERSION = 2
-EFFECT_VERSION = 2
-LEVEL_VERSION = 1
-PARTICLE_VERSION = 1
 
 ENGINE_LOCATORS = ["thumbnail", "data", "configuration"]
 BACKGROUND_LOCATORS = ["thumbnail", "data", "image", "configuration"]

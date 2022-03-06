@@ -3,14 +3,12 @@ import asyncio
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import true
-from src.database.objects import (
-    BackgroundSave,
-    EffectSave,
-    EngineSave,
-    LevelSave,
-    ParticleSave,
-    SkinSave,
-)
+from src.database.objects.background import Background as BackgroundSave
+from src.database.objects.effect import Effect as EffectSave
+from src.database.objects.engine import Engine as EngineSave
+from src.database.objects.level import Level as LevelSave
+from src.database.objects.particle import Particle as ParticleSave
+from src.database.objects.skin import Skin as SkinSave
 from src.models import UserTotalPublish
 
 
