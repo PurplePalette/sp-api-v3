@@ -14,7 +14,7 @@ from src.cruds.utils import (
     req_to_db,
     save_to_db,
 )
-from src.database.objects import AnnounceSave
+from src.database.objects.announce import Announce as AnnounceSave
 from src.models.add_announce_request import AddAnnounceRequest
 from src.models.default_search import defaultSearch
 from src.models.edit_announce_request import EditAnnounceRequest

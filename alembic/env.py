@@ -4,23 +4,21 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 from src.config import DB_URL
 from src.database.db import Base
-from src.database.objects import (  # noqa: F401
-    AnnounceSave,
-    BackgroundSave,
-    EffectSave,
-    EngineSave,
-    FavoriteSave,
-    GenreSave,
-    LevelSave,
-    LikeSave,
-    LogSave,
-    ParticleSave,
-    PickupSave,
-    SkinSave,
-    UploadSave,
-    UserSave,
-    VoteSave,
-)
+from src.database.objects.announce import Announce  # noqa: F401
+from src.database.objects.background import Background  # noqa: F401
+from src.database.objects.effect import Effect  # noqa: F401
+from src.database.objects.engine import Engine  # noqa: F401
+from src.database.objects.favorite import Favorite  # noqa: F401
+from src.database.objects.genre import Genre  # noqa: F401
+from src.database.objects.level import Level  # noqa: F401
+from src.database.objects.like import Like  # noqa: F401
+from src.database.objects.log import Log  # noqa: F401
+from src.database.objects.particle import Particle  # noqa: F401
+from src.database.objects.pickup import Pickup  # noqa: F401
+from src.database.objects.skin import Skin  # noqa: F401
+from src.database.objects.upload import Upload  # noqa: F401
+from src.database.objects.user import User  # noqa: F401
+from src.database.objects.vote import Vote  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

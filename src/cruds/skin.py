@@ -19,7 +19,7 @@ from src.cruds.utils import (
     req_to_db,
     save_to_db,
 )
-from src.database.objects import SkinSave
+from src.database.objects.skin import Skin as SkinSave
 from src.models.add_skin_request import AddSkinRequest
 from src.models.default_search import defaultSearch
 from src.models.edit_skin_request import EditSkinRequest

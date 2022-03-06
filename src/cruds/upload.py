@@ -10,7 +10,7 @@ from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.utils import get_current_unix, get_internal_id, save_to_db
 from src.database.bucket import get_bucket
-from src.database.objects import UploadSave
+from src.database.objects.upload import Upload as UploadSave
 from src.models.post_upload_response import PostUploadResponse
 
 

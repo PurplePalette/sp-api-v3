@@ -20,15 +20,13 @@ from src.cruds.utils import (
     req_to_db,
     save_to_db,
 )
-from src.database.objects import (
-    BackgroundSave,
-    EffectSave,
-    EngineSave,
-    GenreSave,
-    LevelSave,
-    ParticleSave,
-    SkinSave,
-)
+from src.database.objects.background import Background as BackgroundSave
+from src.database.objects.effect import Effect as EffectSave
+from src.database.objects.engine import Engine as EngineSave
+from src.database.objects.genre import Genre as GenreSave
+from src.database.objects.level import Level as LevelSave
+from src.database.objects.particle import Particle as ParticleSave
+from src.database.objects.skin import Skin as SkinSave
 from src.models.add_level_request import AddLevelRequest
 from src.models.default_search import levelSearch
 from src.models.edit_level_request import EditLevelRequest

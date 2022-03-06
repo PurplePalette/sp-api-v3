@@ -4,19 +4,17 @@ from typing import Any, List, TypeVar
 
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
-from sqlalchemy import Column, Integer, select
+from sqlalchemy import Column, Integer, false, select, true
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 from src.cruds.utils import db_to_resp, get_first_item_or_404
-from src.database.objects import (
-    AnnounceSave,
-    BackgroundSave,
-    EffectSave,
-    EngineSave,
-    LevelSave,
-    ParticleSave,
-    SkinSave,
-)
+from src.database.objects.announce import Announce as AnnounceSave
+from src.database.objects.background import Background as BackgroundSave
+from src.database.objects.effect import Effect as EffectSave
+from src.database.objects.engine import Engine as EngineSave
+from src.database.objects.level import Level as LevelSave
+from src.database.objects.particle import Particle as ParticleSave
+from src.database.objects.skin import Skin as SkinSave
 from src.models.background import Background as BackgroundResp
 from src.models.default_search import defaultSearch, levelSearch
 from src.models.effect import Effect as EffectResp
@@ -121,6 +119,7 @@ async def list_info(db: AsyncSession, localization: str) -> ServerInfo:
             paginate(
                 db,
                 select(obj)
+                .filter(obj.isDeleted == false(), obj.public == true())
                 .order_by(obj.updatedTime.asc())
                 .options(
                     selectinload(obj.user),
