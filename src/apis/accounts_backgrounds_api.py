@@ -64,9 +64,9 @@ async def get_accounts_backgrounds(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
-    sort: str = dependsSort,
-    order: str = dependsOrder,
-    status: str = dependsStatus,
+    sort: int = dependsSort,
+    order: int = dependsOrder,
+    status: int = dependsStatus,
     author: str = dependsAuthor,
     random: int = dependsRandom,
 ) -> GetBackgroundListResponse:

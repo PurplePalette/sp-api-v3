@@ -34,10 +34,9 @@ from src.apis.depends import (
 from src.cruds.effect import EffectCrud
 from src.models.add_effect_request import AddEffectRequest
 from src.models.effect import Effect
-from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_effect_list_response import GetEffectListResponse
 from src.models.get_effect_response import GetEffectResponse
-from src.models.search_query import SearchOrder, SearchQueries, SearchSort, SearchStatus
+from src.models.search_query import SearchQueries
 
 router = APIRouter()
 crud = EffectCrud()
@@ -115,9 +114,9 @@ async def get_effect_list(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
-    sort: SearchSort = dependsSort,
-    order: SearchOrder = dependsOrder,
-    status: SearchStatus = dependsStatus,
+    sort: int = dependsSort,
+    order: int = dependsOrder,
+    status: int = dependsStatus,
     author: str = dependsAuthor,
     random: int = dependsRandom,
     db: AsyncSession = dependsDatabase,

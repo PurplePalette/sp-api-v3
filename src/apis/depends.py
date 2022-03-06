@@ -19,32 +19,22 @@ dependsLocalization = Query(
 )
 dependsPage = Query(0, description="Filters contents using pagination", ge=0, le=10000)
 dependsKeywords = Query(
-    "",
+    "any",
     description="Filter contents by specified keyword, in title and description",
     min_length=1,
     max_length=300,
 )
 dependsSort = Query(
-    "updated_time",
-    description="It sorts contents using specified method",
-    max_length=20,
+    0, description="It sorts contents using specified method", ge=0, le=50
 )
-dependsOrder = Query(
-    "desc",
-    description="It specifies sort direction",
-    min_length=0,
-    max_length=10,
-)
+dependsOrder = Query(0, description="It specifies sort direction", ge=0, le=50)
 dependsStatus = Query(
-    "any",
-    description="Filters contents using specified status",
-    min_length=1,
-    max_length=20,
+    0, description="Filters contents using specified status", ge=0, le=50
 )
 dependsAuthor = Query(
     "any",
     description="Filter contents by specified author",
-    min_length=0,
+    min_length=1,
     max_length=100,
 )
 dependsRatingMin = Query(
@@ -53,14 +43,9 @@ dependsRatingMin = Query(
 dependsRatingMax: int = Query(
     50, description="Filter level contents by maximum rating", ge=1, le=100
 )
-dependsGenre = Query(
-    "any", description="Filter contents by specified genre", min_length=0, max_length=20
-)
+dependsGenre = Query(0, description="Filter contents by specified genre", ge=0, le=50)
 dependsLength = Query(
-    "any",
-    description="Filter level contents by specified length",
-    min_length=0,
-    max_length=10,
+    0, description="Filter level contents by specified length", ge=0, le=50
 )
 dependsRandom = Query(
     0,

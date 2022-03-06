@@ -9,7 +9,7 @@ from src.database.objects.user import User
 """
 
 
-class SearchStatus(str, Enum):
+class SearchStatus(int, Enum):
     """
     SearchQueryEnum
 
@@ -22,33 +22,37 @@ class SearchStatus(str, Enum):
     BPM: The BPM of levels.
     """
 
-    PLAYED = "played"
-    UNPLAYED = "unplayed"
-    LIKED = "liked"
-    MYLISTED = "mylisted"
-    TESTING = "testing"
-    ANY = "any"
+    ANY = 0
+    TESTING = 1
+    PLAYED = 2
+    UNPLAYED = 3
+    LIKED = 4
+    MYLISTED = 5
 
 
-class SearchGenre(str, Enum):
+class SearchGenre(int, Enum):
     """
     SearchQueryEnum
 
-    VOCALOID
+    ANY
+    GENERAL
     JPOP
     ANIME
-    GENERAL
-    ANY
+    VOCALOID
+    ORIGINAL
+    INSTRUMENTAL
     """
 
-    VOCALOID = "vocaloid"
-    JPOP = "jpop"
-    ANIME = "anime"
-    GENERAL = "general"
-    ANY = "any"
+    ANY = 0
+    GENERAL = 1
+    JPOP = 2
+    ANIME = 3
+    VOCALOID = 4
+    ORIGINAL = 5
+    INSTRUMENTAL = 6
 
 
-class SearchSort(str, Enum):
+class SearchSort(int, Enum):
     """
     SearchQueryEnum
 
@@ -61,16 +65,16 @@ class SearchSort(str, Enum):
     BPM: The BPM of levels.
     """
 
-    UPDATED_TIME = "updated_time"
-    CREATED_TIME = "created_time"
-    LIKES = "likes"
-    MYLISTS = "mylists"
-    RATING = "rating"
-    NOTES = "notes"
-    BPM = "bpm"
+    UPDATED_TIME = 0
+    CREATED_TIME = 1
+    BPM = 2
+    LIKES = 3
+    MYLISTS = 4
+    NOTES = 5
+    RATING = 6
 
 
-class SearchOrder(str, Enum):
+class SearchOrder(int, Enum):
     """
     SearchQueryEnum
 
@@ -78,11 +82,11 @@ class SearchOrder(str, Enum):
     DESC
     """
 
-    ASC = "asc"
-    DESC = "desc"
+    DESC = 0
+    ASC = 1
 
 
-class SearchLength(str, Enum):
+class SearchLength(int, Enum):
     """
     SearchQueryEnum
 
@@ -93,11 +97,11 @@ class SearchLength(str, Enum):
     ANY
     """
 
-    SHORT = "short"
-    LONG = "long"
-    VERY_SHORT = "very_short"
-    VERY_LONG = "very_long"
-    ANY = "any"
+    ANY = 0
+    SHORT = 1
+    LONG = 2
+    VERY_SHORT = 3
+    VERY_LONG = 4
 
 
 @dataclass

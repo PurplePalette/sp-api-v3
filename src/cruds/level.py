@@ -30,7 +30,7 @@ from src.database.objects import (
     SkinSave,
 )
 from src.models.add_level_request import AddLevelRequest
-from src.models.default_search import defaultSearch
+from src.models.default_search import levelSearch
 from src.models.edit_level_request import EditLevelRequest
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
@@ -204,10 +204,14 @@ class LevelCrud(AbstractCrud):  # type: ignore
             select_query.options(
                 selectinload(LevelSave.engine).options(
                     joinedload(EngineSave.user),
-                    joinedload(EngineSave.background),
-                    joinedload(EngineSave.skin),
-                    joinedload(EngineSave.particle),
-                    joinedload(EngineSave.effect),
+                    joinedload(EngineSave.background).options(
+                        joinedload(BackgroundSave.user)
+                    ),
+                    joinedload(EngineSave.skin).options(joinedload(SkinSave.user)),
+                    joinedload(EngineSave.particle).options(
+                        joinedload(ParticleSave.user)
+                    ),
+                    joinedload(EngineSave.effect).options(joinedload(EffectSave.user)),
                 ),
                 joinedload(LevelSave.genre),
                 joinedload(LevelSave.user),
@@ -224,5 +228,5 @@ class LevelCrud(AbstractCrud):  # type: ignore
         return GetLevelListResponse(
             pageCount=resp.pageCount if resp.pageCount > 0 else 1,
             items=resp.items,
-            search=defaultSearch,
+            search=levelSearch,
         )

@@ -22,7 +22,7 @@ from src.models.add_background_request import AddBackgroundRequest
 from src.models.edit_background_request import EditBackgroundRequest
 from src.models.get_background_list_response import GetBackgroundListResponse
 from src.models.get_background_response import GetBackgroundResponse
-from src.models.search_query import SearchOrder, SearchQueries, SearchSort, SearchStatus
+from src.models.search_query import SearchQueries
 
 router = APIRouter()
 crud = BackgroundCrud()
@@ -100,9 +100,9 @@ async def get_background_list(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
-    sort: SearchSort = dependsSort,
-    order: SearchOrder = dependsOrder,
-    status: SearchStatus = dependsStatus,
+    sort: int = dependsSort,
+    order: int = dependsOrder,
+    status: int = dependsStatus,
     author: str = dependsAuthor,
     random: int = dependsRandom,
     db: AsyncSession = dependsDatabase,

@@ -9,6 +9,7 @@ from sqlalchemy import (
     String,
     false,
     func,
+    or_,
     select,
     true,
 )
@@ -46,7 +47,7 @@ class Searchable(metaclass=ABCMeta):
     updatedTime = Column(Integer)
     # 以降レベルモデルにのみ存在
     rating: Optional[Column[Integer]] = None
-    genre: Optional[Column[Integer]] = None
+    genreId: Optional[Column[Integer]] = None
     length: Optional[Column[Integer]] = None
     bpm: Optional[Column[Integer]] = None
     notes: Optional[Column[Integer]] = None
@@ -72,18 +73,27 @@ def buildFilter(
         obj.isDeleted == false(),
     ]
     if query.keywords:
-        filterFields += [
-            obj.name.contains(query.keywords),
-            obj.title.contains(query.keywords),
-            obj.titleEn.contains(query.keywords),
-            obj.author.contains(query.author),
-            obj.authorEn.contains(query.keywords),
-        ]
+        if query.keywords != "any":
+            filterFields += [
+                or_(
+                    obj.name.contains(query.keywords),
+                    obj.title.contains(query.keywords),
+                    obj.titleEn.contains(query.keywords),
+                )
+            ]
+    if query.author:
+        if query.author != "any":
+            filterFields += [
+                or_(
+                    obj.author.contains(query.author),
+                    obj.authorEn.contains(query.author),
+                )
+            ]
     # Levelsエンドポイント用フィルタ
     # ジャンル
-    if query.genre and obj.genre:
+    if query.genre is not None:
         if query.genre != SearchGenre.ANY:
-            filterFields.append(obj.genre == query.genre)
+            filterFields.append(obj.genreId == query.genre)
     # 最低難易度
     if query.rating_min and obj.rating:
         filterFields.append(obj.rating >= query.rating_min)
@@ -93,18 +103,18 @@ def buildFilter(
     # 長さ
     if query.length and obj.length:
         if query.length != SearchLength.ANY:
-            if query.length != SearchLength.VERY_SHORT:
+            if query.length == SearchLength.VERY_SHORT:
                 # 1分以下
                 filterFields.append(obj.length < 60)
-            if query.length != SearchLength.SHORT:
+            elif query.length == SearchLength.SHORT:
                 # 1分以上 3分以下
                 filterFields.append(obj.length > 60)
                 filterFields.append(obj.length < 180)
-            elif query.length != SearchLength.LONG:
+            elif query.length == SearchLength.LONG:
                 # 3分以上 5分以下
                 filterFields.append(obj.length > 180)
                 filterFields.append(obj.length < 300)
-            elif query.length != SearchLength.VERY_LONG:
+            elif query.length == SearchLength.VERY_LONG:
                 # 5分以上
                 filterFields.append(obj.length > 300)
     # テスト中が指定されていれば
@@ -137,7 +147,7 @@ def buildSort(obj: T, query: SearchQueries) -> Column:
     elif query.sort == SearchSort.UPDATED_TIME:
         sortMethod = obj.createdTime
     # Levelsエンドポイント用
-    if query.genre:
+    if query.genre is not None:
         if query.sort == SearchSort.LIKES:
             sortMethod = obj.num_likes
         elif query.sort == SearchSort.MYLISTS:

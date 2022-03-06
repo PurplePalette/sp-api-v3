@@ -22,7 +22,7 @@ from src.models.add_skin_request import AddSkinRequest
 from src.models.edit_skin_request import EditSkinRequest
 from src.models.get_skin_list_response import GetSkinListResponse
 from src.models.get_skin_response import GetSkinResponse
-from src.models.search_query import SearchOrder, SearchQueries, SearchSort, SearchStatus
+from src.models.search_query import SearchQueries
 
 router = APIRouter()
 crud = SkinCrud()
@@ -100,9 +100,9 @@ async def get_skin_list(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
-    sort: SearchSort = dependsSort,
-    order: SearchOrder = dependsOrder,
-    status: SearchStatus = dependsStatus,
+    sort: int = dependsSort,
+    order: int = dependsOrder,
+    status: int = dependsStatus,
     author: str = dependsAuthor,
     random: int = dependsRandom,
     db: AsyncSession = dependsDatabase,

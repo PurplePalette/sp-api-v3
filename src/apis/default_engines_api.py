@@ -21,7 +21,7 @@ from src.models.add_engine_request import AddEngineRequest
 from src.models.edit_engine_request import EditEngineRequest
 from src.models.get_engine_list_response import GetEngineListResponse
 from src.models.get_engine_response import GetEngineResponse
-from src.models.search_query import SearchOrder, SearchQueries, SearchSort, SearchStatus
+from src.models.search_query import SearchQueries
 
 router = APIRouter()
 crud = EngineCrud()
@@ -99,9 +99,9 @@ async def get_engine_list(
     localization: str = dependsLocalization,
     page: int = dependsPage,
     keywords: str = dependsKeywords,
-    sort: SearchSort = dependsSort,
-    order: SearchOrder = dependsOrder,
-    status: SearchStatus = dependsStatus,
+    sort: int = dependsSort,
+    order: int = dependsOrder,
+    status: int = dependsStatus,
     author: str = dependsAuthor,
     random: int = dependsRandom,
     db: AsyncSession = dependsDatabase,

@@ -176,7 +176,7 @@ class Level(BaseModel):
 
     @validator("authorEn")
     def authorEn_max_length(cls, value):
-        assert len(value) <= 50
+        assert len(value) <= 500
         return value
 
     @validator("description")

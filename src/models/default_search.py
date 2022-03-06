@@ -86,7 +86,7 @@ defaultUserSearch = Search(
             name="#CATEGORY",
             type="select",
             default=0,
-            values=["any", "testing"],
+            values=["#ANY", "testing"],
         ),
         # RANDOM
         SearchToggleOption(
@@ -113,7 +113,7 @@ levelSearch = Search(
             query="author",
             name="#AUTHOR",
             type="text",
-            placeholder="AUTHOR",
+            placeholder="Search author",
         ),
         # SORT
         SearchSelectOption(
@@ -167,7 +167,7 @@ levelSearch = Search(
             name="#GENRE",
             type="select",
             default=0,
-            values=["any", "vocaloid", "jpop", "anime", "general"],
+            values=["#ANY", "general", "jpop", "anime", "vocaloid", "original"],
         ),
         # LENGTH
         SearchSelectOption(
@@ -175,7 +175,7 @@ levelSearch = Search(
             name="#LENGTH",
             type="select",
             default=0,
-            values=["any", "short", "long", "very_short", "very_long"],
+            values=["#ANY", "short", "long", "very_short", "very_long"],
         ),
         # RANDOM
         SearchToggleOption(
@@ -201,7 +201,7 @@ levelUserSearch = Search(
             query="author",
             name="#AUTHOR",
             type="text",
-            placeholder="AUTHOR",
+            placeholder="Search author",
         ),
         # SORT
         SearchSelectOption(
@@ -255,7 +255,7 @@ levelUserSearch = Search(
             name="#GENRE",
             type="select",
             default=0,
-            values=["any", "vocaloid", "jpop", "anime", "general"],
+            values=["#ANY", "general", "jpop", "anime", "vocaloid", "original"],
         ),
         # STATUS
         SearchSelectOption(
@@ -263,7 +263,7 @@ levelUserSearch = Search(
             name="#CATEGORY",
             type="select",
             default=0,
-            values=["any", "testing", "played", "unplayed", "liked", "mylisted"],
+            values=["#ANY", "testing", "played", "unplayed", "liked", "mylisted"],
         ),
         # LENGTH
         SearchSelectOption(
@@ -271,7 +271,7 @@ levelUserSearch = Search(
             name="#LENGTH",
             type="select",
             default=0,
-            values=["any", "short", "long", "very_short", "very_long"],
+            values=["#ANY", "short", "long", "very_short", "very_long"],
         ),
         # RANDOM
         SearchToggleOption(
