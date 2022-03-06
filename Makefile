@@ -1,17 +1,17 @@
 start:
-	poetry run tasks start
+	poetry run task start
 
 migrate:
-	poetry run tasks migrate
+	poetry run task migrate
 
 seed:
-	poetry run tasks seed
+	poetry run task seed
 
 transfer:
-	poetry run tasks transfer
+	poetry run task transfer
 
 credential:
-	poetry run tasks credential
+	poetry run task credential
 
 lint:
 	poetry run pysen run lint
