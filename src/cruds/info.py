@@ -4,7 +4,7 @@ from typing import Any, List, TypeVar
 
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
-from sqlalchemy import Column, Integer, select
+from sqlalchemy import Column, Integer, false, select, true
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 from src.cruds.utils import db_to_resp, get_first_item_or_404
@@ -121,6 +121,7 @@ async def list_info(db: AsyncSession, localization: str) -> ServerInfo:
             paginate(
                 db,
                 select(obj)
+                .filter(obj.isDeleted == false(), obj.public == true())
                 .order_by(obj.updatedTime.asc())
                 .options(
                     selectinload(obj.user),
