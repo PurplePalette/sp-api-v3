@@ -19,7 +19,7 @@ from src.cruds.utils import (
     req_to_db,
     save_to_db,
 )
-from src.database.objects import BackgroundSave
+from src.database.objects.background import Background as BackgroundSave
 from src.models.add_background_request import AddBackgroundRequest
 from src.models.default_search import defaultSearch
 from src.models.edit_background_request import EditBackgroundRequest

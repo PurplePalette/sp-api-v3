@@ -19,7 +19,7 @@ from src.cruds.utils import (
     req_to_db,
     save_to_db,
 )
-from src.database.objects import EffectSave
+from src.database.objects.effect import Effect as EffectSave
 from src.models.default_search import defaultSearch
 from src.models.effect import Effect as EffectReqResp
 from src.models.get_effect_list_response import GetEffectListResponse

@@ -20,13 +20,11 @@ from src.cruds.utils import (
     req_to_db,
     save_to_db,
 )
-from src.database.objects import (
-    BackgroundSave,
-    EffectSave,
-    EngineSave,
-    ParticleSave,
-    SkinSave,
-)
+from src.database.objects.background import Background as BackgroundSave
+from src.database.objects.effect import Effect as EffectSave
+from src.database.objects.engine import Engine as EngineSave
+from src.database.objects.particle import Particle as ParticleSave
+from src.database.objects.skin import Skin as SkinSave
 from src.models.add_engine_request import AddEngineRequest
 from src.models.default_search import defaultSearch
 from src.models.edit_engine_request import EditEngineRequest
