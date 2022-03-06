@@ -1,0 +1,112 @@
+- model: src.database.objects.upload.Upload
+  id: 1
+  fields:
+    # database primary key
+    id: 1
+    # owner id
+    userId: 1
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    objectType: "LevelCover"
+    objectHash: "level_cover_hash"
+    objectName: "dummy.png"
+    objectSize: 1
+    objectTargetType: "level"
+    objectTargetId: NULL
+- model: src.database.objects.upload.Upload
+  id: 2
+  fields:
+    # database primary key
+    id: 2
+    # owner id
+    userId: 1
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    objectType: "LevelBgm"
+    objectHash: "level_bgm_hash"
+    objectName: "dummy.mp3"
+    objectSize: 1
+    objectTargetType: "level"
+    objectTargetId: NULL
+- model: src.database.objects.upload.Upload
+  id: 3
+  fields:
+    # database primary key
+    id: 3
+    # owner id
+    userId: 1
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    objectType: "LevelData"
+    objectHash: "level_data_hash"
+    objectName: "dummy.json"
+    objectSize: 1
+    objectTargetType: "level"
+    objectTargetId: NULL
+- model: src.database.objects.upload.Upload
+  id: 4
+  fields:
+    # database primary key
+    id: 4
+    # owner id
+    userId: 1
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    objectType: "BackgroundThumbnail"
+    objectHash: "background_cover_hash"
+    objectName: "dummy.png"
+    objectSize: 1
+    objectTargetType: "background"
+    objectTargetId: NULL
+- model: src.database.objects.upload.Upload
+  id: 5
+  fields:
+    # database primary key
+    id: 5
+    # owner id
+    userId: 1
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    objectType: "BackgroundImage"
+    objectHash: "background_image_hash"
+    objectName: "dummy.png"
+    objectSize: 1
+    objectTargetType: "background"
+    objectTargetId: NULL
+- model: src.database.objects.upload.Upload
+  id: 6
+  fields:
+    # database primary key
+    id: 6
+    # owner id
+    userId: 1
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    objectType: "BackgroundData"
+    objectHash: "background_data_hash"
+    objectName: "dummy.json"
+    objectSize: 1
+    objectTargetType: "background"
+    objectTargetId: NULL
+- model: src.database.objects.upload.Upload
+  id: 7
+  fields:
+    # database primary key
+    id: 7
+    # owner id
+    userId: 1
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    objectType: "BackgroundConfiguration"
+    objectHash: "background_configuration_hash"
+    objectName: "dummy.json"
+    objectSize: 1
+    objectTargetType: "background"
+    objectTargetId: NULL
