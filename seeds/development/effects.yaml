@@ -22,3 +22,51 @@
     isDeleted: false
     thumbnail: "dummy_hash"
     data: "dummy_hash"
+- model: src.database.objects.effect.Effect
+  id: 2
+  fields:
+    # database primary key
+    id: 2
+    # display id
+    name: lovely_effect
+    # owner id
+    userId: N58D0R9uaGVZ1R986qBUgUC9ZZQ2
+    # time mixin
+    createdTime: 1641124095
+    updatedTime: 1651798324
+    title: 毎日が楽しくなるエフェクト
+    titleEn: a effect
+    subtitle: ああ〜
+    subtitleEn: ah
+    author: あき34892
+    authorEn: Aki34892
+    description: 多分使いやすい
+    descriptionEn: my first cool effect
+    public: true
+    isDeleted: true
+    thumbnail: "dummy_hash"
+    data: "dummy_hash"
+- model: src.database.objects.effect.Effect
+  id: 3
+  fields:
+    # database primary key
+    id: 3
+    # display id
+    name: secret_effect
+    # owner id
+    userId: N58D0R9uaGVZ1R986qBUgUC9ZZQ2
+    # time mixin
+    createdTime: 1641121278
+    updatedTime: 1651179344
+    title: 見られたくないエフェクト
+    titleEn: miruna
+    subtitle: 秘密やって
+    subtitleEn: secret
+    author: あき(@aki)
+    authorEn: Aki(@aki)
+    description: 内緒にして
+    descriptionEn: make private
+    public: false
+    isDeleted: false
+    thumbnail: "dummy_hash"
+    data: "dummy_hash"

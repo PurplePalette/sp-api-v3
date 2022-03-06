@@ -23,3 +23,53 @@
     thumbnail: "dummy_hash"
     data: "dummy_hash"
     texture: "dummy_hash"
+- model: src.database.objects.skin.Skin
+  id: 2
+  fields:
+    # database primary key
+    id: 2
+    # display id
+    name: this_is_nice_skin
+    # owner id
+    userId: N58D0R9uaGVZ1R986qBUgUC9ZZQ2
+    # time mixin
+    createdTime: 1646373789
+    updatedTime: 1646573529
+    title: スキンヘッド
+    titleEn: tabun hage
+    subtitle: 怖そう
+    subtitleEn: demo hage
+    author: あき
+    authorEn: Aki
+    description: スキンとすき家は何%くらい似てるやろか
+    descriptionEn: kono skin ga suki
+    public: false
+    isDeleted: false
+    thumbnail: "dummy_hash"
+    data: "dummy_hash"
+    texture: "dummy_hash"
+- model: src.database.objects.skin.Skin
+  id: 3
+  fields:
+    # database primary key
+    id: 3
+    # display id
+    name: banned_skin
+    # owner id
+    userId: N58D0R9uaGVZ1R986qBUgUC9ZZQ2
+    # time mixin
+    createdTime: 1646373789
+    updatedTime: 1646573529
+    title: 消されたスキン
+    titleEn: deleted skin
+    subtitle: いいスキンだった
+    subtitleEn: that was nice
+    author: あき
+    authorEn: Aki
+    description: 削除、削除
+    descriptionEn: delete x2
+    public: true
+    isDeleted: true
+    thumbnail: "dummy_hash"
+    data: "dummy_hash"
+    texture: "dummy_hash"

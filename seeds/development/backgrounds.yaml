@@ -24,3 +24,55 @@
     data: "dummy_hash"
     image: "dummy_hash"
     configuration: "dummy_hash"
+- model: src.database.objects.background.Background
+  id: 2
+  fields:
+    # database primary key
+    id: 2
+    # display id
+    name: hot_bg
+    # owner id
+    userId: N58D0R9uaGVZ1R986qBUgUC9ZZQ2
+    # time mixin
+    createdTime: 1641378436
+    updatedTime: 1646513478
+    title: この背景が凄すぎたwww
+    titleEn: fuckin hot bg
+    subtitle: みんなの目を引くようなすごい背景
+    subtitleEn: everyone love this bg
+    author: あき様
+    authorEn: Aki is god
+    description: この背景を使った人の99%が100年以内に死んでます
+    descriptionEn: hoge
+    public: true
+    isDeleted: true
+    thumbnail: "dummy_hash"
+    data: "dummy_hash"
+    image: "dummy_hash"
+    configuration: "dummy_hash"
+- model: src.database.objects.background.Background
+  id: 3
+  fields:
+    # database primary key
+    id: 3
+    # display id
+    name: secret_bg
+    # owner id
+    userId: N58D0R9uaGVZ1R986qBUgUC9ZZQ2
+    # time mixin
+    createdTime: 1641318401
+    updatedTime: 1700000000
+    title: 秘密の背景
+    titleEn: secret bg
+    subtitle: みんなの目を引くようなすごい背景
+    subtitleEn: everyone love this bg
+    author: あきちゃ
+    authorEn: Akicha
+    description: 13は素数
+    descriptionEn: 13 is source
+    public: false
+    isDeleted: false
+    thumbnail: "dummy_hash"
+    data: "dummy_hash"
+    image: "dummy_hash"
+    configuration: "dummy_hash"
