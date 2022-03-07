@@ -7,13 +7,12 @@ from src.database.db import Base
 from src.database.mixins import SonolusDataMixin, TimeMixin
 from src.database.objects.favorite import Favorite
 from src.database.objects.like import Like
-from src.models import (
-    LevelReqResp,
-    LevelUseBackground,
-    LevelUseEffect,
-    LevelUseParticle,
-    LevelUseSkin,
-)
+from src.database.objects.pickup import Pickup  # noqa: F401
+from src.models.level import Level as LevelReqResp
+from src.models.level_use_background import LevelUseBackground
+from src.models.level_use_effect import LevelUseEffect
+from src.models.level_use_particle import LevelUseParticle
+from src.models.level_use_skin import LevelUseSkin
 
 
 class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore

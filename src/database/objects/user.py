@@ -8,6 +8,7 @@ from src.database.mixins import TimeMixin
 from src.database.objects.favorite import Favorite
 from src.database.objects.like import Like
 from src.database.objects.log import Log
+from src.database.objects.vote import Vote  # noqa: F401
 from src.models.user import User as UserReqResp
 from src.models.user_total import UserTotal
 from src.models.user_total_publish import UserTotalPublish
