@@ -1,20 +1,5 @@
 # coding: utf-8
-
-from typing import Dict, List  # noqa: F401
-
-from fastapi import (  # noqa: F401
-    APIRouter,
-    Body,
-    Cookie,
-    Depends,
-    Form,
-    Header,
-    Path,
-    Query,
-    Response,
-    Security,
-    UploadFile,
-)
+from fastapi import APIRouter, BackgroundTasks, UploadFile
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import (
@@ -44,6 +29,7 @@ router = APIRouter()
     response_model=PostUploadResponse,
 )
 async def upload_file(
+    background_tasks: BackgroundTasks,
     type: str = dependsForm,
     file: UploadFile = dependsFile,
     file_size: int = dependsFileSize,
@@ -51,4 +37,4 @@ async def upload_file(
     user: FirebaseClaims = dependsFirebase,
 ) -> PostUploadResponse:
     """ファイルのアップロードを受け付ける (投稿から1時間以上使用されないファイルは自動削除したい)"""
-    return await upload_process(type, file, file_size, db, user)
+    return await upload_process(type, file, file_size, db, user, background_tasks)

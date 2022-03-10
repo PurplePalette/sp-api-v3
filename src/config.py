@@ -21,6 +21,9 @@ S3_BUCKET = os.environ.get("S3_BUCKET")
 S3_KEY = os.environ.get("S3_KEY")
 S3_SECRET = os.environ.get("S3_SECRET")
 
+SUS_SERVICE_ENDPOINT = os.environ.get("SUS_SERVICE_ENDPOINT")
+IMAGE_SERVICE_ENDPOINT = os.environ.get("IMAGE_SERVICE_ENDPOINT")
+MUSIC_SERVICE_ENDPOINT = os.environ.get("MUSIC_SERVICE_ENDPOINT")
 
 # Server support version
 SKIN_VERSION = 2

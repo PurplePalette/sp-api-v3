@@ -15,6 +15,24 @@ services:
       - local-net
     depends_on:
       - database
+  # SUS convertion server (Required)
+  # Run at sonolus_sus_service:3000
+  sus:
+    image: dosugamea/sonolus-sus-server:latest
+    container_name: sonolus_sus_service
+    hostname: sonolus_sus_service
+    networks:
+      - local-net
+    depends_on:
+      - service
+    ports:
+      - ${PORT_SUS}:3000
+    environment:
+      S3_KEY: ${S3_KEY}
+      S3_SECRET: ${S3_SECRET}
+      S3_BUCKET: ${S3_BUCKET}
+      S3_ENDPOINT: ${S3_ENDPOINT}
+      S3_REGION: ${S3_REGION}
   # MariaDB Database (Required)
   database:
     container_name: sonolus_fastapi_database

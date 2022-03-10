@@ -9,8 +9,10 @@ Third public Sonolus api to manage user generated background, effect, engine, le
 * Poetry(>=1.16)
 * Python(>=3.8.x)
 * Firebase Authorization
-* MariaDB Server
-* Any S3 storage
+* MySQL or MariaDB Server
+* [SUS Conversion Server](https://github.com/PurplePalette/sonolus-sus-server)
+* Any S3 storage(Recommends [B2 Cloud Storage](https://www.backblaze.com/b2/cloud-storage.html) with [Cloudflare](https://cloudflare.com/))
+* Any VPS(Recommends [Oracle Cloud Free Tier](https://www.oracle.com/jp/cloud/free/))
 
 ## Production setup
 Please refer [wiki article](https://github.com/PurplePalette/sonolus-fastapi/wiki/Production-setup)

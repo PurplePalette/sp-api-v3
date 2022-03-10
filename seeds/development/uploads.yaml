@@ -110,3 +110,19 @@
     objectSize: 1
     objectTargetType: "background"
     objectTargetId: NULL
+- model: src.database.objects.upload.Upload
+  id: 8
+  fields:
+    # database primary key
+    id: 8
+    # owner id
+    userId: 1
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    objectType: "SusFile"
+    objectHash: "49.sus"
+    objectName: "49.sus"
+    objectSize: 1
+    objectTargetType: "level"
+    objectTargetId: NULL

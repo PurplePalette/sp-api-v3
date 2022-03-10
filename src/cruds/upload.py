@@ -5,13 +5,14 @@ from io import StringIO
 from re import finditer
 from typing import List
 
-from fastapi import HTTPException, UploadFile
+from fastapi import BackgroundTasks, HTTPException, UploadFile
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.utils import get_current_unix, get_internal_id, save_to_db
 from src.database.bucket import get_bucket
 from src.database.objects.upload import Upload as UploadSave
 from src.models.post_upload_response import PostUploadResponse
+from src.tasks.level_conversion import LevelConversionTask
 
 
 @dataclass
@@ -118,6 +119,7 @@ async def upload_process(
     file_size: int,
     db: AsyncSession,
     user: FirebaseClaims,
+    background_tasks: BackgroundTasks,
 ) -> PostUploadResponse:
     """ファイルのアップロードを受け取りバケットに登録する"""
     # 指定したファイルタイプが適切か確認
@@ -164,6 +166,14 @@ async def upload_process(
         userId=internal_id,
     )
     await save_to_db(db, upload)
+    # SUSであればLevelDataへの変換タスクを積む
+    if file_type == "SusFile":
+        task = LevelConversionTask(
+            db,
+            sha1_hash,
+            user["user_id"],
+        )
+        background_tasks.add_task(task)
     return PostUploadResponse(
         message="ok",
         filename=sha1_hash,
