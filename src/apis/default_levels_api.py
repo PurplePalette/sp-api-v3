@@ -21,7 +21,7 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
-from src.cruds.level import LevelCrud
+from src.cruds.defaults.level import LevelCrud
 from src.models.add_level_request import AddLevelRequest
 from src.models.edit_level_request import EditLevelRequest
 from src.models.get_level_list_response import GetLevelListResponse

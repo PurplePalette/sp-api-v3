@@ -17,7 +17,7 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
-from src.cruds.skin import SkinCrud
+from src.cruds.defaults.skin import SkinCrud
 from src.models.add_skin_request import AddSkinRequest
 from src.models.edit_skin_request import EditSkinRequest
 from src.models.get_skin_list_response import GetSkinListResponse

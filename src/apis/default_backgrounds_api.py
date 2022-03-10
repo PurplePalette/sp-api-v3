@@ -17,7 +17,7 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
-from src.cruds.background import BackgroundCrud
+from src.cruds.defaults.background import BackgroundCrud
 from src.models.add_background_request import AddBackgroundRequest
 from src.models.edit_background_request import EditBackgroundRequest
 from src.models.get_background_list_response import GetBackgroundListResponse

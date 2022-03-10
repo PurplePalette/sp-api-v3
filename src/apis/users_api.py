@@ -16,7 +16,7 @@ from src.apis.depends import (
     dependsPath,
     dependsStartSession,
 )
-from src.cruds.user import UserCrud
+from src.cruds.extras.user import UserCrud
 from src.models.add_user_request import AddUserRequest
 from src.models.get_user_list_response import GetUserListResponse
 from src.models.start_session_request import StartSessionRequest

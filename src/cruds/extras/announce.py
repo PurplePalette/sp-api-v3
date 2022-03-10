@@ -5,7 +5,7 @@ from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.cruds.abstract import AbstractCrud
+from src.cruds.extras.abstract import AbstractCrud
 from src.cruds.utils import (
     db_to_resp,
     get_admin_or_403,

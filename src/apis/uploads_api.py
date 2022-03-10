@@ -9,7 +9,7 @@ from src.apis.depends import (
     dependsFirebase,
     dependsForm,
 )
-from src.cruds.upload import upload_process
+from src.cruds.extras.upload import upload_process
 from src.models.post_upload_response import PostUploadResponse
 
 router = APIRouter()

@@ -31,7 +31,7 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
-from src.cruds.effect import EffectCrud
+from src.cruds.defaults.effect import EffectCrud
 from src.models.add_effect_request import AddEffectRequest
 from src.models.effect import Effect
 from src.models.get_effect_list_response import GetEffectListResponse

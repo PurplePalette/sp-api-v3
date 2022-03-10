@@ -2,7 +2,7 @@
 from fastapi import APIRouter
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import dependsDatabase, dependsLocalization
-from src.cruds.info import list_info
+from src.cruds.defaults.info import list_info
 from src.models.server_info import ServerInfo
 
 router = APIRouter()

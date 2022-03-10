@@ -18,7 +18,7 @@ from src.apis.depends import (
     dependsSort,
     dependsStatus,
 )
-from src.cruds.particle import ParticleCrud
+from src.cruds.defaults.particle import ParticleCrud
 from src.models.add_particle_request import AddParticleRequest
 from src.models.edit_particle_request import EditParticleRequest
 from src.models.get_particle_list_response import GetParticleListResponse

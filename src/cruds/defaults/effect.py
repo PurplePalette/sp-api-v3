@@ -8,8 +8,7 @@ from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
-from src.cruds.abstract import AbstractCrud
-from src.cruds.search import buildDatabaseQuery
+from src.cruds.defaults.abstract import AbstractCrud
 from src.cruds.utils import (
     db_to_resp,
     get_first_item_or_404,
@@ -19,6 +18,7 @@ from src.cruds.utils import (
     req_to_db,
     save_to_db,
 )
+from src.cruds.utils.search import buildDatabaseQuery
 from src.database.objects.effect import Effect as EffectSave
 from src.models.default_search import defaultSearch
 from src.models.effect import Effect as EffectReqResp

@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.apis.depends import dependsBody, dependsDatabase, dependsFirebase, dependsPath
-from src.cruds.announce import AnnounceCrud
+from src.cruds.extras.announce import AnnounceCrud
 from src.models.add_announce_request import AddAnnounceRequest
 from src.models.edit_announce_request import EditAnnounceRequest
 from src.models.get_level_list_response import GetLevelListResponse

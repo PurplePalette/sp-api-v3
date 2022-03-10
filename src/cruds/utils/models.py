@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.config import CDN_ENDPOINT
-from src.cruds.constraints import SRL_BRIDGES, SRLDefine
+from src.cruds.utils.constraints import SRL_BRIDGES, SRLDefine
 from src.cruds.utils.db import is_exist
 from src.cruds.utils.funcs import get_current_unix
 from src.cruds.utils.ids import get_display_id, get_internal_id
