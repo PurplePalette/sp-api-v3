@@ -82,10 +82,15 @@ services:
       - local-net
   # Firebase auth emulator for development (Optional)
   firebase:
-    image: ghcr.io/uyamazak/firebase-auth-emulator:latest
-    command: --project ${FIREBASE_PROJECT}
+    image: andreysenov/firebase-tools:latest
+    command: firebase emulators:start
+    volumes:
+      - ./:/home/node
     ports:
+      - 4000:4000
       - 9099:9099
+    networks:
+      - local-net
 networks:
   local-net:
     driver: bridge

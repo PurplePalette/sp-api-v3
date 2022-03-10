@@ -7,3 +7,5 @@ minio_data/
 api_gen
 firebase-debug.log
 ui-debug.log
+.config/configstore/firebase-tools.json
+.config/configstore/update-notifier-firebase-tools.json
