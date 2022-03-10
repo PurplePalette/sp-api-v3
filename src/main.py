@@ -15,44 +15,44 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from src.apis.accounts_backgrounds_api import router as AccountsBackgroundsApiRouter
-from src.apis.accounts_effects_api import router as AccountsEffectsApiRouter
-from src.apis.accounts_engines_api import router as AccountsEnginesApiRouter
-from src.apis.accounts_info_api import router as AccountsInfoApiRouter
-from src.apis.accounts_levels_api import router as AccountsLevelsApiRouter
-from src.apis.accounts_levels_specials_api import (
+from src.routers.accounts_backgrounds_api import router as AccountsBackgroundsApiRouter
+from src.routers.accounts_effects_api import router as AccountsEffectsApiRouter
+from src.routers.accounts_engines_api import router as AccountsEnginesApiRouter
+from src.routers.accounts_info_api import router as AccountsInfoApiRouter
+from src.routers.accounts_levels_api import router as AccountsLevelsApiRouter
+from src.routers.accounts_levels_specials_api import (
     router as AccountsLevelsSpecialsApiRouter,
 )
-from src.apis.accounts_particles_api import router as AccountsParticlesApiRouter
-from src.apis.accounts_skins_api import router as AccountsSkinsApiRouter
-from src.apis.announces_api import router as AnnouncesApiRouter
-from src.apis.default_backgrounds_api import router as DefaultBackgroundsApiRouter
-from src.apis.default_effects_api import router as DefaultEffectsApiRouter
-from src.apis.default_engines_api import router as DefaultEnginesApiRouter
-from src.apis.default_info_api import router as DefaultInfoApiRouter
-from src.apis.default_levels_api import router as DefaultLevelsApiRouter
-from src.apis.default_levels_specials_api import (
+from src.routers.accounts_particles_api import router as AccountsParticlesApiRouter
+from src.routers.accounts_skins_api import router as AccountsSkinsApiRouter
+from src.routers.announces_api import router as AnnouncesApiRouter
+from src.routers.default_backgrounds_api import router as DefaultBackgroundsApiRouter
+from src.routers.default_effects_api import router as DefaultEffectsApiRouter
+from src.routers.default_engines_api import router as DefaultEnginesApiRouter
+from src.routers.default_info_api import router as DefaultInfoApiRouter
+from src.routers.default_levels_api import router as DefaultLevelsApiRouter
+from src.routers.default_levels_specials_api import (
     router as DefaultLevelsSpecialsApiRouter,
 )
-from src.apis.default_particles_api import router as DefaultParticlesApiRouter
-from src.apis.default_skins_api import router as DefaultSkinsApiRouter
-from src.apis.pickups_api import router as PickupsApiRouter
-from src.apis.tests_backgrounds_api import router as TestsBackgroundsApiRouter
-from src.apis.tests_effects_api import router as TestsEffectsApiRouter
-from src.apis.tests_engines_api import router as TestsEnginesApiRouter
-from src.apis.tests_info_api import router as TestsInfoApiRouter
-from src.apis.tests_levels_api import router as TestsLevelsApiRouter
-from src.apis.tests_particles_api import router as TestsParticlesApiRouter
-from src.apis.tests_skins_api import router as TestsSkinsApiRouter
-from src.apis.uploads_api import router as UploadsApiRouter
-from src.apis.users_api import router as UsersApiRouter
-from src.apis.users_backgrounds_api import router as UsersBackgroundsApiRouter
-from src.apis.users_effects_api import router as UsersEffectsApiRouter
-from src.apis.users_engines_api import router as UsersEnginesApiRouter
-from src.apis.users_info_api import router as UsersInfoApiRouter
-from src.apis.users_levels_api import router as UsersLevelsApiRouter
-from src.apis.users_particles_api import router as UsersParticlesApiRouter
-from src.apis.users_skins_api import router as UsersSkinsApiRouter
+from src.routers.default_particles_api import router as DefaultParticlesApiRouter
+from src.routers.default_skins_api import router as DefaultSkinsApiRouter
+from src.routers.pickups_api import router as PickupsApiRouter
+from src.routers.tests_backgrounds_api import router as TestsBackgroundsApiRouter
+from src.routers.tests_effects_api import router as TestsEffectsApiRouter
+from src.routers.tests_engines_api import router as TestsEnginesApiRouter
+from src.routers.tests_info_api import router as TestsInfoApiRouter
+from src.routers.tests_levels_api import router as TestsLevelsApiRouter
+from src.routers.tests_particles_api import router as TestsParticlesApiRouter
+from src.routers.tests_skins_api import router as TestsSkinsApiRouter
+from src.routers.uploads_api import router as UploadsApiRouter
+from src.routers.users_api import router as UsersApiRouter
+from src.routers.users_backgrounds_api import router as UsersBackgroundsApiRouter
+from src.routers.users_effects_api import router as UsersEffectsApiRouter
+from src.routers.users_engines_api import router as UsersEnginesApiRouter
+from src.routers.users_info_api import router as UsersInfoApiRouter
+from src.routers.users_levels_api import router as UsersLevelsApiRouter
+from src.routers.users_particles_api import router as UsersParticlesApiRouter
+from src.routers.users_skins_api import router as UsersSkinsApiRouter
 from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI(
