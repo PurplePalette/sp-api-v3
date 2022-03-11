@@ -1,24 +1,13 @@
 # coding: utf-8
 
-from typing import Dict, List  # noqa: F401
-
-from fastapi import (  # noqa: F401
-    APIRouter,
-    Body,
-    Cookie,
-    Depends,
-    Form,
-    Header,
-    Path,
-    Query,
-    Response,
-    Security,
-)
-from src.models.extra_models import TokenModel  # noqa: F401
+from fastapi import APIRouter
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.cruds.tests.info import TestInfoCrud
 from src.models.server_info import ServerInfo
-from src.routers.depends import dependsPath
+from src.routers.depends import dependsDatabase, dependsLocalization, dependsPath
 
 router = APIRouter()
+crud = TestInfoCrud()
 
 
 @router.get(
@@ -30,7 +19,9 @@ router = APIRouter()
     summary="Get test server info",
 )
 async def get_test_server_info(
+    db: AsyncSession = dependsDatabase,
     testId: str = dependsPath,
+    localization: str = dependsLocalization,
 ) -> ServerInfo:
     """テスト個別の情報一覧を返します"""
-    ...
+    return await crud.list_info(db, testId, localization)

@@ -15,7 +15,7 @@ class SonolusPage(Generic[T]):
     items: Sequence[T]
 
 
-def toSonolusPage(page: Page):
+def toSonolusPage(page: Page) -> SonolusPage:
     return SonolusPage(
         pageCount=math.ceil(page.total / page.size), total=page.total, items=page.items
     )
