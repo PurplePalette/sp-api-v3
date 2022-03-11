@@ -1,11 +1,15 @@
 # coding: utf-8
 import os
 from os.path import dirname, join
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional
 
+import yaml
 from dotenv import load_dotenv
+from firebase_admin import auth
+from firebase_admin.auth import EmailAlreadyExistsError
 from sqlalchemy_seed import load_fixture_files, load_fixtures
-from src.database.db import Base, get_sync_db  # noqa: F401
+from src.database.db import get_sync_db
+from src.security_api import default_app
 
 load_dotenv(verbose=True)
 dotenv_path = join(dirname(__file__), ".env")
@@ -45,7 +49,7 @@ def patch_open() -> None:
     builtins.open = __open  # type: ignore
 
 
-def seed() -> None:
+def seed_database() -> None:
     """Add or update database data with seed files"""
     print("Seeding database...")
     path: str = "development" if os.environ.get("IS_DEV") else "production"
@@ -69,6 +73,35 @@ def seed() -> None:
     print("Now database seeded!")
 
 
+def load_firebase_users() -> List[Dict[str, str]]:
+    seed_path = os.path.join("seeds", "development")
+    file_path = os.path.join(seed_path, "firebase.yaml")
+    with open(file_path) as f:
+        firebase_users: List[Dict[str, str]] = yaml.safe_load(f)
+    return firebase_users
+
+
+def seed_firebase() -> None:
+    """Add or update firebase data with seed files"""
+    path: str = "development" if os.environ.get("IS_DEV") else "production"
+    if path != "development":
+        return None
+    print("Seeding firebase...")
+    firebase_users = load_firebase_users()
+    for user in firebase_users:
+        try:
+            auth.create_user(
+                display_name=user["display_name"],
+                email=user["email"],
+                password=user["password"],
+                app=default_app,
+            )
+        except EmailAlreadyExistsError:
+            pass
+    print("Now firebase seeded!")
+
+
 if __name__ == "__main__":
     patch_open()
-    seed()
+    seed_database()
+    seed_firebase()

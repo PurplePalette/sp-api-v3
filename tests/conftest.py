@@ -2,23 +2,20 @@ import asyncio
 import os
 import sys
 from os.path import dirname, join
-from typing import AsyncGenerator, Generator
+from typing import AsyncGenerator, Generator, List
 
 import pytest_asyncio
-import requests
 from dotenv import load_dotenv
-from firebase_admin import auth
-from firebase_admin.auth import EmailAlreadyExistsError
 from httpx import AsyncClient
-from seeder import patch_open, seed
+from seeder import load_firebase_users, patch_open, seed_database, seed_firebase
 from src.database.db import Base, engine
 from src.main import app as application
 from src.security_api import (
-    default_app,
     get_current_user,
     get_current_user_optional,
     get_current_user_optional_stub,
     get_current_user_stub,
+    get_id_token_from_emulator,
 )
 
 load_dotenv(verbose=True)
@@ -26,7 +23,7 @@ dotenv_path = join(dirname(__file__), ".env")
 load_dotenv(dotenv_path)
 
 IS_LOCAL = os.environ.get("IS_LOCAL")
-
+FIREBASE_AUTH_EMULATOR_HOST = os.environ.get("FIREBASE_AUTH_EMULATOR_HOST")
 TEST_FILE_ENDPOINT = "https://cdn.purplepalette.net/file/potato-test"
 
 """
@@ -74,22 +71,15 @@ def setup_test_db() -> Generator:
             Base.metadata.create_all(bind=engine)
             print("Created database!")
         patch_open()
-        print("Seeding database...")
-        seed()
-        print("Seeded database!")
-        try:
-            user = auth.create_user(
-                display_name="KafuuChino",
-                email="user@example.com",
-                password="password",
-                app=default_app,
-            )
-            resp = requests.post(
-                "http://localhost:9099/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=fake",
-                json={"email": "user@example.com", "password": "password"},
-            ).json()
-            print("User created:", user.uid)
-            print("User idToken:", resp["idToken"])
-        except EmailAlreadyExistsError:
-            pass
+        seed_database()
+        seed_firebase()
         yield
+
+
+@pytest_asyncio.fixture(scope="session")
+def id_tokens() -> List[str]:
+    users = load_firebase_users()
+    endpoint = f"http://{FIREBASE_AUTH_EMULATOR_HOST}"
+    return [
+        get_id_token_from_emulator(endpoint, u["email"], u["password"]) for u in users
+    ]

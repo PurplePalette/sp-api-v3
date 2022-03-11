@@ -8,6 +8,7 @@ from os.path import dirname, join
 from typing import Dict, Optional  # noqa: F401
 
 import firebase_admin
+import httpx
 from dotenv import load_dotenv
 from fastapi import Header, HTTPException, Request
 from fastapi.responses import JSONResponse
@@ -18,13 +19,7 @@ load_dotenv(verbose=True)
 dotenv_path = join(dirname(__file__), ".env")
 load_dotenv(dotenv_path)
 
-DUMMY_USER: Dict[str, str] = {
-    "user_id": "hoge",
-    "email": "hoge@example.com",
-}
-
 dependsHeader = Header(None)
-
 
 env_cred = os.environ.get("FIREBASE_CRED")
 
@@ -34,30 +29,6 @@ if not env_cred:
 cred_dict = json.loads(base64.b64decode(env_cred).decode())
 cred = firebase_admin.credentials.Certificate(cred_dict)
 default_app = firebase_admin.initialize_app(cred)
-
-
-async def get_current_user_stub(
-    authorization: Optional[str] = dependsHeader,
-) -> Dict[str, str]:
-    if authorization is None:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-    separated_authorization = authorization.split("Bearer ")
-    if len(separated_authorization) != 2:
-        raise HTTPException(status_code=401, detail="Not verified")
-    DUMMY_USER["user_id"] = separated_authorization[1]
-    return DUMMY_USER
-
-
-async def get_current_user_optional_stub(
-    authorization: Optional[str] = dependsHeader,
-) -> Optional[Dict[str, str]]:
-    if authorization is None:
-        return None
-    separated_authorization = authorization.split("Bearer ")
-    if len(separated_authorization) != 2:
-        return None
-    DUMMY_USER["user_id"] = separated_authorization[1]
-    return DUMMY_USER
 
 
 def start_session(req: StartSessionRequest) -> JSONResponse:
@@ -81,7 +52,15 @@ def start_session(req: StartSessionRequest) -> JSONResponse:
         return JSONResponse({"message": "Failed to bake new cookies"}, status_code=400)
 
 
+def end_session() -> JSONResponse:
+    """Firebase セッションクッキーを失効させる"""
+    resp = JSONResponse({"message": "Now you ate cookies"})
+    resp.set_cookie("session", max_age=0, expires=0)
+    return resp
+
+
 def get_current_user(request: Request) -> Dict[str, str]:
+    """現在ログイン中のユーザー情報を取得する、取得できない場合はエラーを返す"""
     session_cookie = request.cookies.get("session")
     if not session_cookie:
         raise HTTPException(status_code=401, detail="Not authenticated")
@@ -96,6 +75,7 @@ def get_current_user(request: Request) -> Dict[str, str]:
 
 
 def get_current_user_optional(request: Request) -> Optional[Dict[str, str]]:
+    """現在ログイン中のユーザー情報を取得する、取得できない場合はNoneを返す"""
     session_cookie = request.cookies.get("session")
     if not session_cookie:
         return None
@@ -109,8 +89,45 @@ def get_current_user_optional(request: Request) -> Optional[Dict[str, str]]:
         return None
 
 
-def end_session() -> JSONResponse:
-    """Firebase セッションクッキーを失効させる"""
-    resp = JSONResponse({"message": "Now you ate cookies"})
-    resp.set_cookie("session", max_age=0, expires=0)
-    return resp
+DUMMY_USER: Dict[str, str] = {
+    "user_id": "hoge",
+    "email": "hoge@example.com",
+}
+
+
+async def get_current_user_stub(
+    authorization: Optional[str] = dependsHeader,
+) -> Dict[str, str]:
+    """現在ログイン中のユーザー情報を取得するスタブ、取得できない場合はエラーを返す"""
+    if authorization is None:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    separated_authorization = authorization.split("Bearer ")
+    if len(separated_authorization) != 2:
+        raise HTTPException(status_code=401, detail="Not verified")
+    DUMMY_USER["user_id"] = separated_authorization[1]
+    return DUMMY_USER
+
+
+async def get_current_user_optional_stub(
+    authorization: Optional[str] = dependsHeader,
+) -> Optional[Dict[str, str]]:
+    """現在ログイン中のユーザー情報を取得するスタブ、取得できない場合はNoneを返す"""
+    if authorization is None:
+        return None
+    separated_authorization = authorization.split("Bearer ")
+    if len(separated_authorization) != 2:
+        return None
+    DUMMY_USER["user_id"] = separated_authorization[1]
+    return DUMMY_USER
+
+
+def get_id_token_from_emulator(endpoint: str, email: str, password: str) -> str:
+    """IDトークンを発行する(Firebase Emulator Suiteでのみ使用可能)"""
+    resp = httpx.post(
+        f"{endpoint}/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword",
+        params={"key": "dummy"},
+        json={"email": email, "password": password},
+    )
+    if resp.status_code != 200:
+        raise Exception(f"Failed to get idToken: {resp.text}")
+    return resp.json()["idToken"]
