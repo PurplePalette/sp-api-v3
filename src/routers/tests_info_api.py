@@ -29,5 +29,5 @@ async def get_test_server_info(
 
 
 @router.get("/tests/{testId}")
-def tests_index():
+def tests_index() -> FileResponse:
     return FileResponse("src/static/server.html")
