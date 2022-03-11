@@ -12,10 +12,17 @@
     "python.linting.lintOnSave": true,
     "python.languageServer": "Pylance",
     "cSpell.words": [
-        "dotenv"
+        "closefd",
+        "dotenv",
+        "httpx",
+        "mylisted",
+        "mylists",
+        "pydantic",
+        "selectinload"
     ],
     "python.testing.pytestArgs": [
-        "tests"
+        "tests",
+        "-s"
     ],
     "python.testing.pytestEnabled": true
 }
