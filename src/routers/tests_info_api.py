@@ -1,6 +1,7 @@
 # coding: utf-8
 
 from fastapi import APIRouter
+from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.tests.info import TestInfoCrud
 from src.models.server_info import ServerInfo
@@ -25,3 +26,8 @@ async def get_test_server_info(
 ) -> ServerInfo:
     """テスト個別の情報一覧を返します"""
     return await crud.list_info(db, testId, localization)
+
+
+@router.get("/tests/{testId}")
+def tests_index():
+    return FileResponse("src/static/server.html")

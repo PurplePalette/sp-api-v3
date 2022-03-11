@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Network Service OK</title>
+<meta property="og:description" content="Sonolus tests server is working fine">
+<meta property="og:image" content="https://placehold.jp/300x300.png?text=Network Service OK" />
+<meta name="robots" content="nofollow, noindex, noarchive">
+<!--
+Switch on the power line, remember to put on protection
+Lay down your pieces and let's begin object creation
+Fill in my data parameters initialization
+Set up our new world and let's begin the sonolus server
+-->
+<style>
+body {
+	margin: 0;
+	width: 100%;
+	height: 100vh;
+	font-family: "Exo", sans-serif;
+	color: #000;
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradientBG 15s ease infinite;
+}
+@keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+.absolute_transform{
+  background: lightcyan;
+  text-align: center;
+  position: absolute;
+  width: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  -webkit-transform: translateY(-50%) translateX(-50%);
+}
+h3 {
+    font-size: calc(50px + 0.3em);
+}
+h4 {
+    font-size: calc(40px + 0.2em);
+}
+input, button {
+    font-size: calc(30px + 0.2em);
+}
+</style>
+</head>
+<body>
+    <div class="absolute_transform">
+        <h3>200 OK</h3>
+        <h4>このページのアドレスをコピーしてSonolusのサーバーとして追加してください。</h4>
+        <h4>Please copy this page address and add as sonolus server.</h4>
+        <input id="addr" type="text" value=""/>
+        <button onclick="copy()">サーバーアドレスをコピー / Copy server address</button>
+    </div>
+</body>
+<script>
+document.getElementById("addr").value = location.href;
+function copy() {
+    const copyText = document.querySelector("#addr");
+    copyText.select();
+    document.execCommand("copy");
+    alert("サーバーアドレスをコピーしました / Copied server address");
+}
+</script>
+</html>
