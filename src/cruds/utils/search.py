@@ -81,7 +81,6 @@ def buildFilter(
                     obj.titleEn.contains(query.keywords),
                 )
             ]
-    if query.author:
         if query.author != "any":
             filterFields += [
                 or_(
@@ -121,7 +120,7 @@ def buildFilter(
     if query.status == SearchStatus.TESTING and query.user:
         filterFields.append(obj.public == false())
         filterFields.append(obj.userId == query.user.id)
-    else:
+    elif query.user and SearchStatus.ANY:
         filterFields.append(obj.public == true())
     # 一応早期リターン
     if query.status == SearchStatus.ANY:

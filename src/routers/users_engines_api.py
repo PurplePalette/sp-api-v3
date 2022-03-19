@@ -1,24 +1,14 @@
 # coding: utf-8
 
-from typing import Dict, List  # noqa: F401
-
-from fastapi import (  # noqa: F401
-    APIRouter,
-    Body,
-    Cookie,
-    Depends,
-    Form,
-    Header,
-    Path,
-    Query,
-    Response,
-    Security,
-)
-from src.models.extra_models import TokenModel  # noqa: F401
+from fastapi import APIRouter
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.cruds.users.engine import UsersEngineCrud
 from src.models.get_engine_list_response import GetEngineListResponse
 from src.models.get_engine_response import GetEngineResponse
+from src.models.search_query import SearchQueries
 from src.routers.depends import (
     dependsAuthor,
+    dependsDatabase,
     dependsKeywords,
     dependsLocalization,
     dependsOrder,
@@ -30,24 +20,7 @@ from src.routers.depends import (
 )
 
 router = APIRouter()
-
-
-@router.get(
-    "/users/{userId}/engines/{engineName}",
-    responses={
-        200: {"model": GetEngineResponse, "description": "OK"},
-        404: {"description": "Not Found"},
-    },
-    tags=["users_engines"],
-    summary="Get users engine",
-)
-async def get_users_engine(
-    userId: str = dependsPath,
-    engineName: str = dependsPath,
-) -> GetEngineResponse:
-    """It returns specified engine info.
-    It will raise 404 if the engine is not registered in this server"""
-    ...
+crud = UsersEngineCrud()
 
 
 @router.get(
@@ -69,6 +42,28 @@ async def get_users_engines(
     status: int = dependsStatus,
     author: str = dependsAuthor,
     random: int = dependsRandom,
+    db: AsyncSession = dependsDatabase,
 ) -> GetEngineListResponse:
-    """ユーザー個別用エンドポイント/ エンジン一覧を返す"""
-    ...
+    """譜面テスト用エンドポイント/ エンジン一覧を返す"""
+    queries = SearchQueries(localization, keywords, author, sort, order, status, random)
+    return await crud.list(db, userId, page, queries)
+
+
+@router.get(
+    "/users/{userId}/engines/{engineName}",
+    responses={
+        200: {"model": GetEngineResponse, "description": "OK"},
+        404: {"description": "Not Found"},
+    },
+    tags=["users_engines"],
+    summary="Get users engine",
+)
+async def get_engine_user(
+    userId: str = dependsPath,
+    engineName: str = dependsPath,
+    db: AsyncSession = dependsDatabase,
+    localization: str = dependsLocalization,
+) -> GetEngineResponse:
+    """It returns specified engine info.
+    It will raise 404 if the engine is not registered in this server"""
+    return await crud.get(db, engineName, localization)

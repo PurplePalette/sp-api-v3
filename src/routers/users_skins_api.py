@@ -1,24 +1,14 @@
 # coding: utf-8
 
-from typing import Dict, List  # noqa: F401
-
-from fastapi import (  # noqa: F401
-    APIRouter,
-    Body,
-    Cookie,
-    Depends,
-    Form,
-    Header,
-    Path,
-    Query,
-    Response,
-    Security,
-)
-from src.models.extra_models import TokenModel  # noqa: F401
+from fastapi import APIRouter
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.cruds.users.skin import UsersSkinCrud
 from src.models.get_skin_list_response import GetSkinListResponse
 from src.models.get_skin_response import GetSkinResponse
+from src.models.search_query import SearchQueries
 from src.routers.depends import (
     dependsAuthor,
+    dependsDatabase,
     dependsKeywords,
     dependsLocalization,
     dependsOrder,
@@ -30,24 +20,7 @@ from src.routers.depends import (
 )
 
 router = APIRouter()
-
-
-@router.get(
-    "/users/{userId}/skins/{skinName}",
-    responses={
-        200: {"model": GetSkinResponse, "description": "OK"},
-        404: {"description": "Not Found"},
-    },
-    tags=["users_skins"],
-    summary="Get users skin",
-)
-async def get_users_skin(
-    userId: str = dependsPath,
-    skinName: str = dependsPath,
-) -> GetSkinResponse:
-    """It returns specified skin info.
-    It will raise 404 if the skin is not registered in this server"""
-    ...
+crud = UsersSkinCrud()
 
 
 @router.get(
@@ -69,6 +42,28 @@ async def get_users_skins(
     status: int = dependsStatus,
     author: str = dependsAuthor,
     random: int = dependsRandom,
+    db: AsyncSession = dependsDatabase,
 ) -> GetSkinListResponse:
-    """ユーザー個別用エンドポイント/ スキン一覧を返す"""
-    ...
+    """譜面テスト用エンドポイント/ スキン一覧を返す"""
+    queries = SearchQueries(localization, keywords, author, sort, order, status, random)
+    return await crud.list(db, userId, page, queries)
+
+
+@router.get(
+    "/users/{userId}/skins/{skinName}",
+    responses={
+        200: {"model": GetSkinResponse, "description": "OK"},
+        404: {"description": "Not Found"},
+    },
+    tags=["users_skins"],
+    summary="Get users skin",
+)
+async def get_skin_user(
+    userId: str = dependsPath,
+    skinName: str = dependsPath,
+    db: AsyncSession = dependsDatabase,
+    localization: str = dependsLocalization,
+) -> GetSkinResponse:
+    """It returns specified skin info.
+    It will raise 404 if the skin is not registered in this server"""
+    return await crud.get(db, skinName, localization)
