@@ -39,9 +39,9 @@ async def test_get_tests_backgrounds(client: AsyncClient) -> None:
         "localization": "en",
         "page": "0",
         "keywords": "Chino",
-        "sort": "updated_time",
-        "order": "desc",
-        "status": "any",
+        "sort": "0",
+        "order": "0",
+        "status": "0",
         "author": "any",
         "random": "0",
     }
