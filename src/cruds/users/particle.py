@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
-from src.cruds.tests.abstract import AbstractCrud
+from src.cruds.users.abstract import AbstractCrud
 from src.database.objects.particle import Particle as ParticleSave
 from src.models.default_search import defaultSearch
 from src.models.get_particle_list_response import GetParticleListResponse

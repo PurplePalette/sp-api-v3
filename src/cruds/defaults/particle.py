@@ -2,7 +2,6 @@ import asyncio
 from typing import Union
 
 from fastapi import HTTPException
-from fastapi_cloudauth.firebase import FirebaseClaims
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
@@ -26,6 +25,7 @@ from src.models.get_particle_response import GetParticleResponse
 from src.models.particle import Particle as ParticleReqResp
 from src.models.search_query import SearchQueries
 from src.models.sonolus_page import SonolusPage, toSonolusPage
+from src.security_api import FirebaseClaims
 
 
 class ParticleCrud(AbstractCrud):  # type: ignore

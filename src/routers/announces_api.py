@@ -1,6 +1,5 @@
 # coding: utf-8
 from fastapi import APIRouter
-from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.extras.announce import AnnounceCrud
 from src.models.add_announce_request import AddAnnounceRequest
@@ -13,6 +12,7 @@ from src.routers.depends import (
     dependsFirebase,
     dependsPath,
 )
+from src.security_api import FirebaseClaims
 
 router = APIRouter()
 crud = AnnounceCrud()

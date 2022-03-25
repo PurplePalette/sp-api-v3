@@ -1,6 +1,5 @@
 # coding: utf-8
 from fastapi import APIRouter
-from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.defaults.background import BackgroundCrud
 from src.models.add_background_request import AddBackgroundRequest
@@ -23,6 +22,7 @@ from src.routers.depends import (
     dependsSort,
     dependsStatus,
 )
+from src.security_api import FirebaseClaims
 
 router = APIRouter()
 crud = BackgroundCrud()

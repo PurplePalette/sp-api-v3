@@ -2,7 +2,6 @@ from abc import ABCMeta
 from typing import Any, Optional, TypeVar
 
 from fastapi import HTTPException
-from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.exc import IntegrityError
@@ -10,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import true
 from src.cruds.utils.funcs import get_random_name
 from src.database.objects.user import User as UserObject
+from src.security_api import FirebaseClaims
 
 
 class MustHaveName(metaclass=ABCMeta):

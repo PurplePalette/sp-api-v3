@@ -1,7 +1,6 @@
 # coding: utf-8
 
 from fastapi import APIRouter
-from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.defaults.particle import ParticleCrud
 from src.models.add_particle_request import AddParticleRequest
@@ -24,6 +23,7 @@ from src.routers.depends import (
     dependsSort,
     dependsStatus,
 )
+from src.security_api import FirebaseClaims
 
 router = APIRouter()
 crud = ParticleCrud()

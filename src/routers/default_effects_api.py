@@ -14,7 +14,6 @@ from fastapi import (  # noqa: F401
     Response,
     Security,
 )
-from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.defaults.effect import EffectCrud
 from src.models.add_effect_request import AddEffectRequest
@@ -37,6 +36,7 @@ from src.routers.depends import (
     dependsSort,
     dependsStatus,
 )
+from src.security_api import FirebaseClaims
 
 router = APIRouter()
 crud = EffectCrud()

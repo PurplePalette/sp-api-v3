@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from typing import Any, Dict, Union
 
 from fastapi import HTTPException
-from fastapi_cloudauth.firebase import FirebaseClaims
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
@@ -35,6 +34,7 @@ from src.models.get_level_response import GetLevelResponse
 from src.models.level import Level as LevelReqResp
 from src.models.search_query import SearchQueries
 from src.models.sonolus_page import SonolusPage, toSonolusPage
+from src.security_api import FirebaseClaims
 
 
 @dataclass

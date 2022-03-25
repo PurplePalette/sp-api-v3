@@ -1,7 +1,6 @@
 import asyncio
 from typing import List
 
-from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -20,6 +19,7 @@ from src.models.default_search import defaultSearch
 from src.models.edit_announce_request import EditAnnounceRequest
 from src.models.get_level_list_response import GetLevelListResponse
 from src.models.get_level_response import GetLevelResponse
+from src.security_api import FirebaseClaims
 
 
 class AnnounceCrud(AbstractCrud):  # type: ignore

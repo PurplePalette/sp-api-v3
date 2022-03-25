@@ -14,7 +14,6 @@ from fastapi import (  # noqa: F401
     Response,
     Security,
 )
-from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.models.extra_models import TokenModel  # noqa: F401
 from src.models.get_level_list_response import GetLevelListResponse
@@ -26,6 +25,7 @@ from src.routers.depends import (
     dependsFirebase,
     dependsPath,
 )
+from src.security_api import FirebaseClaims
 
 router = APIRouter()
 

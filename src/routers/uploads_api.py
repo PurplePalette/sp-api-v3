@@ -1,6 +1,5 @@
 # coding: utf-8
 from fastapi import APIRouter, BackgroundTasks, UploadFile
-from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.extras.upload import upload_process
 from src.models.post_upload_response import PostUploadResponse
@@ -11,6 +10,7 @@ from src.routers.depends import (
     dependsFirebase,
     dependsForm,
 )
+from src.security_api import FirebaseClaims
 
 router = APIRouter()
 

@@ -4,7 +4,6 @@ from typing import Dict, List, Optional  # noqa: F401
 
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.extras.user import UserCrud
 from src.models.add_user_request import AddUserRequest
@@ -21,7 +20,7 @@ from src.routers.depends import (
     dependsPath,
     dependsStartSession,
 )
-from src.security_api import start_session
+from src.security_api import FirebaseClaims, start_session
 
 router = APIRouter()
 crud = UserCrud()

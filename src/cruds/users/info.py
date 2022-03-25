@@ -12,6 +12,7 @@ from src.cruds.utils.tile import create_tile
 from src.database.mixins.sonolus_data import SonolusDataMixin
 from src.database.objects.background import Background as BackgroundSave
 from src.database.objects.effect import Effect as EffectSave
+from src.database.objects.engine import Engine as EngineSave
 from src.database.objects.level import Level as LevelSave
 from src.database.objects.particle import Particle as ParticleSave
 from src.database.objects.skin import Skin as SkinSave
@@ -77,8 +78,8 @@ class UserInfoCrud(AbstractInfoCrud):
             LevelSave.public == true(),
         ]
         engines_filter_extends = [
-            LevelSave.userId == user.id,
-            LevelSave.public == true(),
+            EngineSave.userId == user.id,
+            EngineSave.public == true(),
         ]
         return await super().list_info(
             db,

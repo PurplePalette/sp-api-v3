@@ -2,7 +2,6 @@ import asyncio
 from typing import Optional, Union
 
 from fastapi import HTTPException
-from fastapi_cloudauth.firebase import FirebaseClaims
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import false, select
@@ -28,6 +27,7 @@ from src.models.sonolus_page import SonolusPage, toSonolusPage
 from src.models.user import User as UserReqResp
 from src.models.user_total import UserTotal
 from src.models.user_total_publish import UserTotalPublish
+from src.security_api import FirebaseClaims
 
 
 class UserCrud(AbstractCrud):  # type: ignore

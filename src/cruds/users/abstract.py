@@ -2,7 +2,6 @@ import asyncio
 from abc import ABCMeta, abstractmethod
 from typing import Any, Optional, TypeVar
 
-from fastapi_cloudauth.firebase import FirebaseClaims
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
@@ -14,6 +13,7 @@ from src.database.mixins.sonolus_data import SonolusDataMixin
 from src.database.objects.user import User as UserSave
 from src.models.search_query import SearchQueries, SearchStatus
 from src.models.sonolus_page import SonolusPage, toSonolusPage
+from src.security_api import FirebaseClaims
 
 T = TypeVar("T", bound=SonolusDataMixin)
 
@@ -50,8 +50,9 @@ class AbstractCrud(metaclass=ABCMeta):
             db, select(UserSave).filter(UserSave.userId == userId)
         )
         queries.user = user
-        if userId == authUser["user_id"]:
-            queries.status = SearchStatus.all
+        if authUser is not None:
+            if userId == authUser.user_id:
+                queries.status = SearchStatus.ANY
         select_query = buildDatabaseQuery(obj, queries, True)
         respPage: Page[T] = await paginate(
             db,

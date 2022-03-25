@@ -1,7 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from typing import Any
 
-from fastapi_cloudauth.firebase import FirebaseClaims
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.cruds.utils.db import (
@@ -11,6 +10,7 @@ from src.cruds.utils.db import (
 )
 from src.cruds.utils.funcs import get_current_unix
 from src.models.search_query import SearchQueries
+from src.security_api import FirebaseClaims
 
 
 class AbstractCrud(metaclass=ABCMeta):
