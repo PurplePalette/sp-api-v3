@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from typing import Dict
+from typing import Dict, List
 
 import pytest
 from httpx import AsyncClient
@@ -121,3 +121,21 @@ async def test_get_user_list(client: AsyncClient) -> None:
     )
 
     assert response.status_code != 500
+
+
+@pytest.mark.asyncio
+async def test_start_session(client: AsyncClient, id_tokens: List[str]) -> None:
+    """Test case for start_session
+
+    Start new user session
+    """
+
+    session: Dict[str, str] = {"idToken": id_tokens[0]}
+    response = await client.request(
+        "POST",
+        "/users/session",
+        json=session,
+    )
+    message = response.json()
+    assert "message" in message.keys()
+    assert message["message"] == "Baked new cookies"
