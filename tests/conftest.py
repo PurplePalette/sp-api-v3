@@ -45,6 +45,12 @@ async def client() -> AsyncGenerator:
         yield c
 
 
+@pytest_asyncio.fixture
+async def client_real() -> AsyncGenerator:
+    async with AsyncClient(app=application, base_url="https://test") as c:
+        yield c
+
+
 @pytest_asyncio.fixture(scope="session")
 def event_loop() -> Generator:
     """

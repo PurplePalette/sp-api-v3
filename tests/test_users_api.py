@@ -107,6 +107,37 @@ async def test_get_user_with_auth(client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
+async def test_get_user_with_auth_real(
+    client_real: AsyncClient, id_tokens: List[str]
+) -> None:
+    """Test case for get_user
+
+    Get a user using auth (real)
+    """
+
+    session: Dict[str, str] = {"idToken": id_tokens[0]}
+    response = await client_real.request(
+        "POST",
+        "/users/session",
+        json=session,
+    )
+    message = response.json()
+    assert "message" in message.keys()
+    assert message["message"] == "Baked new cookies"
+
+    headers = {
+        "Authorization": f"Bearer {message['session']}",
+    }
+    response = await client_real.request(
+        "GET",
+        "/users/{userId}".format(userId="kafuu_chino"),
+        headers=headers,
+    )
+    final_response: UserReqResp = response.json()
+    assert final_response["testId"] != ""
+
+
+@pytest.mark.asyncio
 async def test_get_user_list(client: AsyncClient) -> None:
     """Test case for get_user_list
 
