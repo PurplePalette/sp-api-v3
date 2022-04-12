@@ -44,7 +44,7 @@ class AbstractCrud(metaclass=ABCMeta):
         userId: str,
         page: int,
         queries: SearchQueries,  # 認証してるかどうかは任意
-        authUser: Optional[FirebaseClaims],
+        authUser: Optional[FirebaseClaims] = None,
     ) -> SonolusPage:
         user: UserSave = await get_first_item_or_404(
             db, select(UserSave).filter(UserSave.userId == userId)
