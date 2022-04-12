@@ -5,8 +5,6 @@ jobs:
     name: CI
     timeout-minutes: 5
     runs-on: ubuntu-latest
-    env:
-      IS_DEV: 1
     environment:
       name: CI
     services:
@@ -24,6 +22,13 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      firebase:
+        image: andreysenov/firebase-tools:latest
+        command: firebase emulators:start
+        volumes:
+          - ./:/home/node
+        ports:
+          - 9099:9099
     steps:
       - name: Checkout
         uses: actions/checkout@v2
