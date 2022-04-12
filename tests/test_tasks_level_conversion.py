@@ -8,6 +8,6 @@ from src.tasks.level_conversion import LevelConversionStatus, LevelConversionTas
 async def test_level_conversion_success() -> None:
     """Test case for level_conversion task"""
     async with async_session() as db:
-        task = LevelConversionTask(db, "49.sus", "special-key")
+        task = LevelConversionTask(db, "49.sus", "kafuu_chino")
         await task.__call__()
     assert task.status == LevelConversionStatus.COMPLETED

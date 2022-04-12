@@ -1,42 +1,99 @@
+# Admin
 - model: src.database.objects.user.User
   id: 1
   fields:
     # database primary key
     id: 1
     # firebase userId
-    userId: special-key
+    userId: kafuu_chino
     # accounts endpoint
-    accountId: special-accounts
+    accountId: chino_account
     # tests endpoint
-    testId: special-tests
+    testId: chino_test
     # time mixin
     createdTime: 1
     updatedTime: 1
     description: special-user
     isAdmin: true
     isDeleted: false
+# Normal
 - model: src.database.objects.user.User
   id: 2
   fields:
     # database primary key
     id: 2
     # firebase userId
-    userId: normal-key
+    userId: kafuu_cocoa
     # accounts endpoint
-    accountId: normal-accounts
+    accountId: cocoa_account
     # tests endpoint
-    testId: normal-tests
+    testId: cocoa_test
     # time mixin
     createdTime: 1
     updatedTime: 1
     description: normal-user
     isAdmin: false
     isDeleted: false
+# Normal
 - model: src.database.objects.user.User
   id: 3
   fields:
     # database primary key
     id: 3
+    # firebase userId
+    userId: teteza_rize
+    # accounts endpoint
+    accountId: rize_account
+    # tests endpoint
+    testId: rize_test
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    description: normal-user
+    isAdmin: false
+    isDeleted: false
+# Normal
+- model: src.database.objects.user.User
+  id: 4
+  fields:
+    # database primary key
+    id: 4
+    # firebase userId
+    userId: ujimatsu_chiya
+    # accounts endpoint
+    accountId: chiya_account
+    # tests endpoint
+    testId: chiya_test
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    description: normal-user
+    isAdmin: false
+    isDeleted: false
+# Normal
+- model: src.database.objects.user.User
+  id: 5
+  fields:
+    # database primary key
+    id: 5
+    # firebase userId
+    userId: kirima_syaro
+    # accounts endpoint
+    accountId: syaro_account
+    # tests endpoint
+    testId: syaro_test
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    description: normal-user
+    isAdmin: false
+    isDeleted: false
+# Deleted
+- model: src.database.objects.user.User
+  id: 6
+  fields:
+    # database primary key
+    id: 6
     # firebase userId
     userId: deleted-key
     # accounts endpoint

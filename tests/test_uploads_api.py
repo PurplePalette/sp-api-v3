@@ -20,7 +20,7 @@ async def test_upload_success_valid_data(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer special-key",
+        "Authorization": "Bearer kafuu_chino",
     }
     req = {"type": "LevelCover"}
     data = await require_image()
@@ -42,7 +42,7 @@ async def test_upload_failed_invalid_type(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer special-key",
+        "Authorization": "Bearer kafuu_chino",
     }
     req = {"type": "Level"}
     data = await require_image()
@@ -64,7 +64,7 @@ async def test_upload_failed_wrong_type(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer special-key",
+        "Authorization": "Bearer kafuu_chino",
     }
     req = {"type": "LevelBgm"}
     data = await require_image()
@@ -86,7 +86,7 @@ async def test_upload_failed_wrong_srl(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer special-key",
+        "Authorization": "Bearer kafuu_chino",
     }
 
     req = {"type": "LevelBgm"}
@@ -109,7 +109,7 @@ async def test_upload_failed_wrong_mime(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer special-key",
+        "Authorization": "Bearer kafuu_chino",
     }
 
     req = {"type": "LevelCover"}
@@ -132,7 +132,7 @@ async def test_upload_failed_bigger_than_limit(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer special-key",
+        "Authorization": "Bearer kafuu_chino",
     }
 
     req = {"type": "LevelCover"}
@@ -155,7 +155,7 @@ async def test_upload_failed_bigger_than_define(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer special-key",
+        "Authorization": "Bearer kafuu_chino",
     }
 
     req = {"type": "LevelCover"}

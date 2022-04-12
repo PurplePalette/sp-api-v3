@@ -34,7 +34,7 @@ async def test_add_engine(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer special-key",
+        "Authorization": "Bearer kafuu_chino",
     }
     response = await client.request(
         "POST",
@@ -54,7 +54,7 @@ async def test_delete_engine(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer special-key",
+        "Authorization": "Bearer kafuu_chino",
     }
     response = await client.request(
         "DELETE",
@@ -77,7 +77,7 @@ async def test_edit_engine(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer special-key",
+        "Authorization": "Bearer kafuu_chino",
     }
     response = await client.request(
         "PATCH",
