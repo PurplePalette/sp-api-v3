@@ -64,7 +64,7 @@ def __get_current_user(
     separated_authorization = authorization.split("Bearer ")
     if len(separated_authorization) != 2:
         return None
-    session_cookie = separated_authorization[0]
+    session_cookie = separated_authorization[1]
     try:
         decoded_claims: Dict[str, str] = auth.verify_session_cookie(
             session_cookie, check_revoked=True
