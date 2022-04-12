@@ -12,6 +12,6 @@
     # time mixin
     createdTime: 1
     updatedTime: 1
-    description: 管理ユーザー
+    description: admin user
     isAdmin: true
     isDeleted: false

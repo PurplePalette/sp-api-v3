@@ -1,1 +1,30 @@
 # Input initial engines if you need
+- model: src.database.objects.engine.Engine
+  id: 1
+  fields:
+    # database primary key
+    id: 1
+    # display id
+    name: my-awesome-engine
+    # owner id
+    userId: 1
+    # time mixin
+    createdTime: 1
+    updatedTime: 1
+    title: わたしのすごいエンジン
+    titleEn: My Awesome Engine
+    subtitle: ここになにかすごいエンジンを挿入
+    subtitleEn: INSERT YOUR AWESOME ENGINE SUBTITLE HERE
+    author: PurplePalette
+    authorEn: PurplePalette
+    description: プレイヤーがじゃぶじゃぶ課金したくなるような射幸心を煽りまくる説明文章
+    descriptionEn: This is placeholder. Please edit this.
+    public: true
+    isDeleted: false
+    thumbnail: "https://placehold.jp/3d4070/ffffff/500x500.png?text=My%20Awesome%20Engine"
+    data: "dummy_hash"
+    configuration: "dummy_hash"
+    backgroundId: 1
+    effectId: 1
+    particleId: 1
+    skinId: 1
