@@ -44,6 +44,8 @@ jobs:
       - name: Install dependencies
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      - name: Make required folder
+        run: mkdir -p .config/configstore && touch .config/configstore/{firebase-tools.json,update-notifier.json}
       - name: Start firebase emulator
         run: |
           docker run -p 9099:9099 -v /:/home/node --name firebase-tools andreysenov/firebase-tools firebase emulators:start
