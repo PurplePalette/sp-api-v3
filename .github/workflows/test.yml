@@ -46,7 +46,7 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       - name: Start firebase emulator
         run: |
-          docker run -p 9099:9099 -v ./:/home/node --name firebase-tools andreysenov/firebase-tools firebase emulators:start
+          docker run -p 9099:9099 -v /:/home/node --name firebase-tools andreysenov/firebase-tools firebase emulators:start
       - name: Run Test
         run: |
           poetry run pytest --cov --cov-report=xml
