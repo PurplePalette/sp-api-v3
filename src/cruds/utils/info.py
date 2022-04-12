@@ -114,7 +114,7 @@ class AbstractInfoCrud:
         engines: Page[EngineSave] = await paginate(
             db,
             self.get_engines_selector(engines_filter_extends)
-            .order_by(LevelSave.updatedTime.desc())
+            .order_by(EngineSave.updatedTime.desc())
             .options(
                 joinedload(EngineSave.background).options(
                     joinedload(BackgroundSave.user),
