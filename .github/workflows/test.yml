@@ -5,8 +5,21 @@ jobs:
     name: CI
     timeout-minutes: 5
     runs-on: ubuntu-latest
-    environment:
-      name: CI
+    services:
+      db:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: sonolus
+          MYSQL_DATABASE: sonolus
+          MYSQL_USER: sonolus
+          MYSQL_PASSWORD: sonolus
+        options: >-
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -29,11 +42,11 @@ jobs:
       - name: Install dependencies
         run: poetry install
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      - name: docker-compose up
-        run: docker-compose up -d
       - name: Run Test
         run: |
           poetry run pytest --cov --cov-report=xml
+        env: |
+          FIREBASE_CRED: ${{ secrets.FIREBASE_CRED }}
       - name: Upload result to codecov
         uses: codecov/codecov-action@v2
         with:
