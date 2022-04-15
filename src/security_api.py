@@ -122,11 +122,13 @@ async def get_current_user_optional_stub(
     return DUMMY_USER
 
 
-def get_id_token_from_emulator(endpoint: str, email: str, password: str) -> str:
-    """IDトークンを発行する(Firebase Emulator Suiteでのみ使用可能)"""
+def get_id_token(
+    email: str, password: str, endpoint: str = "https:/", apiKey: str = "dummy"
+) -> str:
+    """IDトークンを発行する"""
     resp = httpx.post(
         f"{endpoint}/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword",
-        params={"key": "dummy"},
+        params={"key": apiKey},
         json={"email": email, "password": password},
     )
     if resp.status_code != 200:

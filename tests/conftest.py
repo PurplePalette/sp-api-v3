@@ -15,7 +15,7 @@ from src.security_api import (
     get_current_user_optional,
     get_current_user_optional_stub,
     get_current_user_stub,
-    get_id_token_from_emulator,
+    get_id_token,
 )
 
 load_dotenv(verbose=True)
@@ -24,6 +24,7 @@ load_dotenv(dotenv_path)
 
 IS_LOCAL = os.environ.get("IS_LOCAL")
 FIREBASE_AUTH_EMULATOR_HOST = os.environ.get("FIREBASE_AUTH_EMULATOR_HOST")
+FIREBASE_API_KEY = os.environ.get("FIREBASE_API_KEY")
 TEST_FILE_ENDPOINT = "https://cdn.purplepalette.net/file/potato-test"
 
 """
@@ -86,6 +87,10 @@ def setup_test_db() -> Generator:
 def id_tokens() -> List[str]:
     users = load_firebase_users()
     endpoint = f"http://{FIREBASE_AUTH_EMULATOR_HOST}"
+    if FIREBASE_AUTH_EMULATOR_HOST:
+        return [
+            get_id_token(u["email"], u["password"], endpoint=endpoint) for u in users
+        ]
     return [
-        get_id_token_from_emulator(endpoint, u["email"], u["password"]) for u in users
+        get_id_token(u["email"], u["password"], apiKey=FIREBASE_API_KEY) for u in users
     ]
