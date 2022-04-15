@@ -47,6 +47,7 @@ jobs:
           poetry run pytest --cov --cov-report=xml
         env:
           FIREBASE_CRED: ${{ secrets.FIREBASE_CRED }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
       - name: Upload result to codecov
         uses: codecov/codecov-action@v2
         with:
