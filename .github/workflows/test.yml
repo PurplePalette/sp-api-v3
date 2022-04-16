@@ -40,6 +40,7 @@ jobs:
           PORT_SUS: 4000
           PORT_MINIO: 9000
           PORT_MINIO_CONSOLE: 9001
+          PORT_ADMINER: 8077
           S3_ENDPOINT: "http://127.0.0.1:9000"
           S3_BUCKET: "sonolus"
           S3_KEY: "S3_KEY"
