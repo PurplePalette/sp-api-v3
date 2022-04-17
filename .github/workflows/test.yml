@@ -37,7 +37,7 @@ jobs:
           DB_PASS: "sonolus"
           PORT_API: 8080
           PORT_DB: 3306
-          PORT_SUS: 4000
+          PORT_SUS: 7000
           PORT_MINIO: 9000
           PORT_MINIO_CONSOLE: 9001
           PORT_ADMINER: 8077
