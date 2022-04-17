@@ -103,7 +103,8 @@ async def test_get_user_with_auth(client: AsyncClient) -> None:
         "/users/{userId}".format(userId="kafuu_chino"),
         headers=headers,
     )
-    assert response.status_code != 500
+    result = response.json()
+    assert result["testId"] != ""
 
 
 @pytest.mark.asyncio
@@ -134,7 +135,7 @@ async def test_get_user_with_auth_real(
         headers=headers,
     )
     final_response: UserReqResp = response.json()
-    assert final_response["testId"] != ""
+    assert final_response.status_code == 200
 
 
 @pytest.mark.asyncio
