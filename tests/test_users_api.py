@@ -4,8 +4,6 @@ from typing import Dict, List
 
 import pytest
 from httpx import AsyncClient
-from src.models.get_user_list_response import GetUserListResponse  # noqa: F401
-from src.models.user import User as UserReqResp
 
 
 @pytest.mark.asyncio
@@ -134,8 +132,7 @@ async def test_get_user_with_auth_real(
         "/users/{userId}".format(userId="kafuu_chino"),
         headers=headers,
     )
-    final_response: UserReqResp = response.json()
-    assert final_response.status_code == 200
+    assert response.status_code == 200
 
 
 @pytest.mark.asyncio
