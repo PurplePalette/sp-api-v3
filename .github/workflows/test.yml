@@ -41,11 +41,11 @@ jobs:
           PORT_MINIO: 9000
           PORT_MINIO_CONSOLE: 9001
           PORT_ADMINER: 8077
-          S3_ENDPOINT: "http://127.0.0.1:9000"
-          S3_BUCKET: "sonolus"
-          S3_KEY: "S3_KEY"
-          S3_SECRET: "S3_SECRET"
-          S3_REGION: ""
+          S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_REGION: ${{ secrets.S3_REGION }}
+          S3_KEY: ${{ secrets.S3_KEY }}
+          S3_SECRET: ${{ secrets.S3_SECRET }}
           VOLUME_API_PATH: "./api_data"
           VOLUME_DB_PATH: "./db_data"
           VOLUME_MINIO_PATH: "./minio_data"
@@ -53,6 +53,12 @@ jobs:
         run: |
           poetry run pytest --cov --cov-report=xml
         env:
+          S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_REGION: ${{ secrets.S3_REGION }}
+          S3_KEY: ${{ secrets.S3_KEY }}
+          S3_SECRET: ${{ secrets.S3_SECRET }}
+          CDN_ENDPOINT: ${{ secrets.CDN_ENDPOINT }}
           FIREBASE_CRED: ${{ secrets.FIREBASE_CRED }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           IS_DEV: 1
