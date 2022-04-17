@@ -128,7 +128,7 @@ def get_id_token(
     """IDトークンを発行する"""
     resp = httpx.post(
         f"{endpoint}/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword",
-        params={"key": apiKey},
+        params={"key": apiKey, "returnSecureToken": True},
         json={"email": email, "password": password},
     )
     if resp.status_code != 200:
