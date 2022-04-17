@@ -62,10 +62,12 @@ jobs:
           FIREBASE_CRED: ${{ secrets.FIREBASE_CRED }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           IS_DEV: 1
+      - name: Stop containers
+        run: |
+          docker-compose down
       - name: Upload result to codecov
         uses: codecov/codecov-action@v2
         with:
-          directory: /home/runner/work/sonolus-fastapi/sonolus-fastapi/
           files: coverage.xml
           name: codecov-umbrella # optional
           flags: unittests # optional
