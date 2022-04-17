@@ -65,6 +65,7 @@ jobs:
       - name: Upload result to codecov
         uses: codecov/codecov-action@v2
         with:
+          directory: /home/runner/work/sonolus-fastapi/sonolus-fastapi/
           files: coverage.xml
           name: codecov-umbrella # optional
           flags: unittests # optional
