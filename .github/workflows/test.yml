@@ -65,6 +65,25 @@ jobs:
       - name: Stop containers
         run: |
           docker-compose down
+        env:
+          DB_ROOT: "sonolus"
+          DB_NAME: "sonolus"
+          DB_USER: "sonolus"
+          DB_PASS: "sonolus"
+          PORT_API: 8080
+          PORT_DB: 3306
+          PORT_SUS: 7000
+          PORT_MINIO: 9000
+          PORT_MINIO_CONSOLE: 9001
+          PORT_ADMINER: 8077
+          S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_REGION: ${{ secrets.S3_REGION }}
+          S3_KEY: ${{ secrets.S3_KEY }}
+          S3_SECRET: ${{ secrets.S3_SECRET }}
+          VOLUME_API_PATH: "./api_data"
+          VOLUME_DB_PATH: "./db_data"
+          VOLUME_MINIO_PATH: "./minio_data"
       - name: Upload result to codecov
         uses: codecov/codecov-action@v2
         with:
