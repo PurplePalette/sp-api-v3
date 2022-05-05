@@ -93,5 +93,6 @@ jobs:
           files: coverage.xml
           name: codecov-umbrella # optional
           flags: unittests # optional
+          directory: "!db_data"
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
