@@ -1,3 +1,4 @@
+# flake8: noqa: F401
 from typing import List
 
 from sqlalchemy import Boolean, Column, Integer, String, select
@@ -5,10 +6,18 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from src.database.db import Base
 from src.database.mixins import TimeMixin
+from src.database.objects.level import Level
+from src.database.objects.genre import Genre
+from src.database.objects.engine import Engine
+from src.database.objects.effect import Effect
+from src.database.objects.background import Background
+from src.database.objects.particle import Particle
+from src.database.objects.skin import Skin
+from src.database.objects.announce import Announce
 from src.database.objects.favorite import Favorite
 from src.database.objects.like import Like
 from src.database.objects.log import Log
-from src.database.objects.vote import Vote  # noqa: F401
+from src.database.objects.vote import Vote
 from src.models.user import User as UserReqResp
 from src.models.user_total import UserTotal
 from src.models.user_total_publish import UserTotalPublish

@@ -11,9 +11,19 @@ from dotenv import load_dotenv
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
+from src.cruds.extras.upload import upload_process
 from src.cruds.utils import get_first_item_or_error, get_internal_id
 from src.database.db import async_engine, async_session
-from src.database.objects import GenreSave, LevelSave, UserSave
+
+# from src.database.objects import GenreSave, LevelSave, UserSave
+from src.database.objects.level import Level as LevelSave
+from src.database.objects.user import User as UserSave
+from src.database.objects.genre import Genre as GenreSave
+from src.database.objects.engine import Engine as EngineSave
+from src.database.objects.background import Background as BackgroundSave
+from src.database.objects.effect import Effect as EffectSave
+from src.database.objects.particle import Particle as ParticleSave
+from src.database.objects.skin import Skin as SkinSave
 
 
 @dataclass
@@ -23,6 +33,24 @@ class OldLevel:
     cover: bytes
     data: bytes
     sus: bytes
+
+
+class DummyFile:
+    def __init__(self, data: bytes, content_type: str, filename: str):
+        self.data = data
+        self.content_type = content_type
+        self.filename = filename
+
+    async def read(self):
+        return self.data
+
+
+class DummyBackgroundTasks:
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, func):
+        self.tasks.append(func)
 
 
 def load_users(path_arr: List[str]) -> List[Dict[str, Any]]:
@@ -37,17 +65,17 @@ def load_level(path: str) -> OldLevel:
     with open(os.path.join(path, "info.json"), "r", encoding="utf-8") as f:
         info = json.loads(f.read())
     files: List[bytes] = []
-    for data_name in ["bgm.mp3", "cover.png", "data.gz", "data.sus"]:
+    for data_name in ["bgm.mp3", "cover.png", "data.json", "data.sus"]:
         with open(os.path.join(path, data_name), "rb") as g:
             files.append(g.read())
     return OldLevel(info, files[0], files[1], files[2], files[3])
 
 
-async def add_user(sessionmaker: sessionmaker, userDict: Dict[Any, str]) -> None:
+async def add_user(sessionmaker: sessionmaker, user_dict: Dict[Any, str]) -> None:
     """Add dict user to database"""
     async with sessionmaker() as db:
-        userDict.pop("totalFumen", None)
-        user = UserSave(**userDict)
+        user_dict.pop("totalFumen", None)
+        user = UserSave(**user_dict)
         db.add(user)
         try:
             await db.commit()
@@ -62,12 +90,12 @@ async def add_user(sessionmaker: sessionmaker, userDict: Dict[Any, str]) -> None
             print("Fatal: ", e)
 
 
-async def add_level(sessionmaker: sessionmaker, level: OldLevel) -> None:
+async def add_level(sessionmaker: sessionmaker, background_tasks: DummyBackgroundTasks, level: OldLevel) -> None:
     """Add dict user to database"""
     async with sessionmaker() as db:
         user_id = await get_internal_id(db, level.info["userId"])
         genre = await get_first_item_or_error(
-            db, select(GenreSave).where(GenreSave.name == level.info["genre"])
+            db, select(GenreSave).where(GenreSave.name == level.info["genre"]), Exception
         )
         level_db = LevelSave(
             name=level.info["name"],
@@ -86,12 +114,33 @@ async def add_level(sessionmaker: sessionmaker, level: OldLevel) -> None:
             public=level.info["public"],
             bpm=0,
             length=0,
-            engineId=1,
+            engineId=(
+                await get_first_item_or_error(db, select(EngineSave).where(EngineSave.name == "pjsekai"), Exception)
+            ).id,
+            backgroundId=(
+                await get_first_item_or_error(
+                    db, select(BackgroundSave).where(BackgroundSave.name == "pjsekai.live"), Exception
+                )
+            ).id,
+            effectId=(
+                await get_first_item_or_error(
+                    db, select(EffectSave).where(EffectSave.name == "pjsekai.classic"), Exception
+                )
+            ).id,
+            particleId=(
+                await get_first_item_or_error(
+                    db, select(ParticleSave).where(ParticleSave.name == "pjsekai.classic"), Exception
+                )
+            ).id,
+            skinId=(
+                await get_first_item_or_error(
+                    db, select(SkinSave).where(SkinSave.name == "pjsekai.classic"), Exception
+                )
+            ).id,
             genreId=genre.id,
             userId=user_id,
         )
         db.add(level_db)
-        db.add()
         try:
             await db.commit()
             await db.refresh(level_db)
@@ -100,8 +149,20 @@ async def add_level(sessionmaker: sessionmaker, level: OldLevel) -> None:
                 print(f"Level {level.info['name']} already exists")
             else:
                 print(e._message())
-        # TODO: Import level/sus/bgm/cover binary to server
-        # Need UploadApi...
+        for data, db_type, content_type, filename in [
+            (level.bgm, "LevelBgm", "audio/mpeg", "bgm.mp3"),
+            (level.cover, "LevelCover", "image/png", "cover.png"),
+            (level.data, "LevelData", "application/json", "data.json"),
+            (level.sus, "SusFile", "text/plain", "data.sus"),
+        ]:
+            await upload_process(
+                db_type,
+                DummyFile(data, content_type, filename),
+                len(data),
+                db,
+                {"user_id": level.info["userId"]},
+                background_tasks,
+            )
 
 
 async def main() -> None:
@@ -121,23 +182,24 @@ async def main() -> None:
             exit(1)
     # ユーザーの移行
     users_path = glob.glob(os.path.join(users_folder, "*.json"))
-    users_path = [os.path.join(users_folder, p) for p in users_path]
+    # users_path = [os.path.join(users_folder, p) for p in users_path]
     print("Loading users...")
     users = load_users(users_path)
     print("Adding users...")
     # AsyncなDBを取得
     await asyncio.gather(*[add_user(async_session, user) for user in users])
-    await async_engine.dispose()
-    """
     # レベルの移行
     levels_path = os.listdir(levels_folder)
     if ".gitkeep" in levels_path:
         levels_path.remove(".gitkeep")
     levels_path = [os.path.join(levels_folder, p) for p in levels_path]
+    background_tasks = DummyBackgroundTasks()
     for level_path in levels_path:
         level = load_level(level_path)
-        await add_level(db, level)
-    """
+        await add_level(async_session, background_tasks, level)
+    for task in background_tasks.tasks:
+        await task()
+    await async_engine.dispose()
 
 
 if __name__ == "__main__":
