@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+
 import boto3
 from src.config import S3_BUCKET, S3_ENDPOINT, S3_KEY, S3_SECRET
 

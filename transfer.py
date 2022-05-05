@@ -5,7 +5,7 @@ import json
 import os
 import os.path
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any, Callable, Dict, List
 
 from dotenv import load_dotenv
 from sqlalchemy import select
@@ -14,16 +14,14 @@ from sqlalchemy.orm import sessionmaker
 from src.cruds.extras.upload import upload_process
 from src.cruds.utils import get_first_item_or_error, get_internal_id
 from src.database.db import async_engine, async_session
-
-# from src.database.objects import GenreSave, LevelSave, UserSave
-from src.database.objects.level import Level as LevelSave
-from src.database.objects.user import User as UserSave
-from src.database.objects.genre import Genre as GenreSave
-from src.database.objects.engine import Engine as EngineSave
 from src.database.objects.background import Background as BackgroundSave
 from src.database.objects.effect import Effect as EffectSave
+from src.database.objects.engine import Engine as EngineSave
+from src.database.objects.genre import Genre as GenreSave
+from src.database.objects.level import Level as LevelSave
 from src.database.objects.particle import Particle as ParticleSave
 from src.database.objects.skin import Skin as SkinSave
+from src.database.objects.user import User as UserSave
 
 
 @dataclass
@@ -36,20 +34,20 @@ class OldLevel:
 
 
 class DummyFile:
-    def __init__(self, data: bytes, content_type: str, filename: str):
+    def __init__(self, data: bytes, content_type: str, filename: str) -> None:
         self.data = data
         self.content_type = content_type
         self.filename = filename
 
-    async def read(self):
+    async def read(self) -> bytes:
         return self.data
 
 
 class DummyBackgroundTasks:
-    def __init__(self):
-        self.tasks = []
+    def __init__(self) -> None:
+        self.tasks: List[Callable] = []
 
-    def add_task(self, func):
+    def add_task(self, func: Callable) -> None:
         self.tasks.append(func)
 
 
@@ -90,12 +88,16 @@ async def add_user(sessionmaker: sessionmaker, user_dict: Dict[Any, str]) -> Non
             print("Fatal: ", e)
 
 
-async def add_level(sessionmaker: sessionmaker, background_tasks: DummyBackgroundTasks, level: OldLevel) -> None:
+async def add_level(
+    sessionmaker: sessionmaker, background_tasks: DummyBackgroundTasks, level: OldLevel
+) -> None:
     """Add dict user to database"""
     async with sessionmaker() as db:
         user_id = await get_internal_id(db, level.info["userId"])
         genre = await get_first_item_or_error(
-            db, select(GenreSave).where(GenreSave.name == level.info["genre"]), Exception
+            db,
+            select(GenreSave).where(GenreSave.name == level.info["genre"]),
+            Exception,
         )
         level_db = LevelSave(
             name=level.info["name"],
@@ -115,26 +117,38 @@ async def add_level(sessionmaker: sessionmaker, background_tasks: DummyBackgroun
             bpm=0,
             length=0,
             engineId=(
-                await get_first_item_or_error(db, select(EngineSave).where(EngineSave.name == "pjsekai"), Exception)
+                await get_first_item_or_error(
+                    db,
+                    select(EngineSave).where(EngineSave.name == "pjsekai"),
+                    Exception,
+                )
             ).id,
             backgroundId=(
                 await get_first_item_or_error(
-                    db, select(BackgroundSave).where(BackgroundSave.name == "pjsekai.live"), Exception
+                    db,
+                    select(BackgroundSave).where(BackgroundSave.name == "pjsekai.live"),
+                    Exception,
                 )
             ).id,
             effectId=(
                 await get_first_item_or_error(
-                    db, select(EffectSave).where(EffectSave.name == "pjsekai.classic"), Exception
+                    db,
+                    select(EffectSave).where(EffectSave.name == "pjsekai.classic"),
+                    Exception,
                 )
             ).id,
             particleId=(
                 await get_first_item_or_error(
-                    db, select(ParticleSave).where(ParticleSave.name == "pjsekai.classic"), Exception
+                    db,
+                    select(ParticleSave).where(ParticleSave.name == "pjsekai.classic"),
+                    Exception,
                 )
             ).id,
             skinId=(
                 await get_first_item_or_error(
-                    db, select(SkinSave).where(SkinSave.name == "pjsekai.classic"), Exception
+                    db,
+                    select(SkinSave).where(SkinSave.name == "pjsekai.classic"),
+                    Exception,
                 )
             ).id,
             genreId=genre.id,
@@ -193,7 +207,7 @@ async def main() -> None:
     if ".gitkeep" in levels_path:
         levels_path.remove(".gitkeep")
     levels_path = [os.path.join(levels_folder, p) for p in levels_path]
-    background_tasks = DummyBackgroundTasks()
+    background_tasks: DummyBackgroundTasks = DummyBackgroundTasks()
     for level_path in levels_path:
         level = load_level(level_path)
         await add_level(async_session, background_tasks, level)

@@ -31,4 +31,5 @@ class UserTotalPublish(BaseModel):
     levels: Optional[int] = None
     skins: Optional[int] = None
 
+
 UserTotalPublish.update_forward_refs()

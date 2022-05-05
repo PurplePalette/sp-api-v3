@@ -98,4 +98,5 @@ class AddBackgroundRequest(BaseModel):
         assert len(value) <= 3000
         return value
 
+
 AddBackgroundRequest.update_forward_refs()

@@ -166,7 +166,7 @@ def buildSort(obj: T, query: SearchQueries) -> Column:
 
 
 def buildDatabaseQuery(obj: T, query: SearchQueries, joinUser: bool = False) -> select:
-    """"与えられたパラメータからクエリを組み立てる(しんどい)"""
+    """ "与えられたパラメータからクエリを組み立てる(しんどい)"""
     filter: list = buildFilter(obj, query)
     sorter: int = 0
     if query.random == 0:

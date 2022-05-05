@@ -23,4 +23,5 @@ class PostUploadResponse(BaseModel):
     message: str
     filename: Optional[str] = None
 
+
 PostUploadResponse.update_forward_refs()
