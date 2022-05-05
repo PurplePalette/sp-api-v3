@@ -32,6 +32,7 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       - name: Run containers
         run: |
+          source .env
           docker-compose up -d
         env:
           DB_ROOT: "sonolus"
