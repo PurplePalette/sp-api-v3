@@ -2,7 +2,7 @@
 name = "sonolus-fastapi"
 version = "0.1.0"
 description = ""
-authors = ["dsgamer777@gmail.com"]
+authors = ["Omado <dsgamer777@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
