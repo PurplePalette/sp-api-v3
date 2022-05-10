@@ -105,7 +105,7 @@ services:
     volumes:
       - ./:/home/node
     ports:
-      - 4000:4000
+      - ${PORT_FIREBASE_EMULATOR}:4000
       - 9099:9099
     networks:
       - local-net

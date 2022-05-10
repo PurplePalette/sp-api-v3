@@ -33,4 +33,5 @@ class Pickup(BaseModel):
         assert value >= 10000
         return value
 
+
 Pickup.update_forward_refs()

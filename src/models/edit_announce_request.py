@@ -122,4 +122,5 @@ class EditAnnounceRequest(BaseModel):
         assert len(value) <= 3000
         return value
 
+
 EditAnnounceRequest.update_forward_refs()

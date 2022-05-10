@@ -45,4 +45,5 @@ class SonolusResourceLocator(BaseModel):
         assert len(value) <= 500
         return value
 
+
 SonolusResourceLocator.update_forward_refs()

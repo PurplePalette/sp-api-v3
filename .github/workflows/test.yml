@@ -1,5 +1,7 @@
 name: Run test
-on: [push]
+on:
+  push:
+
 jobs:
   test:
     name: CI
@@ -7,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Python 3.8
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v3
         with:
           python-version: 3.8
       - name: Create .env file
@@ -29,6 +31,7 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       - name: Run containers
         run: |
+          source .env
           docker-compose up -d
         env:
           DB_ROOT: "sonolus"
@@ -90,5 +93,6 @@ jobs:
           files: coverage.xml
           name: codecov-umbrella # optional
           flags: unittests # optional
+          directory: "!db_data"
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)

@@ -27,4 +27,5 @@ class SearchTextOption(BaseModel):
     type: str
     placeholder: str
 
+
 SearchTextOption.update_forward_refs()

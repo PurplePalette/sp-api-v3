@@ -1,7 +1,7 @@
 import gzip
 from dataclasses import dataclass
 from hashlib import sha1
-from io import StringIO
+from io import BytesIO
 from re import finditer
 from typing import List
 
@@ -107,7 +107,7 @@ def get_accept_define(key: str) -> AcceptableType:
 
 
 def compress_gzip(file: bytes) -> str:
-    out = StringIO()
+    out = BytesIO()
     with gzip.GzipFile(fileobj=out, mode="w") as f:  # type: ignore
         f.write(file)  # type: ignore
     return out.getvalue()
@@ -146,7 +146,7 @@ async def upload_process(
     # ファイルを読み出し必要ならGZip
     buf: bytes = await file.read()  # type: ignore
     if expected_content == "application/json":
-        buf = compress_gzip(buf).encode("utf-8")
+        buf = compress_gzip(buf)
     # バケットにアップロード
     sha1_hash = sha1(buf).hexdigest()
     bucket = get_bucket()

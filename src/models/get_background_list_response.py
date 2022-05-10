@@ -32,4 +32,5 @@ class GetBackgroundListResponse(BaseModel):
         assert value >= 1
         return value
 
+
 GetBackgroundListResponse.update_forward_refs()
