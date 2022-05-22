@@ -1,7 +1,7 @@
+from cruds.tests.tests_abstract import AbstractCrud
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
-from cruds.tests.tests_abstract import AbstractCrud
 from src.database.objects.effect import Effect as EffectSave
 from src.models.default_search import defaultSearch
 from src.models.get_effect_list_response import GetEffectListResponse

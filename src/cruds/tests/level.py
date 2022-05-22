@@ -1,11 +1,11 @@
 import asyncio
 
+from cruds.tests.tests_abstract import AbstractCrud
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
-from cruds.tests.tests_abstract import AbstractCrud
 from src.cruds.utils.db import get_first_item_or_404
 from src.cruds.utils.models import db_to_resp
 from src.cruds.utils.search import buildDatabaseQuery
