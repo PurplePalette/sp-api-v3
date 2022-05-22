@@ -88,7 +88,7 @@ def create_server_info(
 
 async def list_info(db: AsyncSession, localization: str) -> ServerInfo:
     """サーバー情報を取得します"""
-    tiles: List[LevelSave] = await get_announces(db, [1, 2])
+    tiles: List[LevelSave] = await get_announces(db, [])
     # joinedload すべきだが、どうやらjoinedloadはlazyできるらしい
     levels: Page[LevelSave] = await paginate(
         db,

@@ -3,7 +3,7 @@ from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.cruds.utils.db import (
+from src.cruds.utils import (
     get_first_item_or_404,
     is_owner_or_admin_otherwise_409,
     save_to_db,

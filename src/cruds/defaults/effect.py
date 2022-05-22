@@ -7,12 +7,12 @@ from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
+from src.cruds.utils.user import is_owner_or_admin_otherwise_409
 from src.cruds.defaults.abstract import AbstractCrud
 from src.cruds.utils import (
     db_to_resp,
     get_first_item_or_404,
     get_new_name,
-    is_owner_or_admin_otherwise_409,
     patch_to_model,
     req_to_db,
     save_to_db,

@@ -6,10 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.sql.expression import true
 from src.cruds.utils.funcs import get_random_name
-from src.database.objects.user import User as UserObject
-from src.security_api import FirebaseClaims
 
 
 class MustHaveName(metaclass=ABCMeta):
@@ -74,31 +71,6 @@ async def get_first_item_or_403(
     return resp
 
 
-async def get_user_or_404(
-    db: AsyncSession,
-    user: FirebaseClaims,
-) -> UserObject:
-    """データベースに指定されたユーザーが存在すれば取得、なければ NotFound"""
-    user_db: UserObject = await get_first_item_or_404(
-        db, select(UserObject).filter(UserObject.userId == user["user_id"])
-    )
-    return user_db
-
-
-async def get_admin_or_403(
-    db: AsyncSession,
-    user: FirebaseClaims,
-) -> UserObject:
-    """データベースに指定された管理者ユーザーが存在すれば取得、なければ Forbidden"""
-    user_db: UserObject = await get_first_item_or_403(
-        db,
-        select(UserObject).filter(
-            UserObject.userId == user["user_id"], UserObject.isAdmin == true()
-        ),
-    )
-    return user_db
-
-
 async def not_exist_or_409(db: AsyncSession, statement: Any) -> None:
     """データベースに指定された要素が存在すれば Conflict"""
     resp: Result = await db.execute(statement)
@@ -112,14 +84,6 @@ async def is_exist(db: AsyncSession, statement: Any) -> bool:
     resp: Result = await db.execute(statement)
     obj_db: Optional[Any] = resp.scalars().first()
     return True if obj_db else False
-
-
-async def is_owner_or_admin_otherwise_409(
-    db: AsyncSession, model: U, auth: FirebaseClaims
-) -> None:
-    """認証ユーザーが本人または管理者でなければ Forbidden"""
-    if model.userId != auth["user_id"]:
-        await get_admin_or_403(db, auth)
 
 
 async def get_new_name(db: AsyncSession, obj: T) -> str:

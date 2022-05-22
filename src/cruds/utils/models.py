@@ -38,9 +38,7 @@ def all_fields_exists_or_400(fields: List[Optional[Any]]) -> Optional[HTTPExcept
     """指定した全てのフィールドが存在しなければBadRequest"""
     for field in fields:
         if field is None:
-            return HTTPException(
-                status_code=400, detail="Bad request: missing required field"
-            )
+            return HTTPException(status_code=400, detail="Bad request: missing required field")
     return None
 
 
@@ -93,16 +91,12 @@ def patch_to_model(
     return model
 
 
-async def req_to_db(
-    db: AsyncSession, model: V, is_new: bool = False
-) -> Optional[HTTPException]:
+async def req_to_db(db: AsyncSession, model: V, is_new: bool = False) -> Optional[HTTPException]:
     """リクエストモデルをデータベースモデルにするショートハンド"""
     # Firebase側のIDをDB側のIDに変換
     model.userId = await get_internal_id(db, str(model.userId))
     # 英語の欠落フィールドを埋める
-    copy_translate_fields(
-        model, ["title", "description", "author", "subtitle", "artists"]
-    )
+    copy_translate_fields(model, ["title", "description", "author", "subtitle", "artists"])
     # データ更新時刻を埋める
     model.updatedTime = get_current_unix()
     if is_new:
@@ -145,6 +139,4 @@ async def db_to_resp(db: AsyncSession, model: W, localization: str = "ja") -> No
         model.userId = await get_display_id(db, int(model.userId))
     # リクエスト言語が日本語でなければ英語で返す
     if localization != "ja":
-        move_translate_fields(
-            model, ["title", "description", "author", "subtitle", "artists"]
-        )
+        move_translate_fields(model, ["title", "description", "author", "subtitle", "artists"])
