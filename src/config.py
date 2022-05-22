@@ -15,6 +15,8 @@ DB = os.environ.get("DB_NAME")
 ASYNC_DB_URL = f"mysql+aiomysql://{USER}:{PASS}@{HOST}:{PORT}/{DB}?charset=utf8"
 DB_URL = f"mysql+pymysql://{USER}:{PASS}@{HOST}:{PORT}/{DB}?charset=utf8"
 
+PREFIX = f'{os.environ.get("SERVER_PREFIX")}.'
+
 CDN_ENDPOINT = os.environ.get("CDN_ENDPOINT")
 S3_ENDPOINT = os.environ.get("S3_ENDPOINT")
 S3_BUCKET = os.environ.get("S3_BUCKET")

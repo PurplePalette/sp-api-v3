@@ -1,11 +1,8 @@
 import time
-from os import getenv
 
 from shortuuid import ShortUUID
-from src.config import CDN_ENDPOINT
+from src.config import CDN_ENDPOINT, PREFIX
 from src.models import SonolusResourceLocator
-
-PREFIX = f'{getenv("SERVER_PREFIX")}.'
 
 
 def create_srl(resource_type: str, hash: str) -> SonolusResourceLocator:
