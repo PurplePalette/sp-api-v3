@@ -20,7 +20,7 @@ format:
 	poetry run pysen run format
 
 lint-fix:
-	poetry run pysen run format && \
+	poetry run pysen run format
 	poetry run pysen run lint
 
 test:

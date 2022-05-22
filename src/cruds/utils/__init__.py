@@ -1,13 +1,10 @@
 from src.cruds.utils.db import (
-    get_admin_or_403,
     get_first_item,
     get_first_item_or_403,
     get_first_item_or_404,
     get_first_item_or_error,
     get_new_name,
-    get_user_or_404,
     is_exist,
-    is_owner_or_admin_otherwise_409,
     not_exist_or_409,
     save_to_db,
 )
@@ -20,6 +17,11 @@ from src.cruds.utils.models import (
     move_translate_fields,
     patch_to_model,
     req_to_db,
+)
+from src.cruds.utils.user import (
+    get_admin_or_403,
+    get_user_or_404,
+    is_owner_or_admin_otherwise_409,
 )
 
 __all__ = [

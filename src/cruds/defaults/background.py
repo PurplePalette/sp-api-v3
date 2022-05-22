@@ -12,12 +12,12 @@ from src.cruds.utils import (
     db_to_resp,
     get_first_item_or_404,
     get_new_name,
-    is_owner_or_admin_otherwise_409,
     patch_to_model,
     req_to_db,
     save_to_db,
 )
 from src.cruds.utils.search import buildDatabaseQuery
+from src.cruds.utils.user import is_owner_or_admin_otherwise_409
 from src.database.objects.background import Background as BackgroundSave
 from src.models.add_background_request import AddBackgroundRequest
 from src.models.default_search import defaultSearch
