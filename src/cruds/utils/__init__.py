@@ -8,11 +8,6 @@ from src.cruds.utils.db import (
     not_exist_or_409,
     save_to_db,
 )
-from src.cruds.utils.user import (
-    get_admin_or_403,
-    get_user_or_404,
-    is_owner_or_admin_otherwise_409,
-)
 from src.cruds.utils.funcs import get_current_unix, get_random_name
 from src.cruds.utils.ids import get_display_id, get_internal_id
 from src.cruds.utils.models import (
@@ -22,6 +17,11 @@ from src.cruds.utils.models import (
     move_translate_fields,
     patch_to_model,
     req_to_db,
+)
+from src.cruds.utils.user import (
+    get_admin_or_403,
+    get_user_or_404,
+    is_owner_or_admin_otherwise_409,
 )
 
 __all__ = [

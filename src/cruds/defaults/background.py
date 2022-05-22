@@ -7,7 +7,6 @@ from fastapi_pagination.ext.async_sqlalchemy import paginate
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
-from src.cruds.utils.user import is_owner_or_admin_otherwise_409
 from src.cruds.defaults.abstract import AbstractCrud
 from src.cruds.utils import (
     db_to_resp,
@@ -18,6 +17,7 @@ from src.cruds.utils import (
     save_to_db,
 )
 from src.cruds.utils.search import buildDatabaseQuery
+from src.cruds.utils.user import is_owner_or_admin_otherwise_409
 from src.database.objects.background import Background as BackgroundSave
 from src.models.add_background_request import AddBackgroundRequest
 from src.models.default_search import defaultSearch

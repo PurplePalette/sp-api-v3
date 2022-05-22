@@ -3,12 +3,9 @@ from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.cruds.utils.user import is_owner_or_admin_otherwise_409
-from src.cruds.utils.db import (
-    get_first_item_or_404,
-    save_to_db,
-)
+from src.cruds.utils.db import get_first_item_or_404, save_to_db
 from src.cruds.utils.funcs import get_current_unix
+from src.cruds.utils.user import is_owner_or_admin_otherwise_409
 from src.models.search_query import SearchQueries
 from src.security_api import FirebaseClaims
 

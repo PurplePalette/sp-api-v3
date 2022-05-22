@@ -12,7 +12,9 @@ async def get_internal_id(db: AsyncSession, userId: str) -> int:
     user = await db.execute(select(User.id).filter(User.userId == userId))
     res: Optional[int] = user.scalars().first()
     if res is None:
-        raise HTTPException(status_code=401, detail="Your account is not registered in this server")
+        raise HTTPException(
+            status_code=401, detail="Your account is not registered in this server"
+        )
     return res
 
 
