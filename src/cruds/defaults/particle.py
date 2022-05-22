@@ -17,6 +17,7 @@ from src.cruds.utils import (
     req_to_db,
     save_to_db,
 )
+from src.cruds.utils.funcs import remove_prefix
 from src.cruds.utils.search import buildDatabaseQuery
 from src.database.objects.particle import Particle as ParticleSave
 from src.models.default_search import defaultSearch
@@ -66,7 +67,7 @@ class ParticleCrud(AbstractCrud):  # type: ignore
         self, db: AsyncSession, name: str, localization: str
     ) -> GetParticleResponse:
         """パーティクルセットを取得します"""
-        particle_db = await self.get_named_item_or_404(db, name)
+        particle_db = await self.get_named_item_or_404(db, remove_prefix(name))
         await db_to_resp(db, particle_db, localization)
         item = particle_db.toItem()
         return GetParticleResponse(

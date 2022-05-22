@@ -1,7 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from src.config import ENGINE_VERSION
-from src.cruds.utils.funcs import create_srl
+from src.cruds.utils.funcs import create_srl, prefix_name
 from src.database.db import Base
 from src.database.mixins import SonolusDataMixin, TimeMixin
 from src.models import EngineReqResp
@@ -40,7 +40,7 @@ class Engine(SonolusDataMixin, TimeMixin, Base):  # type: ignore
             skin=self.skin.toItem(),
             levels=[level.toItem() for level in self.levels] if withLevels else [],
             user=self.user.toItem(),
-            name=self.name,
+            name=prefix_name(self.name),
             version=ENGINE_VERSION,
             title=self.title,
             titleEn=self.titleEn,

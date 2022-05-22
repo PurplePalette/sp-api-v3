@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from src.config import BACKGROUND_VERSION
-from src.cruds.utils.funcs import create_srl
+from src.cruds.utils.funcs import create_srl, prefix_name
 from src.database.db import Base
 from src.database.mixins import SonolusDataMixin, TimeMixin
 from src.models.background import Background as BackgroundReqResp
@@ -34,7 +34,7 @@ class Background(SonolusDataMixin, TimeMixin, Base):  # type: ignore
             engines=[engine.toItem() for engine in self.engines] if withEngines else [],
             levels=[level.toItem() for level in self.levels] if withLevels else [],
             user=self.user.toItem(),
-            name=self.name,
+            name=prefix_name(self.name),
             version=BACKGROUND_VERSION,
             title=self.title,
             titleEn=self.titleEn,

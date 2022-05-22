@@ -2,7 +2,7 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, func, selec
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 from src.config import LEVEL_VERSION
-from src.cruds.utils.funcs import create_srl
+from src.cruds.utils.funcs import create_srl, prefix_name
 from src.database.db import Base
 from src.database.mixins import SonolusDataMixin, TimeMixin
 from src.database.objects.favorite import Favorite
@@ -51,7 +51,7 @@ class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
 
     def toItem(self) -> LevelReqResp:
         return LevelReqResp(
-            name=self.name,
+            name=prefix_name(self.name),
             version=LEVEL_VERSION,
             rating=self.rating,
             engine=self.engine.toItem(),

@@ -17,6 +17,7 @@ from src.cruds.utils import (
     req_to_db,
     save_to_db,
 )
+from src.cruds.utils.funcs import remove_prefix
 from src.cruds.utils.search import buildDatabaseQuery
 from src.database.objects.skin import Skin as SkinSave
 from src.models.add_skin_request import AddSkinRequest
@@ -97,7 +98,7 @@ class SkinCrud(AbstractCrud):  # type: ignore
         self, db: AsyncSession, name: str, localization: str
     ) -> GetSkinResponse:
         """スキンを取得します"""
-        skin_db = await self.get_named_item_or_404(db, name)
+        skin_db = await self.get_named_item_or_404(db, remove_prefix(name))
         await db_to_resp(db, skin_db, localization)
         item = skin_db.toItem()
         return GetSkinResponse(

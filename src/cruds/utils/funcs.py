@@ -1,7 +1,7 @@
 import time
 
 from shortuuid import ShortUUID
-from src.config import CDN_ENDPOINT
+from src.config import CDN_ENDPOINT, PREFIX
 from src.models import SonolusResourceLocator
 
 
@@ -28,3 +28,14 @@ def get_random_name() -> str:
         alphabet="1234567890abcdefghijklmnopqrstuvwxyz"
     ).random(length=12)
     return random_name
+
+
+def prefix_name(obj_name: str) -> str:
+    """nameにプレフィックスをつける"""
+    return f"{PREFIX}{obj_name}"
+
+
+def remove_prefix(obj_name: str) -> str:
+    """nameからプレフィックスを外す"""
+    assert obj_name.startswith(PREFIX), "nameにプレフィックスがついていません"
+    return obj_name[len(PREFIX) :]
