@@ -1,0 +1,4 @@
+.venv
+*_data
+.cache
+.*_cache

@@ -14,4 +14,4 @@ RUN pip install poetry==1.0.* && \
 
 COPY . ./
 
-CMD uvicorn --host=0.0.0.0 src.main:app
+CMD gunicorn -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8080 src.main:app
