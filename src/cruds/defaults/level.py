@@ -18,6 +18,7 @@ from src.cruds.utils import (
     req_to_db,
     save_to_db,
 )
+from src.cruds.utils.funcs import remove_prefix
 from src.cruds.utils.search import buildDatabaseQuery
 from src.database.objects.background import Background as BackgroundSave
 from src.database.objects.effect import Effect as EffectSave
@@ -150,7 +151,7 @@ class LevelCrud(AbstractCrud):  # type: ignore
         self, db: AsyncSession, name: str, localization: str
     ) -> GetLevelResponse:
         """レベルを取得します"""
-        level_db = await self.get_named_item_or_404(db, name)
+        level_db = await self.get_named_item_or_404(db, remove_prefix(name))
         await self.bulk_db_to_resp(db, level_db, localization)
         item = level_db.toItem()
         return GetLevelResponse(

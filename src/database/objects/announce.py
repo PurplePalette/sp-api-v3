@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from src.config import LEVEL_VERSION
-from src.cruds.utils.funcs import create_srl
+from src.cruds.utils.funcs import create_srl, prefix_name
 from src.database.db import Base
 from src.database.mixins import TimeMixin
 from src.models.engine import Engine as EngineModel
@@ -38,7 +38,7 @@ class Announce(TimeMixin, Base):  # type: ignore
 
     def toItem(self) -> LevelModel:
         return LevelModel(
-            name=self.name,
+            name=prefix_name(self.name),
             version=LEVEL_VERSION,
             rating=self.rating,
             engine=EngineModel(

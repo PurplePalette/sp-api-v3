@@ -16,6 +16,7 @@ from src.cruds.utils import (
     req_to_db,
     save_to_db,
 )
+from src.cruds.utils.funcs import remove_prefix
 from src.cruds.utils.search import buildDatabaseQuery
 from src.cruds.utils.user import is_owner_or_admin_otherwise_409
 from src.database.objects.effect import Effect as EffectSave
@@ -66,7 +67,7 @@ class EffectCrud(AbstractCrud):  # type: ignore
         self, db: AsyncSession, name: str, localization: str
     ) -> GetEffectResponse:
         """効果音セットを取得します"""
-        effect_db = await self.get_named_item_or_404(db, name)
+        effect_db = await self.get_named_item_or_404(db, remove_prefix(name))
         await db_to_resp(db, effect_db, localization)
         item = effect_db.toItem()
         return GetEffectResponse(

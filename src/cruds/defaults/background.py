@@ -16,6 +16,7 @@ from src.cruds.utils import (
     req_to_db,
     save_to_db,
 )
+from src.cruds.utils.funcs import remove_prefix
 from src.cruds.utils.search import buildDatabaseQuery
 from src.cruds.utils.user import is_owner_or_admin_otherwise_409
 from src.database.objects.background import Background as BackgroundSave
@@ -102,7 +103,7 @@ class BackgroundCrud(AbstractCrud):  # type: ignore
         self, db: AsyncSession, name: str, localization: str
     ) -> GetBackgroundResponse:
         """背景を取得します"""
-        background_db = await self.get_named_item_or_404(db, name)
+        background_db = await self.get_named_item_or_404(db, remove_prefix(name))
         await db_to_resp(db, background_db, localization)
         item = background_db.toItem()
         return GetBackgroundResponse(
