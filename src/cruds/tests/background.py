@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
-from src.cruds.tests.abstract import AbstractCrud
+from cruds.tests.tests_abstract import AbstractCrud
 from src.database.objects.background import Background as BackgroundSave
 from src.models.default_search import defaultSearch
 from src.models.get_background_list_response import GetBackgroundListResponse
