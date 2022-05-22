@@ -38,7 +38,7 @@ class Level(SonolusDataMixin, TimeMixin, Base):  # type: ignore
     genreId = Column(Integer, ForeignKey("genres.id"))
     background = relationship("Background", back_populates="levels", uselist=False)
     engine = relationship("Engine", back_populates="levels", uselist=False)
-    effect = relationship("Effect", back_populates="levels", uselist=False, lazy=False)
+    effect = relationship("Effect", back_populates="levels", uselist=False)
     particle = relationship("Particle", back_populates="levels", uselist=False)
     skin = relationship("Skin", back_populates="levels", uselist=False)
     genre = relationship("Genre", back_populates="levels")
