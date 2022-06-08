@@ -1,3 +1,4 @@
+import gzip
 import json
 import os
 from typing import Any, Dict
@@ -28,10 +29,13 @@ async def add_asset(
         for file_keys in set(item.keys()) - {"name", "version", "title", "subtitle", "author"}:
             asset_hashes[file_keys] = item[file_keys]["hash"]
             with open(root + item[file_keys]["url"], "rb") as f:
+                data = f.read()
+                if ACCEPT_MAP.get(item[file_keys]["type"]) == "application/json":
+                    data = json.dumps(gzip.decompress(data).decode("utf-8")).encode("utf-8")
                 await upload_process(
                     item[file_keys]["type"],
                     DummyFile(
-                        f.read(),
+                        data,
                         ACCEPT_MAP.get(item[file_keys]["type"], "application/octet-stream"),
                         item[file_keys]["hash"],
                     ),
@@ -125,7 +129,7 @@ async def main() -> None:
             continue
         with open(os.path.join(engines_folder, file)) as f:
             item = json.load(f)
-            await add_engine(async_session, background_tasks, item, item["description"])
+            await add_engine(async_session, background_tasks, item["item"], item["description"])
 
     for task in background_tasks.tasks:
         await task()
