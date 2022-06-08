@@ -69,7 +69,8 @@ DATA_TYPES = [
         "ParticleData",
         "SkinData",
         "LevelData",
-        "EngineConfiguration"
+        "EngineConfiguration",
+        "BackgroundConfiguration",
     ]
 ]
 
