@@ -4,16 +4,15 @@ import os
 from typing import Any, Dict
 
 from dotenv import load_dotenv
-from sqlalchemy.orm import sessionmaker
-
 from seeder.common import ACCEPT_MAP, DummyBackgroundTasks, DummyFile
+from sqlalchemy.orm import sessionmaker
 from src.cruds.extras.upload import upload_process
 from src.database.db import async_engine, async_session
+from src.database.objects.background import Background as BackgroundSave
 from src.database.objects.effect import Effect as EffectSave
+from src.database.objects.engine import Engine as EngineSave
 from src.database.objects.particle import Particle as ParticleSave
 from src.database.objects.skin import Skin as SkinSave
-from src.database.objects.background import Background as BackgroundSave
-from src.database.objects.engine import Engine as EngineSave
 
 
 async def add_asset(
@@ -26,17 +25,27 @@ async def add_asset(
     async with sessionmaker() as db:
         item = asset_dict["item"]
         asset_hashes = {}
-        for file_keys in set(item.keys()) - {"name", "version", "title", "subtitle", "author"}:
+        for file_keys in set(item.keys()) - {
+            "name",
+            "version",
+            "title",
+            "subtitle",
+            "author",
+        }:
             asset_hashes[file_keys] = item[file_keys]["hash"]
             with open(root + item[file_keys]["url"], "rb") as f:
                 data = f.read()
                 if ACCEPT_MAP.get(item[file_keys]["type"]) == "application/json":
-                    data = json.dumps(gzip.decompress(data).decode("utf-8")).encode("utf-8")
+                    data = json.dumps(gzip.decompress(data).decode("utf-8")).encode(
+                        "utf-8"
+                    )
                 await upload_process(
                     item[file_keys]["type"],
                     DummyFile(
                         data,
-                        ACCEPT_MAP.get(item[file_keys]["type"], "application/octet-stream"),
+                        ACCEPT_MAP.get(
+                            item[file_keys]["type"], "application/octet-stream"
+                        ),
                         item[file_keys]["hash"],
                     ),
                     f.tell(),
@@ -62,7 +71,10 @@ async def add_asset(
 
 
 async def add_engine(
-    sessionmaker: sessionmaker, background_tasks: DummyBackgroundTasks, engine_dict: Dict[Any, Any], description: str
+    sessionmaker: sessionmaker,
+    background_tasks: DummyBackgroundTasks,
+    engine_dict: Dict[Any, Any],
+    description: str,
 ) -> None:
     async with sessionmaker() as db:
         engine = EngineSave(
@@ -122,14 +134,18 @@ async def main() -> None:
                 continue
             with open(os.path.join(folder, file)) as f:
                 item = json.load(f)
-                await add_asset(async_session, background_tasks, save_type, item, base_folder)
+                await add_asset(
+                    async_session, background_tasks, save_type, item, base_folder
+                )
 
     for file in os.listdir(engines_folder):
         if file == "list":
             continue
         with open(os.path.join(engines_folder, file)) as f:
             item = json.load(f)
-            await add_engine(async_session, background_tasks, item["item"], item["description"])
+            await add_engine(
+                async_session, background_tasks, item["item"], item["description"]
+            )
 
     for task in background_tasks.tasks:
         await task()

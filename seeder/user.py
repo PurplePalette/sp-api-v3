@@ -1,6 +1,7 @@
 import os
-from dotenv import load_dotenv
+
 import firebase_admin
+from dotenv import load_dotenv
 from firebase_admin import auth
 from sqlalchemy.exc import IntegrityError
 from src.database.db import async_engine, async_session
@@ -15,7 +16,10 @@ async def main() -> None:
     async with async_session() as db:
         try:
             auth.create_user(
-                email="admin@purplepalette.net", email_verified=True, uid="admin", display_name="Administrator"
+                email="admin@purplepalette.net",
+                email_verified=True,
+                uid="admin",
+                display_name="Administrator",
             )
         except firebase_admin._auth_utils.UidAlreadyExistsError:
             print("Firebase User already exists, skipping.")

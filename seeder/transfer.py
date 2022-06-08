@@ -7,11 +7,10 @@ from dataclasses import dataclass
 from typing import Any, Dict, List
 
 from dotenv import load_dotenv
+from seeder.common import DummyBackgroundTasks, DummyFile
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
-
-from seeder.common import DummyBackgroundTasks, DummyFile
 from src.cruds.extras.upload import upload_process
 from src.cruds.utils import get_first_item_or_error, get_internal_id
 from src.database.db import async_engine, async_session
@@ -71,7 +70,9 @@ async def add_user(sessionmaker: sessionmaker, user_dict: Dict[Any, str]) -> Non
             print("Fatal: ", e)
 
 
-async def add_level(sessionmaker: sessionmaker, background_tasks: DummyBackgroundTasks, level: OldLevel) -> None:
+async def add_level(
+    sessionmaker: sessionmaker, background_tasks: DummyBackgroundTasks, level: OldLevel
+) -> None:
     """Add dict user to database"""
     async with sessionmaker() as db:
         user_id = await get_internal_id(db, level.info["userId"])
