@@ -1,16 +1,17 @@
-# coding: utf-8
 import asyncio
 import glob
 import json
 import os
 import os.path
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, List
+from typing import Any, Dict, List
 
 from dotenv import load_dotenv
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
+
+from seeder.common import DummyBackgroundTasks, DummyFile
 from src.cruds.extras.upload import upload_process
 from src.cruds.utils import get_first_item_or_error, get_internal_id
 from src.database.db import async_engine, async_session
@@ -31,24 +32,6 @@ class OldLevel:
     cover: bytes
     data: bytes
     sus: bytes
-
-
-class DummyFile:
-    def __init__(self, data: bytes, content_type: str, filename: str) -> None:
-        self.data = data
-        self.content_type = content_type
-        self.filename = filename
-
-    async def read(self) -> bytes:
-        return self.data
-
-
-class DummyBackgroundTasks:
-    def __init__(self) -> None:
-        self.tasks: List[Callable] = []
-
-    def add_task(self, func: Callable) -> None:
-        self.tasks.append(func)
 
 
 def load_users(path_arr: List[str]) -> List[Dict[str, Any]]:
@@ -88,9 +71,7 @@ async def add_user(sessionmaker: sessionmaker, user_dict: Dict[Any, str]) -> Non
             print("Fatal: ", e)
 
 
-async def add_level(
-    sessionmaker: sessionmaker, background_tasks: DummyBackgroundTasks, level: OldLevel
-) -> None:
+async def add_level(sessionmaker: sessionmaker, background_tasks: DummyBackgroundTasks, level: OldLevel) -> None:
     """Add dict user to database"""
     async with sessionmaker() as db:
         user_id = await get_internal_id(db, level.info["userId"])
@@ -214,12 +195,3 @@ async def main() -> None:
     for task in background_tasks.tasks:
         await task()
     await async_engine.dispose()
-
-
-if __name__ == "__main__":
-    import platform
-
-    if platform.system() == "Windows":
-        policy = asyncio.WindowsSelectorEventLoopPolicy()  # type: ignore
-        asyncio.set_event_loop_policy(policy)  # type: ignore
-    asyncio.run(main())

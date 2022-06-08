@@ -64,7 +64,9 @@ start = { cmd = "uvicorn src.main:app --reload --host 0.0.0.0", help = "launch t
 migrate = { cmd = "alembic upgrade head" }
 seed = { cmd = "python seeder.py" }
 credential = { cmd = "python credential.py" }
-transfer = { cmd = "python transfer.py" }
+transfer_levels = { cmd = "python transfer_levels.py" }
+seeder_scp = { cmd = "python seeder_scp.py" }
+seeder_user = { cmd = "python seeder_user.py" }
 
 [tool.pytest.ini_options]
 asyncio_mode = "strict"

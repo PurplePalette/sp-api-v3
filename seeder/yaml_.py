@@ -42,9 +42,7 @@ def patch_open() -> None:
     ) -> Any:
         if "b" not in mode and not encoding:
             encoding = "utf-8"
-        return __original(
-            file, mode, buffering, encoding, errors, newline, closefd, opener
-        )
+        return __original(file, mode, buffering, encoding, errors, newline, closefd, opener)
 
     builtins.open = __open  # type: ignore
 
@@ -101,7 +99,7 @@ def seed_firebase() -> None:
     print("Now firebase seeded!")
 
 
-if __name__ == "__main__":
+def main() -> None:
     patch_open()
     seed_database()
     seed_firebase()

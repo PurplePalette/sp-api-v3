@@ -10,6 +10,10 @@ seed:
 transfer:
 	poetry run task transfer
 
+production_seeder:
+	poetry run task seeder_user
+	poetry run task seeder_scp
+
 credential:
 	poetry run task credential
 
