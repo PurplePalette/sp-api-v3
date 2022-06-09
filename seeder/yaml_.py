@@ -101,7 +101,7 @@ def seed_firebase() -> None:
     print("Now firebase seeded!")
 
 
-def main() -> None:
+async def main() -> None:
     patch_open()
     seed_database()
     seed_firebase()
