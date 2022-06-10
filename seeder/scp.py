@@ -1,3 +1,4 @@
+import asyncio
 import gzip
 import json
 import os
@@ -124,6 +125,7 @@ async def main() -> None:
                 exit(1)
 
         background_tasks: DummyBackgroundTasks = DummyBackgroundTasks()
+        asset_coros = []
         for save_type, folder in [
             (EffectSave, effects_folder),
             (ParticleSave, particles_folder),
@@ -135,15 +137,23 @@ async def main() -> None:
                     continue
                 with open(os.path.join(folder, file)) as f:
                     item = json.load(f)
-                    await add_asset(async_session, background_tasks, save_type, item, base_folder)
+                    asset_coros.append(add_asset(async_session, background_tasks, save_type, item, base_folder))
+        print("Adding assets...")
+        await asyncio.gather(*asset_coros)
 
+        engine_coros = []
         for file in os.listdir(engines_folder):
             if file == "list":
                 continue
             with open(os.path.join(engines_folder, file)) as f:
                 item = json.load(f)
-                await add_engine(async_session, background_tasks, item["item"], item["description"])
+                engine_coros.append(add_engine(async_session, background_tasks, item["item"], item["description"]))
 
-        for task in background_tasks.tasks:
-            await task()
+        print("Adding engines...")
+        await asyncio.gather(*engine_coros)
+
+        print("Processing tasks...")
+        await asyncio.gather(*background_tasks.tasks)
+
+        print("Done!")
     await async_engine.dispose()

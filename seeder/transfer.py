@@ -190,9 +190,13 @@ async def main() -> None:
         levels_path.remove(".gitkeep")
     levels_path = [os.path.join(levels_folder, p) for p in levels_path]
     background_tasks: DummyBackgroundTasks = DummyBackgroundTasks()
+    level_coros = []
     for level_path in levels_path:
         level = load_level(level_path)
-        await add_level(async_session, background_tasks, level)
-    for task in background_tasks.tasks:
-        await task()
+        level_coros.append(add_level(async_session, background_tasks, level))
+    print("Adding levels...")
+    await asyncio.gather(*level_coros)
+    print("Processing tasks...")
+    await asyncio.gather(*background_tasks.tasks)
+    print("Done!")
     await async_engine.dispose()
