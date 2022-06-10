@@ -15,17 +15,17 @@ if __name__ == "__main__":
         print("No action specified.")
         print("Available actions: scp, transfer, user, yaml")
         sys.exit(1)
-    action = sys.argv[1]
-    if action == "user":
-        main = user_main
-    elif action == "transfer":
-        main = transfer_main
-    elif action == "scp":
-        main = scp_main
-    elif action == "yaml":
-        main = yaml_main
-    else:
+    action_name = sys.argv[1]
+    actions = {
+        "transfer": transfer_main,
+        "scp": scp_main,
+        "user": user_main,
+        "yaml": yaml_main
+    }
+
+    action = actions.get(action_name)
+    if action is None:
         print(f"Unknown action {action}.")
         sys.exit(1)
 
-    asyncio.run(main())
+    asyncio.run(action())
