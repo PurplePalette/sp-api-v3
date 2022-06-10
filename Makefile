@@ -7,9 +7,6 @@ migrate:
 seed:
 	poetry run task seed
 
-transfer:
-	poetry run task transfer
-
 credential:
 	poetry run task credential
 

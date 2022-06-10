@@ -70,6 +70,7 @@ DATA_TYPES = [
         "SkinData",
         "LevelData",
         "EngineConfiguration",
+        "BackgroundConfiguration",
     ]
 ]
 

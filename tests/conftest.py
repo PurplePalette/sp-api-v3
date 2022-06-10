@@ -7,7 +7,7 @@ from typing import AsyncGenerator, Generator, List
 import pytest_asyncio
 from dotenv import load_dotenv
 from httpx import AsyncClient
-from seeder import load_firebase_users, patch_open, seed_database, seed_firebase
+from seeder.yaml_ import load_firebase_users, patch_open, seed_database, seed_firebase
 from src.database.db import Base, engine
 from src.main import app as application
 from src.security_api import (

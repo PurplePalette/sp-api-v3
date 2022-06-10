@@ -1,13 +1,13 @@
-# coding: utf-8
 import asyncio
 import glob
 import json
 import os
 import os.path
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, List
+from typing import Any, Dict, List
 
 from dotenv import load_dotenv
+from seeder.common import DummyBackgroundTasks, DummyFile
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import sessionmaker
@@ -31,24 +31,6 @@ class OldLevel:
     cover: bytes
     data: bytes
     sus: bytes
-
-
-class DummyFile:
-    def __init__(self, data: bytes, content_type: str, filename: str) -> None:
-        self.data = data
-        self.content_type = content_type
-        self.filename = filename
-
-    async def read(self) -> bytes:
-        return self.data
-
-
-class DummyBackgroundTasks:
-    def __init__(self) -> None:
-        self.tasks: List[Callable] = []
-
-    def add_task(self, func: Callable) -> None:
-        self.tasks.append(func)
 
 
 def load_users(path_arr: List[str]) -> List[Dict[str, Any]]:
@@ -208,18 +190,13 @@ async def main() -> None:
         levels_path.remove(".gitkeep")
     levels_path = [os.path.join(levels_folder, p) for p in levels_path]
     background_tasks: DummyBackgroundTasks = DummyBackgroundTasks()
+    level_coros = []
     for level_path in levels_path:
         level = load_level(level_path)
-        await add_level(async_session, background_tasks, level)
-    for task in background_tasks.tasks:
-        await task()
+        level_coros.append(add_level(async_session, background_tasks, level))
+    print("Adding levels...")
+    await asyncio.gather(*level_coros)
+    print("Processing tasks...")
+    await asyncio.gather(*background_tasks.tasks)
+    print("Done!")
     await async_engine.dispose()
-
-
-if __name__ == "__main__":
-    import platform
-
-    if platform.system() == "Windows":
-        policy = asyncio.WindowsSelectorEventLoopPolicy()  # type: ignore
-        asyncio.set_event_loop_policy(policy)  # type: ignore
-    asyncio.run(main())
