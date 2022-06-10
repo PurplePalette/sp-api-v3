@@ -1,6 +1,8 @@
 import gzip
 import json
 import os
+import shutil
+from tempfile import TemporaryDirectory
 from typing import Any, Dict
 
 from dotenv import load_dotenv
@@ -98,47 +100,50 @@ async def main() -> None:
     load_dotenv(dotenv_path)
 
     # フォルダ読み出し
-    base_folder = input("Input unarchived scp folder >> ")
-    engines_folder = os.path.join(base_folder, "engines")
-    effects_folder = os.path.join(base_folder, "effects")
-    particles_folder = os.path.join(base_folder, "particles")
-    skins_folder = os.path.join(base_folder, "skins")
-    backgrounds_folder = os.path.join(base_folder, "backgrounds")
-    repository_folder = os.path.join(base_folder, "repository")
-    # 必須フォルダバリデーション
-    for folder in [
-        engines_folder,
-        effects_folder,
-        particles_folder,
-        skins_folder,
-        repository_folder,
-        backgrounds_folder,
-    ]:
-        if not os.path.exists(folder):
-            print(f"Required folder: {folder} not found!")
-            exit(1)
+    scp_folder = input("Input scp file path >> ")
+    with TemporaryDirectory() as base_folder:
+        shutil.unpack_archive(scp_folder, base_folder, format="zip")
+        print(f"Unpacked to {base_folder}")
+        engines_folder = os.path.join(base_folder, "engines")
+        effects_folder = os.path.join(base_folder, "effects")
+        particles_folder = os.path.join(base_folder, "particles")
+        skins_folder = os.path.join(base_folder, "skins")
+        backgrounds_folder = os.path.join(base_folder, "backgrounds")
+        repository_folder = os.path.join(base_folder, "repository")
+        # 必須フォルダバリデーション
+        for folder in [
+            engines_folder,
+            effects_folder,
+            particles_folder,
+            skins_folder,
+            repository_folder,
+            backgrounds_folder,
+        ]:
+            if not os.path.exists(folder):
+                print(f"Required folder: {folder} not found!")
+                exit(1)
 
-    background_tasks: DummyBackgroundTasks = DummyBackgroundTasks()
-    for save_type, folder in [
-        (EffectSave, effects_folder),
-        (ParticleSave, particles_folder),
-        (SkinSave, skins_folder),
-        (BackgroundSave, backgrounds_folder),
-    ]:
-        for file in os.listdir(folder):
+        background_tasks: DummyBackgroundTasks = DummyBackgroundTasks()
+        for save_type, folder in [
+            (EffectSave, effects_folder),
+            (ParticleSave, particles_folder),
+            (SkinSave, skins_folder),
+            (BackgroundSave, backgrounds_folder),
+        ]:
+            for file in os.listdir(folder):
+                if file == "list":
+                    continue
+                with open(os.path.join(folder, file)) as f:
+                    item = json.load(f)
+                    await add_asset(async_session, background_tasks, save_type, item, base_folder)
+
+        for file in os.listdir(engines_folder):
             if file == "list":
                 continue
-            with open(os.path.join(folder, file)) as f:
+            with open(os.path.join(engines_folder, file)) as f:
                 item = json.load(f)
-                await add_asset(async_session, background_tasks, save_type, item, base_folder)
+                await add_engine(async_session, background_tasks, item["item"], item["description"])
 
-    for file in os.listdir(engines_folder):
-        if file == "list":
-            continue
-        with open(os.path.join(engines_folder, file)) as f:
-            item = json.load(f)
-            await add_engine(async_session, background_tasks, item["item"], item["description"])
-
-    for task in background_tasks.tasks:
-        await task()
+        for task in background_tasks.tasks:
+            await task()
     await async_engine.dispose()
