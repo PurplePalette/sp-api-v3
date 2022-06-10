@@ -13,6 +13,7 @@ if __name__ == "__main__":
         asyncio.set_event_loop_policy(policy)  # type: ignore
     if len(sys.argv) < 2:
         print("No action specified.")
+        print("Available actions: scp, transfer, user, yaml")
         sys.exit(1)
     action = sys.argv[1]
     if action == "user":
