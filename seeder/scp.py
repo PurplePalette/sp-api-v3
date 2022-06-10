@@ -44,7 +44,9 @@ async def add_asset(
                     item[file_keys]["type"],
                     DummyFile(
                         data,
-                        ACCEPT_MAP.get(item[file_keys]["type"], "application/octet-stream"),
+                        ACCEPT_MAP.get(
+                            item[file_keys]["type"], "application/octet-stream"
+                        ),
                         item[file_keys]["hash"],
                     ),
                     f.tell(),
@@ -137,7 +139,15 @@ async def main() -> None:
                     continue
                 with open(os.path.join(folder, file)) as f:
                     item = json.load(f)
-                    asset_coros.append(add_asset(async_session, background_tasks, save_type, item, base_folder))
+                    asset_coros.append(
+                        add_asset(
+                            async_session,
+                            background_tasks,
+                            save_type,
+                            item,
+                            base_folder,
+                        )
+                    )
         print("Adding assets...")
         await asyncio.gather(*asset_coros)
 
@@ -147,7 +157,14 @@ async def main() -> None:
                 continue
             with open(os.path.join(engines_folder, file)) as f:
                 item = json.load(f)
-                engine_coros.append(add_engine(async_session, background_tasks, item["item"], item["description"]))
+                engine_coros.append(
+                    add_engine(
+                        async_session,
+                        background_tasks,
+                        item["item"],
+                        item["description"],
+                    )
+                )
 
         print("Adding engines...")
         await asyncio.gather(*engine_coros)
