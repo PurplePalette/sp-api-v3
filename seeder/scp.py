@@ -36,16 +36,13 @@ async def add_asset(
             with open(root + item[file_keys]["url"], "rb") as f:
                 data = f.read()
                 if ACCEPT_MAP.get(item[file_keys]["type"]) == "application/json":
-                    data = json.dumps(gzip.decompress(data).decode("utf-8")).encode(
-                        "utf-8"
-                    )
+                    decompressed_data = json.loads(gzip.decompress(data).decode())
+                    data = decompressed_data.encode("utf-8")
                 await upload_process(
                     item[file_keys]["type"],
                     DummyFile(
                         data,
-                        ACCEPT_MAP.get(
-                            item[file_keys]["type"], "application/octet-stream"
-                        ),
+                        ACCEPT_MAP.get(item[file_keys]["type"], "application/octet-stream"),
                         item[file_keys]["hash"],
                     ),
                     f.tell(),
@@ -134,18 +131,14 @@ async def main() -> None:
                 continue
             with open(os.path.join(folder, file)) as f:
                 item = json.load(f)
-                await add_asset(
-                    async_session, background_tasks, save_type, item, base_folder
-                )
+                await add_asset(async_session, background_tasks, save_type, item, base_folder)
 
     for file in os.listdir(engines_folder):
         if file == "list":
             continue
         with open(os.path.join(engines_folder, file)) as f:
             item = json.load(f)
-            await add_engine(
-                async_session, background_tasks, item["item"], item["description"]
-            )
+            await add_engine(async_session, background_tasks, item["item"], item["description"])
 
     for task in background_tasks.tasks:
         await task()
