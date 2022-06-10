@@ -36,8 +36,7 @@ async def add_asset(
             with open(root + item[file_keys]["url"], "rb") as f:
                 data = f.read()
                 if ACCEPT_MAP.get(item[file_keys]["type"]) == "application/json":
-                    decompressed_data = json.loads(gzip.decompress(data).decode())
-                    data = decompressed_data.encode("utf-8")
+                    data = gzip.decompress(data)
                 await upload_process(
                     item[file_keys]["type"],
                     DummyFile(
