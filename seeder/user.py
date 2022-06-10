@@ -16,7 +16,7 @@ async def main() -> None:
     async with async_session() as db:
         try:
             auth.create_user(
-                email="admin@purplepalette.net",
+                email="dummy_admin@example.com",
                 email_verified=True,
                 uid="admin",
                 display_name="Administrator",
