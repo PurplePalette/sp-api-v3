@@ -20,7 +20,7 @@ if __name__ == "__main__":
         "transfer": transfer_main,
         "scp": scp_main,
         "user": user_main,
-        "yaml": yaml_main
+        "yaml": yaml_main,
     }
 
     action = actions.get(action_name)
