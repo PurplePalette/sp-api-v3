@@ -1,14 +1,13 @@
 import asyncio
+import platform
 import sys
 
-from seeder.user import main as user_main
-from seeder.transfer import main as transfer_main
 from seeder.scp import main as scp_main
+from seeder.transfer import main as transfer_main
+from seeder.user import main as user_main
 from seeder.yaml_ import main as yaml_main
 
 if __name__ == "__main__":
-    import platform
-
     if platform.system() == "Windows":
         policy = asyncio.WindowsSelectorEventLoopPolicy()  # type: ignore
         asyncio.set_event_loop_policy(policy)  # type: ignore
