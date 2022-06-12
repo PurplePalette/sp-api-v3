@@ -37,5 +37,4 @@ def prefix_name(obj_name: str) -> str:
 
 def remove_prefix(obj_name: str) -> str:
     """nameからプレフィックスを外す"""
-    assert obj_name.startswith(PREFIX), "nameにプレフィックスがついていません"
     return obj_name[len(PREFIX) :]
