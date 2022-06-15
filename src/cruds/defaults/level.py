@@ -12,6 +12,7 @@ from src.cruds.defaults.abstract import AbstractCrud
 from src.cruds.utils import (
     db_to_resp,
     get_first_item_or_404,
+    get_first_item_wait_or_404,
     get_new_name,
     is_owner_or_admin_otherwise_409,
     patch_to_model,
@@ -21,6 +22,7 @@ from src.cruds.utils import (
 from src.cruds.utils.funcs import remove_prefix
 from src.cruds.utils.search import buildDatabaseQuery
 from src.database.objects.background import Background as BackgroundSave
+from src.database.objects.file_map import FileMap
 from src.database.objects.effect import Effect as EffectSave
 from src.database.objects.engine import Engine as EngineSave
 from src.database.objects.genre import Genre as GenreSave
@@ -55,9 +57,7 @@ SRLConvertDict = [
 
 
 class LevelCrud(AbstractCrud):  # type: ignore
-    async def create_dict(
-        self, db: AsyncSession, model: LevelReqResp, exclude_unset: bool = False
-    ) -> Dict[str, Any]:
+    async def create_dict(self, db: AsyncSession, model: LevelReqResp, exclude_unset: bool = False) -> Dict[str, Any]:
         """モデルに指定されたSonolusオブジェクトをDBから取り出してIDを埋めます"""
         model_import: Dict[str, Any] = model.dict(exclude_unset=exclude_unset)
         # DB側カラム名に合わせる
@@ -70,21 +70,15 @@ class LevelCrud(AbstractCrud):  # type: ignore
             if convert.name in model_import:
                 obj_req = model_import[convert.name]
                 if obj_req:
-                    obj_db = await get_first_item_or_404(
-                        db, select(convert.obj.id).filter(convert.obj.name == obj_req)
-                    )
+                    obj_db = await get_first_item_or_404(db, select(convert.obj.id).filter(convert.obj.name == obj_req))
                     model_import[convert.name + "Id"] = obj_db
         # 存在してると変換できないフィールドを消す
-        for key in ["artists", "artistsEn", "preview"] + [
-            s.name for s in SRLConvertDict
-        ]:
+        for key in ["artists", "artistsEn", "preview"] + [s.name for s in SRLConvertDict]:
             if key in model_import:
                 del model_import[key]
         return model_import
 
-    async def bulk_db_to_resp(
-        self, db: AsyncSession, level_db: LevelSave, localization: str = "ja"
-    ) -> None:
+    async def bulk_db_to_resp(self, db: AsyncSession, level_db: LevelSave, localization: str = "ja") -> None:
         # 各地のSRLを応答型に変換し回る
         for db_obj in [
             level_db,
@@ -110,13 +104,9 @@ class LevelCrud(AbstractCrud):  # type: ignore
             stmt.options(
                 joinedload(LevelSave.engine).options(
                     joinedload(EngineSave.user),
-                    joinedload(EngineSave.background).options(
-                        joinedload(BackgroundSave.user)
-                    ),
+                    joinedload(EngineSave.background).options(joinedload(BackgroundSave.user)),
                     joinedload(EngineSave.skin).options(joinedload(SkinSave.user)),
-                    joinedload(EngineSave.particle).options(
-                        joinedload(ParticleSave.user)
-                    ),
+                    joinedload(EngineSave.particle).options(joinedload(ParticleSave.user)),
                     joinedload(EngineSave.effect).options(joinedload(EffectSave.user)),
                 ),
                 joinedload(LevelSave.genre),
@@ -133,6 +123,17 @@ class LevelCrud(AbstractCrud):  # type: ignore
         model_import = await self.create_dict(db, model)
         level_db = LevelSave(**model_import)
         level_db.name = await get_new_name(db, LevelSave)
+        level_db.data = (
+            await get_first_item_wait_or_404(
+                db,
+                select(FileMap).where(
+                    FileMap.beforeType == "SusFile",
+                    FileMap.beforeHash == model.data,
+                    FileMap.processType == "SusConvert",
+                ),
+                5,
+            )
+        ).afterHash
         level_db.userId = auth["user_id"]
         await req_to_db(db, level_db, is_new=True)
         await save_to_db(db, level_db)
@@ -147,9 +148,7 @@ class LevelCrud(AbstractCrud):  # type: ignore
         )
         return resp
 
-    async def get(
-        self, db: AsyncSession, name: str, localization: str
-    ) -> GetLevelResponse:
+    async def get(self, db: AsyncSession, name: str, localization: str) -> GetLevelResponse:
         """レベルを取得します"""
         level_db = await self.get_named_item_or_404(db, remove_prefix(name))
         await self.bulk_db_to_resp(db, level_db, localization)
@@ -193,9 +192,7 @@ class LevelCrud(AbstractCrud):  # type: ignore
         await super().delete(db, name, auth)
         return None
 
-    async def list(
-        self, db: AsyncSession, page: int, queries: SearchQueries
-    ) -> GetLevelListResponse:
+    async def list(self, db: AsyncSession, page: int, queries: SearchQueries) -> GetLevelListResponse:
         """レベル一覧を取得します"""
         select_query = buildDatabaseQuery(LevelSave, queries, False)
         userPage: Page[LevelSave] = await paginate(
@@ -203,13 +200,9 @@ class LevelCrud(AbstractCrud):  # type: ignore
             select_query.options(
                 selectinload(LevelSave.engine).options(
                     joinedload(EngineSave.user),
-                    joinedload(EngineSave.background).options(
-                        joinedload(BackgroundSave.user)
-                    ),
+                    joinedload(EngineSave.background).options(joinedload(BackgroundSave.user)),
                     joinedload(EngineSave.skin).options(joinedload(SkinSave.user)),
-                    joinedload(EngineSave.particle).options(
-                        joinedload(ParticleSave.user)
-                    ),
+                    joinedload(EngineSave.particle).options(joinedload(ParticleSave.user)),
                     joinedload(EngineSave.effect).options(joinedload(EffectSave.user)),
                 ),
                 joinedload(LevelSave.genre),
@@ -220,9 +213,7 @@ class LevelCrud(AbstractCrud):  # type: ignore
             Params(page=page + 1, size=20),
         )  # type: ignore
         resp: SonolusPage = toSonolusPage(userPage)
-        await asyncio.gather(
-            *[self.bulk_db_to_resp(db, r, queries.localization) for r in resp.items]
-        )
+        await asyncio.gather(*[self.bulk_db_to_resp(db, r, queries.localization) for r in resp.items])
         resp.items = [r.toItem() for r in resp.items]
         return GetLevelListResponse(
             pageCount=resp.pageCount if resp.pageCount > 0 else 1,

@@ -81,3 +81,6 @@ py_version = "py38"
   paths = [".", "src/routers", "src/database/", "src/cruds/"]
 [tool.pysen.lint.source]
   excludes = ["src/models/", "src/models"]
+
+[tool.pyright]
+include = ["src"]

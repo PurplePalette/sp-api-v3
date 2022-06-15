@@ -89,6 +89,8 @@ async def add_level(
             subtitleEn=level.info["artists"]["ja"],
             description=level.info["description"]["ja"],
             descriptionEn=level.info["description"]["ja"],
+            author=level.info["author"]["ja"],
+            authorEn=level.info["author"]["ja"],
             createdTime=level.info["createdTime"],
             updatedTime=level.info["updatedTime"],
             rating=level.info["rating"],
@@ -167,7 +169,7 @@ async def main() -> None:
     load_dotenv(dotenv_path)
 
     # フォルダ読み出し
-    base_folder = input("Input sonolus-uploader-core2 db folder >>")
+    base_folder = input("Input sonolus-uploader-core2 db folder >> ")
     levels_folder = os.path.join(base_folder, "levels")
     users_folder = os.path.join(base_folder, "users")
 
@@ -197,6 +199,6 @@ async def main() -> None:
     print("Adding levels...")
     await asyncio.gather(*level_coros)
     print("Processing tasks...")
-    await asyncio.gather(*background_tasks.tasks)
+    await asyncio.gather(*[t() for t in background_tasks.tasks])
     print("Done!")
     await async_engine.dispose()

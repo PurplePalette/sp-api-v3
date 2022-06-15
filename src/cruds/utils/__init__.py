@@ -2,6 +2,7 @@ from src.cruds.utils.db import (
     get_first_item,
     get_first_item_or_403,
     get_first_item_or_404,
+    get_first_item_wait_or_404,
     get_first_item_or_error,
     get_new_name,
     is_exist,

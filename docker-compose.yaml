@@ -32,6 +32,24 @@ services:
       S3_BUCKET: ${S3_BUCKET}
       S3_ENDPOINT: ${S3_ENDPOINT}
       S3_REGION: ${S3_REGION}
+  # Image processing server (Required)
+  # Run at sonolus_image_service:8000
+  image:
+    image: sevenc7c/sonolus-image-server:latest
+    container_name: sonolus_image_service
+    hostname: sonolus_image_service
+    networks:
+      - local-net
+    depends_on:
+      - service
+    ports:
+      - ${PORT_IMAGE}:8000
+    environment:
+      S3_KEY: ${S3_KEY}
+      S3_SECRET: ${S3_SECRET}
+      S3_BUCKET: ${S3_BUCKET}
+      S3_ENDPOINT: ${S3_ENDPOINT}
+      S3_REGION: ${S3_REGION}
   # MariaDB Database (Required)
   database:
     container_name: sonolus_fastapi_database
