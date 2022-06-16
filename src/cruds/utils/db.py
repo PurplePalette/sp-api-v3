@@ -1,5 +1,5 @@
-from abc import ABCMeta
 import asyncio
+from abc import ABCMeta
 from typing import Any, Optional, TypeVar
 
 from fastapi import HTTPException
@@ -35,7 +35,9 @@ def get_first_item(db: AsyncSession, statement: Any) -> Optional[T]:
     return obj_db
 
 
-async def get_first_item_or_error(db: AsyncSession, statement: Any, error: HTTPException) -> T:
+async def get_first_item_or_error(
+    db: AsyncSession, statement: Any, error: HTTPException
+) -> T:
     """データベースに指定された要素が存在すれば取得、なければエラー"""
     resp: Result = await db.execute(statement)
     obj_db: Optional[T] = resp.scalars().first()
@@ -52,7 +54,9 @@ async def get_first_item_or_404(
     resp: T = await get_first_item_or_error(
         db,
         statement,
-        HTTPException(status_code=404, detail="Specified content was not found on server"),
+        HTTPException(
+            status_code=404, detail="Specified content was not found on server"
+        ),
     )
     return resp
 
@@ -62,7 +66,9 @@ async def get_first_item_or_403(
     statement: Any,
 ) -> T:
     """データベースに指定された要素が存在すれば取得、なければ Forbidden"""
-    resp: T = await get_first_item_or_error(db, statement, HTTPException(status_code=403, detail="Forbidden"))
+    resp: T = await get_first_item_or_error(
+        db, statement, HTTPException(status_code=403, detail="Forbidden")
+    )
     return resp
 
 
@@ -77,12 +83,14 @@ async def get_first_item_wait_or_404(
             return await get_first_item_or_error(
                 db,
                 statement,
-                AssertionError,
+                HTTPException(404),
             )
-        except AssertionError:
+        except HTTPException:
             await asyncio.sleep(1)
     else:
-        raise HTTPException(status_code=400, detail="Specified content was not found on server")
+        raise HTTPException(
+            status_code=404, detail="Specified content was not found on server"
+        )
 
 
 async def not_exist_or_409(db: AsyncSession, statement: Any) -> None:

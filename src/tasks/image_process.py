@@ -47,7 +47,9 @@ class ImageProcessTask:
     hash: str
     user_display_id: str
 
-    def __init__(self, db: AsyncSession, type_: str, hash: str, user_display_id: str) -> None:
+    def __init__(
+        self, db: AsyncSession, type_: str, hash: str, user_display_id: str
+    ) -> None:
         self.status = ImageProcessStatus.PROCESSING
         self.db = db
         self.type = type_
@@ -60,7 +62,8 @@ class ImageProcessTask:
         try:
             async with httpx.AsyncClient() as client:
                 resp = await client.post(
-                    f"{IMAGE_SERVICE_ENDPOINT}/convert", json={"type": self.type, "hash": self.hash}
+                    f"{IMAGE_SERVICE_ENDPOINT}/convert",
+                    json={"type": self.type, "hash": self.hash},
                 )
                 # 連携先がエラーを吐くと LevelConversionException
                 if resp.status_code != 200:
