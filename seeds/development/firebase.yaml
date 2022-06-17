@@ -1,6 +1,6 @@
-- display_name: kafuu_chino
-  password: hot0cocoa
-  email: chino@rabbit.house
+- display_name: Administrator
+  password: administrator
+  email: dummy_admin@example.com
 - display_name: kafuu_cocoa
   password: hot0mocha
   email: cocoa@rabbit.house

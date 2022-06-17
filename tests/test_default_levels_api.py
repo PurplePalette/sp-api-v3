@@ -41,7 +41,7 @@ async def test_add_level(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "POST",
@@ -61,7 +61,7 @@ async def test_delete_level(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "DELETE",
@@ -84,7 +84,7 @@ async def test_edit_level(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "PATCH",

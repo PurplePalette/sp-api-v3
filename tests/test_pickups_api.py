@@ -18,7 +18,7 @@ async def test_add_pickup(client: AsyncClient) -> None:
     pickup = {"name": "name", "order": 17207}
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "POST",
@@ -38,7 +38,7 @@ async def test_delete_pickup(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "DELETE",

@@ -4,6 +4,7 @@ import sys
 from os.path import dirname, join
 from typing import AsyncGenerator, Generator, List
 
+import _pathmagic  # noqa: F401
 import pytest_asyncio
 from dotenv import load_dotenv
 from httpx import AsyncClient
@@ -39,9 +40,7 @@ https://github.com/igortg/pytest-async-sqlalchemy#providing-a-session-scoped-eve
 @pytest_asyncio.fixture
 async def client() -> AsyncGenerator:
     application.dependency_overrides[get_current_user] = get_current_user_stub
-    application.dependency_overrides[
-        get_current_user_optional
-    ] = get_current_user_optional_stub
+    application.dependency_overrides[get_current_user_optional] = get_current_user_optional_stub
     async with AsyncClient(app=application, base_url="https://test") as c:
         yield c
 
@@ -88,9 +87,5 @@ def id_tokens() -> List[str]:
     users = load_firebase_users()
     endpoint = f"http://{FIREBASE_AUTH_EMULATOR_HOST}"
     if FIREBASE_AUTH_EMULATOR_HOST:
-        return [
-            get_id_token(u["email"], u["password"], endpoint=endpoint) for u in users
-        ]
-    return [
-        get_id_token(u["email"], u["password"], apiKey=FIREBASE_API_KEY) for u in users
-    ]
+        return [get_id_token(u["email"], u["password"], endpoint=endpoint) for u in users]
+    return [get_id_token(u["email"], u["password"], apiKey=FIREBASE_API_KEY) for u in users]
