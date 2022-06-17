@@ -146,6 +146,17 @@ class LevelCrud(AbstractCrud):  # type: ignore
                 5,
             )
         ).afterHash
+        level_db.cover = (
+            await get_first_item_wait_or_404(
+                db,
+                select(FileMap).where(
+                    FileMap.beforeType == "LevelCover",
+                    FileMap.beforeHash == model.data,
+                    FileMap.processType == "ImageProcess",
+                ),
+                5,
+            )
+        ).afterHash
         level_db.userId = auth["user_id"]
         await req_to_db(db, level_db, is_new=True)
         await save_to_db(db, level_db)
