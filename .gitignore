@@ -175,3 +175,7 @@ firebase-debug.log
 ui-debug.log
 .config/configstore/firebase-tools.json
 .config/configstore/update-notifier-firebase-tools.json
+bak
+db_data_bak
+.venv_bak
+.env_local
