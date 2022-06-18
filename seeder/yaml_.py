@@ -66,6 +66,7 @@ def seed_database() -> None:
             "levels.yaml",
             "genres.yaml",
             "uploads.yaml",
+            "file_maps.yaml",
         ],
     )
     session = get_sync_db()

@@ -89,7 +89,7 @@ async def get_first_item_wait_or_404(
             await asyncio.sleep(1)
     else:
         raise HTTPException(
-            status_code=404, detail="Specified content was not found on server"
+            status_code=404, detail=f"Specified content was not found on server within {timeout} seconds"
         )
 
 

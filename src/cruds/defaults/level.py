@@ -151,7 +151,7 @@ class LevelCrud(AbstractCrud):  # type: ignore
                 db,
                 select(FileMap).where(
                     FileMap.beforeType == "LevelCover",
-                    FileMap.beforeHash == model.data,
+                    FileMap.beforeHash == model.cover,
                     FileMap.processType == "ImageProcess",
                 ),
                 5,
