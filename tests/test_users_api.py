@@ -98,7 +98,7 @@ async def test_get_user_with_auth(client: AsyncClient) -> None:
     }
     response = await client.request(
         "GET",
-        "/users/{userId}".format(userId="kafuu_chino"),
+        "/users/{userId}".format(userId="admin"),
         headers=headers,
     )
     result = response.json()
@@ -129,7 +129,7 @@ async def test_get_user_with_auth_real(
     }
     response = await client_real.request(
         "GET",
-        "/users/{userId}".format(userId="kafuu_chino"),
+        "/users/{userId}".format(userId="admin"),
         headers=headers,
     )
     assert response.status_code == 200
