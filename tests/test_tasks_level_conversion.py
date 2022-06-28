@@ -1,10 +1,10 @@
 # coding: utf-8
 import pytest
 from src.cruds.utils.db import save_to_db
+from src.cruds.utils.funcs import get_current_unix
 from src.database.bucket import get_bucket
 from src.database.db import async_session
 from src.database.objects.upload import Upload as UploadSave
-from src.cruds.utils.funcs import get_current_unix
 from src.tasks.level_conversion import LevelConversionStatus, LevelConversionTask
 
 

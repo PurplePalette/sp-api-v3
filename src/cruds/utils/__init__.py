@@ -30,6 +30,7 @@ __all__ = [
     "get_first_item_or_error",
     "get_first_item_or_404",
     "get_first_item_or_403",
+    "get_first_item_wait_or_404",
     "get_user_or_404",
     "get_admin_or_403",
     "not_exist_or_409",
