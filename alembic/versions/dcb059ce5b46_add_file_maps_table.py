@@ -1,22 +1,21 @@
-"""recreate file_maps table
+"""add_process_table
 
-Revision ID: 48db6963ab56
-Revises: dcb059ce5b46
-Create Date: 2022-06-18 21:54:35.776753
+Revision ID: dcb059ce5b46
+Revises: 21e5008f643b
+Create Date: 2022-06-12 19:09:48.636469
 
 """
 import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = "48db6963ab56"
-down_revision = "dcb059ce5b46"
+revision = "dcb059ce5b46"
+down_revision = "21e5008f643b"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-    op.drop_table("file_maps")
     op.create_table(
         "file_maps",
         sa.Column("id", sa.Integer(), autoincrement=True, primary_key=True),
@@ -30,4 +29,4 @@ def upgrade():
 
 
 def downgrade():
-    pass
+    op.drop_table("file_maps")
