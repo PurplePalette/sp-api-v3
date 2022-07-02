@@ -29,7 +29,7 @@ async def test_add_background_success_valid_data(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "POST",
@@ -55,7 +55,7 @@ async def test_add_background_failed_invalid_data(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "POST",
@@ -129,7 +129,7 @@ async def test_delete_background_success_admin(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "DELETE",
@@ -204,7 +204,7 @@ async def test_edit_background_success_valid_data(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "PATCH",
@@ -228,7 +228,7 @@ async def test_edit_background_success_ignore_data(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "PATCH",
@@ -251,7 +251,7 @@ async def test_edit_background_failed_invalid_data(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "PATCH",

@@ -1,3 +1,4 @@
+import asyncio
 from abc import ABCMeta
 from typing import Any, Optional, TypeVar
 
@@ -69,6 +70,28 @@ async def get_first_item_or_403(
         db, statement, HTTPException(status_code=403, detail="Forbidden")
     )
     return resp
+
+
+async def get_first_item_wait_or_404(
+    db: AsyncSession,
+    statement: Any,
+    timeout: int = 5,
+) -> T:
+    """データベースに指定された要素が存在すれば取得、timeout秒以内に存在しなければ NotFound"""
+    for _ in range(timeout):
+        try:
+            return await get_first_item_or_error(
+                db,
+                statement,
+                HTTPException(404),
+            )
+        except HTTPException:
+            await asyncio.sleep(1)
+    else:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Specified content was not found on server within {timeout} seconds",
+        )
 
 
 async def not_exist_or_409(db: AsyncSession, statement: Any) -> None:

@@ -35,7 +35,7 @@ async def test_delete_user(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "DELETE",
@@ -58,7 +58,7 @@ async def test_edit_user(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "PATCH",
@@ -94,11 +94,11 @@ async def test_get_user_with_auth(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "GET",
-        "/users/{userId}".format(userId="kafuu_chino"),
+        "/users/{userId}".format(userId="admin"),
         headers=headers,
     )
     result = response.json()
@@ -129,7 +129,7 @@ async def test_get_user_with_auth_real(
     }
     response = await client_real.request(
         "GET",
-        "/users/{userId}".format(userId="kafuu_chino"),
+        "/users/{userId}".format(userId="admin"),
         headers=headers,
     )
     assert response.status_code == 200

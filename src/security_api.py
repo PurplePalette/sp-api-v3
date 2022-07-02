@@ -134,3 +134,19 @@ def get_id_token(
     if resp.status_code != 200:
         raise Exception(f"Failed to get idToken: {resp.text}")
     return resp.json()["idToken"]
+
+
+def create_user(
+    email: str, password: str, endpoint: str = "https:/", apiKey: str = "dummy"
+) -> str:
+    """ユーザーを作成し、IDトークンを返却する"""
+    resp = httpx.post(
+        f"{endpoint}/identitytoolkit.googleapis.com/v1/accounts:signUp",
+        params={"key": apiKey},
+        json={"email": email, "password": password},
+    )
+    if resp.json()["error"]["message"] == "EMAIL_EXISTS":
+        return get_id_token(email, password, endpoint, apiKey)
+    if resp.status_code != 200:
+        raise Exception(f"Failed to create user idToken: {resp.text}")
+    return resp.json()["idToken"]

@@ -37,4 +37,7 @@ def prefix_name(obj_name: str) -> str:
 
 def remove_prefix(obj_name: str) -> str:
     """nameからプレフィックスを外す"""
-    return obj_name[len(PREFIX) :]
+    new_name = obj_name
+    if obj_name.startswith(PREFIX):
+        new_name = obj_name[len(PREFIX) :]
+    return new_name
