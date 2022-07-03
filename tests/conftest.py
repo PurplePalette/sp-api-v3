@@ -4,6 +4,7 @@ import sys
 from os.path import dirname, join
 from typing import AsyncGenerator, Generator, List
 
+import _pathmagic  # noqa: F401
 import pytest_asyncio
 from dotenv import load_dotenv
 from httpx import AsyncClient

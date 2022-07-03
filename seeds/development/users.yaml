@@ -5,11 +5,11 @@
     # database primary key
     id: 1
     # firebase userId
-    userId: kafuu_chino
+    userId: admin
     # accounts endpoint
-    accountId: chino_account
+    accountId: admin
     # tests endpoint
-    testId: chino_test
+    testId: admin
     # time mixin
     createdTime: 1
     updatedTime: 1

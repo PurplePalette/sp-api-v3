@@ -30,9 +30,9 @@ async def test_add_level(client: AsyncClient) -> None:
         "skin": None,
         "particle": None,
         "effect": None,
-        "cover": "hash",
+        "cover": "before_hash",
         "bgm": "hash",
-        "data": "hash",
+        "data": "sus_hash",
         "preview": "hash",
         "length": "0",
         "bpm": 555,
@@ -41,7 +41,7 @@ async def test_add_level(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "POST",
@@ -61,7 +61,7 @@ async def test_delete_level(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "DELETE",
@@ -84,7 +84,7 @@ async def test_edit_level(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "PATCH",

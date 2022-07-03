@@ -12,6 +12,7 @@ from src.cruds.defaults.abstract import AbstractCrud
 from src.cruds.utils import (
     db_to_resp,
     get_first_item_or_404,
+    get_first_item_wait_or_404,
     get_new_name,
     is_owner_or_admin_otherwise_409,
     patch_to_model,
@@ -23,6 +24,7 @@ from src.cruds.utils.search import buildDatabaseQuery
 from src.database.objects.background import Background as BackgroundSave
 from src.database.objects.effect import Effect as EffectSave
 from src.database.objects.engine import Engine as EngineSave
+from src.database.objects.file_map import FileMap
 from src.database.objects.genre import Genre as GenreSave
 from src.database.objects.level import Level as LevelSave
 from src.database.objects.particle import Particle as ParticleSave
@@ -133,6 +135,28 @@ class LevelCrud(AbstractCrud):  # type: ignore
         model_import = await self.create_dict(db, model)
         level_db = LevelSave(**model_import)
         level_db.name = await get_new_name(db, LevelSave)
+        level_db.data = (
+            await get_first_item_wait_or_404(
+                db,
+                select(FileMap).where(
+                    FileMap.beforeType == "SusFile",
+                    FileMap.beforeHash == model.data,
+                    FileMap.processType == "SusConvert",
+                ),
+                5,
+            )
+        ).afterHash
+        level_db.cover = (
+            await get_first_item_wait_or_404(
+                db,
+                select(FileMap).where(
+                    FileMap.beforeType == "LevelCover",
+                    FileMap.beforeHash == model.cover,
+                    FileMap.processType == "ImageProcess",
+                ),
+                5,
+            )
+        ).afterHash
         level_db.userId = auth["user_id"]
         await req_to_db(db, level_db, is_new=True)
         await save_to_db(db, level_db)

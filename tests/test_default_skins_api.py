@@ -30,7 +30,7 @@ async def test_add_skin(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "POST",
@@ -50,7 +50,7 @@ async def test_delete_skin(client: AsyncClient) -> None:
     """
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "DELETE",
@@ -73,7 +73,7 @@ async def test_edit_skin(client: AsyncClient) -> None:
     }
 
     headers = {
-        "Authorization": "Bearer kafuu_chino",
+        "Authorization": "Bearer admin",
     }
     response = await client.request(
         "PATCH",

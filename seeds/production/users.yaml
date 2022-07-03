@@ -4,11 +4,11 @@
     # database primary key
     id: 1
     # firebase userId
-    userId: input_your_firebase_id
+    userId: admin
     # accounts endpoint
-    accountId: input_your_accounts_endpoint
+    accountId: admin
     # tests endpoint
-    testId: input_your_accounts_endpoint
+    testId: admin
     # time mixin
     createdTime: 1
     updatedTime: 1

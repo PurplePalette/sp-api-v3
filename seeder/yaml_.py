@@ -9,12 +9,14 @@ from firebase_admin import auth
 from firebase_admin.auth import EmailAlreadyExistsError
 from sqlalchemy_seed import load_fixture_files, load_fixtures
 from src.database.db import get_sync_db
-from src.security_api import default_app
+from src.security_api import create_user, default_app
 
 load_dotenv(verbose=True)
 dotenv_path = join(dirname(__file__), ".env")
 load_dotenv(dotenv_path)
 
+
+FIREBASE_AUTH_EMULATOR_HOST = os.environ.get("FIREBASE_AUTH_EMULATOR_HOST")
 
 """
 Fix UnicodeDecodeError with monkey patch
@@ -66,6 +68,7 @@ def seed_database() -> None:
             "levels.yaml",
             "genres.yaml",
             "uploads.yaml",
+            "file_maps.yaml",
         ],
     )
     session = get_sync_db()
@@ -98,6 +101,10 @@ def seed_firebase() -> None:
             )
         except EmailAlreadyExistsError:
             pass
+    endpoint = f"http://{FIREBASE_AUTH_EMULATOR_HOST}"
+    if FIREBASE_AUTH_EMULATOR_HOST:
+        for u in firebase_users:
+            create_user(u["email"], u["password"], endpoint=endpoint)
     print("Now firebase seeded!")
 
 

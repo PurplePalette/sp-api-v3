@@ -12,6 +12,7 @@ from src.database.bucket import get_bucket
 from src.database.objects.upload import Upload as UploadSave
 from src.models.post_upload_response import PostUploadResponse
 from src.security_api import FirebaseClaims
+from src.tasks.image_process import ImageProcessTask
 from src.tasks.level_conversion import LevelConversionTask
 
 
@@ -171,6 +172,14 @@ async def upload_process(
     if file_type == "SusFile":
         task = LevelConversionTask(
             db,
+            sha1_hash,
+            user["user_id"],
+        )
+        background_tasks.add_task(task)
+    elif file_type.endswith("Thumbnail") or file_type == "LevelCover":
+        task = ImageProcessTask(
+            db,
+            file_type,
             sha1_hash,
             user["user_id"],
         )
