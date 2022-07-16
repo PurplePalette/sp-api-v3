@@ -20,7 +20,7 @@ class DummyBackgroundTasks:
 
     def add_task(self, func: Callable) -> None:
         self.tasks.append(func())
-    
+
     async def run(self) -> None:
         await asyncio.gather(*self.tasks)
         self.tasks.clear()

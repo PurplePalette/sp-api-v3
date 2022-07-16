@@ -1,10 +1,10 @@
 import asyncio
 import glob
-from hashlib import sha1
 import json
 import os
 import os.path
 from dataclasses import dataclass
+from hashlib import sha1
 from typing import Any, Dict, List
 
 from dotenv import load_dotenv
@@ -72,15 +72,19 @@ async def add_user(sessionmaker: sessionmaker, user_dict: Dict[Any, str]) -> Non
             print("Fatal: ", e)
 
 
-async def add_level(sessionmaker: sessionmaker, background_tasks: DummyBackgroundTasks, level: OldLevel) -> None:
+async def add_level(
+    sessionmaker: sessionmaker, background_tasks: DummyBackgroundTasks, level: OldLevel
+) -> None:
     """Add dict user to database"""
     async with sessionmaker() as db:
         user_id = await get_internal_id(db, level.info["userId"])
-        genre_id = (await get_first_item_or_error(
-            db,
-            select(GenreSave).where(GenreSave.name == level.info["genre"]),
-            Exception,
-        )).id
+        genre_id = (
+            await get_first_item_or_error(
+                db,
+                select(GenreSave).where(GenreSave.name == level.info["genre"]),
+                Exception,
+            )
+        ).id
         for data, db_type, content_type, filename in [
             (level.bgm, "LevelBgm", "audio/mpeg", "bgm.mp3"),
             (level.cover, "LevelCover", "image/png", "cover.png"),
@@ -113,7 +117,8 @@ async def add_level(sessionmaker: sessionmaker, background_tasks: DummyBackgroun
                 await get_first_item_or_error(
                     db,
                     select(FileMap).where(
-                        (FileMap.processType == "ImageProcess") & (FileMap.beforeHash == level.info["coverHash"])
+                        (FileMap.processType == "ImageProcess")
+                        & (FileMap.beforeHash == level.info["coverHash"])
                     ),
                     Exception,
                 )
@@ -123,7 +128,8 @@ async def add_level(sessionmaker: sessionmaker, background_tasks: DummyBackgroun
                 await get_first_item_or_error(
                     db,
                     select(FileMap).where(
-                        (FileMap.processType == "SusConvert") & (FileMap.beforeHash == sha1(level.sus).hexdigest())
+                        (FileMap.processType == "SusConvert")
+                        & (FileMap.beforeHash == sha1(level.sus).hexdigest())
                     ),
                     Exception,
                 )
