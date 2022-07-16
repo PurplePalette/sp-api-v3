@@ -4,6 +4,7 @@ import json
 import os
 import os.path
 from dataclasses import dataclass
+from hashlib import sha1
 from typing import Any, Dict, List
 
 from dotenv import load_dotenv
@@ -17,6 +18,7 @@ from src.database.db import async_engine, async_session
 from src.database.objects.background import Background as BackgroundSave
 from src.database.objects.effect import Effect as EffectSave
 from src.database.objects.engine import Engine as EngineSave
+from src.database.objects.file_map import FileMap
 from src.database.objects.genre import Genre as GenreSave
 from src.database.objects.level import Level as LevelSave
 from src.database.objects.particle import Particle as ParticleSave
@@ -76,11 +78,28 @@ async def add_level(
     """Add dict user to database"""
     async with sessionmaker() as db:
         user_id = await get_internal_id(db, level.info["userId"])
-        genre = await get_first_item_or_error(
-            db,
-            select(GenreSave).where(GenreSave.name == level.info["genre"]),
-            Exception,
-        )
+        genre_id = (
+            await get_first_item_or_error(
+                db,
+                select(GenreSave).where(GenreSave.name == level.info["genre"]),
+                Exception,
+            )
+        ).id
+        for data, db_type, content_type, filename in [
+            (level.bgm, "LevelBgm", "audio/mpeg", "bgm.mp3"),
+            (level.cover, "LevelCover", "image/png", "cover.png"),
+            (level.data, "LevelData", "application/json", "data.json"),
+            (level.sus, "SusFile", "text/plain", "data.sus"),
+        ]:
+            await upload_process(
+                db_type,
+                DummyFile(data, content_type, filename),
+                len(data),
+                db,
+                {"user_id": level.info["userId"]},
+                background_tasks,
+            )
+        await background_tasks.run()
         level_db = LevelSave(
             name=level.info["name"],
             title=level.info["title"]["ja"],
@@ -94,9 +113,27 @@ async def add_level(
             createdTime=level.info["createdTime"],
             updatedTime=level.info["updatedTime"],
             rating=level.info["rating"],
-            cover=level.info["coverHash"],
+            cover=(
+                await get_first_item_or_error(
+                    db,
+                    select(FileMap).where(
+                        (FileMap.processType == "ImageProcess")
+                        & (FileMap.beforeHash == level.info["coverHash"])
+                    ),
+                    Exception,
+                )
+            ).afterHash,
             bgm=level.info["bgmHash"],
-            data=level.info["dataHash"],
+            data=(
+                await get_first_item_or_error(
+                    db,
+                    select(FileMap).where(
+                        (FileMap.processType == "SusConvert")
+                        & (FileMap.beforeHash == sha1(level.sus).hexdigest())
+                    ),
+                    Exception,
+                )
+            ).afterHash,
             public=level.info["public"],
             bpm=0,
             length=0,
@@ -135,7 +172,7 @@ async def add_level(
                     Exception,
                 )
             ).id,
-            genreId=genre.id,
+            genreId=genre_id,
             userId=user_id,
         )
         db.add(level_db)
@@ -147,20 +184,6 @@ async def add_level(
                 print(f"Level {level.info['name']} already exists")
             else:
                 print(e._message())
-        for data, db_type, content_type, filename in [
-            (level.bgm, "LevelBgm", "audio/mpeg", "bgm.mp3"),
-            (level.cover, "LevelCover", "image/png", "cover.png"),
-            (level.data, "LevelData", "application/json", "data.json"),
-            (level.sus, "SusFile", "text/plain", "data.sus"),
-        ]:
-            await upload_process(
-                db_type,
-                DummyFile(data, content_type, filename),
-                len(data),
-                db,
-                {"user_id": level.info["userId"]},
-                background_tasks,
-            )
 
 
 async def main() -> None:
@@ -199,6 +222,6 @@ async def main() -> None:
     print("Adding levels...")
     await asyncio.gather(*level_coros)
     print("Processing tasks...")
-    await asyncio.gather(*[t() for t in background_tasks.tasks])
+    await background_tasks.run()
     print("Done!")
     await async_engine.dispose()

@@ -145,8 +145,8 @@ def create_user(
         params={"key": apiKey},
         json={"email": email, "password": password},
     )
-    if resp.json()["error"]["message"] == "EMAIL_EXISTS":
-        return get_id_token(email, password, endpoint, apiKey)
     if resp.status_code != 200:
+        if resp.json()["error"]["message"] == "EMAIL_EXISTS":
+            return get_id_token(email, password, endpoint, apiKey)
         raise Exception(f"Failed to create user idToken: {resp.text}")
     return resp.json()["idToken"]
