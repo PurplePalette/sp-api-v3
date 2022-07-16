@@ -1,3 +1,4 @@
+import asyncio
 from typing import Callable, List
 
 from src.cruds.extras.upload import ACCEPT_TYPES
@@ -18,7 +19,11 @@ class DummyBackgroundTasks:
         self.tasks: List[Callable] = []
 
     def add_task(self, func: Callable) -> None:
-        self.tasks.append(func)
+        self.tasks.append(func())
+    
+    async def run(self) -> None:
+        await asyncio.gather(*self.tasks)
+        self.tasks.clear()
 
 
 ACCEPT_MAP = {t.srl_name: t.content_type for t in ACCEPT_TYPES}
